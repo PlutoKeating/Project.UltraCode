@@ -57,27 +57,29 @@ opencode mcp list
 
 在对话中明确要求代理调用对应 Skill；也可以写“使用 `test-driven-development` 技能完成这个任务”。Superpowers 提供工程纪律，不替代原生角色的任务编排与独立评审。
 
-## 4. Ralph 外层循环（步骤 4 待实施）
+## 4. Ralph 外层循环（已可用）
 
-计划采用 Open Ralph Wiggum CLI。目标调用形态：
+安装版本为 `ralph 1.3.1`，固定上游 commit `53c87ded9fc329b452298f361145d17bf52cac09`。全局协议和启动器位于 `~/.config/opencode/ralph/`，仓库真源为 `config/opencode/ralph/`。
+
+在目标仓库的独立 linked worktree 中准备：
+
+- 目标文件：经过评审的计划或目标文本。
+- `.ralph/ralph-tasks.md`：每轮只完成一个顶层任务。
+- `.opencode/ultracode/FEATURE_LIST.json` 与 `SPRINT_CONTRACT.md`：需要结构化验收时使用。
+
+启动：
 
 ```bash
-ralph --prompt-file <经过评审的任务提示> \
-  --agent opencode \
-  --model google-vertex/gemini-4-neon \
-  --tasks \
-  --max-iterations <明确上限>
+~/.config/opencode/ralph/run.sh <目标文件> <最大轮数> --no-questions
 ```
 
-最终参数以安装版本为准。长跑必须定义：
+启动器固定 `google-vertex/gemini-4-neon`，默认 `--no-commit --no-allow-all`。协议要求任务代理在验证后创建一个本地提交；无人值守时必须显式追加 `--allow-all`，仍禁止推送。
 
-- 单个任务与明确范围。
-- 项目原生验证命令。
-- 最大迭代次数。
-- 完成、阻塞和需要人工决策的信号。
-- Git worktree、提交边界与人工接管方式。
+退出码：`0` 完成且工作区干净；`1` 阻塞或 Ralph 失败；`2` 用法/主 worktree 拒绝；`3` 达到上限或未完成；`5` 最终仍有未提交修改。原始 Ralph 在最大轮数时返回 `0`，启动器已将其转换为 `3`。
 
-## 5. 计划与交接制品（步骤 4 待实施）
+## 5. 计划与交接制品（已可用）
+
+模板位于 `~/.config/opencode/ralph/templates/`。`PROGRESS.md`、`HANDOFF.md`、任务清单、Sprint Contract 和功能清单是持久真源；Ralph 内部 state/history 会被更新或删除，不能作为唯一审计记录。
 
 | 制品 | 责任 |
 | --- | --- |

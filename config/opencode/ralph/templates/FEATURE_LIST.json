@@ -1,0 +1,16 @@
+{
+  "features": [
+    {
+      "id": "F-001",
+      "category": "functional",
+      "description": "Describe one observable user or system behavior",
+      "steps": [
+        "Start from a reproducible initial state",
+        "Perform the real user or system action",
+        "Verify the observable result"
+      ],
+      "verification": "Name the real command or interaction that proves this feature",
+      "passes": false
+    }
+  ]
+}

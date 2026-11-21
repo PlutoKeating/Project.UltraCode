@@ -1,6 +1,6 @@
 # 快速开始
 
-当前文档覆盖已经完成的大步骤 1–2，以及 Superpowers 的安装与 Skill 调用。后续增强功能需按实施计划逐步安装，不能仅凭本目录中的规划直接调用。
+当前文档覆盖已经完成的大步骤 1–4。独立视觉 QA 仍需按实施计划安装和验收。
 
 ## 1. 前置条件
 
@@ -110,6 +110,32 @@ opencode run --standalone --agent architect "只读分析当前架构的主要�
 
 代理应实际调用 `skill` 工具，而不是只在回复中提及技能名称。Superpowers 不替代 `/ultracode-plan` 和独立 reviewer。
 
-## 8. 后续步骤
+## 8. 启动 Ralph 长跑
 
-Ralph 和独立视觉 QA 尚未在本步安装。继续前请查阅 [实施计划](IMPLEMENTATION_PLAN.md)，每个大步骤都需要单独审批与验收。
+先创建独立 worktree，并准备目标文件和 `.ralph/ralph-tasks.md`：
+
+```bash
+git worktree add -b feature/my-long-task ../my-long-task
+cd ../my-long-task
+mkdir -p .ralph
+cp ~/.config/opencode/ralph/templates/PROGRESS.md .ralph/
+cp ~/.config/opencode/ralph/templates/HANDOFF.md .ralph/
+```
+
+需要结构化功能验收时，再把 `FEATURE_LIST.json` 和 `SPRINT_CONTRACT.md` 复制到 `.opencode/ultracode/` 并填写。启动：
+
+```bash
+~/.config/opencode/ralph/run.sh <目标文件> 20 --no-questions
+```
+
+默认不自动放权。确认 worktree、权限和任务边界后，无人值守运行可显式追加 `--allow-all`。每轮只做一个顶层任务；阻塞原因为 `.ralph/HANDOFF.md` 中的文本，退出信号必须保持 `<promise>BLOCKED</promise>`。
+
+卸载 Ralph：
+
+```bash
+bun remove -g @th0rgal/ralph-wiggum
+```
+
+## 9. 后续步骤
+
+独立视觉 QA 尚未安装。继续前请查阅 [实施计划](IMPLEMENTATION_PLAN.md)，大步骤 5 仍需单独审批与验收。

@@ -61,7 +61,7 @@
 
 比较了 OMO Goal、会话内 Ralph 插件、`opencode-ralph-rlm`、Go CLI 和 Open Ralph Wiggum。
 
-最终倾向 [Open Ralph Wiggum](https://github.com/Th0rgal/open-ralph-wiggum)：
+最终采用 [Open Ralph Wiggum](https://github.com/Th0rgal/open-ralph-wiggum)：
 
 - CLI 外层反复调用 `opencode run`，每轮是全新上下文。
 - 支持任务模式、最大/最小迭代、完成/中止信号、状态监控和中途提示。
@@ -69,6 +69,10 @@
 - 可自定义 Prompt 模板，把 Sprint Contract、功能清单、验证命令和交接协议放入每轮。
 
 `opencode-ralph-rlm` 的持久状态设计很有价值，但其 provider、worker plugin 与 OMO 重叠更多，且需要额外本地服务；当前不作为默认方案。
+
+本机安装固定为 `v1.3.1` / commit `53c87de`。npm 没有对应的 `1.3.1` 包，且 Git 依赖准备阶段出现断链问题，最终通过项目官方支持的 Bun 全局路径安装同一 commit。
+
+真实烟测确认了两个不同 OpenCode session ID、每轮 RED/GREEN、任务状态和功能状态更新。也确认了原始工具的三个边界：最大轮数会停止但返回 `0`；阻塞信号必须是严格的 `<promise>BLOCKED</promise>`；最终完成轮可能留下未提交修改并删除内部 state/history。UltraCode 启动器因此使用 `--no-commit`，要求任务代理验证后本地提交，增加 worktree 强制、退出码转换、脏工作区检查和内部运行文件忽略。
 
 ## 7. Playwright：CLI 与 MCP 分工
 
