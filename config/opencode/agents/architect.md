@@ -1,7 +1,6 @@
 ---
 description: Read-only architecture, debugging, trade-off, and complex cross-module analysis specialist
 mode: subagent
-model: google-vertex/gemini-4-carbon#high
 permissions:
   - action: edit
     resource: "*"

@@ -1,7 +1,6 @@
 ---
 description: Independent skeptical reviewer for correctness, regressions, security, missing scope, and verification evidence
 mode: subagent
-model: google-vertex/gemini-4-carbon#high
 permissions:
   - action: edit
     resource: "*"

@@ -1,7 +1,6 @@
 ---
 description: Implements one bounded engineering task with project-native verification and an evidence-based handoff
 mode: subagent
-model: google-vertex/gemini-4-neon#high
 permissions:
   - action: subagent
     resource: "*"

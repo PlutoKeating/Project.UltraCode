@@ -8,3 +8,11 @@ node_modules/
 playwright-report/
 test-results/
 *.log
+bun.lockb
+installer/dist/
+website/dist/
+website/.astro/
+website/src/content/docs/
+website/public/install.sh
+.playwright-mcp/
+.DS_Store

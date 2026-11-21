@@ -1,7 +1,6 @@
 ---
 description: Fast read-only researcher for official documentation, OSS implementations, and cited technical evidence
 mode: subagent
-model: google-vertex/gemini-4-hydrogen#low
 permissions:
   - action: edit
     resource: "*"

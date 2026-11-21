@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+
 if [[ $# -lt 1 ]]; then
   echo "Usage: run.sh <goal-file> [max-iterations] [extra Ralph flags]" >&2
   exit 2
@@ -37,28 +39,27 @@ fi
 
 mkdir -p "$root/.ralph"
 if [[ ! -f "$root/.ralph/PROGRESS.md" ]]; then
-  cp "$HOME/.config/opencode/ralph/templates/PROGRESS.md" "$root/.ralph/PROGRESS.md"
+  cp "$script_dir/templates/PROGRESS.md" "$root/.ralph/PROGRESS.md"
 fi
 if [[ ! -f "$root/.ralph/HANDOFF.md" ]]; then
-  cp "$HOME/.config/opencode/ralph/templates/HANDOFF.md" "$root/.ralph/HANDOFF.md"
+  cp "$script_dir/templates/HANDOFF.md" "$root/.ralph/HANDOFF.md"
 fi
 if [[ ! -f "$root/.ralph/.gitignore" ]]; then
-  cp "$HOME/.config/opencode/ralph/templates/gitignore" "$root/.ralph/.gitignore"
+  cp "$script_dir/templates/gitignore" "$root/.ralph/.gitignore"
 fi
 mkdir -p "$root/.opencode/ultracode/qa"
 if [[ ! -f "$root/.opencode/ultracode/qa/.gitignore" ]]; then
-  cp "$HOME/.config/opencode/ralph/templates/qa.gitignore" "$root/.opencode/ultracode/qa/.gitignore"
+  cp "$script_dir/templates/qa.gitignore" "$root/.opencode/ultracode/qa/.gitignore"
 fi
 
 cd "$root"
 set +e
-ralph \
+uc ralph \
   --prompt-file "$goal_file" \
-  --prompt-template "$HOME/.config/opencode/ralph/prompt.md" \
+  --prompt-template "$script_dir/prompt.md" \
   --tasks \
   --max-iterations "$max_iterations" \
   --agent opencode \
-  --model google-vertex/gemini-4-neon \
   --abort-promise BLOCKED \
   --no-commit \
   --no-allow-all \

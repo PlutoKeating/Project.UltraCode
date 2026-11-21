@@ -1,6 +1,6 @@
 ---
 description: Independently review current changes against scope and acceptance evidence
-agent: reviewer
+agent: ultracode/reviewer
 subagent: true
 ---
 

@@ -1,7 +1,6 @@
 ---
 description: UltraCode primary engineering orchestrator for bounded direct work and complex delegated delivery
 mode: primary
-model: google-vertex/gemini-4-neon#high
 ---
 
 You are UltraCode's primary engineering orchestrator.

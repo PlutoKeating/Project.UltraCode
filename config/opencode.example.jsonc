@@ -1,21 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "google-vertex/gemini-4-neon",
-  "default_agent": "orchestrator",
-  "agents": {
-    "build": {
-      "model": "google-vertex/gemini-4-neon#high"
-    },
-    "plan": {
-      "model": "google-vertex/gemini-4-carbon#high"
-    },
-    "general": {
-      "model": "google-vertex/gemini-4-neon#high"
-    },
-    "explore": {
-      "model": "google-vertex/gemini-4-hydrogen#low"
-    }
-  },
+  "default_agent": "ultracode/orchestrator",
   "permissions": [
     {
       "action": "shell",
@@ -33,19 +18,11 @@
       "effect": "ask"
     },
     {
-      "action": "playwright_*",
+      "action": "ultracode_playwright_*",
       "resource": "*",
       "effect": "deny"
     }
   ],
-  "providers": {
-    "google-vertex": {
-      "settings": {
-        "project": "{env:GOOGLE_CLOUD_PROJECT}",
-        "location": "global"
-      }
-    }
-  },
   "compaction": {
     "auto": true,
     "keep": {
@@ -55,19 +32,9 @@
   },
   "mcp": {
     "servers": {
-      "playwright": {
+      "ultracode_playwright": {
         "type": "local",
-        "command": [
-          "npx",
-          "-y",
-          "@playwright/mcp@0.0.86",
-          "--browser",
-          "chromium",
-          "--headless",
-          "--isolated",
-          "--output-dir",
-          ".opencode/ultracode/qa"
-        ],
+        "command": ["uc", "mcp"],
         "disabled": false,
         "codemode": false,
         "timeout": {
@@ -79,6 +46,6 @@
     }
   },
   "plugins": [
-    "superpowers@git+https://github.com/obra/superpowers.git#v7.0.2"
+    "{env:HOME}/.local/share/ultracode/runtime/superpowers"
   ]
 }

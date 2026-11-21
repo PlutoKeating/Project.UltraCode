@@ -1,7 +1,6 @@
 ---
 description: Produces evidence-based implementation plans, acceptance criteria, QA scenarios, and sprint contracts
 mode: primary
-model: google-vertex/gemini-4-carbon#high
 permissions:
   - action: edit
     resource: "*"
