@@ -1,0 +1,20 @@
+:root {
+  --sl-color-accent-low: #263b35;
+  --sl-color-accent: #4d7c68;
+  --sl-color-accent-high: #d7e9de;
+  --sl-color-bg: #101614;
+  --sl-color-bg-sidebar: #131c19;
+  --sl-color-text-accent: #9ed0b4;
+}
+
+:root[data-theme="light"] {
+  --sl-color-accent-low: #dcebe2;
+  --sl-color-accent: #35644f;
+  --sl-color-accent-high: #173426;
+  --sl-color-bg: #f8faf7;
+  --sl-color-bg-sidebar: #f0f5ef;
+}
+
+.sl-markdown-content pre {
+  border: 1px solid var(--sl-color-gray-5);
+}

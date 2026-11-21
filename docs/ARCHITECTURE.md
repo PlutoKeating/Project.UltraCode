@@ -1,88 +1,72 @@
-# UltraCode 目标架构
+# UltraCode 架构
 
-## 1. 要解决的问题
+## 1. 目标
 
-长程开发失败通常不是单点推理失败，而是以下问题叠加：
+UltraCode 解决两类问题：长程工程中的目标漂移、上下文腐烂与自评宽容；以及增强链路在新机、已有复杂配置和 OpenCode 官方升级后的可重复安装。
 
-- 目标随上下文增长而漂移，生成者过早收尾。
-- 压缩保留了会话，却没有提供真正干净的工作窗口。
-- 规划、实现和评审由同一上下文完成，容易产生自评宽容。
-- “测试通过”停留在文字声明，没有真实调用、浏览器交互和证据。
-- 进度只存在聊天记录里，新会话无法可靠接续。
+核心约束：Provider/Model 中立，不读取凭据，不做真实模型安装测试，不侵入官方二进制。
 
-UltraCode 因此采用“内层多代理 + 外层全新上下文 + 文件/Git 持久状态”的组合，而不是单纯放大系统提示词。
-
-## 2. 分层链路
+## 2. 长程工作流
 
 ```text
 用户目标 / Spec
-  │
-  ├─ Superpowers：需求澄清、计划纪律、TDD、系统化调试
-  │
-  ├─ OpenCode Planner：代码库调研、架构咨询、独立计划评审
-  │     └─ 输出：计划、验收条件、QA 场景、Sprint Contract
-  │
-  ├─ OpenCode Implementer / Workers：按职责并行实现
-  │     └─ 输出：小步 Git 变更、自动测试、实现记录
-  │
-  ├─ 独立 Evaluator：代码审查、API/DB 检查、Playwright 实机 QA
-  │     └─ 输出：通过/打回、具体缺陷、截图与交互证据
-  │
-  └─ Open Ralph Wiggum：外层迭代控制
-        ├─ 每轮新的 opencode run
-        ├─ 单个任务、最大轮数、完成/阻塞信号
-        └─ 从 Git、任务文件和交接文档恢复，而非继承旧聊天
+  → Superpowers：澄清、TDD、系统化调试
+  → OpenCode 原生 Planner / Architect
+  → Implementer / 原生后台子代理
+  → 独立 Reviewer / Visual Evaluator
+  → Ralph 外层全新 opencode run
+  → Git、任务、Progress、Handoff 持久化
 ```
 
-OpenCode 原生后台子代理用于隔离规划、实现和评审的上下文；外部 Ralph 用于跨轮全新上下文。两者解决的问题不同，不能互相冒充。
+子代理隔离会话内上下文，Ralph 在顶层迭代之间创建新会话。二者不可互相替代。
 
-## 3. Gemini 4 角色路由
+所有角色不包含 `model`，Ralph 不传 `--model`。用户当前 OpenCode 会话决定实际 Provider 与模型。
 
-所有实际调用均走 `google-vertex`。以下角色已经过当前项目真实调用校准；Neon、Carbon、Hydrogen、Argon 均分别在 `global` 端点调用成功。
+## 3. 分发模块与接口
 
-| 角色 | 初始模型 | 理由 |
-| --- | --- | --- |
-| 主编排与常规执行 | Neon | 面向 Agentic Coding、多步工具调用，响应快且较少非请求变更 |
-| 计划顾问、深度调试、独立评审 | Carbon | 面向长程推理、复杂工程和审计 |
-| 检索、文档查询、轻量机械任务 | Hydrogen | 面向高频、快速的日常 Agent 工作 |
-| 视觉生成、写作 | Argon，必要时与 Carbon 对照 | Argon 适合常规视觉生成与写作；Carbon 用于高强度视觉复核 |
-| 多模态检查 | Carbon / Neon | 按实际截图与交互评审效果校准 |
+```text
+                  小接口
+        apply / sync / doctor / update / up / uninstall
+                         │
+      ┌──────────────────┼──────────────────┐
+      │                  │                  │
+ Install Module     Config Module      Release Module
+ 文件所有权/卸载     最大并集 JSONC       稳定版本/SHA256
+      │                  │                  │
+ Runtime Module     OpenCode Adapter    Website Module
+ 私有运行时/浏览器   版本/官方升级        Stable/Next 双语站点
+```
 
-每个关键角色保留 Gemini 4 内部的回退链，不静默切换到其他 Provider。
+接口只暴露调用者需要的操作；平台、路径、备份、锁版本、原子写入和验收属于内部实现。
 
-## 4. 上下文与记忆
+## 4. 最大并集合并
 
-| 层 | 内容 | 生命周期 |
-| --- | --- | --- |
-| 稳定规则 | `AGENTS.md`、项目文档、按需加载的 Skill | 跨会话 |
-| 任务真源 | 计划、验收条件、功能 JSON、Sprint Contract | 跨轮次，人工可审查 |
-| 交接状态 | 当前进度、已验证证据、失败原因、下一步、阻塞项 | 每轮更新 |
-| 代码真源 | Git diff、提交历史、测试和构建输出 | 每轮更新 |
-| 临时上下文 | 当前会话、工具结果、子代理报告 | 可压缩或丢弃 |
+- 对象递归补缺失键。
+- 数组按值去重追加，避免重复权限和插件。
+- 已有不同标量保留并报告。
+- JSONC 注释、未知字段、Provider、凭据引用和用户 MCP 原样保留。
+- Agent、Command、MCP 使用 UltraCode 命名空间。
+- 清单哈希区分上游旧文件与用户本地修改。
+- 卸载仅精确删除未修改的 UltraCode 所有状态。
 
-子代理负责隔离大量搜索、日志和测试输出；主代理只消费精炼结论。顶层任务之间由 Ralph 创建真正的新会话。
+## 5. 私有运行时
 
-## 5. 独立验收
+独立编译 CLI 内嵌 Bun 能力。安装器以子进程方式使用同一二进制安装固定版本 Ralph 与 Playwright，无需用户预装 Node/Bun，也不写全局包目录。
 
-完成门槛由四类证据组成：
+Superpowers 与 Ralph 的固定源码归档具有 SHA-256；Playwright 使用精确 npm 版本。浏览器存入 UltraCode 数据目录。
 
-1. 项目原生测试、类型检查、Lint 和构建。
-2. 真实 API、数据库或 CLI 场景。
-3. Playwright 驱动的页面交互、关键用户路径、响应式与可访问性检查。
-4. 与生成者分离的评审者对验收条件逐项裁决。
+## 6. 官方升级接缝
 
-UI 评审采用设计统一性、原创性、工艺、功能可用性四个维度，并加入跨页面一致性、关键交互状态和内容深度。任何硬门槛失败都不能被总分抵消。
+OpenCode 二进制只由官方安装脚本或 `opencode upgrade` 管理。
 
-普通实现代理优先使用 Playwright CLI/Skill，降低工具 schema 与快照占用；独立、持久的 QA 会话使用 Playwright MCP。当前原生角色包括 `orchestrator`、`planner`、`implementer`、`architect`、`reviewer`、`visual-evaluator` 和 `librarian`。
+- `uc up`：显式执行官方升级，再更新 UltraCode 并 sync。
+- `uc sync`：官方 `/update` 或安装脚本后的幂等修复。
+- `uc doctor`：结构、版本、文件和运行时检查，不调用模型。
 
-## 6. 安全与降级
+当前测试基线为 OpenCode V2.3.x；更新的 V2 只承诺结构检查，未来大版本需要显式适配。
 
-- 长跑限定最大轮数、任务范围和验证命令，支持阻塞信号与人工接管。
-- 使用独立 Git worktree 隔离代码变更，不自动推送、不自动合并受保护分支。
-- 保留全局配置备份，插件固定版本，升级后执行 REA 与真实模型回归。
-- 如果某插件与 OpenCode V2 不兼容，先隔离故障并回退该插件，不绕过标准加载机制。
-- 如果某项视觉或主观标准无法自动验证，必须标记为人工待验，不能伪造通过。
+## 7. 网站与发布
 
-## 7. 当前实现边界
+Astro Starlight 从单一内容源生成中文/英文 Stable/Next 路由，并把根 `install.sh` 复制到静态站点。Cloudflare Workers Static Assets 发布 `website/dist`。
 
-当前已完成 OpenCode v2.3.2 底座、四种 Vertex Gemini 4 模型实调、自动压缩、REA 保留、原生角色、Superpowers v7.0.2、Ralph 全新上下文长跑和 Playwright 独立视觉 QA。最终链路已在临时真实 Web 应用上完成生成、独立打回、修复与标准浏览器复验；临时服务和项目已清理。
+稳定 Release 在 Linux/macOS x64/arm64 原生 Runner 构建，执行版本冒烟，生成 SHA-256 与 Artifact Attestations。CI 不使用真实模型、用户凭据或 Docker。

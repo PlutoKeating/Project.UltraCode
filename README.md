@@ -1,53 +1,76 @@
 # UltraCode
 
-UltraCode 是一套面向 OpenCode 的长程软件工程增强链路，目标是在 Vertex AI Gemini 4 模型上获得更接近成熟一线 Coding Agent 的持续交付能力。它增强的是目标保持、上下文交接、角色分工、真实验证和视觉评审，不承诺通过提示词复制某个专有模型或 Harness。
+UltraCode 是官方 OpenCode 的 Provider/Model 中立增强层，提供长程工程角色、Superpowers 工程纪律、Ralph 全新上下文迭代和 Playwright 独立视觉 QA。
 
-## 核心设计
+它不修改 OpenCode 官方二进制，不读取或配置 Provider 凭据，不在安装验收中调用真实模型。
 
-```text
-需求澄清与 TDD 纪律
-  → 可评审计划与 Sprint Contract
-  → 多代理分工实现
-  → 独立代码/实机/视觉评审
-  → 全新上下文迭代
-  → Git、任务状态与交接文件持久化
+## 一行安装
+
+在已安装官方 OpenCode V2 的 Linux 或 macOS 上：
+
+```bash
+curl -fsSL https://你的发布域名/install.sh | bash
 ```
 
-主要原则：
+默认安装完整链路并执行结构检查。可审查版本：
 
-- 只使用 `google-vertex` 的 Gemini 4 模型执行本项目验证，其他 Provider 不参与测试。
-- 长会话压缩与全新上下文重置互补，二者不互相替代。
-- 完成必须由测试、真实交互和独立评审证明，而不是由生成者自行宣布。
-- 优先复用 OpenCode 原生后台子代理、Superpowers、Open Ralph Wiggum 和 Playwright，不重复实现已有编排器。
-- 长跑使用宿主机权限边界和独立 Git worktree；默认不自动推送远程。
+```bash
+curl -fsSL https://你的发布域名/install.sh -o /tmp/ultracode-install.sh
+less /tmp/ultracode-install.sh
+bash /tmp/ultracode-install.sh
+```
 
-## 当前状态
+## 常用命令
 
-| 大步骤 | 状态 |
-| --- | --- |
-| 1. 安全基线与 OpenCode 底座 | 已完成：OpenCode v2.3.2、Vertex Neon、全局区域、自动压缩、REA 回归 |
-| 2. OpenCode 原生角色与 Gemini 4 分层路由 | 已完成：原生后台子代理、规划/实现/架构/独立评审角色与命令 |
-| 3. Superpowers 工程纪律 | 已完成：v7.0.2、真实 Skill 调用、RED/GREEN 与独立评审打回复验 |
-| 4. Ralph 全新上下文长跑 | 已完成：v1.3.1 固定 commit、两轮新会话、阻塞/上限、独立 worktree 与干净提交 |
-| 5. 独立视觉 QA 与全链路验收 | 已完成：Playwright 0.0.86、Chromium 1255、独立打回/修复/复验与最终健康检查 |
+```bash
+uc sync       # 幂等应用或官方升级后的修复
+uc doctor     # 无真实模型调用的结构检查
+uc update     # 更新 UltraCode 稳定版
+uc up         # 官方 OpenCode 升级 + UltraCode 更新 + sync
+uc uninstall --yes
+```
 
-当前仓库提供完整增强链路的原生角色、工作流命令、长跑协议、UI Rubric、配置模板、调研与验收记录。五个大步骤均已批准、实施并验证。
+## 教程网站
 
-最终 Web 验收首版获得独立 `APPROVE`；随后通过明确标注的 Enter 回归变异测试验证评审会 `REJECT`，生成者按报告修复后，在标准 Chromium 1255 上重新执行全部核心路径并获得 `APPROVE`。这证明了实机评审和返工闭环，而不只是配置存在。
+`website/` 使用 Astro Starlight，包含中英双语 Stable/Next 文档：
 
-大步骤 2 未采用 OMO：当前官方 OMO V2 适配仅加载插件，不运行 Agents、Tools、Hooks。经路线审批后，已由 OpenCode V2 原生角色层替代，详见 [调研记录](docs/RESEARCH.md)。
+```bash
+cd website
+bun install
+bun run dev
+bun run build
+```
+
+Cloudflare Workers Connect to Git 字段见 [部署指南](docs/CLOUDFLARE.md)。
+
+## 最大并集合并
+
+安装器保留 JSONC 注释、未知字段、已有 Provider、Model、MCP、Skill 和 Agent。对象逐键补充，数组去重追加，冲突保留用户值并报告；本地修改的 UltraCode 文件也不会被静默覆盖或卸载。
+
+## 开发验证
+
+```bash
+bun install --cwd installer
+bun test --cwd installer
+bun run --cwd installer check
+bun run --cwd installer build
+
+bun install --cwd website
+bun run --cwd website check
+bun run --cwd website build
+```
+
+测试使用临时 HOME 和伪 OpenCode Adapter。禁止在测试中加入真实模型调用或用户凭据。
+
+## 发布
+
+稳定 tag 触发 Linux/macOS x64/arm64 原生构建、版本冒烟、SHA-256、GitHub Artifact Attestations 和 Release 上传。项目采用 [MIT License](LICENSE)。
 
 ## 文档
 
+- [架构](docs/ARCHITECTURE.md)
+- [命令接口](docs/API.md)
 - [快速开始](docs/QUICK_START.md)
-- [目标架构](docs/ARCHITECTURE.md)
-- [命令与制品接口](docs/API.md)
-- [社区调研与选型依据](docs/RESEARCH.md)
-- [分步实施计划](docs/IMPLEMENTATION_PLAN.md)
-- [原始目标](docs/ORIGIN_GOAL.md)
-
-## 配置边界
-
-`config/opencode.example.jsonc` 是不含凭据和本机项目 ID 的参考模板。`config/opencode/agents/` 与 `config/opencode/commands/` 是原生角色和命令的仓库真源，已同步到 `~/.config/opencode/` 对应目录。实际全局配置位于 `~/.config/opencode/opencode.jsonc`；已有 Provider、MCP、命令和技能应保留，不能用示例文件直接覆盖。
-
-所有项目变更只在本地特性分支提交。不得把凭据、真实 `.env`、会话数据库、测试截图、缓存或依赖目录纳入 Git。
+- [Cloudflare 部署](docs/CLOUDFLARE.md)
+- [社区调研](docs/RESEARCH.md)
+- [历史实施与验收](docs/IMPLEMENTATION_PLAN.md)

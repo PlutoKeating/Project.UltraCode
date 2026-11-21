@@ -1,0 +1,23 @@
+{
+  "name": "ultracode-website",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "sync": "node scripts/sync-content.mjs",
+    "dev": "npm run sync && astro dev",
+    "build": "npm run sync && astro build",
+    "preview": "astro preview",
+    "check": "npm run sync && astro check",
+    "deploy": "bun run build && wrangler deploy"
+  },
+  "dependencies": {
+    "@astrojs/starlight": "0.43.1",
+    "astro": "7.4.13"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.12",
+    "typescript": "^5.9.3",
+    "wrangler": "4.166.0"
+  }
+}

@@ -120,3 +120,33 @@
 5. 文档与现状一致，回滚路径可执行，本地 Git 审查边界干净。
 
 上述五项均已满足；最终 Git 清洁状态以交付提交后的 `git status` 为证。
+
+## 分发与教程网站实施（新增）
+
+### Provider 中立化
+
+公开角色、命令和 Ralph 不再包含 Provider、Model 或凭据字段。当前会话模型由用户 OpenCode 配置决定，安装验收不执行真实模型调用。
+
+### 安装器与升级
+
+- 独立编译 `ultracode`/`uc` CLI，用户级 XDG 路径。
+- `apply/sync`、`doctor`、`update`、`up`、`uninstall`。
+- JSONC 最大并集合并、注释保留、数组去重、冲突报告、原子写入、清单与精确卸载。
+- 私有 Bun 子进程管理 Ralph/Playwright；Superpowers/Ralph 固定源码 SHA-256。
+- 根 `install.sh` 下载平台二进制并验证 Release SHA-256。
+- 稳定 tag 通过四平台原生 Runner 构建、冒烟、校验、来源证明和上传。
+
+### 教程网站
+
+- Astro Starlight，中英各 14 个内容页面，59 个构建页面。
+- Stable/Next 由单一内容源生成；首页与文档提供双语路由。
+- 根安装脚本随网站发布为 `/install.sh`。
+- Cloudflare Workers Static Assets 配置与 Connect to Git 字段已写入 `docs/CLOUDFLARE.md` 和双语 Cloudflare 教程。
+
+### 验证
+
+- 安装器 4 个隔离测试、严格 TypeScript、独立二进制版本冒烟通过。
+- 私有 Ralph 1.3.1 与 Playwright 0.0.86 在隔离 HOME 执行成功，doctor 无模型调用通过。
+- Starlight `astro check` 0 错误，生产构建 59 页通过，Pagefind 索引生成。
+- Wrangler `--dry-run` 通过；桌面中文首页、英文教程和移动中文教程均经真实浏览器渲染并人工查看。
+- 公开 GitHub Release、远程 CI 和 Cloudflare 实际部署需要用户推送/发布/连接 Git 后执行；本地实施未代替这些人工发布步骤。

@@ -102,3 +102,14 @@
 - 不把“无限额度”当作无上限并行的理由；仍设置迭代、权限和验证边界。
 - 不通过切换其他 Provider 来掩盖 Vertex 模型或区域问题。
 - 不宣称配置后即可达到 Claude Code + Claude 的等效能力；最终效果需要真实项目对照和持续校准。
+
+## 10. 分发、文档站与上游升级调研（新增）
+
+- [OpenCode 官方 V2 安装脚本](https://opencode.ai/v2/install)只替换用户级二进制并保留配置，因此 UltraCode 采用附加层，不修改 `~/.opencode/bin/opencode`。
+- [OpenCode 插件文档](https://opencode.ai/docs/plugins/)支持固定版本、完整 Git commit 和本地插件目录；公开配置合并使用相同公开接缝。
+- [VitePress](https://vitepress.dev/guide/markdown)与 Docusaurus/Starlight 均已比较。用户最终选择 Astro Starlight；内容源生成 Stable/Next，不维护重复页面。
+- [Bun standalone](https://bun.com/docs/bundler/executables)支持跨平台独立二进制、嵌入文本资产和 `BUN_BE_BUN` 子进程，本机已验证私有运行时无需预装 Node/Bun。
+- [GitHub Artifact Attestations](https://docs.github.com/en/actions/security-guides/using-artifact-attestations-to-establish-provenance-for-builds)用于发布来源证明；每个平台另附 SHA-256。
+- 安装器测试采用 GitHub 干净 VM 与临时 HOME，不引入 Docker，不读取 Provider 凭据，不执行真实模型。
+
+最终设计选择独立 CLI + 最大并集 JSONC 合并，而非 chezmoi 或覆盖模板：UltraCode 的复杂验收和所有权清单需要更深的安装模块，同时用户只接触 `uc sync/up/doctor` 等小接口。
