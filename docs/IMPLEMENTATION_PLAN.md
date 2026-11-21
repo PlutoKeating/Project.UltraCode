@@ -30,37 +30,39 @@
 - REA MCP 为 `connected`。
 - 非 Vertex Provider 未用于测试。
 
-## 大步骤 2：OMO 与 Gemini 4 分层路由（待批准）
+## 大步骤 2：OpenCode 原生角色与 Gemini 4 分层路由（已完成）
+
+原方案为 OMO Ultimate。实测 `oh-my-openagent@5.1.79` 后发现其 V2 适配仅加载插件，不运行 Agents、Tools、Hooks；经用户审批改用 OpenCode V2 原生角色层，未以降级或旧 fork 掩盖兼容性问题。
 
 变更：
 
-- 安装固定版本 `oh-my-openagent@5.1.79` OpenCode Ultimate。
-- 保留并合并现有配置，生成 `~/.omo/omo.jsonc`。
-- 配置 Neon 主执行、Carbon 深度评审、Hydrogen 高频检索、Argon 视觉/写作及 Gemini 内部回退。
-- 启用任务系统、Goal、记忆与必要的上下文保护；不开启无意义的全局高编排。
+- 新增 `orchestrator`、`planner`、`implementer`、`architect`、`reviewer`、`visual-evaluator`、`librarian` 原生角色。
+- 新增 `/ultracode-plan`、`/ultracode-work`、`/ultracode-review` 三个工作流命令。
+- 配置 Neon 主执行、Carbon 深度评审、Hydrogen 高频检索、Argon 视觉/写作，所有角色只使用 Vertex。
+- 对推送、硬重置和递归删除保留审批；规划器只能写计划目录，评审角色不能修改实现。
 
-验证：
+已验证：
 
-- `doctor`、插件列表、Agent 列表和模型路由。
-- 四个 Gemini 4 模型在当前项目的真实可用性。
-- 至少一个真实后台子代理、计划生成和独立评审调用。
-- REA、已有命令与技能回归。
+- Neon、Carbon、Hydrogen、Argon 在当前 GCP 项目分别真实调用成功。
+- 所有原生角色被 OpenCode 正确发现，Neon 主代理和 Carbon 规划/架构角色实调成功。
+- 主代理真实启动 `architect` 后台子代理，等待并返回 `BACKGROUND_ARCHITECT_OK`。
+- 规划器读取项目并产出包含验收条件的实施计划，REA 保持 `connected`。
 
-预期收益：获得成熟的多代理规划、执行、续跑和证据链，而不是自制角色提示词集合。
+预期收益：以当前 OpenCode 原生能力获得轻量、可验证的规划、执行和独立评审链，不承担 OMO V2 未完成迁移的风险。
 
 ## 大步骤 3：Superpowers 工程纪律（待批准）
 
 变更：
 
 - 安装固定版本 Superpowers `v7.0.2`。
-- 明确其只负责需求澄清、TDD、系统化调试和计划纪律，OMO 独占复杂编排。
-- 若当前 OMO 对原生技能发现仍有差异，采用上游支持的 Skill 路径集成，不维护重复副本。
+- 明确其只负责需求澄清、TDD、系统化调试和计划纪律，OpenCode 原生角色负责复杂编排。
+- 采用上游支持的 Skill 路径集成，不维护重复副本。
 
 验证：
 
 - 实际加载 brainstorming、TDD 和 systematic-debugging 等技能。
 - 在一个小场景经历“先澄清/计划、红灯、绿灯、评审”流程。
-- 与 OMO 同会话运行，无技能注册表或完成裁决冲突。
+- 与原生角色同会话运行，无技能注册表或完成裁决冲突。
 
 预期收益：减少未澄清就实现、无测试先写实现和调试靠猜测的问题。
 
@@ -71,7 +73,7 @@
 - 安装固定版本 Open Ralph Wiggum `v1.3.1`。
 - 添加外层 Prompt 模板、Sprint Contract、功能清单、进度/交接协议和完成信号。
 - 每轮只处理一个任务，设置最大轮数、项目验证命令和独立 worktree。
-- 内层调用 OMO 子代理与评审，外层由 Ralph 创建新会话。
+- 内层调用 OpenCode 原生后台子代理与独立评审，外层由 Ralph 创建新会话。
 
 验证：
 
@@ -85,7 +87,7 @@
 
 变更：
 
-- 配置固定版本 Playwright MCP，并保留 OMO CLI/Skill 作为实现侧轻量路径。
+- 配置固定版本 Playwright MCP，并保留 Playwright CLI/Skill 作为实现侧轻量路径。
 - 添加 UI Rubric、Sprint 视觉门槛和独立 Carbon 评审流程。
 - 覆盖关键用户路径、跨页面一致性、响应式、可访问性、交互状态与截图证据。
 - 更新全部文档、依赖清单、回滚说明和最终健康检查。
@@ -102,7 +104,7 @@
 
 只有以下条件全部满足，整个 UltraCode 链路才可标记为完整：
 
-1. OMO、Superpowers、Ralph、Playwright 均真实加载且版本明确。
+1. 原生角色、Superpowers、Ralph、Playwright 均真实加载且版本明确。
 2. Gemini 4 路由经当前 GCP 项目实调，无其他 Provider 测试流量。
 3. 计划、实现、独立评审、全新上下文和持久交接全部跑通。
 4. 至少一个端到端 Web 场景有真实交互和视觉复验证据。

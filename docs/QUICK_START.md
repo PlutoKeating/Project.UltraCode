@@ -1,6 +1,6 @@
 # 快速开始
 
-当前文档只覆盖已经完成的大步骤 1。后续增强功能需按实施计划逐步安装，不能仅凭本目录中的规划直接调用。
+当前文档覆盖已经完成的大步骤 1–2。后续增强功能需按实施计划逐步安装，不能仅凭本目录中的规划直接调用。
 
 ## 1. 前置条件
 
@@ -79,6 +79,25 @@ opencode upgrade 2.2.7
 
 降级后应重新验证模型、插件与 MCP；如果新插件要求 V2.3.x，应先移除或禁用对应插件。
 
-## 6. 后续步骤
+## 6. 使用原生角色
 
-OMO、Superpowers、Ralph 和独立视觉 QA 尚未在本步安装。继续前请查阅 [实施计划](IMPLEMENTATION_PLAN.md)，每个大步骤都需要单独审批与验收。
+仓库 `config/opencode/agents/` 和 `config/opencode/commands/` 已同步到全局 OpenCode 配置。典型用法：
+
+```text
+/ultracode-plan 为现有命令行工具增加本地 JSON 持久化，先给计划不要实现
+/ultracode-work 按刚才确认的计划执行，并完成真实验证
+/ultracode-review 审查当前 diff 和验收条件
+```
+
+也可以直接运行：
+
+```bash
+opencode run --standalone --agent orchestrator "完成一个边界明确的小任务"
+opencode run --standalone --agent architect "只读分析当前架构的主要风险"
+```
+
+`orchestrator` 只在任务复杂时委派；`planner` 不实现产品代码；`reviewer` 和 `visual-evaluator` 不修改实现。Playwright 视觉评审在步骤 5 配置后可用。
+
+## 7. 后续步骤
+
+Superpowers、Ralph 和独立视觉 QA 尚未在本步安装。继续前请查阅 [实施计划](IMPLEMENTATION_PLAN.md)，每个大步骤都需要单独审批与验收。

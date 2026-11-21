@@ -19,10 +19,10 @@ UltraCode 因此采用“内层多代理 + 外层全新上下文 + 文件/Git �
   │
   ├─ Superpowers：需求澄清、计划纪律、TDD、系统化调试
   │
-  ├─ OMO Planner：代码库调研、计划顾问、独立计划评审
+  ├─ OpenCode Planner：代码库调研、架构咨询、独立计划评审
   │     └─ 输出：计划、验收条件、QA 场景、Sprint Contract
   │
-  ├─ OMO Generator / Workers：按类别并行实现
+  ├─ OpenCode Implementer / Workers：按职责并行实现
   │     └─ 输出：小步 Git 变更、自动测试、实现记录
   │
   ├─ 独立 Evaluator：代码审查、API/DB 检查、Playwright 实机 QA
@@ -34,18 +34,18 @@ UltraCode 因此采用“内层多代理 + 外层全新上下文 + 文件/Git �
         └─ 从 Git、任务文件和交接文档恢复，而非继承旧聊天
 ```
 
-OMO `/goal` 用于会话内持续追求目标；外部 Ralph 用于跨轮全新上下文。两者解决的问题不同，不能互相冒充。
+OpenCode 原生后台子代理用于隔离规划、实现和评审的上下文；外部 Ralph 用于跨轮全新上下文。两者解决的问题不同，不能互相冒充。
 
 ## 3. Gemini 4 角色路由
 
-所有实际调用均走 `google-vertex`。以下为待步骤 2 实机校准的初始路由，不把模型目录可见误认为项目可用。
+所有实际调用均走 `google-vertex`。以下角色已经过当前项目真实调用校准；Neon、Carbon、Hydrogen、Argon 均分别在 `global` 端点调用成功。
 
 | 角色 | 初始模型 | 理由 |
 | --- | --- | --- |
 | 主编排与常规执行 | Neon | 面向 Agentic Coding、多步工具调用，响应快且较少非请求变更 |
 | 计划顾问、深度调试、独立评审 | Carbon | 面向长程推理、复杂工程和审计 |
 | 检索、文档查询、轻量机械任务 | Hydrogen | 面向高频、快速的日常 Agent 工作 |
-| 视觉生成、写作 | Argon，必要时与 Carbon 对照 | OMO 对 Argon 视觉路径已有默认适配；Carbon 用于高强度视觉复核 |
+| 视觉生成、写作 | Argon，必要时与 Carbon 对照 | Argon 适合常规视觉生成与写作；Carbon 用于高强度视觉复核 |
 | 多模态检查 | Carbon / Neon | 按实际截图与交互评审效果校准 |
 
 每个关键角色保留 Gemini 4 内部的回退链，不静默切换到其他 Provider。
@@ -73,7 +73,7 @@ OMO `/goal` 用于会话内持续追求目标；外部 Ralph 用于跨轮全新�
 
 UI 评审采用设计统一性、原创性、工艺、功能可用性四个维度，并加入跨页面一致性、关键交互状态和内容深度。任何硬门槛失败都不能被总分抵消。
 
-普通实现代理优先使用 Playwright CLI/Skill，降低工具 schema 与快照占用；独立、持久的 QA 会话使用 Playwright MCP。
+普通实现代理优先使用 Playwright CLI/Skill，降低工具 schema 与快照占用；独立、持久的 QA 会话使用 Playwright MCP。当前原生角色包括 `orchestrator`、`planner`、`implementer`、`architect`、`reviewer`、`visual-evaluator` 和 `librarian`。
 
 ## 6. 安全与降级
 
@@ -85,4 +85,4 @@ UI 评审采用设计统一性、原创性、工艺、功能可用性四个维�
 
 ## 7. 当前实现边界
 
-当前仅完成 OpenCode v2.3.2 底座、Vertex Neon 全局端点、自动压缩和现有 REA 保留。OMO、Superpowers、Ralph、独立视觉评审仍按 [实施计划](IMPLEMENTATION_PLAN.md) 分步报批。
+当前已完成 OpenCode v2.3.2 底座、四种 Vertex Gemini 4 模型实调、自动压缩、REA 保留，以及原生角色和真实后台子代理验证。Superpowers、Ralph、Playwright 实机视觉评审仍按 [实施计划](IMPLEMENTATION_PLAN.md) 分步报批。

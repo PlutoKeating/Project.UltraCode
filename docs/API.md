@@ -32,17 +32,19 @@ opencode mcp list
 
 当前基线要求 OpenCode `v2.3.2`，并保留现有 REA MCP。参考配置见 `config/opencode.example.jsonc`，它只包含公共底座，不是全局配置的覆盖模板。
 
-## 2. OMO（步骤 2 待实施）
+## 2. OpenCode 原生角色与命令（已可用）
+
+默认主代理为 `orchestrator`，使用 Neon；`planner`、`architect`、`reviewer`、`visual-evaluator` 使用 Carbon；`librarian` 使用 Hydrogen；`implementer` 使用 Neon。所有角色均定义在 `config/opencode/agents/`。
 
 | 接口 | 用途 |
 | --- | --- |
-| `ulw` / `ultrawork` | 对复杂任务启用调研、编排和验证 |
-| `/ulw-plan` | 生成带验收条件和 QA 场景的可评审计划 |
-| `/ulw-execute` | 按计划执行、记录证据并接续未完成工作 |
-| `/goal` | 设置、暂停、恢复或清除会话内持续目标 |
-| `/stop-continuation` | 停止会话内续跑机制 |
+| `/ultracode-plan <目标>` | 只读调研并生成任务、验收条件、QA 场景和 Sprint Contract |
+| `/ultracode-work <计划或目标>` | 直接实现小任务，或通过原生后台子代理完成较大工作 |
+| `/ultracode-review <范围>` | 在独立 Carbon 子代理中审查 diff、验收条件和测试证据 |
+| `opencode run --agent architect` | 进行只读架构、复杂调试和方案权衡 |
+| `opencode run --agent visual-evaluator` | 在配置浏览器后执行独立实机与视觉评审 |
 
-实际命令名称、参数和可用性以安装版本的 `oh-my-openagent doctor` 与 OpenCode 实机结果为准。
+后台子代理已实测：主代理启动独立 `architect` 会话、等待并返回结果。规划器只能写 `.opencode/plans/**`，评审与视觉评审角色不能修改实现。
 
 ## 3. Superpowers（步骤 3 待实施）
 
