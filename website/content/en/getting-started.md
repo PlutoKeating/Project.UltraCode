@@ -21,7 +21,7 @@ opencode --version
 Replace the example host with the published deployment:
 
 ```bash
-curl -fsSL https://your-release-host/install.sh | bash
+curl -fsSL https://project-ultracode.williamhvollita.workers.dev/install.sh | bash
 ```
 
 The installer downloads a standalone binary, verifies its Release SHA-256, installs the private runtime and browser, performs a maximum-union configuration merge, and runs structural checks without a model call.

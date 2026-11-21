@@ -9,13 +9,13 @@ UltraCode 是官方 OpenCode 的 Provider/Model 中立增强层，提供长程�
 在已安装官方 OpenCode V2 的 Linux 或 macOS 上：
 
 ```bash
-curl -fsSL https://你的发布域名/install.sh | bash
+curl -fsSL https://project-ultracode.williamhvollita.workers.dev/install.sh | bash
 ```
 
 默认安装完整链路并执行结构检查。可审查版本：
 
 ```bash
-curl -fsSL https://你的发布域名/install.sh -o /tmp/ultracode-install.sh
+curl -fsSL https://project-ultracode.williamhvollita.workers.dev/install.sh -o /tmp/ultracode-install.sh
 less /tmp/ultracode-install.sh
 bash /tmp/ultracode-install.sh
 ```

@@ -37,7 +37,7 @@ Pull requests can create preview builds. `main` deploys the production site. Nex
 
 ## Custom domain
 
-Add the domain under Worker Custom Domains and follow the DNS instructions. Then replace `your-release-host` in the README and website examples with the real hostname.
+The production site is `https://project-ultracode.williamhvollita.workers.dev`. For a custom domain, configure Worker Custom Domains and DNS, then update the Astro `site` value and installation examples together.
 
 ## Local verification
 

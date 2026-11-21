@@ -39,7 +39,7 @@ description: 使用 Connect to Git 部署 Astro Starlight 静态站点和安装�
 
 ## 自定义域名
 
-Worker 创建后，在 Custom Domains 中添加域名并按 Cloudflare 提示配置 DNS。随后把网站首页和 README 中的 `你的发布域名` 替换为实际域名。
+当前生产地址为 `https://project-ultracode.williamhvollita.workers.dev`。需要自定义域名时，在 Custom Domains 添加并完成 DNS，再同步更新 Astro `site` 与安装示例。
 
 ## 本地验证
 
