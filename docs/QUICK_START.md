@@ -1,6 +1,6 @@
 # 快速开始
 
-当前文档覆盖已经完成的大步骤 1–4。独立视觉 QA 仍需按实施计划安装和验收。
+当前文档覆盖已经完成的五个大步骤。完整链路和最终验收状态以实施计划为准。
 
 ## 1. 前置条件
 
@@ -96,7 +96,7 @@ opencode run --standalone --agent orchestrator "完成一个边界明确的小�
 opencode run --standalone --agent architect "只读分析当前架构的主要风险"
 ```
 
-`orchestrator` 只在任务复杂时委派；`planner` 不实现产品代码；`reviewer` 和 `visual-evaluator` 不修改实现。Playwright 视觉评审在步骤 5 配置后可用。
+`orchestrator` 只在任务复杂时委派；`planner` 不实现产品代码；`reviewer` 和 `visual-evaluator` 的编辑工具被拒绝，视觉评审另禁用 shell。独立视觉评审通过 `visual-evaluator` 调用。
 
 ## 7. 使用 Superpowers
 
@@ -136,6 +136,38 @@ cp ~/.config/opencode/ralph/templates/HANDOFF.md .ralph/
 bun remove -g @th0rgal/ralph-wiggum
 ```
 
-## 9. 后续步骤
+## 9. 配置独立视觉 QA
 
-独立视觉 QA 尚未安装。继续前请查阅 [实施计划](IMPLEMENTATION_PLAN.md)，大步骤 5 仍需单独审批与验收。
+当前固定 `@playwright/mcp@0.0.86`。首次使用需要安装与该版本匹配的浏览器：
+
+```bash
+npx -y @playwright/mcp@0.0.86 install-browser chrome-for-testing
+opencode service restart
+opencode debug agents >/dev/null
+opencode mcp list
+```
+
+预期 `playwright` 和现有 `rea` 都为 `connected`。如果浏览器工具报告 `chrome-for-testing is not installed`，不能用静态源码阅读替代实机评审，应先完成匹配浏览器安装。
+
+默认 Rubric 在 `~/.config/opencode/ralph/templates/UI_RUBRIC.md`。在项目中放置 `.opencode/ultracode/UI_RUBRIC.md` 可覆盖它。独立评审示例：
+
+```bash
+opencode run --standalone --agent visual-evaluator \
+  "读取 Sprint Contract 和适用的 UI Rubric，通过 Playwright 操作正在运行的应用，保存桌面和移动截图，并写 QA_REPORT.md"
+```
+
+只有 `visual-evaluator` 能使用 Playwright MCP；其他角色默认被拒绝。它的 shell 被完全禁用，编辑工具只能写 QA 报告和证据目录。Playwright 自动产物被定向到 `.opencode/ultracode/qa/`，Ralph 启动器会为该目录生成忽略规则，避免截图导致最终工作区变脏。
+
+## 10. 完整性与健康检查
+
+五个大步骤均已完成。日常可执行：
+
+```bash
+opencode --version
+ralph --version
+opencode debug agents
+opencode mcp list
+git status --short
+```
+
+最终基线为 OpenCode `v2.3.2`、Ralph `1.3.1`、Superpowers `v7.0.2`、Playwright MCP `0.0.86`；Playwright 和 REA 均应为 `connected`。完整 Web 生成、独立打回、修复和标准 Chromium 1255 复验已经通过，临时项目已清理。

@@ -31,6 +31,11 @@
       "action": "shell",
       "resource": "rm -rf *",
       "effect": "ask"
+    },
+    {
+      "action": "playwright_*",
+      "resource": "*",
+      "effect": "deny"
     }
   ],
   "providers": {
@@ -47,6 +52,31 @@
       "tokens": 15000
     },
     "buffer": "15%"
+  },
+  "mcp": {
+    "servers": {
+      "playwright": {
+        "type": "local",
+        "command": [
+          "npx",
+          "-y",
+          "@playwright/mcp@0.0.86",
+          "--browser",
+          "chromium",
+          "--headless",
+          "--isolated",
+          "--output-dir",
+          ".opencode/ultracode/qa"
+        ],
+        "disabled": false,
+        "codemode": false,
+        "timeout": {
+          "startup": 60000,
+          "catalog": 30000,
+          "execution": 600000
+        }
+      }
+    }
   },
   "plugins": [
     "superpowers@git+https://github.com/obra/superpowers.git#v7.0.2"

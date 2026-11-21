@@ -85,4 +85,4 @@ UI 评审采用设计统一性、原创性、工艺、功能可用性四个维�
 
 ## 7. 当前实现边界
 
-当前已完成 OpenCode v2.3.2 底座、四种 Vertex Gemini 4 模型实调、自动压缩、REA 保留、原生角色、Superpowers v7.0.2 和 Ralph 全新上下文长跑。Playwright 实机视觉评审仍按 [实施计划](IMPLEMENTATION_PLAN.md) 报批。
+当前已完成 OpenCode v2.3.2 底座、四种 Vertex Gemini 4 模型实调、自动压缩、REA 保留、原生角色、Superpowers v7.0.2、Ralph 全新上下文长跑和 Playwright 独立视觉 QA。最终链路已在临时真实 Web 应用上完成生成、独立打回、修复与标准浏览器复验；临时服务和项目已清理。

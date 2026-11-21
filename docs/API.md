@@ -91,10 +91,23 @@ opencode mcp list
 
 状态文件与截图等运行产物不直接提交；需要长期保留的规范、计划和评审基线才进入 Git。
 
-## 6. 独立视觉 QA（步骤 5 待实施）
+## 6. 独立视觉 QA（已配置）
 
-独立评审者必须启动真实应用，通过 Playwright 点击关键路径并检查截图，而不是只阅读前端源码。任何未实际执行的检查都标记为 `NOT_VERIFIED`。
+固定版本为 `@playwright/mcp@0.0.86`，使用 headless、isolated Chromium，禁用 Code Mode 以向评审者直接暴露浏览器工具。全局规则拒绝 `playwright_*`，只有 `visual-evaluator` 角色追加允许规则。
 
-## 7. 最终健康检查
+UI Rubric 位于 `~/.config/opencode/ralph/templates/UI_RUBRIC.md`。项目可用 `.opencode/ultracode/UI_RUBRIC.md` 覆盖默认标准。评审者的 shell 与通用编辑权限被拒绝，仅 QA 报告和证据目录获得编辑例外。Playwright 自动产物通过 `--output-dir` 定向到 `.opencode/ultracode/qa/`，该目录由 Ralph 启动器写入忽略规则；MCP 是独立子进程，其他文件操作还受评审指令和具体工具参数约束，不能把编辑权限描述成对所有 MCP 副作用的文件系统沙箱。
 
-步骤 5 完成后，健康检查至少覆盖：插件加载、Gemini 4 路由、Skill 调用、后台子代理、Ralph 新会话、REA 回归、Playwright 实机交互以及 Git 清洁状态。
+典型调用：
+
+```bash
+opencode run --standalone --agent visual-evaluator \
+  "读取 Sprint Contract 和 UI Rubric，通过 Playwright 实际操作 http://127.0.0.1:8765，保存桌面/移动截图并输出 QA_REPORT.md"
+```
+
+每个检查必须标记 `PASS`、`FAIL` 或 `NOT_VERIFIED`；必需检查的 `NOT_VERIFIED` 会阻止通过。
+
+最终验收已完成：双页面 Fieldnote 应用首版独立评审为 `APPROVE`；明确标注的 Enter 回归变异被独立评审 `REJECT`，生成者只移除阻断 Enter 的处理器后，在标准 Chromium 1255 上完整复验并获 `APPROVE`。最终无命名截图也实际写入 `.opencode/ultracode/qa/`，忽略规则已验证。
+
+## 7. 最终健康检查（已通过）
+
+最终版本已验证：原生角色与后台子代理、Superpowers Skill、Ralph 新会话与 worktree、Playwright 实机/视觉评审、REA、四种 Vertex Gemini 4 模型、配置解析、敏感信息扫描和 Git 清洁状态。

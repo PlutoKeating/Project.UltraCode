@@ -45,6 +45,10 @@ fi
 if [[ ! -f "$root/.ralph/.gitignore" ]]; then
   cp "$HOME/.config/opencode/ralph/templates/gitignore" "$root/.ralph/.gitignore"
 fi
+mkdir -p "$root/.opencode/ultracode/qa"
+if [[ ! -f "$root/.opencode/ultracode/qa/.gitignore" ]]; then
+  cp "$HOME/.config/opencode/ralph/templates/qa.gitignore" "$root/.opencode/ultracode/qa/.gitignore"
+fi
 
 cd "$root"
 set +e

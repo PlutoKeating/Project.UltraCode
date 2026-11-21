@@ -76,13 +76,15 @@
 
 ## 7. Playwright：CLI 与 MCP 分工
 
-[Playwright MCP 官方说明](https://github.com/microsoft/playwright-mcp) 指出：普通 Coding Agent 使用 CLI + Skills 通常更节省 token；持久、需要丰富页面内省和连续浏览器状态的专用 Agent 循环更适合 MCP。
+[Playwright MCP 官方说明](https://github.com/microsoft/playwright-mcp) 指出：普通 Coding Agent 使用 CLI + Skills 通常更节省 token；持久、需要丰富页面内省和连续浏览器状态的专用 Agent 循环更适合 MCP。本机固定 `0.0.86`，通过独立 `visual-evaluator` 开放直接 MCP 工具，其他角色默认拒绝。
 
 因此：
 
 - 实现代理优先使用 Playwright CLI/Skill。
 - 独立 QA 使用固定版本 Playwright MCP，保留连续交互、截图与页面检查能力。
 - UI 不能只测静态截图，必须点击关键用户路径并检查真实状态。
+
+本机最终安装匹配 Chromium 1255。真实 Fieldnote 验收中，独立评审先执行桌面/移动、点击、Enter、空输入、导航、键盘与溢出检查并给出 `APPROVE`。随后通过明确标注的 Enter 阻断变异验证评审能给出 `REJECT`；生成者按报告修复后，标准浏览器完整复验再次 `APPROVE`。自动截图通过 `--output-dir` 落入被忽略的 QA 目录，解决了证据保存与 Git 干净状态的冲突。
 
 ## 8. Gemini 4 路由依据
 
