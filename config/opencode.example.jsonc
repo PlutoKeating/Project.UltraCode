@@ -1,0 +1,19 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "google-vertex/gemini-4-neon",
+  "providers": {
+    "google-vertex": {
+      "settings": {
+        "project": "{env:GOOGLE_CLOUD_PROJECT}",
+        "location": "global"
+      }
+    }
+  },
+  "compaction": {
+    "auto": true,
+    "keep": {
+      "tokens": 15000
+    },
+    "buffer": "15%"
+  }
+}
