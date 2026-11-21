@@ -23,7 +23,7 @@ opencode --version
 将示例域名替换为实际发布地址：
 
 ```bash
-curl -fsSL https://project-ultracode.williamhvollita.workers.dev/install.sh | bash
+curl -fsSL https://ultracode.plutokeating.beer/install.sh | bash
 ```
 
 默认安装完整角色、Superpowers、Ralph 和 Playwright。安装器会：

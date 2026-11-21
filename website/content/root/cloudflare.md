@@ -39,7 +39,7 @@ description: 使用 Connect to Git 部署 Astro Starlight 静态站点和安装�
 
 ## 自定义域名
 
-当前生产地址为 `https://project-ultracode.williamhvollita.workers.dev`。需要自定义域名时，在 Custom Domains 添加并完成 DNS，再同步更新 Astro `site` 与安装示例。
+唯一生产地址为 `https://ultracode.plutokeating.beer/`。`wrangler.jsonc` 仅声明该 Custom Domain，并关闭 workers.dev 生产入口。
 
 ## 本地验证
 

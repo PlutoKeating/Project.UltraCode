@@ -37,7 +37,7 @@ Pull requests can create preview builds. `main` deploys the production site. Nex
 
 ## Custom domain
 
-The production site is `https://project-ultracode.williamhvollita.workers.dev`. For a custom domain, configure Worker Custom Domains and DNS, then update the Astro `site` value and installation examples together.
+The only production site is `https://ultracode.plutokeating.beer/`. `wrangler.jsonc` declares only this Custom Domain and disables the workers.dev production endpoint.
 
 ## Local verification
 

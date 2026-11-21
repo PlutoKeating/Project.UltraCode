@@ -26,7 +26,7 @@ Astro Starlight 生成静态 `dist`，Workers Static Assets 直接发布，无�
 
 ## 域名
 
-当前生产地址：`https://project-ultracode.williamhvollita.workers.dev`。需要自定义域名时，在 Custom Domains 添加并完成 DNS，再同步更新网站 `site` 配置与安装示例。
+唯一生产地址：`https://ultracode.plutokeating.beer/`。`wrangler.jsonc` 仅声明该 Custom Domain，并关闭 workers.dev 生产入口。
 
 ## 本地检查
 

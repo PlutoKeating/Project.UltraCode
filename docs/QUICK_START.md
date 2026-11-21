@@ -14,7 +14,7 @@ opencode --version
 ## 2. 一行安装
 
 ```bash
-curl -fsSL https://project-ultracode.williamhvollita.workers.dev/install.sh | bash
+curl -fsSL https://ultracode.plutokeating.beer/install.sh | bash
 ```
 
 安装器不读取 Provider 凭据，不设置模型，不调用真实模型。完整链路包含私有 Ralph、Playwright 和浏览器。
@@ -23,7 +23,7 @@ curl -fsSL https://project-ultracode.williamhvollita.workers.dev/install.sh | ba
 
 ```bash
 export ULTRACODE_VERSION=v0.1.0
-curl -fsSL https://project-ultracode.williamhvollita.workers.dev/install.sh | bash
+curl -fsSL https://ultracode.plutokeating.beer/install.sh | bash
 ```
 
 ## 3. 验证

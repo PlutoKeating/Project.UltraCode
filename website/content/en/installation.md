@@ -30,7 +30,7 @@ Repeated sync does not duplicate file writes or array entries. It also restores 
 
 ```bash
 export ULTRACODE_VERSION=v0.1.0
-curl -fsSL https://project-ultracode.williamhvollita.workers.dev/install.sh | bash
+curl -fsSL https://ultracode.plutokeating.beer/install.sh | bash
 ```
 
 Pin production installations and promote a newer release only after verification.
@@ -38,7 +38,7 @@ Pin production installations and promote a newer release only after verification
 ## Inspect before execution
 
 ```bash
-curl -fsSL https://project-ultracode.williamhvollita.workers.dev/install.sh -o /tmp/ultracode-install.sh
+curl -fsSL https://ultracode.plutokeating.beer/install.sh -o /tmp/ultracode-install.sh
 less /tmp/ultracode-install.sh
 bash /tmp/ultracode-install.sh
 ```

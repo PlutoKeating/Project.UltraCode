@@ -30,7 +30,7 @@ uc sync
 
 ```bash
 export ULTRACODE_VERSION=v0.1.0
-curl -fsSL https://project-ultracode.williamhvollita.workers.dev/install.sh | bash
+curl -fsSL https://ultracode.plutokeating.beer/install.sh | bash
 ```
 
 稳定生产环境建议固定版本，在测试环境验证后再提升。
@@ -40,7 +40,7 @@ curl -fsSL https://project-ultracode.williamhvollita.workers.dev/install.sh | ba
 不希望直接执行管道脚本时：
 
 ```bash
-curl -fsSL https://project-ultracode.williamhvollita.workers.dev/install.sh -o /tmp/ultracode-install.sh
+curl -fsSL https://ultracode.plutokeating.beer/install.sh -o /tmp/ultracode-install.sh
 less /tmp/ultracode-install.sh
 bash /tmp/ultracode-install.sh
 ```
