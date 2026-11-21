@@ -27,7 +27,7 @@ UltraCode 是一套面向 OpenCode 的长程软件工程增强链路，目标是
 | --- | --- |
 | 1. 安全基线与 OpenCode 底座 | 已完成：OpenCode v2.3.2、Vertex Neon、全局区域、自动压缩、REA 回归 |
 | 2. OpenCode 原生角色与 Gemini 4 分层路由 | 已完成：原生后台子代理、规划/实现/架构/独立评审角色与命令 |
-| 3. Superpowers 工程纪律 | 待批准 |
+| 3. Superpowers 工程纪律 | 已完成：v7.0.2、真实 Skill 调用、RED/GREEN 与独立评审打回复验 |
 | 4. Ralph 全新上下文长跑 | 待批准 |
 | 5. 独立视觉 QA 与全链路验收 | 待批准 |
 

@@ -46,9 +46,16 @@ opencode mcp list
 
 后台子代理已实测：主代理启动独立 `architect` 会话、等待并返回结果。规划器只能写 `.opencode/plans/**`，评审与视觉评审角色不能修改实现。
 
-## 3. Superpowers（步骤 3 待实施）
+## 3. Superpowers（已安装）
 
-通过 OpenCode 原生 Skill 机制调用需求澄清、计划、TDD、系统化调试等能力。验收时必须确认技能不仅出现在提示中，而且能在当前会话实际加载。
+固定版本为 `v7.0.2`，通过 OpenCode 原生 Skill 机制加载。已实际调用成功：
+
+- `brainstorming`：在实现前澄清目标、约束和方案。
+- `test-driven-development`：先建立失败测试，再实现至通过。
+- `systematic-debugging`：先收集证据并定位根因，再修复。
+- `verification-before-completion`：完成前验证真实结果。
+
+在对话中明确要求代理调用对应 Skill；也可以写“使用 `test-driven-development` 技能完成这个任务”。Superpowers 提供工程纪律，不替代原生角色的任务编排与独立评审。
 
 ## 4. Ralph 外层循环（步骤 4 待实施）
 

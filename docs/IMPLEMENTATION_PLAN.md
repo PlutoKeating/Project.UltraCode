@@ -50,21 +50,23 @@
 
 预期收益：以当前 OpenCode 原生能力获得轻量、可验证的规划、执行和独立评审链，不承担 OMO V2 未完成迁移的风险。
 
-## 大步骤 3：Superpowers 工程纪律（待批准）
+## 大步骤 3：Superpowers 工程纪律（已完成）
 
 变更：
 
-- 安装固定版本 Superpowers `v7.0.2`。
+- 通过 OpenCode 官方插件管理器安装并固定 Superpowers `v7.0.2`。
 - 明确其只负责需求澄清、TDD、系统化调试和计划纪律，OpenCode 原生角色负责复杂编排。
-- 采用上游支持的 Skill 路径集成，不维护重复副本。
+- 配置模板已包含相同 Git tag，不维护技能副本。
 
-验证：
+已验证：
 
-- 实际加载 brainstorming、TDD 和 systematic-debugging 等技能。
-- 在一个小场景经历“先澄清/计划、红灯、绿灯、评审”流程。
-- 与原生角色同会话运行，无技能注册表或完成裁决冲突。
+- 在真实会话中分别调用 `brainstorming`、`test-driven-development`、`systematic-debugging`，并自动加载 `verification-before-completion`。
+- 在独立临时项目中完成 Node.js 内置测试的 RED → GREEN：缺少实现时失败，初版实现后 11 项通过。
+- 独立 reviewer 首轮 `REJECT`，暴露有符号零与反向零区间问题；补充测试先出现 10 pass / 2 fail，再修复至 12/12 通过。
+- 二次 reviewer 给出 `APPROVE`，并额外运行 3,375 组边界探针；主会话外也独立复跑确认 12/12 通过。
+- 临时项目已清理，REA 保持 `connected`，没有新增运行时依赖到 UltraCode 仓库。
 
-预期收益：减少未澄清就实现、无测试先写实现和调试靠猜测的问题。
+预期收益：减少未澄清就实现、无测试先写实现、调试靠猜测和评审流于形式的问题。
 
 ## 大步骤 4：Ralph 全新上下文长跑（待批准）
 

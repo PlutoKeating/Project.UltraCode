@@ -47,5 +47,8 @@
       "tokens": 15000
     },
     "buffer": "15%"
-  }
+  },
+  "plugins": [
+    "superpowers@git+https://github.com/obra/superpowers.git#v7.0.2"
+  ]
 }

@@ -1,6 +1,6 @@
 # 快速开始
 
-当前文档覆盖已经完成的大步骤 1–2。后续增强功能需按实施计划逐步安装，不能仅凭本目录中的规划直接调用。
+当前文档覆盖已经完成的大步骤 1–2，以及 Superpowers 的安装与 Skill 调用。后续增强功能需按实施计划逐步安装，不能仅凭本目录中的规划直接调用。
 
 ## 1. 前置条件
 
@@ -98,6 +98,18 @@ opencode run --standalone --agent architect "只读分析当前架构的主要�
 
 `orchestrator` 只在任务复杂时委派；`planner` 不实现产品代码；`reviewer` 和 `visual-evaluator` 不修改实现。Playwright 视觉评审在步骤 5 配置后可用。
 
-## 7. 后续步骤
+## 7. 使用 Superpowers
 
-Superpowers、Ralph 和独立视觉 QA 尚未在本步安装。继续前请查阅 [实施计划](IMPLEMENTATION_PLAN.md)，每个大步骤都需要单独审批与验收。
+当前固定安装 `superpowers@v7.0.2`。在 `orchestrator` 或其他适合的会话中明确请求：
+
+```text
+使用 brainstorming 技能澄清这个需求，先不要实现
+使用 test-driven-development 技能完成这个边界明确的任务
+使用 systematic-debugging 技能定位这个失败测试的根因
+```
+
+代理应实际调用 `skill` 工具，而不是只在回复中提及技能名称。Superpowers 不替代 `/ultracode-plan` 和独立 reviewer。
+
+## 8. 后续步骤
+
+Ralph 和独立视觉 QA 尚未在本步安装。继续前请查阅 [实施计划](IMPLEMENTATION_PLAN.md)，每个大步骤都需要单独审批与验收。

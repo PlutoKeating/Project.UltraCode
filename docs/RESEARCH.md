@@ -49,11 +49,13 @@
 
 ## 5. Superpowers：工程纪律而非第二编排器
 
-[Superpowers OpenCode 安装指南](https://github.com/obra/superpowers/blob/main/.opencode/INSTALL.md) 已支持 OpenCode V2，并通过原生 Skill 注册 brainstorming、TDD、系统化调试等能力。
+[Superpowers OpenCode 安装指南](https://github.com/obra/superpowers/blob/main/.opencode/INSTALL.md) 已支持 OpenCode V2，并通过原生 Skill 注册 brainstorming、TDD、系统化调试等能力。本机已固定 `v7.0.2`，且三个核心 Skill 均在真实会话中调用成功。
 
 历史 OMO Issue 曾出现“技能提示可见但无法调用”。当前方案不再引入 OMO，因此避免了这类跨插件注册表冲突，但步骤 3 仍必须验证真实 Skill 调用，不能只检查插件文件存在。
 
 边界：Superpowers 用于工程纪律；OpenCode 原生角色负责复杂任务编排，避免多个系统同时争抢任务分解与完成裁决。
+
+实际 TDD 验收中，生成者先经历缺少实现的 RED 和初版 GREEN；独立 reviewer 随后给出 `REJECT`，暴露有符号零与反向零区间问题。修复后 12/12 测试通过，二次 reviewer 给出 `APPROVE`，并额外执行 3,375 组边界探针。这验证了技能调用不只是形式存在，且独立评审能推动真实返工。
 
 ## 6. Ralph：必须提供真正的新会话
 
