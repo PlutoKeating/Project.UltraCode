@@ -37,9 +37,9 @@ bun run build
 ## Release flow
 
 1. Merge verified changes to main.
-2. Review the Release Please version PR.
-3. Merge it and publish the stable release.
-4. Native platform runners build, smoke, checksum, attest, and upload artifacts.
+2. Review the version, changelog, and release notes.
+3. Create a stable tag and GitHub Release.
+4. The release triggers native platform builds, SHA-256, attestations, and artifact uploads.
 5. Test the pinned release in a clean environment and repeat sync.
 
 ## Dependency updates

@@ -37,9 +37,9 @@ bun run build
 ## Release
 
 1. 合并经过验证的变更到 main。
-2. Release Please 根据提交生成版本 PR。
-3. 审查并合并版本 PR，创建稳定 Release。
-4. tag 触发四平台构建、SHA-256、来源证明和制品上传。
+2. 审查版本号、CHANGELOG 和发布说明。
+3. 创建稳定 tag 与 GitHub Release。
+4. Release 触发四平台构建、SHA-256、来源证明和制品上传。
 5. 在一个干净环境执行固定版本安装与重复 sync。
 
 ## 依赖升级
