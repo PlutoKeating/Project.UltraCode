@@ -38,3 +38,7 @@ Hashes in the install manifest distinguish an older managed version from a user-
 ## Backups
 
 Original files are backed up before actual writes. For recovery, uninstall first, then inspect timestamped backups. Do not blindly overwrite changes made after that backup.
+
+The installer compares plugin identities, permission action/resource pairs, and MCP launch settings. A matching Playwright server supplies the tools for visual review. The manifest records configuration additions for uninstall. Legacy installations use a verifiable pre-install backup when available. Values of uncertain ownership are preserved.
+
+`uc doctor` checks the registered agents, active plugins and browser MCP connection in the current project.

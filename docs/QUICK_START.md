@@ -33,7 +33,7 @@ uc version
 uc doctor
 ```
 
-没有真实模型调用的结构检查通过即可。Provider 或模型问题仍由 OpenCode 自身配置负责。
+检查当前项目的插件、角色和 MCP 注册，不调用模型。Provider 或模型问题仍由 OpenCode 自身配置负责。
 
 ## 4. 日常使用
 

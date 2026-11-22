@@ -1,15 +1,17 @@
-import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
-import { join } from "node:path";
+import { isDeepStrictEqual } from "node:util";
+import { mkdir, readdir, rm } from "node:fs/promises";
+import { basename, join } from "node:path";
 import { assets } from "./assets";
-import { mergeJsonc, parseJsonc, removeJsoncValues } from "./config";
+import { additions, mergeJsonc, parseJsonc, retire, type Addition } from "./config";
 import { atomicWrite, backup, exists, makeExecutable, readText, sha256 } from "./fs";
 import { managedConfig } from "./managed";
-import { readManifest, writeManifest } from "./manifest";
-import { assertSupportedOpenCode, opencodeVersion } from "./opencode";
+import { readManifest, writeManifest, type InstallManifest } from "./manifest";
+import { assertSupportedOpenCode, opencodeVersion, run } from "./opencode";
 import type { Paths } from "./paths";
-import { installRuntime } from "./runtime";
+import { components } from "./components";
+import { browserReady, runtimeEntries, installRuntime } from "./runtime";
 
-export const VERSION = process.env.ULTRACODE_RELEASE_VERSION || "0.2.0";
+export const VERSION = process.env.ULTRACODE_RELEASE_VERSION || "0.2.1";
 
 export interface ApplyReport {
   added: string[];
@@ -23,6 +25,25 @@ async function configFile(paths: Paths): Promise<string> {
   return (await exists(json)) ? json : paths.opencodeConfigFile;
 }
 
+async function ownership(paths: Paths, manifest: InstallManifest | null, file: string, source: string): Promise<Addition[]> {
+  if (!manifest) return [];
+  if (manifest.schema === 2) return manifest.configFile === file ? manifest.owned ?? [] : [];
+  const directory = join(paths.home, "backups");
+  const names = (await readdir(directory).catch(() => [] as string[]))
+    .filter(name => /^\d+-opencode\.jsonc?$/.test(name) && name.endsWith("-" + basename(file))).sort();
+  if (!names[0]) return [];
+  const before = await readText(join(directory, names[0]));
+  const spec = managedConfig(paths);
+  if (/^v?0\.1\./.test(manifest.version)) spec.plugins = [join(paths.runtime, "superpowers")];
+  const baseline = parseJsonc(before);
+  const expected = parseJsonc(mergeJsonc(before, spec, true).text);
+  // Only trust a historical backup when replaying that release reproduces
+  // the current document (including any manually removed managed additions).
+  const current = parseJsonc(mergeJsonc(source, spec, true).text);
+  if (!isDeepStrictEqual(expected, current)) return [];
+  return additions(baseline, expected);
+}
+
 export async function apply(paths: Paths, options: { runtime?: boolean } = {}): Promise<ApplyReport> {
   assertSupportedOpenCode(await opencodeVersion(paths.opencodeBinary));
   await mkdir(paths.config, { recursive: true });
@@ -30,6 +51,16 @@ export async function apply(paths: Paths, options: { runtime?: boolean } = {}): 
   const previous = await readManifest(paths);
   const hashes: Record<string, string> = {};
   const conflicts: string[] = [];
+
+  const file = await configFile(paths);
+  const source = (await exists(file)) ? await readText(file) : "{}";
+  const owned = await ownership(paths, previous, file, source);
+  const base = previous?.schema === 1 ? retire(source, owned, {}).text : source;
+  const { managed, browser } = await components(paths, parseJsonc(base));
+  const cleaned = retire(base, previous?.schema === 1 ? [] : owned, managed);
+  const merged = mergeJsonc(cleaned.text, managed);
+  const records = [...cleaned.retained, ...additions(parseJsonc(cleaned.text), parseJsonc(merged.text))];
+  if (options.runtime !== false && process.env.ULTRACODE_SKIP_RUNTIME !== "1") await installRuntime(paths);
 
   for (const name of ["plan", "work", "review"]) {
     const legacy = `commands/ultracode/${name}.md`;
@@ -40,9 +71,10 @@ export async function apply(paths: Paths, options: { runtime?: boolean } = {}): 
 
   for (const asset of assets) {
     const target = join(paths.config, asset.target);
+    const template = asset.content.replaceAll("ultracode_playwright_*", browser + "_*");
     const content = asset.target.endsWith("visual-evaluator.md")
-      ? asset.content.replace("~/.config/opencode/ultracode/templates/UI_RUBRIC.md", join(paths.config, "ultracode/templates/UI_RUBRIC.md"))
-      : asset.content;
+      ? template.replace("~/.config/opencode/ultracode/templates/UI_RUBRIC.md", join(paths.config, "ultracode/templates/UI_RUBRIC.md"))
+      : template;
     const nextHash = sha256(content);
     const current = (await exists(target)) ? await readText(target) : null;
     const currentHash = current === null ? null : sha256(current);
@@ -52,8 +84,8 @@ export async function apply(paths: Paths, options: { runtime?: boolean } = {}): 
       conflicts.push(`${asset.target} (locally modified)`);
       continue;
     }
-    if (current !== null && previousHash === undefined && currentHash !== nextHash) {
-      conflicts.push(`${asset.target} (pre-existing)`);
+    if (current !== null && previousHash === undefined) {
+      if (currentHash !== nextHash) conflicts.push(`${asset.target} (pre-existing)`);
       continue;
     }
     if (currentHash !== nextHash) {
@@ -64,18 +96,13 @@ export async function apply(paths: Paths, options: { runtime?: boolean } = {}): 
     hashes[asset.target] = nextHash;
   }
 
-  const file = await configFile(paths);
-  const source = (await exists(file)) ? await readText(file) : "{}";
-  const managed = managedConfig(paths);
-  const merged = mergeJsonc(source, managed);
   conflicts.push(...merged.conflicts.map((item) => `config:${item}`));
   if (merged.text !== source) {
     await backup(file, join(paths.home, "backups"));
     await atomicWrite(file, merged.text.endsWith("\n") ? merged.text : `${merged.text}\n`);
   }
 
-  if (options.runtime !== false && process.env.ULTRACODE_SKIP_RUNTIME !== "1") await installRuntime(paths);
-  await writeManifest(paths, VERSION, hashes);
+  await writeManifest(paths, VERSION, hashes, file, records);
   return { added: merged.added, conflicts, files: Object.keys(hashes).length };
 }
 
@@ -98,9 +125,10 @@ export async function uninstall(paths: Paths): Promise<string[]> {
   if (await exists(file)) {
     const source = await readText(file);
     await backup(file, join(paths.home, "backups"));
-    const cleaned = removeJsoncValues(source, managedConfig(paths));
+    const cleaned = retire(source, await ownership(paths, manifest, file, source), {}).text;
     await atomicWrite(file, cleaned.endsWith("\n") ? cleaned : `${cleaned}\n`);
   }
+  await rm(paths.manifest, { force: true });
   return preserved;
 }
 
@@ -116,11 +144,44 @@ export async function doctor(paths: Paths): Promise<string[]> {
   for (const asset of assets) {
     if (!(await exists(join(paths.config, asset.target)))) issues.push(`Missing ${asset.target}`);
   }
-  if (await exists(paths.opencodeConfigFile)) {
-    try { parseJsonc(await readFile(paths.opencodeConfigFile, "utf8")); } catch { issues.push("Invalid opencode.jsonc"); }
-  }
-  if (process.env.ULTRACODE_SKIP_RUNTIME !== "1" && !(await exists(join(paths.runtime, "node_modules", "@playwright", "mcp")))) {
-    issues.push("Managed Playwright runtime is missing");
+  const file = await configFile(paths);
+  if (!(await exists(file))) issues.push("Missing OpenCode configuration");
+  else try { parseJsonc(await readText(file)); } catch { issues.push("Invalid OpenCode configuration"); }
+  if (process.env.ULTRACODE_SKIP_RUNTIME !== "1") {
+    if (process.env.ULTRACODE_SKIP_BROWSER !== "1" && !(await browserReady(paths))) issues.push("Missing managed browser installation");
+    for (const path of runtimeEntries) {
+      if (!(await exists(join(paths.runtime, path)))) issues.push("Missing runtime " + path);
+    }
+    try {
+      const agents = await run(paths.opencodeBinary, ["debug", "agents"]);
+      const ids = new Set((JSON.parse(agents.stdout) as { id: string }[]).map(agent => agent.id));
+      for (const asset of assets.filter(a => a.target.startsWith("agents/"))) {
+        const id = asset.target.slice(7, -3);
+        if (!ids.has(id)) issues.push("Missing registered agent " + id);
+      }
+      const source = await readText(file);
+      const { browser, managed } = await components(paths, parseJsonc(source));
+      if (mergeJsonc(source, managed).conflicts.includes("mcp.servers.ultracode_playwright"))
+        issues.push("Existing ultracode_playwright registration has a different launch configuration");
+      let pending: string[] = [];
+      for (let attempt = 0; attempt < 12; attempt++) {
+        const plugins = await run(paths.opencodeBinary, ["api", "get", "/api/plugin"]);
+        const servers = await run(paths.opencodeBinary, ["api", "get", "/api/mcp"]);
+        const registry = JSON.parse(plugins.stdout).data as { id: string; state: { status: string; error?: string } }[];
+        const mcp = JSON.parse(servers.stdout).data as { name: string; status: { status: string } }[];
+        pending = [];
+        for (const id of ["superpowers", "ultracode-conversation"]) {
+          const matches = registry.filter(p => p.id === id);
+          if (matches.length !== 1 || matches[0]?.state.status !== "active")
+            pending.push(id + ": " + (matches.map(p => p.state.error || p.state.status).join(", ") || "missing"));
+        }
+        const status = mcp.find(m => m.name === browser)?.status.status;
+        if (status !== "connected") pending.push(browser + ": " + (status || "missing"));
+        if (!pending.length || registry.some(p => p.state.status === "failed" && ["superpowers", "ultracode-conversation"].includes(p.id))) break;
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
+      issues.push(...pending);
+    } catch { issues.push("Could not verify the OpenCode runtime registries"); }
   }
   return issues;
 }

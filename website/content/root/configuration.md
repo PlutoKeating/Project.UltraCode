@@ -40,3 +40,7 @@ UltraCode 把用户的 `opencode.json(c)` 视为拥有自己的文档，而不�
 ## 备份
 
 每次实际写入前都会把原文件备份到 UltraCode 数据目录。回滚应先使用 `uc uninstall --yes`，再按时间戳检查备份，避免覆盖卸载之后的新修改。
+
+安装器按插件身份、权限的 action/resource 和 MCP 启动配置识别冲突。等价的 Playwright MCP 可复用，视觉评审角色使用对应的工具名。配置清单记录安装器实际添加的字段和数组成员。旧版清单通过可验证的安装前备份迁移；来源无法确认时保留原值。
+
+`uc doctor` 检查当前项目实际注册的角色、Superpowers 和 UltraCode 插件的活动状态，以及所选浏览器 MCP 的连接状态。

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { mergeJsonc, parseJsonc, removeJsoncValues } from "../src/config";
+import { mergeJsonc, parseJsonc, retire, additions } from "../src/config";
 
 const managed = {
   default_agent: "ultracode/orchestrator",
@@ -31,7 +31,7 @@ describe("maximum-union JSONC merge", () => {
     expect(twice.added).toEqual([]);
     expect(twice.text).toBe(merged.text);
     const withUser = mergeJsonc(merged.text, { mcp: { servers: { mine: { type: "remote", url: "https://example.com" } } } });
-    const cleaned = removeJsoncValues(withUser.text, managed);
+    const cleaned = retire(withUser.text, additions({}, parseJsonc(merged.text)), {}).text;
     const value = parseJsonc(cleaned) as Record<string, any>;
     expect(value.default_agent).toBeUndefined();
     expect(value.mcp.servers.mine.url).toBe("https://example.com");

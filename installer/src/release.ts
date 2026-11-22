@@ -1,6 +1,6 @@
-import { symlink } from "node:fs/promises";
+import { lstat, symlink } from "node:fs/promises";
 import { join } from "node:path";
-import { atomicWrite, ensureParent, exists, makeExecutable, sha256 } from "./fs";
+import { atomicWrite, ensureParent, makeExecutable, sha256 } from "./fs";
 import { run } from "./opencode";
 import type { Paths } from "./paths";
 
@@ -39,7 +39,12 @@ export async function updateSelf(paths: Paths): Promise<string> {
   if (!expected || sha256(data) !== expected) throw new Error("UltraCode release checksum verification failed");
   await atomicWrite(paths.binary, data, 0o755);
   await makeExecutable(paths.binary);
-  if (!(await exists(paths.shortBinary))) await symlink(paths.binary, paths.shortBinary);
+  try {
+    await lstat(paths.shortBinary);
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
+    await symlink(paths.binary, paths.shortBinary);
+  }
   return release.tag_name;
 }
 

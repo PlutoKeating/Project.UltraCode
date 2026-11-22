@@ -1,4 +1,4 @@
-import { mkdir, rm, writeFile } from "node:fs/promises";
+import { mkdir, readdir, rm, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { atomicWrite, exists, sha256 } from "./fs";
 import { run } from "./opencode";
@@ -56,10 +56,22 @@ async function installVendored(paths: Paths): Promise<void> {
   await extractTar(ralphArchive, join(vendor, "ralph"));
 }
 
+export const runtimeEntries = ["node_modules/@playwright/mcp/cli.js", "node_modules/@th0rgal/ralph-wiggum/bin/ralph.js", "superpowers/.opencode/plugins/superpowers.js"];
+
+export async function browserReady(paths: Paths): Promise<boolean> {
+  const marker = join(paths.browsers, ".ultracode-ready");
+  if (!(await exists(marker)) || (await Bun.file(marker).text()).trim() !== PLAYWRIGHT_VERSION) return false;
+  const dirs = await readdir(paths.browsers);
+  for (const dir of dirs.filter(name => name.startsWith("chromium_headless_shell-"))) {
+    if (await exists(join(paths.browsers, dir, "INSTALLATION_COMPLETE"))) return true;
+  }
+  return false;
+}
+
 export async function installRuntime(paths: Paths): Promise<void> {
   await mkdir(paths.runtime, { recursive: true });
   const lockFile = join(paths.runtime, ".ultracode-lock");
-  const ready = await exists(join(paths.runtime, "node_modules", "@playwright", "mcp"));
+  const ready = (await Promise.all(runtimeEntries.map(entry => exists(join(paths.runtime, entry))))).every(Boolean);
   const locked = ready && (await exists(lockFile)) && (await Bun.file(lockFile).text()) === RUNTIME_LOCK;
   if (!locked) {
     await installVendored(paths);
@@ -75,12 +87,13 @@ export async function installRuntime(paths: Paths): Promise<void> {
   }
 
   const browserMarker = join(paths.browsers, ".ultracode-ready");
-  if (process.env.ULTRACODE_SKIP_BROWSER !== "1" && !(await exists(browserMarker))) {
-    await runBun(["x", `@playwright/mcp@${PLAYWRIGHT_VERSION}`, "install-browser", "chrome-for-testing"], {
+  if (process.env.ULTRACODE_SKIP_BROWSER !== "1" && !(await browserReady(paths))) {
+    const browserInstall = await runBun(["x", `@playwright/mcp@${PLAYWRIGHT_VERSION}`, "install-browser", "chrome-for-testing"], {
       cwd: paths.runtime,
       env: { PLAYWRIGHT_BROWSERS_PATH: paths.browsers },
       inherit: true,
     });
+    if (browserInstall.code !== 0) throw new Error(`Browser installer exited with ${browserInstall.code}`);
     await atomicWrite(browserMarker, `${PLAYWRIGHT_VERSION}\n`);
   }
 }

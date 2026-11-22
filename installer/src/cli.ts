@@ -1,4 +1,6 @@
 #!/usr/bin/env bun
+import { dirname, resolve } from "node:path";
+import { run } from "./opencode";
 import { readlink, rm, unlink } from "node:fs/promises";
 import { createInterface } from "node:readline/promises";
 import { apply, doctor, uninstall, VERSION } from "./install";
@@ -45,7 +47,7 @@ async function main(): Promise<number> {
     case "doctor": {
       const issues = await doctor(paths);
       if (issues.length === 0) {
-        console.log("UltraCode structural checks passed. No model call was made.");
+        console.log("UltraCode checks passed. No model call was made.");
         return 0;
       }
       for (const issue of issues) console.error(issue);
@@ -54,15 +56,13 @@ async function main(): Promise<number> {
     case "update": {
       const version = await updateSelf(paths);
       console.log(`Updated UltraCode to ${version}`);
-      await apply(paths);
-      return 0;
+      return (await run(paths.binary, ["sync"], { inherit: true })).code;
     }
     case "up": {
       await upgradeOpenCode(paths);
       const version = await updateSelf(paths);
       console.log(`Updated UltraCode to ${version}`);
-      await apply(paths);
-      return 0;
+      return (await run(paths.binary, ["sync"], { inherit: true })).code;
     }
     case "uninstall": {
       if (!args.includes("--yes") && !(await confirm())) return 2;
@@ -70,7 +70,7 @@ async function main(): Promise<number> {
       await rm(paths.runtime, { recursive: true, force: true });
       if (await exists(paths.shortBinary)) {
         const link = await readlink(paths.shortBinary).catch(() => null);
-        if (link === paths.binary) await unlink(paths.shortBinary).catch(() => {});
+        if (link && resolve(dirname(paths.shortBinary), link) === paths.binary) await unlink(paths.shortBinary).catch(() => {});
       }
       if (await exists(paths.binary)) await unlink(paths.binary).catch(() => {});
       for (const path of preserved) console.warn(`Preserved locally modified file: ${path}`);

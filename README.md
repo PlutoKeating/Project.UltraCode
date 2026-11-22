@@ -30,7 +30,7 @@ bash /tmp/ultracode-install.sh
 
 ```bash
 uc sync       # 幂等应用或官方升级后的修复
-uc doctor     # 无真实模型调用的结构检查
+uc doctor     # 无模型调用的运行时注册检查
 uc update     # 更新 UltraCode 稳定版
 uc up         # 官方 OpenCode 升级 + UltraCode 更新 + sync
 uc uninstall --yes

@@ -6,7 +6,7 @@
 | --- | --- | --- |
 | `uc apply` | 完整幂等安装 | 否 |
 | `uc sync` | apply 别名；官方升级后修复 | 否 |
-| `uc doctor` | 版本、文件、配置和运行时检查 | 否 |
+| `uc doctor` | 版本、文件、插件活动状态、角色和 MCP 连接检查 | 否 |
 | `uc update` | 更新 UltraCode 稳定 Release 并 sync | 否 |
 | `uc up` | 官方 OpenCode 升级 + UltraCode 更新 + sync | 否 |
 | `uc uninstall --yes` | 删除未修改的 UltraCode 所有状态 | 否 |

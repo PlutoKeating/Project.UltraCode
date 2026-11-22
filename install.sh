@@ -50,9 +50,10 @@ if [[ -f "$bin_dir/ultracode" ]]; then
   cp "$bin_dir/ultracode" "$backup_dir/preinstall-$(date +%s)-ultracode"
 fi
 install -m 0755 "$work/$asset" "$bin_dir/ultracode"
-if [[ ! -e "$bin_dir/uc" || -L "$bin_dir/uc" ]]; then
+if [[ ! -e "$bin_dir/uc" && ! -L "$bin_dir/uc" ]]; then
   ln -sfn ultracode "$bin_dir/uc"
 fi
 export PATH="$bin_dir:$PATH"
 "$bin_dir/ultracode" apply
+"$bin_dir/ultracode" doctor
 printf '\nUltraCode installed. Run `uc doctor` after opening a new terminal if needed.\n'
