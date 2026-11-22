@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { chmod, mkdir, readFile, rename, rm, stat, writeFile } from "node:fs/promises";
+import { chmod, mkdir, readdir, readFile, rename, rm, stat, writeFile } from "node:fs/promises";
 import { basename, dirname, join, win32 } from "node:path";
 
 export async function exists(path: string): Promise<boolean> {
@@ -44,20 +44,33 @@ export async function makeExecutable(path: string): Promise<void> {
   await chmod(path, 0o755);
 }
 
+export async function sweepOldBinaries(target: string): Promise<void> {
+  const dir = dirname(target);
+  const base = target.includes("\\") ? win32.basename(target) : basename(target);
+  const entries = await readdir(dir).catch(() => [] as string[]);
+  for (const entry of entries) {
+    if (entry === `${base}.old` || entry.startsWith(`${base}.old-`)) {
+      await rm(join(dir, entry), { force: true }).catch(() => {});
+    }
+  }
+}
+
 export async function replaceBinary(
   target: string,
   data: Uint8Array,
   platform: NodeJS.Platform = process.platform,
 ): Promise<void> {
   await ensureParent(target);
-  const old = `${target}.old`;
-  await rm(old, { force: true }).catch(() => {});
-  if (platform === "win32" && (await exists(target))) {
-    await rename(target, old);
+  if (platform === "win32") {
+    await sweepOldBinaries(target);
+    if (await exists(target)) {
+      const old = `${target}.old-${process.pid}-${Date.now()}`;
+      await rename(target, old);
+    }
   }
   await atomicWrite(target, data, 0o755);
   if (platform !== "win32") await chmod(target, 0o755);
   if (platform === "win32") {
-    await rm(old, { force: true }).catch(() => {});
+    await sweepOldBinaries(target);
   }
 }

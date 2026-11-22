@@ -1,6 +1,7 @@
 $ErrorActionPreference = 'Stop'
 $ProgressPreference = 'SilentlyContinue'
 try {
+  [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
   [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 } catch {}
 
@@ -20,6 +21,19 @@ New-Item -ItemType Directory -Path $workDir -Force | Out-Null
 
 function Write-StepLog([string]$Text) {
   Add-Content -LiteralPath $logFile -Value $Text -Encoding UTF8
+}
+
+function Invoke-NativeLogged([string]$FilePath, [string[]]$Arguments = @()) {
+  $prevEap = $ErrorActionPreference
+  $ErrorActionPreference = 'Continue'
+  try {
+    $output = & $FilePath @Arguments 2>&1 | ForEach-Object { "$_" } | Out-String
+    $code = if ($null -eq $LASTEXITCODE) { 0 } else { [int]$LASTEXITCODE }
+    if ($output) { Write-StepLog $output }
+    return @{ Code = $code; Output = $output }
+  } finally {
+    $ErrorActionPreference = $prevEap
+  }
 }
 
 function Invoke-Step([string]$Label, [scriptblock]$Action) {
@@ -80,9 +94,9 @@ function Find-OpenCode {
 }
 
 function Test-OpenCodeVersion([string]$Binary) {
-  $out = & $Binary --version 2>&1 | Out-String
-  Write-StepLog "opencode --version: $out"
-  if ($out -match 'v?(\d+)\.(\d+)\.(\d+)') {
+  $res = Invoke-NativeLogged $Binary @('--version')
+  if ($res.Code -ne 0) { return $false }
+  if ($res.Output -match 'v?(\d+)\.(\d+)\.(\d+)') {
     $maj = [int]$Matches[1]
     $min = [int]$Matches[2]
     $pat = [int]$Matches[3]
@@ -98,8 +112,7 @@ try {
   if ($opencodeBin) {
     Invoke-Step 'Updating OpenCode' {
       try {
-        $upOut = & $opencodeBin upgrade 2>&1 | Out-String
-        Write-StepLog $upOut
+        $null = Invoke-NativeLogged $opencodeBin @('upgrade')
       } catch {
         Write-StepLog $_.Exception.Message
       }
@@ -121,9 +134,12 @@ try {
       New-Item -ItemType Directory -Path $extractDir -Force | Out-Null
       Invoke-WebRequest -Uri $ocUrl -OutFile $zipPath -UseBasicParsing
       $tarCmd = Get-Command tar.exe -ErrorAction SilentlyContinue
+      $extracted = $false
       if ($tarCmd) {
-        & tar.exe -xf $zipPath -C $extractDir 2>&1 | Out-String | ForEach-Object { Write-StepLog $_ }
-      } else {
+        $tarRes = Invoke-NativeLogged $tarCmd.Source @('-xf', $zipPath, '-C', $extractDir)
+        if ($tarRes.Code -eq 0) { $extracted = $true }
+      }
+      if (-not $extracted) {
         Expand-Archive -LiteralPath $zipPath -DestinationPath $extractDir -Force
       }
       $exeItem = Get-ChildItem -Path $extractDir -Filter 'opencode.exe' -Recurse | Select-Object -First 1
@@ -187,16 +203,15 @@ try {
   }
 
   Invoke-Step 'Setting up' {
-    $applyOut = & $targetExe apply 2>&1 | Out-String
-    Write-StepLog $applyOut
-    if ($LASTEXITCODE -ne 0) { throw "ultracode apply exited with $LASTEXITCODE" }
-    $docOut = & $targetExe doctor 2>&1 | Out-String
-    Write-StepLog $docOut
-    if ($LASTEXITCODE -ne 0) { throw "ultracode doctor exited with $LASTEXITCODE" }
+    $applyRes = Invoke-NativeLogged $targetExe @('apply')
+    if ($applyRes.Code -ne 0) { throw "ultracode apply exited with $($applyRes.Code)" }
+    $docRes = Invoke-NativeLogged $targetExe @('doctor')
+    if ($docRes.Code -ne 0) { throw "ultracode doctor exited with $($docRes.Code)" }
   }
 
   Remove-Item -LiteralPath $logFile -Force -ErrorAction SilentlyContinue
-  $installedVersion = (& $targetExe version | Out-String).Trim().TrimStart('v')
+  $verRes = Invoke-NativeLogged $targetExe @('version')
+  $installedVersion = $verRes.Output.Trim().TrimStart('v')
   $checkMark = [char]0x2713
   Write-Output ""
   Write-Output "UltraCode $installedVersion"

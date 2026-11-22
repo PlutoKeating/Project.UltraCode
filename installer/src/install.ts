@@ -152,9 +152,17 @@ export async function doctor(paths: Paths): Promise<string[]> {
       for (let attempt = 0; attempt < 12; attempt++) {
         const plugins = await run(opencode, ["api", "get", "/api/plugin"]);
         const servers = await run(opencode, ["api", "get", "/api/mcp"]);
+        const agents = await run(opencode, ["debug", "agents"]);
+        const failedCmd = [plugins, servers, agents].find((r) => r.code !== 0);
+        if (failedCmd) {
+          const detail = (failedCmd.stderr || failedCmd.stdout)
+            .split(/\r?\n/)
+            .map((l) => l.trim())
+            .find((l) => l.length > 0 && !l.startsWith("at "));
+          throw new Error(detail ? `Could not verify the OpenCode runtime registries (${detail})` : "Could not verify the OpenCode runtime registries");
+        }
         const registry = JSON.parse(plugins.stdout).data as { id: string; state: { status: string; error?: string } }[];
         const mcp = JSON.parse(servers.stdout).data as { name: string; status: { status: string } }[];
-        const agents = await run(opencode, ["debug", "agents"]);
         const ids = new Set((JSON.parse(agents.stdout) as { id: string }[]).map((agent) => agent.id));
         pending = roleIDs.filter((id) => !ids.has(id)).map((id) => "Missing registered agent " + id);
         for (const id of ["superpowers", "ultracode-conversation"]) {
@@ -174,8 +182,9 @@ export async function doctor(paths: Paths): Promise<string[]> {
         await new Promise((resolve) => setTimeout(resolve, 500));
       }
       issues.push(...pending);
-    } catch {
-      issues.push("Could not verify the OpenCode runtime registries");
+    } catch (err) {
+      const msg = err instanceof Error && err.message.startsWith("Could not verify") ? err.message : "Could not verify the OpenCode runtime registries";
+      issues.push(msg);
     }
   }
   return issues;

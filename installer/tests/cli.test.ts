@@ -3,6 +3,7 @@ import { execFileSync } from "node:child_process";
 import { mkdtemp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { resolvePaths } from "../src/paths";
 import { dispatch, type CliDeps } from "../src/cli";
 import { runRalphWorkflow } from "../src/ralph";
@@ -100,6 +101,14 @@ describe("unified ultracode CLI router", () => {
     expect(rendered).toContain("ultracode desktop");
     expect(rendered).toContain("ultracode pair");
     expect(rendered).not.toMatch(/\buc\b/);
+  });
+
+  test("bin.ts runs dispatch unconditionally without import.meta.main (Windows .exe safe)", async () => {
+    const binPath = fileURLToPath(new URL("../src/bin.ts", import.meta.url));
+    const binSource = await readFile(binPath, "utf8");
+    expect(binSource).not.toContain("import.meta.main");
+    const out = execFileSync(process.execPath, ["run", binPath, "version"], { encoding: "utf8" });
+    expect(out.trim()).toBe("0.3.0");
   });
 
   test("runRalphWorkflow rejects non-linked worktree with exit code 2", async () => {

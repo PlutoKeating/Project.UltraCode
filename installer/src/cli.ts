@@ -3,7 +3,7 @@ import { spawn } from "node:child_process";
 import { rename, rm, unlink } from "node:fs/promises";
 import { createInterface } from "node:readline/promises";
 import { launchOrInstallDesktop } from "./desktop";
-import { exists } from "./fs";
+import { exists, sweepOldBinaries } from "./fs";
 import { apply, doctor, uninstall, VERSION } from "./install";
 import { ensureOpenCode, passthroughOpenCode, run } from "./opencode";
 import { resolvePaths, type Paths } from "./paths";
@@ -62,7 +62,11 @@ function defaultDeps(): CliDeps {
     sync: async (paths) => {
       if (await exists(paths.binary)) {
         const res = await run(paths.binary, ["sync"]);
-        if (res.stderr.trim()) console.error(res.stderr.trim());
+        const filtered = res.stderr
+          .split(/\r?\n/)
+          .filter((line) => line.trim() && line.trim() !== "Setting up")
+          .join("\n");
+        if (filtered) console.error(filtered);
         return res.code;
       }
       return runSyncInPlace(paths, (msg) => console.warn(msg));
@@ -83,16 +87,24 @@ async function removeOwnBinary(binaryPath: string): Promise<void> {
     await unlink(binaryPath).catch(() => {});
     return;
   }
+  await sweepOldBinaries(binaryPath);
   try {
     await unlink(binaryPath);
   } catch {
-    const oldPath = `${binaryPath}.old`;
-    await rm(oldPath, { force: true }).catch(() => {});
+    const oldPath = `${binaryPath}.old-${process.pid}-${Date.now()}`;
     await rename(binaryPath, oldPath).catch(() => {});
-    const child = spawn("cmd.exe", ["/d", "/s", "/c", `ping -n 2 127.0.0.1 >nul & del /f /q "${oldPath}"`], {
-      detached: true,
-      stdio: "ignore",
-    });
+    const escaped = binaryPath.replace(/'/g, "''");
+    const child = spawn(
+      "powershell.exe",
+      [
+        "-NoProfile",
+        "-WindowStyle",
+        "Hidden",
+        "-Command",
+        `Start-Sleep -Milliseconds 500; Get-ChildItem -LiteralPath (Split-Path -Parent '${escaped}') -Filter ((Split-Path -Leaf '${escaped}') + '.old*') -ErrorAction SilentlyContinue | Remove-Item -Force -ErrorAction SilentlyContinue`,
+      ],
+      { detached: true, stdio: "ignore" },
+    );
     child.unref();
   }
 }
@@ -178,15 +190,4 @@ export async function dispatch(argv: string[], paths: Paths = resolvePaths(), de
     default:
       return d.passthroughOpenCode(paths, argv);
   }
-}
-
-if (import.meta.main) {
-  dispatch(process.argv.slice(2))
-    .then((code) => {
-      process.exitCode = code;
-    })
-    .catch((error) => {
-      console.error(`UltraCode: ${(error as Error).message}`);
-      process.exitCode = 1;
-    });
 }

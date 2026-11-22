@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "bin": {
-    "ultracode": "./src/cli.ts"
+    "ultracode": "./src/bin.ts"
   },
   "scripts": {
     "build:gui": "bun run --cwd ../plugin-gui build",

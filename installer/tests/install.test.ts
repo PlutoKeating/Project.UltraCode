@@ -190,3 +190,23 @@ test("doctor reports duplicate runtime identities even when managed files exist"
   expect(issues.some((issue) => issue.includes("Duplicate plugin ID: superpowers"))).toBe(true);
   expect(issues).toContain("ultracode_playwright: missing");
 });
+
+test("doctor surfaces OpenCode service error detail when runtime registry command fails", async () => {
+  const { doctor } = await import("../src/install");
+  await apply(paths);
+  delete process.env.ULTRACODE_SKIP_RUNTIME;
+  if (process.platform === "win32") {
+    await writeFile(
+      paths.opencodeBinary,
+      `@echo off\r\nif "%*"=="--version" (\r\n  echo opencode v2.3.2\r\n  exit /b 0\r\n)\r\necho Error: Managed service port 49374 is already in use 1>&2\r\nexit /b 1\r\n`,
+    );
+  } else {
+    await writeFile(
+      paths.opencodeBinary,
+      `#!/bin/sh\nif [ "$*" = "--version" ]; then echo 'opencode v2.3.2'; exit 0; fi\necho 'Error: Managed service port 49374 is already in use' >&2\nexit 1\n`,
+      { mode: 0o755 },
+    );
+  }
+  const issues = await doctor(paths);
+  expect(issues.some((issue) => issue.includes("Managed service port 49374"))).toBe(true);
+});

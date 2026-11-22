@@ -29,7 +29,7 @@ for (const target of targets) {
   const name = `ultracode-${suffix}${ext}`;
   const file = join(outdir, name);
   const result = await Bun.build({
-    entrypoints: [join(root, "src", "cli.ts")],
+    entrypoints: [join(root, "src", "bin.ts")],
     compile: target ? { target, outfile: file } : { outfile: file },
     minify: true,
     define: {

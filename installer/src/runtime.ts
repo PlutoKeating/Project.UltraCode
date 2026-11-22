@@ -1,7 +1,7 @@
 import { mkdir, readdir, rm, writeFile } from "node:fs/promises";
-import { join } from "node:path";
+import { delimiter, dirname, isAbsolute, join } from "node:path";
 import { atomicWrite, exists, sha256 } from "./fs";
-import { run } from "./opencode";
+import { findOpenCode, run } from "./opencode";
 import type { Paths } from "./paths";
 
 const PLAYWRIGHT_VERSION = "0.0.86";
@@ -123,7 +123,14 @@ export async function runPlaywright(paths: Paths, args: string[] = []): Promise<
 
 export async function runRalph(paths: Paths, args: string[], options: { cwd?: string } = {}): Promise<number> {
   if (process.env.ULTRACODE_SKIP_RUNTIME !== "1") await installRuntime(paths);
+  const opencode = await findOpenCode(paths);
+  const env: NodeJS.ProcessEnv = { ...process.env };
+  if (opencode && isAbsolute(opencode)) {
+    const dir = dirname(opencode);
+    const parts = (env.PATH || "").split(delimiter).filter(Boolean);
+    if (!parts.includes(dir)) env.PATH = [dir, ...parts].join(delimiter);
+  }
   const cli = join(paths.runtime, "node_modules", "@th0rgal", "ralph-wiggum", "bin", "ralph.js");
-  const result = await runBun(["run", cli, ...args], { cwd: options.cwd, inherit: true });
+  const result = await runBun(["run", cli, ...args], { cwd: options.cwd, env, inherit: true });
   return result.code;
 }
