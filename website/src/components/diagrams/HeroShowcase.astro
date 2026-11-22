@@ -6,149 +6,186 @@ const { lang = "zh" } = Astro.props;
 const zh = lang === "zh";
 ---
 
-<div class="uc-stage" aria-label={zh ? "UltraCode 工作流与真机视觉验收实景示意" : "UltraCode workflow and real-browser visual QA preview"}>
-  <div class="uc-stage-pane uc-stage-tui">
-    <div class="uc-pane-bar">
-      <span class="uc-pane-title">OpenCode · UltraBuild</span>
-      <span class="uc-pane-tag">{zh ? "目标工程运行中" : "Goal Engine Active"}</span>
-    </div>
-
-    <div class="uc-tui-body">
-      <div class="uc-tui-prompt">
-        <span class="uc-tui-chevron">&gt;</span>
-        <span>
-          {zh
-            ? "做一个个人作品集主页，克制暗色风格，桌面和手机都要好看。"
-            : "Build a clean dark portfolio homepage that looks sharp on desktop and mobile."}
+<div class="uc-stage-wrap">
+  <div class="uc-specular-rim" aria-hidden="true"></div>
+  <div class="uc-stage" aria-label={zh ? "UltraCode 工作流与真机视觉验收实景示意" : "UltraCode workflow and real-browser visual QA preview"}>
+    <div class="uc-stage-pane uc-stage-tui">
+      <div class="uc-pane-bar">
+        <span class="uc-pane-title">OPENCODE / ULTRABUILD</span>
+        <span class="uc-status-led">
+          <span class="uc-led uc-led-ice" aria-hidden="true"></span>
+          <span>{zh ? "目标工程运行中" : "GOAL ENGINE LIVE"}</span>
         </span>
       </div>
 
-      <div class="uc-tui-cards-label">
-        {zh ? "先一次性澄清关键决策：" : "Clarifying key decisions upfront:"}
-      </div>
-
-      <div class="uc-choice-row">
-        <div class="uc-choice-card is-selected">
-          <div class="uc-choice-head">
-            <span>{zh ? "烟熏玻璃暗场" : "Smoked Obsidian"}</span>
-            <span class="uc-choice-dot"></span>
-          </div>
-          <p>{zh ? "深空底 + 极细冰青线" : "Obsidian + ice-cyan"}</p>
+      <div class="uc-tui-body">
+        <div class="uc-tui-prompt">
+          <span class="uc-tui-chevron">&gt;</span>
+          <span>
+            {zh
+              ? "做一个个人作品集主页，克制暗色风格，桌面和手机都要好看。"
+              : "Build a restrained dark portfolio page that looks sharp on desktop and mobile."}
+          </span>
         </div>
-        <div class="uc-choice-card">
-          <div class="uc-choice-head">
-            <span>{zh ? "瑞士工业网格" : "Swiss Grid"}</span>
-            <span class="uc-choice-ring"></span>
-          </div>
-          <p>{zh ? "哑光炭黑 + 1px 网格" : "Matte slate + hairlines"}</p>
+
+        <div class="uc-tui-label">
+          {zh ? "先一次性澄清关键决策" : "Clarifying key decisions upfront"}
         </div>
-        <div class="uc-choice-card">
-          <div class="uc-choice-head">
-            <span>{zh ? "极简纸面排版" : "Editorial Light"}</span>
-            <span class="uc-choice-ring"></span>
+
+        <div class="uc-choice-row">
+          <div class="uc-choice-item is-selected">
+            <div class="uc-choice-head">
+              <span>{zh ? "纯黑光学暗场" : "Obsidian Optical"}</span>
+              <span class="uc-choice-dot"></span>
+            </div>
+            <p>{zh ? "正黑底 + 冰青光刃" : "Pure black + ice blade"}</p>
           </div>
-          <p>{zh ? "浅灰白底 + 高对比字" : "Crisp alabaster ink"}</p>
+          <div class="uc-choice-item">
+            <div class="uc-choice-head">
+              <span>{zh ? "瑞士工业网格" : "Swiss Hairline"}</span>
+              <span class="uc-choice-ring"></span>
+            </div>
+            <p>{zh ? "1px 精密结构线" : "1px precision grid"}</p>
+          </div>
+          <div class="uc-choice-item">
+            <div class="uc-choice-head">
+              <span>{zh ? "纸面编辑排版" : "Editorial Light"}</span>
+              <span class="uc-choice-ring"></span>
+            </div>
+            <p>{zh ? "极简浅灰高对比" : "Crisp alabaster ink"}</p>
+          </div>
         </div>
-      </div>
 
-      <div class="uc-milestones">
-        <div class="uc-ms-title">{zh ? "自动推进里程碑" : "Autonomous Milestones"}</div>
-        <ul>
-          <li class="is-done">
-            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5L6.5 11.5L12.5 4.5" stroke="currentColor" stroke-width="1.75" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span>{zh ? "需求澄清与架构方案已锁定" : "Scope clarified & plan locked"}</span>
-          </li>
-          <li class="is-done">
-            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5L6.5 11.5L12.5 4.5" stroke="currentColor" stroke-width="1.75" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span>{zh ? "子代理并行实现与独立代码评审通过" : "Subagent build & skeptical review passed"}</span>
-          </li>
-          <li class="is-active">
-            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5L6.5 11.5L12.5 4.5" stroke="currentColor" stroke-width="1.75" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span>{zh ? "真机浏览器桌面/移动端目视验收通过" : "Real browser desktop & mobile QA passed"}</span>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <div class="uc-stage-divider" aria-hidden="true"></div>
-
-  <div class="uc-stage-pane uc-stage-browser">
-    <div class="uc-browser-chrome">
-      <div class="uc-browser-dots" aria-hidden="true">
-        <span></span><span></span><span></span>
-      </div>
-      <div class="uc-browser-url">localhost:4321 · Chromium 1440×900</div>
-      <div class="uc-qa-badge">
-        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5L6.5 11.5L12.5 4.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <span>{zh ? "视觉验收通过" : "Visual QA Passed"}</span>
+        <div class="uc-milestones">
+          <div class="uc-tui-label">{zh ? "自动推进里程碑" : "Autonomous milestones"}</div>
+          <ul>
+            <li>
+              <span class="uc-tick" aria-hidden="true"></span>
+              <span>{zh ? "需求澄清与架构方案已锁定" : "Scope clarified & architecture locked"}</span>
+            </li>
+            <li>
+              <span class="uc-tick" aria-hidden="true"></span>
+              <span>{zh ? "子代理并行实现与独立代码评审通过" : "Subagent build & independent review passed"}</span>
+            </li>
+            <li class="is-active">
+              <span class="uc-tick uc-tick-ice" aria-hidden="true"></span>
+              <span>{zh ? "真机浏览器桌面/移动端目视验收通过" : "Real browser desktop & mobile QA passed"}</span>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
 
-    <div class="uc-browser-viewport">
-      <svg viewBox="0 0 460 276" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label={zh ? "真机浏览器视觉检查示意图" : "Headless browser visual inspection diagram"}>
-        <rect x="0.5" y="0.5" width="459" height="275" rx="6" fill="#0B0B0B" stroke="rgba(255,255,255,0.08)"/>
-        <rect x="0.5" y="0.5" width="96" height="275" rx="6" fill="#101010"/>
-        <line x1="97" y1="1" x2="97" y2="275" stroke="rgba(255,255,255,0.07)"/>
-        <rect x="18" y="22" width="56" height="8" rx="2" fill="#22D3EE" fill-opacity="0.72"/>
-        <rect x="18" y="48" width="60" height="6" rx="2" fill="rgba(255,255,255,0.16)"/>
-        <rect x="18" y="64" width="46" height="6" rx="2" fill="rgba(255,255,255,0.10)"/>
-        <rect x="18" y="80" width="52" height="6" rx="2" fill="rgba(255,255,255,0.10)"/>
-        <rect x="18" y="96" width="42" height="6" rx="2" fill="rgba(255,255,255,0.10)"/>
+    <div class="uc-stage-divider" aria-hidden="true"></div>
 
-        <rect x="118" y="22" width="164" height="12" rx="2" fill="#F5F5F5" fill-opacity="0.88"/>
-        <rect x="118" y="42" width="220" height="6" rx="2" fill="rgba(255,255,255,0.22)"/>
+    <div class="uc-stage-pane uc-stage-browser">
+      <div class="uc-browser-chrome">
+        <div class="uc-browser-url">CHROMIUM · 1440×900 · LOCALHOST</div>
+        <span class="uc-status-led">
+          <span class="uc-led uc-led-ice" aria-hidden="true"></span>
+          <span>{zh ? "视觉验收通过" : "VISUAL QA PASSED"}</span>
+        </span>
+      </div>
 
-        <rect x="118" y="66" width="154" height="88" rx="5" fill="#141414" stroke="rgba(34,211,238,0.34)" stroke-dasharray="3 3"/>
-        <rect x="132" y="82" width="68" height="8" rx="2" fill="#22D3EE" fill-opacity="0.5"/>
-        <rect x="132" y="100" width="120" height="6" rx="2" fill="rgba(255,255,255,0.18)"/>
-        <rect x="132" y="114" width="96" height="6" rx="2" fill="rgba(255,255,255,0.12)"/>
-        <rect x="132" y="130" width="52" height="12" rx="3" fill="#22D3EE" fill-opacity="0.85"/>
+      <div class="uc-browser-viewport">
+        <svg viewBox="0 0 460 270" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label={zh ? "真机浏览器视觉检查示意图" : "Headless browser visual inspection diagram"}>
+          <!-- Borderless optical wireframe viewport -->
+          <line x1="0" y1="0.5" x2="460" y2="0.5" stroke="rgba(255,255,255,0.08)"/>
+          <line x1="96.5" y1="0" x2="96.5" y2="270" stroke="rgba(255,255,255,0.07)"/>
 
-        <rect x="286" y="66" width="152" height="88" rx="5" fill="#141414" stroke="rgba(255,255,255,0.08)"/>
-        <path d="M304 134 L334 118 L366 122 L396 96 L422 86" stroke="#22D3EE" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="396" cy="96" r="3.5" fill="#22D3EE"/>
-        <circle cx="422" cy="86" r="3.5" fill="#34D399"/>
+          <!-- Sidebar skeleton -->
+          <rect x="14" y="20" width="48" height="5" fill="#FFFFFF" fill-opacity="0.78"/>
+          <rect x="14" y="44" width="60" height="4" fill="rgba(255,255,255,0.18)"/>
+          <rect x="14" y="60" width="44" height="4" fill="rgba(255,255,255,0.10)"/>
+          <rect x="14" y="76" width="52" height="4" fill="rgba(255,255,255,0.10)"/>
+          <rect x="14" y="92" width="38" height="4" fill="rgba(255,255,255,0.10)"/>
 
-        <rect x="118" y="170" width="320" height="86" rx="5" fill="#121212" stroke="rgba(52,211,153,0.28)"/>
-        <rect x="134" y="188" width="92" height="7" rx="2" fill="rgba(255,255,255,0.26)"/>
-        <rect x="134" y="204" width="280" height="6" rx="2" fill="rgba(255,255,255,0.12)"/>
-        <rect x="134" y="218" width="236" height="6" rx="2" fill="rgba(255,255,255,0.10)"/>
-        <rect x="134" y="234" width="110" height="10" rx="2" fill="rgba(52,211,153,0.18)"/>
-        <text x="142" y="242" fill="#34D399" font-family="JetBrains Mono, monospace" font-size="8.5">
-          {zh ? "对比度 · 溢出 · 交互 全部通过" : "Contrast · Layout · Flow OK"}
-        </text>
-      </svg>
+          <!-- Main header skeleton -->
+          <rect x="120" y="20" width="156" height="9" fill="#FFFFFF" fill-opacity="0.88"/>
+          <rect x="120" y="38" width="210" height="4" fill="rgba(255,255,255,0.22)"/>
+
+          <!-- Inspection reticle region 1 -->
+          <rect x="120" y="64" width="152" height="86" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.12)"/>
+          <path d="M120 74V64H130 M262 64H272V74 M120 140V150H130 M262 150H272V140" stroke="#BAE6FD" stroke-width="1.2"/>
+          <rect x="134" y="82" width="64" height="5" fill="rgba(255,255,255,0.45)"/>
+          <rect x="134" y="98" width="114" height="4" fill="rgba(255,255,255,0.16)"/>
+          <rect x="134" y="110" width="90" height="4" fill="rgba(255,255,255,0.10)"/>
+          <rect x="134" y="126" width="48" height="10" fill="#FFFFFF" fill-opacity="0.9"/>
+
+          <!-- Inspection reticle region 2: optical curve -->
+          <rect x="288" y="64" width="152" height="86" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.09)"/>
+          <path d="M306 132 L338 116 L368 120 L398 94 L424 84" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="square"/>
+          <circle cx="398" cy="94" r="3" fill="#E5A03D"/>
+          <circle cx="424" cy="84" r="3.5" fill="#BAE6FD"/>
+
+          <!-- Bottom verification readout -->
+          <line x1="120" y1="176" x2="440" y2="176" stroke="rgba(255,255,255,0.08)"/>
+          <rect x="120" y="194" width="88" height="5" fill="rgba(255,255,255,0.28)"/>
+          <rect x="120" y="210" width="276" height="4" fill="rgba(255,255,255,0.12)"/>
+          <rect x="120" y="222" width="224" height="4" fill="rgba(255,255,255,0.08)"/>
+          <circle cx="124" cy="244" r="2.5" fill="#BAE6FD"/>
+          <text x="135" y="247" fill="#A3A3A3" font-family="JetBrains Mono, monospace" font-size="9">
+            {zh ? "对比度 · 溢出 · 交互 · 全部通过" : "CONTRAST · OVERFLOW · INTERACTION · PASS"}
+          </text>
+        </svg>
+      </div>
     </div>
   </div>
 </div>
 
 <style>
+  .uc-stage-wrap {
+    position: relative;
+    width: 100%;
+  }
+
+  /* Directional top-edge specular rim light (catches the anamorphic blade above) */
+  .uc-specular-rim {
+    position: absolute;
+    top: 0;
+    left: 6%;
+    right: 6%;
+    height: 1px;
+    z-index: 3;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(186, 230, 253, 0.35) 28%,
+      rgba(255, 255, 255, 0.72) 50%,
+      rgba(229, 160, 61, 0.32) 72%,
+      transparent 100%
+    );
+    pointer-events: none;
+  }
+
   .uc-stage {
     position: relative;
     display: grid;
-    grid-template-columns: 1.04fr 1px 1fr;
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.11);
-    background: linear-gradient(180deg, rgba(16, 16, 16, 0.88), rgba(10, 10, 10, 0.95));
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-    box-shadow:
-      0 28px 80px rgba(0, 0, 0, 0.62),
-      inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    grid-template-columns: 1.05fr 1px 1fr;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-left: 1px solid rgba(255, 255, 255, 0.06);
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+    border-bottom: none;
+    border-radius: 10px 10px 0 0;
+    background: linear-gradient(180deg, rgba(12, 12, 12, 0.86) 0%, rgba(6, 6, 6, 0.94) 65%, rgba(0, 0, 0, 0) 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     overflow: hidden;
     text-align: left;
+    /* Seamless fade into pitch black at the bottom — eliminates plastic box edge */
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 76%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 0%, #000 76%, transparent 100%);
   }
 
   .uc-stage-divider {
-    background: rgba(255, 255, 255, 0.08);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02));
   }
 
   .uc-stage-pane {
-    padding: 1.65rem 1.75rem 1.85rem;
+    padding: 1.75rem 2rem 2.75rem;
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
+    gap: 1.35rem;
     min-width: 0;
   }
 
@@ -157,74 +194,86 @@ const zh = lang === "zh";
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 0.65rem;
-    padding-bottom: 0.9rem;
+    gap: 0.75rem;
+    padding-bottom: 0.95rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-    font-size: 0.82rem;
+    font-family: var(--uc-font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    color: var(--uc-ink-secondary);
   }
 
   .uc-pane-title {
-    font-family: var(--uc-font-mono);
-    color: #e5e5e5;
-    font-weight: 500;
+    color: #d4d4d4;
   }
 
-  .uc-pane-tag {
-    font-size: 0.74rem;
-    color: var(--uc-cyan);
-    background: var(--uc-cyan-soft);
-    border: 1px solid var(--uc-cyan-border);
-    padding: 0.2rem 0.6rem;
+  .uc-status-led {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    color: #b5b5b5;
+    white-space: nowrap;
+  }
+
+  .uc-led {
+    width: 5px;
+    height: 5px;
     border-radius: 999px;
+  }
+
+  .uc-led-ice {
+    background: #bae6fd;
+    box-shadow: 0 0 8px rgba(186, 230, 253, 0.8);
   }
 
   .uc-tui-body {
     display: flex;
     flex-direction: column;
-    gap: 1.15rem;
+    gap: 1.25rem;
   }
 
   .uc-tui-prompt {
     display: flex;
     align-items: flex-start;
-    gap: 0.65rem;
-    font-size: 0.9rem;
-    line-height: 1.6;
-    color: #f5f5f5;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.07);
-    border-radius: 8px;
-    padding: 0.85rem 1rem;
+    gap: 0.7rem;
+    font-size: 0.92rem;
+    line-height: 1.65;
+    color: #ffffff;
+    padding: 0.85rem 0 0.85rem 0.95rem;
+    border-left: 1.5px solid rgba(255, 255, 255, 0.28);
   }
 
   .uc-tui-chevron {
     font-family: var(--uc-font-mono);
-    color: var(--uc-cyan);
-    font-weight: 600;
+    color: var(--uc-amber);
+    font-weight: 500;
   }
 
-  .uc-tui-cards-label,
-  .uc-ms-title {
-    font-size: 0.8rem;
-    color: var(--uc-ink-secondary);
+  .uc-tui-label {
+    font-size: 0.76rem;
+    letter-spacing: 0.03em;
+    color: var(--uc-ink-muted);
   }
 
+  /* Hairline-divided 3-column choice rail (zero nested plastic cards) */
   .uc-choice-row {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0.75rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   }
 
-  .uc-choice-card {
-    padding: 0.8rem 0.85rem;
-    border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    background: rgba(255, 255, 255, 0.025);
+  .uc-choice-item {
+    padding: 0.85rem 0.9rem;
+    border-right: 1px solid rgba(255, 255, 255, 0.07);
   }
 
-  .uc-choice-card.is-selected {
-    border-color: var(--uc-cyan-border);
-    background: rgba(34, 211, 238, 0.07);
+  .uc-choice-item:last-child {
+    border-right: none;
+  }
+
+  .uc-choice-item.is-selected {
+    background: rgba(255, 255, 255, 0.04);
   }
 
   .uc-choice-head {
@@ -233,30 +282,31 @@ const zh = lang === "zh";
     justify-content: space-between;
     gap: 0.4rem;
     font-size: 0.82rem;
-    font-weight: 600;
-    color: #f5f5f5;
+    font-weight: 500;
+    color: #ffffff;
     margin-bottom: 0.35rem;
   }
 
   .uc-choice-dot {
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
     border-radius: 999px;
-    background: var(--uc-cyan);
+    background: #bae6fd;
+    box-shadow: 0 0 8px rgba(186, 230, 253, 0.75);
     flex-shrink: 0;
   }
 
   .uc-choice-ring {
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
     border-radius: 999px;
-    border: 1px solid rgba(255, 255, 255, 0.26);
+    border: 1px solid rgba(255, 255, 255, 0.22);
     flex-shrink: 0;
   }
 
-  .uc-choice-card p {
+  .uc-choice-item p {
     margin: 0;
-    font-size: 0.75rem;
+    font-size: 0.74rem;
     color: var(--uc-ink-secondary);
     line-height: 1.45;
   }
@@ -264,7 +314,7 @@ const zh = lang === "zh";
   .uc-milestones {
     display: flex;
     flex-direction: column;
-    gap: 0.6rem;
+    gap: 0.65rem;
   }
 
   .uc-milestones ul {
@@ -273,72 +323,38 @@ const zh = lang === "zh";
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.58rem;
+    gap: 0.6rem;
   }
 
   .uc-milestones li {
     display: flex;
     align-items: center;
-    gap: 0.6rem;
-    font-size: 0.85rem;
-    line-height: 1.45;
-    color: #d4d4d4;
-  }
-
-  .uc-milestones li svg {
-    width: 15px;
-    height: 15px;
-    color: var(--uc-emerald);
-    flex-shrink: 0;
+    gap: 0.7rem;
+    font-size: 0.84rem;
+    line-height: 1.5;
+    color: #9a9a9a;
   }
 
   .uc-milestones li.is-active {
-    color: #f5f5f5;
-    font-weight: 500;
+    color: #ffffff;
   }
 
-  .uc-milestones li.is-active svg {
-    color: var(--uc-cyan);
+  .uc-tick {
+    width: 5px;
+    height: 5px;
+    background: #525252;
+    flex-shrink: 0;
   }
 
-  .uc-browser-dots {
-    display: flex;
-    gap: 5px;
-  }
-
-  .uc-browser-dots span {
-    width: 8px;
-    height: 8px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.16);
+  .uc-tick-ice {
+    background: #bae6fd;
+    box-shadow: 0 0 8px rgba(186, 230, 253, 0.8);
   }
 
   .uc-browser-url {
-    font-family: var(--uc-font-mono);
-    font-size: 0.72rem;
-    color: var(--uc-ink-secondary);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-  }
-
-  .uc-qa-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.3rem;
-    padding: 0.18rem 0.55rem;
-    border-radius: 999px;
-    background: var(--uc-emerald-soft);
-    border: 1px solid rgba(52, 211, 153, 0.34);
-    color: var(--uc-emerald);
-    font-size: 0.72rem;
-    font-weight: 500;
-    white-space: nowrap;
-  }
-
-  .uc-qa-badge svg {
-    width: 13px;
-    height: 13px;
   }
 
   .uc-browser-viewport {
@@ -356,6 +372,8 @@ const zh = lang === "zh";
   @media (max-width: 900px) {
     .uc-stage {
       grid-template-columns: 1fr;
+      -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 88%, transparent 100%);
+      mask-image: linear-gradient(to bottom, #000 0%, #000 88%, transparent 100%);
     }
 
     .uc-stage-divider {
@@ -365,6 +383,15 @@ const zh = lang === "zh";
 
     .uc-choice-row {
       grid-template-columns: 1fr;
+    }
+
+    .uc-choice-item {
+      border-right: none;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .uc-choice-item:last-child {
+      border-bottom: none;
     }
   }
 </style>

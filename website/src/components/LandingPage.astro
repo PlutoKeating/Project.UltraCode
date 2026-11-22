@@ -38,15 +38,16 @@ const examplePrompt = zh
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
   <body>
+    <div class="uc-grain" aria-hidden="true"></div>
     <div class="uc-page">
       <header class="uc-nav">
         <div class="uc-nav-inner">
           <a href={zh ? "/" : "/en/"} class="uc-brand" aria-label="UltraCode">
             <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
-              <path d="M16 2.5L28 9.25V22.75L16 29.5L4 22.75V9.25L16 2.5Z" stroke="#A3A3A3" stroke-opacity="0.55" stroke-width="1.25"/>
-              <path d="M10.5 10.5V18.25L16 21.5L21.5 18.25V10.5" stroke="#F5F5F5" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"/>
-              <path d="M16 14.5V21.5" stroke="#22D3EE" stroke-width="2" stroke-linecap="square"/>
-              <circle cx="16" cy="10.25" r="1.75" fill="#22D3EE"/>
+              <path d="M16 2.5L28 9.25V22.75L16 29.5L4 22.75V9.25L16 2.5Z" stroke="#737373" stroke-width="1.2"/>
+              <path d="M10.5 10.5V18.25L16 21.5L21.5 18.25V10.5" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="square" stroke-linejoin="miter"/>
+              <path d="M16 14.5V21.5" stroke="#BAE6FD" stroke-width="1.8" stroke-linecap="square"/>
+              <circle cx="16" cy="10.25" r="1.5" fill="#E5A03D"/>
             </svg>
             <span>UltraCode</span>
           </a>
@@ -60,9 +61,9 @@ const examplePrompt = zh
       </header>
 
       <main>
-        <!-- Hero: V2-C Vapor-Noir Smoked Glass Product Stage -->
+        <!-- Hero: Pure Pitch-Black Architecture + Anamorphic Ice/Amber Optical Horizon -->
         <section class="uc-hero">
-          <div class="uc-horizon-mist" aria-hidden="true"></div>
+          <div class="uc-optical-horizon" aria-hidden="true"></div>
           <div class="uc-container uc-hero-inner">
             <h1>{zh ? "一句目标，交付到底" : "One Goal. Delivered End-to-End."}</h1>
             <p class="uc-hero-sub">
@@ -76,9 +77,9 @@ const examplePrompt = zh
                 <code class="uc-install-code">{installCmd}</code>
                 <button
                   type="button"
-                  class="uc-copy-btn"
+                  class="uc-btn-white"
                   data-copy={installCmd}
-                  data-copied-label={zh ? "已复制 ✓" : "Copied ✓"}
+                  data-copied-label={zh ? "已复制" : "Copied"}
                   data-default-label={zh ? "复制安装" : "Copy install"}
                 >
                   {zh ? "复制安装" : "Copy install"}
@@ -87,7 +88,7 @@ const examplePrompt = zh
               <a href={docsHref} class="uc-quickstart-link">
                 <span>{zh ? "快速开始" : "Quick start"}</span>
                 <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                  <path d="M3.5 8H12.5M9 4.5L12.5 8L9 11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M3.5 8H12.5M9 4.5L12.5 8L9 11.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </a>
             </div>
@@ -98,26 +99,28 @@ const examplePrompt = zh
           </div>
         </section>
 
-        <!-- Section 2: Before vs After Comparison -->
+        <!-- Section 2: Open-Canvas Trajectory Comparison (Zero Outer Box) -->
         <section class="uc-section">
           <div class="uc-container">
             <div class="uc-section-head">
-              <h2>{zh ? "为什么装完立刻觉得 OpenCode 变强了？" : "Why OpenCode Feels Immediately Stronger"}</h2>
+              <h2>{zh ? "为什么装完立刻觉得 OpenCode 变强了" : "Why OpenCode Feels Immediately Stronger"}</h2>
               <p>
                 {zh
-                  ? "普通对话容易边猜边写、越聊越偏；UltraCode 用可验证的目标闭环替代盲目试错。"
+                  ? "普通对话边猜边写、越聊越偏；UltraCode 用可验证的目标闭环替代盲目试错。"
                   : "Ordinary chat guesses and drifts; UltraCode replaces trial-and-error with a verified goal loop."}
               </p>
             </div>
-            <GoalComparisonDiagram lang={lang} />
+            <div class="uc-open-canvas">
+              <GoalComparisonDiagram lang={lang} />
+            </div>
           </div>
         </section>
 
-        <!-- Section 3: 1-Minute Minimal Demo -->
-        <section class="uc-section uc-section-alt">
+        <!-- Section 3: 4-Column Architectural Hairline Rail -->
+        <section class="uc-section">
           <div class="uc-container">
             <div class="uc-section-head">
-              <h2>{zh ? "装完立刻试：1 分钟最小上手体验" : "Try It Right After Install: 1-Minute Demo"}</h2>
+              <h2>{zh ? "装完立刻试：1 分钟最小上手体验" : "Try It Immediately: 1-Minute Demo"}</h2>
               <p>
                 {zh
                   ? "在任意空目录运行 opencode，直接发下面这一句话，亲眼见证完整目标工程。"
@@ -125,18 +128,20 @@ const examplePrompt = zh
               </p>
             </div>
 
-            <MinimalDemoDiagram lang={lang} />
+            <div class="uc-open-canvas">
+              <MinimalDemoDiagram lang={lang} />
+            </div>
 
-            <div class="uc-prompt-strip">
+            <div class="uc-prompt-rail">
               <div class="uc-prompt-text">
                 <span class="uc-prompt-mark">&gt;</span>
                 <span>{examplePrompt}</span>
               </div>
               <button
                 type="button"
-                class="uc-copy-btn uc-copy-btn-subtle"
+                class="uc-btn-ghost"
                 data-copy={examplePrompt}
-                data-copied-label={zh ? "已复制 ✓" : "Copied ✓"}
+                data-copied-label={zh ? "已复制" : "Copied"}
                 data-default-label={zh ? "复制示例" : "Copy prompt"}
               >
                 {zh ? "复制示例" : "Copy prompt"}
@@ -145,52 +150,67 @@ const examplePrompt = zh
           </div>
         </section>
 
-        <!-- Section 4: Roles & Experts -->
+        <!-- Section 4: Asymmetric Editorial Split — Roles & Experts -->
         <section class="uc-section">
-          <div class="uc-container">
-            <div class="uc-section-head">
-              <h2>{zh ? "双主角色 + 5 位后台专家，各司其职" : "Two Primary Roles + Five Background Experts"}</h2>
+          <div class="uc-container uc-split-grid">
+            <div class="uc-split-copy">
+              <h2>{zh ? "双主角色与 5 位后台专家" : "Two Primary Roles. Five Background Experts."}</h2>
               <p>
                 {zh
-                  ? "平时只需和 UltraBuild 自然对话；想先讨论方案不改代码时，按 Shift+Tab 切到 UltraPlan。"
+                  ? "平时只需和 UltraBuild 自然对话；想先讨论方案、绝不误改代码时，按 Shift+Tab 切到 UltraPlan。"
                   : "Talk naturally to UltraBuild for end-to-end delivery, or press Shift+Tab for read-only UltraPlan."}
               </p>
-            </div>
-            <RolesTopologyDiagram lang={lang} />
-          </div>
-        </section>
-
-        <!-- Section 5: Long-running + TUI Controls -->
-        <section class="uc-section uc-section-alt">
-          <div class="uc-container uc-stack-lg">
-            <div>
-              <div class="uc-section-head">
-                <h2>{zh ? "长程任务不掉链子，重启也能接着做" : "Built for Multi-Hour Goals & Clean Resumption"}</h2>
-                <p>
-                  {zh
-                    ? "自动推进下一个里程碑，随时接受你的插话与叫停；换天回来一句“读取交接并继续”即可无缝接力。"
-                    : "Advances milestones automatically, yields immediately when you steer, and resumes cleanly after restarts."}
-                </p>
+              <div class="uc-key-legend">
+                <div>
+                  <span class="uc-key-cap">UltraBuild</span>
+                  <span>{zh ? "默认总控 · 协调、实施、验收" : "Default · orchestrate & verify"}</span>
+                </div>
+                <div>
+                  <span class="uc-key-cap">UltraPlan</span>
+                  <span>{zh ? "Shift+Tab 切换 · 只读规划" : "Shift+Tab · read-only planning"}</span>
+                </div>
               </div>
-              <LongRunningDiagram lang={lang} />
             </div>
-
-            <div>
-              <div class="uc-section-head">
-                <h2>{zh ? "全自动还是先问你，在 TUI 里一键切换" : "Control Autonomy Live Inside the TUI"}</h2>
-                <p>
-                  {zh
-                    ? "打开 OpenCode 命令面板搜 UltraCode，独立切换「命令审批」与「方向询问」，安全边界始终受控。"
-                    : "Search UltraCode in the TUI Command Palette to toggle Command approvals and Direction questions independently."}
-                </p>
-              </div>
-              <TuiControlsDiagram lang={lang} />
+            <div class="uc-split-visual">
+              <RolesTopologyDiagram lang={lang} />
             </div>
           </div>
         </section>
 
-        <!-- Section 6: Clean Anchor Close -->
+        <!-- Section 5: Architectural 2-Column Hairline Split — Long-running & TUI Controls -->
+        <section class="uc-section">
+          <div class="uc-container">
+            <div class="uc-dual-band">
+              <div class="uc-dual-col">
+                <div class="uc-section-head uc-head-compact">
+                  <h2>{zh ? "长程任务不掉链子" : "Built for Multi-Hour Goals"}</h2>
+                  <p>
+                    {zh
+                      ? "自动推进下一里程碑，随时响应插话与叫停；换天回来一句“读取交接并继续”即可无缝接力。"
+                      : "Advances milestones automatically, yields when you steer, and resumes cleanly after restarts."}
+                  </p>
+                </div>
+                <LongRunningDiagram lang={lang} />
+              </div>
+
+              <div class="uc-dual-col">
+                <div class="uc-section-head uc-head-compact">
+                  <h2>{zh ? "TUI 命令面板一键掌控" : "Live Control Inside the TUI"}</h2>
+                  <p>
+                    {zh
+                      ? "在 OpenCode 命令面板搜索 UltraCode，独立切换「命令审批」与「方向询问」，安全边界始终受控。"
+                      : "Search UltraCode in the TUI Command Palette to toggle Command approvals and Direction questions independently."}
+                  </p>
+                </div>
+                <TuiControlsDiagram lang={lang} />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 6: Quiet Monumental Close -->
         <section class="uc-close">
+          <div class="uc-close-blade" aria-hidden="true"></div>
           <div class="uc-container uc-close-inner">
             <h2>{zh ? "一行命令装好，继续用你自己的模型" : "Install in One Line. Keep Your Models."}</h2>
             <p class="uc-close-trust">
@@ -204,18 +224,18 @@ const examplePrompt = zh
                 <code class="uc-install-code">{installCmd}</code>
                 <button
                   type="button"
-                  class="uc-copy-btn"
+                  class="uc-btn-white"
                   data-copy={installCmd}
-                  data-copied-label={zh ? "已复制 ✓" : "Copied ✓"}
+                  data-copied-label={zh ? "已复制" : "Copied"}
                   data-default-label={zh ? "复制安装" : "Copy install"}
                 >
                   {zh ? "复制安装" : "Copy install"}
                 </button>
               </div>
-              <a href={docsHref} class="uc-primary-cta">
+              <a href={docsHref} class="uc-btn-outline">
                 <span>{zh ? "进入 1 分钟快速开始" : "Open 1-Minute Quick Start"}</span>
                 <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                  <path d="M3.5 8H12.5M9 4.5L12.5 8L9 11.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M3.5 8H12.5M9 4.5L12.5 8L9 11.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </a>
             </div>
@@ -242,7 +262,7 @@ const examplePrompt = zh
           if (!text) return;
           try {
             await navigator.clipboard.writeText(text);
-            const copied = btn.dataset.copiedLabel || "Copied ✓";
+            const copied = btn.dataset.copiedLabel || "Copied";
             const original = btn.dataset.defaultLabel || btn.textContent || "";
             btn.textContent = copied;
             btn.classList.add("is-copied");
@@ -251,7 +271,7 @@ const examplePrompt = zh
               btn.classList.remove("is-copied");
             }, 1800);
           } catch {
-            // Fallback: select command text if clipboard API is blocked
+            // Clipboard unavailable
           }
         });
       });
@@ -282,6 +302,16 @@ const examplePrompt = zh
     text-decoration: none;
   }
 
+  /* Subtle cinema film grain (pure monochrome, zero color cast) */
+  .uc-grain {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    pointer-events: none;
+    opacity: 0.024;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
   .uc-page {
     min-height: 100vh;
     display: flex;
@@ -291,9 +321,9 @@ const examplePrompt = zh
 
   .uc-container {
     width: 100%;
-    max-width: 1120px;
+    max-width: 1140px;
     margin: 0 auto;
-    padding: 0 2rem;
+    padding: 0 2.25rem;
   }
 
   /* Header */
@@ -301,15 +331,15 @@ const examplePrompt = zh
     position: sticky;
     top: 0;
     z-index: 40;
-    height: 68px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-    background: rgba(5, 5, 5, 0.84);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
+    height: 70px;
+    border-bottom: 1px solid var(--uc-hairline);
+    background: rgba(0, 0, 0, 0.84);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
   }
 
   .uc-nav-inner {
-    max-width: 1200px;
+    max-width: 1220px;
     height: 100%;
     margin: 0 auto;
     padding: 0 2.25rem;
@@ -322,63 +352,63 @@ const examplePrompt = zh
     display: inline-flex;
     align-items: center;
     gap: 0.7rem;
-    font-weight: 600;
-    font-size: 1.02rem;
+    font-weight: 500;
+    font-size: 1rem;
     letter-spacing: -0.015em;
-    color: var(--uc-ink);
+    color: #ffffff;
   }
 
   .uc-brand svg {
-    width: 26px;
-    height: 26px;
+    width: 24px;
+    height: 24px;
   }
 
   .uc-nav-links {
     display: flex;
     align-items: center;
-    gap: 2rem;
-    font-size: 0.92rem;
+    gap: 2.25rem;
+    font-size: 0.9rem;
     color: var(--uc-ink-secondary);
   }
 
   .uc-nav-links a {
-    transition: color 160ms ease;
+    transition: color 150ms ease;
   }
 
   .uc-nav-links a:hover {
-    color: var(--uc-ink);
+    color: #ffffff;
   }
 
   .uc-lang-link {
     font-family: var(--uc-font-mono);
-    font-size: 0.82rem;
-    padding: 0.28rem 0.65rem;
-    border-radius: 6px;
+    font-size: 0.78rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
     border: 1px solid rgba(255, 255, 255, 0.14);
-    color: #e5e5e5;
+    color: #d4d4d4;
   }
 
   .uc-lang-link:hover {
-    border-color: var(--uc-cyan-border);
-    color: var(--uc-cyan);
+    border-color: rgba(255, 255, 255, 0.38);
+    color: #ffffff;
   }
 
   /* Hero */
   .uc-hero {
     position: relative;
-    padding: 6rem 0 5.5rem;
+    padding: 6.5rem 0 4.5rem;
     isolation: isolate;
   }
 
-  .uc-horizon-mist {
+  /* Anamorphic optical horizon: ice-cyan left bloom + warm tungsten amber right bloom */
+  .uc-optical-horizon {
     position: absolute;
     inset: 0;
     z-index: -1;
     pointer-events: none;
     background:
-      radial-gradient(62% 38% at 28% 58%, rgba(34, 211, 238, 0.17), transparent 72%),
-      radial-gradient(56% 36% at 74% 56%, rgba(139, 92, 246, 0.15), transparent 74%),
-      linear-gradient(180deg, #050505 0%, rgba(10, 10, 10, 0.35) 54%, #050505 100%);
+      radial-gradient(48% 24% at 32% 54%, rgba(186, 230, 253, 0.14), transparent 72%),
+      radial-gradient(42% 22% at 70% 54%, rgba(229, 160, 61, 0.11), transparent 74%);
   }
 
   .uc-hero-inner {
@@ -388,55 +418,54 @@ const examplePrompt = zh
     align-items: center;
   }
 
+  /* Sharp weight-500 architectural display type (no clunky 700 bold) */
   .uc-hero h1 {
     margin: 0;
     font-family: var(--uc-font-display);
-    font-size: clamp(2.65rem, 4.9vw, 4.1rem);
-    font-weight: 700;
-    letter-spacing: -0.035em;
-    line-height: 1.16;
-    color: var(--uc-ink);
+    font-size: clamp(2.8rem, 5.2vw, 4.35rem);
+    font-weight: 500;
+    letter-spacing: -0.045em;
+    line-height: 1.12;
+    color: #ffffff;
     text-wrap: balance;
   }
 
   .uc-hero-sub {
-    margin: 1.45rem 0 0;
-    max-width: 680px;
-    font-size: clamp(1.04rem, 1.55vw, 1.2rem);
+    margin: 1.5rem 0 0;
+    max-width: 660px;
+    font-size: clamp(1.04rem, 1.5vw, 1.18rem);
+    font-weight: 400;
     line-height: 1.72;
     color: var(--uc-ink-secondary);
     text-wrap: balance;
   }
 
-  /* Install bar */
+  /* Precision monochrome install rail */
   .uc-install-row {
-    margin-top: 2.6rem;
+    margin-top: 2.8rem;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    gap: 1.15rem;
+    gap: 1.25rem;
     width: 100%;
   }
 
   .uc-install-bar {
     display: flex;
     align-items: center;
-    gap: 0.9rem;
-    padding: 0.52rem 0.55rem 0.52rem 1.2rem;
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.13);
-    background: rgba(14, 14, 14, 0.88);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    gap: 1rem;
+    padding: 0.4rem 0.42rem 0.4rem 1.25rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(8, 8, 8, 0.9);
     max-width: 100%;
   }
 
   .uc-install-code {
     font-family: var(--uc-font-mono);
-    font-size: 0.88rem;
-    color: #e5e5e5;
+    font-size: 0.86rem;
+    color: #d4d4d4;
     white-space: nowrap;
     overflow-x: auto;
     scrollbar-width: none;
@@ -446,136 +475,222 @@ const examplePrompt = zh
     display: none;
   }
 
-  .uc-copy-btn {
+  /* Flagship pure white primary action button */
+  .uc-btn-white {
     flex-shrink: 0;
     cursor: pointer;
-    border: 1px solid rgba(255, 255, 255, 0.16);
-    background: rgba(255, 255, 255, 0.07);
-    color: var(--uc-ink);
+    border: none;
+    background: #ffffff;
+    color: #000000;
     font-family: var(--uc-font-sans);
-    font-size: 0.85rem;
+    font-size: 0.84rem;
     font-weight: 500;
-    padding: 0.56rem 1.08rem;
-    border-radius: 7px;
-    transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+    padding: 0.56rem 1.1rem;
+    border-radius: 5px;
+    transition: opacity 150ms ease, transform 150ms ease;
   }
 
-  .uc-copy-btn:hover {
-    background: rgba(34, 211, 238, 0.15);
-    border-color: var(--uc-cyan-border);
-    color: var(--uc-cyan);
+  .uc-btn-white:hover {
+    opacity: 0.88;
   }
 
-  .uc-copy-btn.is-copied {
-    background: var(--uc-emerald-soft);
-    border-color: rgba(52, 211, 153, 0.42);
-    color: var(--uc-emerald);
+  .uc-btn-white.is-copied {
+    background: #bae6fd;
+    color: #000000;
+  }
+
+  .uc-btn-ghost,
+  .uc-btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    flex-shrink: 0;
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: transparent;
+    color: #ffffff;
+    font-family: var(--uc-font-sans);
+    font-size: 0.86rem;
+    font-weight: 500;
+    padding: 0.62rem 1.15rem;
+    border-radius: 6px;
+    transition: border-color 150ms ease, background 150ms ease;
+  }
+
+  .uc-btn-ghost:hover,
+  .uc-btn-outline:hover {
+    border-color: rgba(255, 255, 255, 0.42);
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .uc-btn-ghost.is-copied {
+    border-color: #bae6fd;
+    color: #bae6fd;
   }
 
   .uc-quickstart-link {
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    font-size: 0.94rem;
-    font-weight: 500;
-    color: #e5e5e5;
-    padding: 0.6rem 0.9rem;
-    border-radius: 8px;
-    transition: color 160ms ease, background 160ms ease;
+    font-size: 0.92rem;
+    font-weight: 400;
+    color: #b5b5b5;
+    padding: 0.55rem 0.75rem;
+    transition: color 150ms ease;
   }
 
   .uc-quickstart-link:hover {
-    color: var(--uc-cyan);
-    background: rgba(34, 211, 238, 0.08);
+    color: #ffffff;
   }
 
   .uc-quickstart-link svg,
-  .uc-primary-cta svg {
-    width: 16px;
-    height: 16px;
+  .uc-btn-outline svg {
+    width: 15px;
+    height: 15px;
   }
 
   .uc-hero-stage {
     width: 100%;
-    margin-top: 3.75rem;
+    margin-top: 4.25rem;
   }
 
-  /* Content Sections */
+  /* Architectural Hairline Sections — generous 140px+ visual breathing room */
   .uc-section {
-    padding: 6.75rem 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.07);
-  }
-
-  .uc-section-alt {
-    background: #080808;
+    padding: 7.5rem 0;
+    border-top: 1px solid var(--uc-hairline);
   }
 
   .uc-section-head {
-    max-width: 720px;
-    margin-bottom: 2.65rem;
+    max-width: 680px;
+    margin-bottom: 3.25rem;
   }
 
-  .uc-section-head h2 {
+  .uc-head-compact {
+    margin-bottom: 2.25rem;
+  }
+
+  .uc-section-head h2,
+  .uc-split-copy h2 {
     margin: 0;
     font-family: var(--uc-font-display);
-    font-size: clamp(1.7rem, 2.9vw, 2.3rem);
-    font-weight: 600;
-    letter-spacing: -0.025em;
-    line-height: 1.28;
-    color: var(--uc-ink);
+    font-size: clamp(1.75rem, 2.9vw, 2.35rem);
+    font-weight: 500;
+    letter-spacing: -0.035em;
+    line-height: 1.24;
+    color: #ffffff;
   }
 
-  .uc-section-head p {
-    margin: 0.95rem 0 0;
-    font-size: 1.02rem;
-    line-height: 1.75;
+  .uc-section-head p,
+  .uc-split-copy p {
+    margin: 1rem 0 0;
+    font-size: 1rem;
+    line-height: 1.78;
     color: var(--uc-ink-secondary);
   }
 
-  .uc-stack-lg {
-    display: flex;
-    flex-direction: column;
-    gap: 6rem;
+  .uc-open-canvas {
+    width: 100%;
   }
 
-  /* Prompt example strip */
-  .uc-prompt-strip {
-    margin-top: 1.65rem;
+  /* Hairline prompt rail */
+  .uc-prompt-rail {
+    margin-top: 2.25rem;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: 1.15rem;
-    padding: 1.15rem 1.35rem;
-    border-radius: 10px;
-    border: 1px solid rgba(34, 211, 238, 0.24);
-    background: #0e0e0e;
+    gap: 1.25rem;
+    padding: 1.15rem 0;
+    border-top: 1px solid var(--uc-hairline);
+    border-bottom: 1px solid var(--uc-hairline);
   }
 
   .uc-prompt-text {
     display: flex;
     align-items: flex-start;
-    gap: 0.7rem;
-    font-size: 0.95rem;
+    gap: 0.75rem;
+    font-size: 0.94rem;
     line-height: 1.65;
-    color: #e5e5e5;
+    color: #d4d4d4;
     flex: 1;
     min-width: 240px;
   }
 
   .uc-prompt-mark {
     font-family: var(--uc-font-mono);
-    color: var(--uc-cyan);
-    font-weight: 600;
+    color: var(--uc-amber);
   }
 
-  /* Close CTA */
+  /* Asymmetric 38/62 Split */
+  .uc-split-grid {
+    display: grid;
+    grid-template-columns: 0.82fr 1.18fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .uc-key-legend {
+    margin-top: 2.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    border-top: 1px solid var(--uc-hairline);
+    padding-top: 1.5rem;
+  }
+
+  .uc-key-legend > div {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    font-size: 0.88rem;
+    color: var(--uc-ink-secondary);
+  }
+
+  .uc-key-cap {
+    font-family: var(--uc-font-mono);
+    font-size: 0.78rem;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    padding: 0.22rem 0.55rem;
+    border-radius: 4px;
+    min-width: 96px;
+    text-align: center;
+  }
+
+  /* Architectural 2-Column Dual Band */
+  .uc-dual-band {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border-top: 1px solid var(--uc-hairline);
+    border-bottom: 1px solid var(--uc-hairline);
+  }
+
+  .uc-dual-col {
+    padding: 3rem 3rem 3rem 0;
+  }
+
+  .uc-dual-col + .uc-dual-col {
+    padding: 3rem 0 3rem 3rem;
+    border-left: 1px solid var(--uc-hairline);
+  }
+
+  /* Quiet Monumental Close */
   .uc-close {
-    padding: 7rem 0 6.25rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.07);
+    position: relative;
+    padding: 8.5rem 0 7.5rem;
+    border-top: 1px solid var(--uc-hairline);
+    isolation: isolate;
+  }
+
+  .uc-close-blade {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
     background:
-      radial-gradient(58% 68% at 50% 100%, rgba(34, 211, 238, 0.11), transparent 72%),
-      var(--uc-void);
+      radial-gradient(45% 55% at 44% 100%, rgba(186, 230, 253, 0.1), transparent 72%),
+      radial-gradient(38% 48% at 62% 100%, rgba(229, 160, 61, 0.08), transparent 72%);
   }
 
   .uc-close-inner {
@@ -588,42 +703,24 @@ const examplePrompt = zh
   .uc-close h2 {
     margin: 0;
     font-family: var(--uc-font-display);
-    font-size: clamp(1.85rem, 3.3vw, 2.55rem);
-    font-weight: 600;
-    letter-spacing: -0.03em;
-    color: var(--uc-ink);
+    font-size: clamp(1.9rem, 3.4vw, 2.7rem);
+    font-weight: 500;
+    letter-spacing: -0.035em;
+    color: #ffffff;
   }
 
   .uc-close-trust {
-    margin: 1.15rem 0 0;
-    font-size: 0.96rem;
+    margin: 1.2rem 0 0;
+    font-size: 0.94rem;
     line-height: 1.7;
     color: var(--uc-ink-secondary);
   }
 
-  .uc-primary-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.72rem 1.35rem;
-    border-radius: 8px;
-    background: var(--uc-cyan);
-    color: #050505;
-    font-size: 0.92rem;
-    font-weight: 600;
-    transition: transform 150ms ease, filter 150ms ease;
-  }
-
-  .uc-primary-cta:hover {
-    filter: brightness(1.08);
-    transform: translateY(-1px);
-  }
-
   /* Footer */
   .uc-footer {
-    border-top: 1px solid rgba(255, 255, 255, 0.07);
-    padding: 2rem 0;
-    font-size: 0.86rem;
+    border-top: 1px solid var(--uc-hairline);
+    padding: 2.25rem 0;
+    font-size: 0.84rem;
     color: var(--uc-ink-muted);
   }
 
@@ -638,24 +735,38 @@ const examplePrompt = zh
   .uc-footer-links {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    gap: 1.75rem;
   }
 
   .uc-footer-links a:hover {
-    color: var(--uc-ink);
+    color: #ffffff;
+  }
+
+  @media (max-width: 960px) {
+    .uc-split-grid,
+    .uc-dual-band {
+      grid-template-columns: 1fr;
+    }
+
+    .uc-dual-col,
+    .uc-dual-col + .uc-dual-col {
+      padding: 2.5rem 0;
+      border-left: none;
+    }
+
+    .uc-dual-col + .uc-dual-col {
+      border-top: 1px solid var(--uc-hairline);
+    }
   }
 
   @media (max-width: 720px) {
-    .uc-container {
-      padding: 0 1.25rem;
-    }
-
+    .uc-container,
     .uc-nav-inner {
       padding: 0 1.25rem;
     }
 
     .uc-hero {
-      padding: 3.75rem 0 3.5rem;
+      padding: 4rem 0 3rem;
     }
 
     .uc-install-bar {
@@ -664,7 +775,11 @@ const examplePrompt = zh
     }
 
     .uc-section {
-      padding: 4.25rem 0;
+      padding: 4.5rem 0;
+    }
+
+    .uc-close {
+      padding: 5.5rem 0 5rem;
     }
   }
 </style>

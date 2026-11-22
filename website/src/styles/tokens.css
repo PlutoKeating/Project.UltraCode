@@ -1,66 +1,57 @@
 @import "@fontsource/sora/400.css";
 @import "@fontsource/sora/500.css";
 @import "@fontsource/sora/600.css";
-@import "@fontsource/sora/700.css";
 @import "@fontsource/jetbrains-mono/400.css";
 @import "@fontsource/jetbrains-mono/500.css";
 
 :root {
-  /* Strictly zero-saturation (S = 0%) neutral blacks & grays */
-  --uc-void: #050505;
-  --uc-surface: #0a0a0a;
-  --uc-surface-elevated: #121212;
-  --uc-glass: rgba(14, 14, 14, 0.8);
-  --uc-glass-strong: rgba(16, 16, 16, 0.92);
+  /* 96% Strictly S = 0% Pure Achromatic Monochrome */
+  --uc-void: #000000;
+  --uc-surface: #070707;
+  --uc-surface-elevated: #0e0e0e;
+  --uc-glass: rgba(10, 10, 10, 0.78);
   --uc-border: rgba(255, 255, 255, 0.085);
   --uc-border-strong: rgba(255, 255, 255, 0.16);
-  --uc-hairline: rgba(255, 255, 255, 0.09);
+  --uc-hairline: rgba(255, 255, 255, 0.075);
 
-  --uc-ink: #f5f5f5;
-  --uc-ink-secondary: #a3a3a3;
-  --uc-ink-muted: #737373;
+  --uc-ink: #ffffff;
+  --uc-ink-soft: #d4d4d4;
+  --uc-ink-secondary: #8a8a8a;
+  --uc-ink-muted: #525252;
 
-  /* Disciplined signal accents & ambient mist (allowed chromatic light) */
-  --uc-cyan: #22d3ee;
-  --uc-cyan-soft: rgba(34, 211, 238, 0.13);
-  --uc-cyan-border: rgba(34, 211, 238, 0.34);
-  --uc-violet-mist: rgba(139, 92, 246, 0.14);
-  --uc-coral: #e05a7a;
-  --uc-coral-soft: rgba(224, 90, 122, 0.14);
-  --uc-emerald: #34d399;
-  --uc-emerald-soft: rgba(52, 211, 153, 0.14);
+  /* 4% Optical Light & Hardcore Industrial Signal (Ice-Cyan + Warm Tungsten Amber) */
+  --uc-ice: #bae6fd;
+  --uc-ice-glow: rgba(125, 211, 252, 0.22);
+  --uc-amber: #e5a03d;
+  --uc-amber-glow: rgba(229, 160, 61, 0.18);
 
   --uc-font-display: "Sora", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", sans-serif;
   --uc-font-sans: "Sora", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", sans-serif;
   --uc-font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
-
-  --uc-radius-sm: 4px;
-  --uc-radius-md: 8px;
-  --uc-radius-lg: 12px;
 }
 
 ::selection {
-  background: rgba(34, 211, 238, 0.24);
+  background: rgba(255, 255, 255, 0.18);
   color: #ffffff;
 }
 
 :focus-visible {
-  outline: 2px solid var(--uc-cyan);
-  outline-offset: 2px;
+  outline: 1.5px solid #ffffff;
+  outline-offset: 3px;
 }
 
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #050505;
+  background: #000000;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #262626;
-  border-radius: 4px;
+  background: #242424;
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {

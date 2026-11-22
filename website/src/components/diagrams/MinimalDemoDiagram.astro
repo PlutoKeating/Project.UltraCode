@@ -6,83 +6,44 @@ const { lang = "zh" } = Astro.props;
 const zh = lang === "zh";
 ---
 
-<svg viewBox="0 0 920 236" fill="none" xmlns="http://www.w3.org/2000/svg" class="uc-svg-diagram" role="img" aria-label={zh ? "1 分钟最小上手体验 4 步流程图" : "4-step minimal onboarding demo diagram"}>
-  <rect x="0.5" y="0.5" width="919" height="235" rx="10" fill="#0A0A0A" stroke="rgba(255,255,255,0.09)"/>
+<svg viewBox="0 0 960 196" fill="none" xmlns="http://www.w3.org/2000/svg" class="uc-svg-diagram" role="img" aria-label={zh ? "1 分钟最小上手体验 4 步精密导轨" : "4-step minimal onboarding architectural rail"}>
+  <!-- Architectural 4-column hairline grid (zero rounded boxes) -->
+  <line x1="0" y1="0.5" x2="960" y2="0.5" stroke="rgba(255,255,255,0.09)"/>
+  <line x1="0" y1="195.5" x2="960" y2="195.5" stroke="rgba(255,255,255,0.09)"/>
+  <line x1="240.5" y1="0" x2="240.5" y2="196" stroke="rgba(255,255,255,0.08)"/>
+  <line x1="480.5" y1="0" x2="480.5" y2="196" stroke="rgba(255,255,255,0.08)"/>
+  <line x1="720.5" y1="0" x2="720.5" y2="196" stroke="rgba(255,255,255,0.08)"/>
 
-  <!-- Connecting rail -->
-  <line x1="126" y1="74" x2="794" y2="74" stroke="rgba(34,211,238,0.28)" stroke-width="1.5"/>
+  <!-- Highlight top laser bar on step 04 -->
+  <line x1="721" y1="0.5" x2="960" y2="0.5" stroke="#BAE6FD" stroke-width="1.5"/>
 
-  <!-- Step 1 -->
-  <rect x="28" y="32" width="196" height="172" rx="8" fill="#111111" stroke="rgba(255,255,255,0.08)"/>
-  <circle cx="54" cy="60" r="13" fill="rgba(34,211,238,0.12)" stroke="#22D3EE" stroke-width="1.4"/>
-  <text x="54" y="64" text-anchor="middle" fill="#22D3EE" font-family="JetBrains Mono, monospace" font-size="11" font-weight="600">01</text>
-  <text x="44" y="102" fill="#F5F5F5" font-family="Sora, PingFang SC, sans-serif" font-size="15" font-weight="600">
-    {zh ? "一句话说出目标" : "State Your Goal"}
-  </text>
-  <text x="44" y="128" fill="#A3A3A3" font-family="Sora, PingFang SC, sans-serif" font-size="12">
-    {zh ? "打开空目录运行 opencode" : "Run opencode in any folder"}
-  </text>
-  <text x="44" y="148" fill="#A3A3A3" font-family="Sora, PingFang SC, sans-serif" font-size="12">
-    {zh ? "直接说清想要什么页面" : "Describe what you want"}
-  </text>
-  <rect x="44" y="166" width="164" height="22" rx="4" fill="rgba(255,255,255,0.04)"/>
-  <text x="54" y="181" fill="#D4D4D4" font-family="JetBrains Mono, monospace" font-size="10.5">
-    {zh ? "无需记任何斜杠命令" : "Zero slash commands"}
-  </text>
+  <!-- Step 01 -->
+  <text x="20" y="40" fill="#737373" font-family="JetBrains Mono, monospace" font-size="11">01</text>
+  <text x="20" y="76" fill="#FFFFFF" font-family="Sora, PingFang SC, sans-serif" font-size="16" font-weight="500">{zh ? "一句话说出目标" : "State Your Goal"}</text>
+  <text x="20" y="108" fill="#8A8A8A" font-family="Sora, PingFang SC, sans-serif" font-size="12.5">{zh ? "任意空目录运行 opencode" : "Run opencode anywhere"}</text>
+  <text x="20" y="130" fill="#8A8A8A" font-family="Sora, PingFang SC, sans-serif" font-size="12.5">{zh ? "用自然语言描述想要的结果" : "Describe the outcome plainly"}</text>
+  <text x="20" y="168" fill="#525252" font-family="JetBrains Mono, PingFang SC, sans-serif" font-size="11">{zh ? "零斜杠命令" : "ZERO SLASH COMMANDS"}</text>
 
-  <!-- Step 2 -->
-  <rect x="250" y="32" width="196" height="172" rx="8" fill="#111111" stroke="rgba(255,255,255,0.08)"/>
-  <circle cx="276" cy="60" r="13" fill="rgba(34,211,238,0.12)" stroke="#22D3EE" stroke-width="1.4"/>
-  <text x="276" y="64" text-anchor="middle" fill="#22D3EE" font-family="JetBrains Mono, monospace" font-size="11" font-weight="600">02</text>
-  <text x="266" y="102" fill="#F5F5F5" font-family="Sora, PingFang SC, sans-serif" font-size="15" font-weight="600">
-    {zh ? "收到一次性选择题" : "Answer Choice Cards"}
-  </text>
-  <text x="266" y="128" fill="#A3A3A3" font-family="Sora, PingFang SC, sans-serif" font-size="12">
-    {zh ? "不盲猜，先调研再把" : "Researches first, batches"}
-  </text>
-  <text x="266" y="148" fill="#A3A3A3" font-family="Sora, PingFang SC, sans-serif" font-size="12">
-    {zh ? "关键分歧一次问齐" : "key trade-offs once"}
-  </text>
-  <rect x="266" y="166" width="164" height="22" rx="4" fill="rgba(34,211,238,0.09)"/>
-  <text x="276" y="181" fill="#7BE7F7" font-family="JetBrains Mono, monospace" font-size="10.5">
-    {zh ? "每题自带推荐选项" : "Recommended picks"}
-  </text>
+  <!-- Step 02 -->
+  <text x="260" y="40" fill="#E5A03D" font-family="JetBrains Mono, monospace" font-size="11">02</text>
+  <text x="260" y="76" fill="#FFFFFF" font-family="Sora, PingFang SC, sans-serif" font-size="16" font-weight="500">{zh ? "收到一次性选择题" : "Answer Choice Cards"}</text>
+  <text x="260" y="108" fill="#8A8A8A" font-family="Sora, PingFang SC, sans-serif" font-size="12.5">{zh ? "先调研，把所有关键分歧" : "Researches first, batches"}</text>
+  <text x="260" y="130" fill="#8A8A8A" font-family="Sora, PingFang SC, sans-serif" font-size="12.5">{zh ? "一次问齐，每题带推荐项" : "key trade-offs once"}</text>
+  <text x="260" y="168" fill="#E5A03D" font-family="JetBrains Mono, PingFang SC, sans-serif" font-size="11">{zh ? "拒绝盲猜返工" : "NO BLIND GUESSWORK"}</text>
 
-  <!-- Step 3 -->
-  <rect x="472" y="32" width="196" height="172" rx="8" fill="#111111" stroke="rgba(255,255,255,0.08)"/>
-  <circle cx="498" cy="60" r="13" fill="rgba(34,211,238,0.12)" stroke="#22D3EE" stroke-width="1.4"/>
-  <text x="498" y="64" text-anchor="middle" fill="#22D3EE" font-family="JetBrains Mono, monospace" font-size="11" font-weight="600">03</text>
-  <text x="488" y="102" fill="#F5F5F5" font-family="Sora, PingFang SC, sans-serif" font-size="15" font-weight="600">
-    {zh ? "后台专家分工实现" : "Subagents Build It"}
-  </text>
-  <text x="488" y="128" fill="#A3A3A3" font-family="Sora, PingFang SC, sans-serif" font-size="12">
-    {zh ? "主控拆解里程碑，自动" : "Orchestrator delegates"}
-  </text>
-  <text x="488" y="148" fill="#A3A3A3" font-family="Sora, PingFang SC, sans-serif" font-size="12">
-    {zh ? "调度实施与独立评审" : "build & skeptical review"}
-  </text>
-  <rect x="488" y="166" width="164" height="22" rx="4" fill="rgba(255,255,255,0.04)"/>
-  <text x="498" y="181" fill="#D4D4D4" font-family="JetBrains Mono, monospace" font-size="10.5">
-    {zh ? "主对话只报关键进展" : "Clean milestone updates"}
-  </text>
+  <!-- Step 03 -->
+  <text x="500" y="40" fill="#737373" font-family="JetBrains Mono, monospace" font-size="11">03</text>
+  <text x="500" y="76" fill="#FFFFFF" font-family="Sora, PingFang SC, sans-serif" font-size="16" font-weight="500">{zh ? "后台专家分工实现" : "Experts Build It"}</text>
+  <text x="500" y="108" fill="#8A8A8A" font-family="Sora, PingFang SC, sans-serif" font-size="12.5">{zh ? "主控自动拆解里程碑" : "Orchestrator delegates"}</text>
+  <text x="500" y="130" fill="#8A8A8A" font-family="Sora, PingFang SC, sans-serif" font-size="12.5">{zh ? "并行编码并触发独立评审" : "build & skeptical audit"}</text>
+  <text x="500" y="168" fill="#525252" font-family="JetBrains Mono, PingFang SC, sans-serif" font-size="11">{zh ? "主对话只报里程碑" : "MILESTONE SIGNAL ONLY"}</text>
 
-  <!-- Step 4 -->
-  <rect x="694" y="32" width="198" height="172" rx="8" fill="rgba(52,211,153,0.06)" stroke="rgba(52,211,153,0.34)"/>
-  <circle cx="720" cy="60" r="13" fill="rgba(52,211,153,0.16)" stroke="#34D399" stroke-width="1.4"/>
-  <text x="720" y="64" text-anchor="middle" fill="#34D399" font-family="JetBrains Mono, monospace" font-size="11" font-weight="600">04</text>
-  <text x="710" y="102" fill="#F5F5F5" font-family="Sora, PingFang SC, sans-serif" font-size="15" font-weight="600">
-    {zh ? "真机浏览器自检交付" : "Real Browser QA"}
-  </text>
-  <text x="710" y="128" fill="#E0E0E0" font-family="Sora, PingFang SC, sans-serif" font-size="12">
-    {zh ? "亲自打开浏览器截屏检查" : "Opens real Chromium,"}
-  </text>
-  <text x="710" y="148" fill="#E0E0E0" font-family="Sora, PingFang SC, sans-serif" font-size="12">
-    {zh ? "修完错位后再汇报完成" : "fixes issues before finish"}
-  </text>
-  <rect x="710" y="166" width="166" height="22" rx="4" fill="rgba(52,211,153,0.16)"/>
-  <text x="720" y="181" fill="#34D399" font-family="JetBrains Mono, monospace" font-size="10.5">
-    {zh ? "✓ 真实可用 + 干净提交" : "✓ Verified + Clean Git"}
-  </text>
+  <!-- Step 04 -->
+  <text x="740" y="40" fill="#BAE6FD" font-family="JetBrains Mono, monospace" font-size="11">04</text>
+  <text x="740" y="76" fill="#FFFFFF" font-family="Sora, PingFang SC, sans-serif" font-size="16" font-weight="500">{zh ? "真机浏览器目视交付" : "Real-Browser QA"}</text>
+  <text x="740" y="108" fill="#A3A3A3" font-family="Sora, PingFang SC, sans-serif" font-size="12.5">{zh ? "亲自打开真实浏览器截屏" : "Opens real Chromium,"}</text>
+  <text x="740" y="130" fill="#A3A3A3" font-family="Sora, PingFang SC, sans-serif" font-size="12.5">{zh ? "修完排版错位再汇报完工" : "fixes layout before finish"}</text>
+  <text x="740" y="168" fill="#BAE6FD" font-family="JetBrains Mono, PingFang SC, sans-serif" font-size="11">{zh ? "眼见为实 + 干净提交" : "VERIFIED + CLEAN GIT"}</text>
 </svg>
 
 <style>

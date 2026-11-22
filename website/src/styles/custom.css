@@ -1,11 +1,11 @@
-/* Starlight Documentation Theme — Pure Neutral Obsidian (S = 0%) + Editorial Breathing Room */
+/* Starlight Documentation Theme — Pure Pitch-Black Architecture (S = 0%) + Crisp Monochrome */
 
 :root {
-  --sl-nav-height: 4.25rem;
-  --sl-sidebar-width: 19.5rem;
+  --sl-nav-height: 4.5rem;
+  --sl-sidebar-width: 20rem;
   --sl-content-width: 48rem;
   --sl-text-base: 0.98rem;
-  --sl-line-height: 1.82;
+  --sl-line-height: 1.85;
 }
 
 :root,
@@ -13,37 +13,38 @@
   --sl-font: var(--uc-font-sans);
   --sl-font-mono: var(--uc-font-mono);
 
-  /* Strictly S = 0% neutral blacks & grays */
-  --sl-color-bg: #050505;
-  --sl-color-bg-nav: rgba(5, 5, 5, 0.88);
-  --sl-color-bg-sidebar: #090909;
-  --sl-color-bg-inline-code: #161616;
+  /* Strictly S = 0% Pure Black & Neutral Grays */
+  --sl-color-bg: #000000;
+  --sl-color-bg-nav: rgba(0, 0, 0, 0.88);
+  --sl-color-bg-sidebar: #060606;
+  --sl-color-bg-inline-code: #141414;
   --sl-color-hairline-light: rgba(255, 255, 255, 0.075);
-  --sl-color-hairline: rgba(255, 255, 255, 0.09);
+  --sl-color-hairline: rgba(255, 255, 255, 0.085);
   --sl-color-hairline-shade: rgba(255, 255, 255, 0.06);
 
-  --sl-color-white: #f5f5f5;
-  --sl-color-gray-1: #e0e0e0;
-  --sl-color-gray-2: #a8a8a8;
-  --sl-color-gray-3: #808080;
-  --sl-color-gray-4: #525252;
-  --sl-color-gray-5: #242424;
-  --sl-color-gray-6: #121212;
-  --sl-color-black: #050505;
+  --sl-color-white: #ffffff;
+  --sl-color-gray-1: #e5e5e5;
+  --sl-color-gray-2: #a0a0a0;
+  --sl-color-gray-3: #707070;
+  --sl-color-gray-4: #484848;
+  --sl-color-gray-5: #202020;
+  --sl-color-gray-6: #0e0e0e;
+  --sl-color-black: #000000;
 
-  --sl-color-accent-low: rgba(34, 211, 238, 0.12);
-  --sl-color-accent: #22d3ee;
-  --sl-color-accent-high: #a5f3fc;
-  --sl-color-text-accent: #22d3ee;
-  --sl-color-text-invert: #050505;
+  /* Restrained optical ice-white accent (zero plastic neon) */
+  --sl-color-accent-low: rgba(255, 255, 255, 0.07);
+  --sl-color-accent: #e5e5e5;
+  --sl-color-accent-high: #ffffff;
+  --sl-color-text-accent: #bae6fd;
+  --sl-color-text-invert: #000000;
 
-  /* Expressive Code neutral black override (zero blue cast) */
-  --ec-codeBg: #101010;
-  --ec-frm-edBg: #101010;
-  --ec-frm-trmBg: #101010;
-  --ec-frm-trmTtbBg: #141414;
-  --ec-frm-edTabBarBg: #141414;
-  --ec-brdCol: rgba(255, 255, 255, 0.09);
+  /* Expressive Code pure neutral black override */
+  --ec-codeBg: #0a0a0a;
+  --ec-frm-edBg: #0a0a0a;
+  --ec-frm-trmBg: #0a0a0a;
+  --ec-frm-trmTtbBg: #101010;
+  --ec-frm-edTabBarBg: #101010;
+  --ec-brdCol: rgba(255, 255, 255, 0.085);
 }
 
 :root[data-theme="light"] {
@@ -56,61 +57,64 @@
   --sl-color-hairline-light: #e5e5e5;
   --sl-color-hairline: #e0e0e0;
 
-  --sl-color-white: #111111;
+  --sl-color-white: #0a0a0a;
   --sl-color-gray-1: #262626;
-  --sl-color-gray-2: #4a4a4a;
+  --sl-color-gray-2: #525252;
   --sl-color-gray-3: #737373;
   --sl-color-gray-4: #a3a3a3;
   --sl-color-gray-5: #d4d4d4;
   --sl-color-gray-6: #f2f2f2;
   --sl-color-black: #ffffff;
 
-  --sl-color-accent-low: #e0f2fe;
-  --sl-color-accent: #0284c7;
-  --sl-color-accent-high: #075985;
-  --sl-color-text-accent: #0284c7;
+  --sl-color-accent-low: #f0f0f0;
+  --sl-color-accent: #111111;
+  --sl-color-accent-high: #000000;
+  --sl-color-text-accent: #0f172a;
   --sl-color-text-invert: #ffffff;
 }
 
-/* Header breathing room */
+/* Header */
 header.header {
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--sl-color-hairline);
-  padding-inline: 1.75rem;
+  padding-inline: 2rem;
 }
 
-/* Left Sidebar: generous padding, calmer hierarchy & spacing */
+/* Left Sidebar: architectural calm & generous whitespace */
 .sidebar-pane {
   border-inline-end: 1px solid var(--sl-color-hairline);
 }
 
 .sidebar-content {
-  padding: 1.75rem 1.35rem 3.5rem !important;
+  padding: 2rem 1.5rem 4rem !important;
 }
 
 .sidebar-content ul.top-level > li + li {
-  margin-top: 1.65rem;
+  margin-top: 2rem;
 }
 
 .sidebar-content .group-label {
-  padding-bottom: 0.45rem;
+  padding-bottom: 0.55rem;
 }
 
 .sidebar-content .large {
-  font-size: 0.78rem !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.04em;
+  font-size: 0.75rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   color: var(--sl-color-gray-3) !important;
 }
 
 .sidebar-content li a {
-  padding: 0.56rem 0.85rem !important;
-  margin-block: 0.18rem;
-  border-radius: 7px !important;
+  padding: 0.58rem 0.9rem !important;
+  margin-block: 0.22rem;
+  border-radius: 5px !important;
   font-size: 0.9rem !important;
-  line-height: 1.48 !important;
+  font-weight: 400;
+  line-height: 1.5 !important;
   color: var(--sl-color-gray-2);
+  border-left: 1.5px solid transparent;
   transition: background 150ms ease, color 150ms ease, border-color 150ms ease;
 }
 
@@ -125,27 +129,27 @@ header.header {
 
 :root[data-theme="dark"] .sidebar-content a[aria-current="page"],
 :root:not([data-theme="light"]) .sidebar-content a[aria-current="page"] {
-  background: rgba(34, 211, 238, 0.12);
-  color: #a5f3fc;
-  border: 1px solid rgba(34, 211, 238, 0.3);
-  font-weight: 600;
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+  border-left: 1.5px solid #bae6fd;
+  font-weight: 500;
 }
 
-/* Right TOC Sidebar: airy spacing & clear typography */
+/* Right TOC Sidebar */
 .right-sidebar-panel {
-  padding: 2.25rem 1.5rem 3rem !important;
+  padding: 2.5rem 1.75rem 3.5rem !important;
 }
 
 .right-sidebar-panel h2 {
-  font-size: 0.78rem !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.04em;
+  font-size: 0.75rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.06em;
   color: var(--sl-color-gray-3) !important;
-  margin-bottom: 0.9rem !important;
+  margin-bottom: 1rem !important;
 }
 
 starlight-toc a {
-  padding-block: 0.36rem !important;
+  padding-block: 0.4rem !important;
   font-size: 0.84rem !important;
   line-height: 1.55 !important;
   color: var(--sl-color-gray-3);
@@ -153,92 +157,93 @@ starlight-toc a {
 
 starlight-toc a:hover,
 starlight-toc a[aria-current="true"] {
-  color: var(--sl-color-text-accent);
+  color: var(--sl-color-white);
 }
 
-/* Main article canvas & typography rhythm */
+/* Main article typography — avoid 700, sharp weight 500 */
 @media (min-width: 72rem) {
   .content-panel {
-    padding: 2.5rem 3.25rem !important;
+    padding: 2.75rem 3.75rem !important;
   }
 
   .content-panel + .content-panel {
-    padding-top: 2rem !important;
-    padding-bottom: 4.5rem !important;
+    padding-top: 2.25rem !important;
+    padding-bottom: 5rem !important;
   }
 }
 
 .sl-markdown-content {
   font-feature-settings: "cv02", "cv03", "cv04";
   font-size: 0.98rem;
-  line-height: 1.85;
+  line-height: 1.88;
+  color: var(--sl-color-gray-1);
 }
 
 .sl-markdown-content p {
-  margin-top: 1.15rem;
+  margin-top: 1.25rem;
 }
 
 .sl-markdown-content h1,
 h1#_top {
-  font-size: clamp(2rem, 3.1vw, 2.55rem) !important;
-  line-height: 1.24 !important;
-  letter-spacing: -0.03em;
-  font-weight: 600;
+  font-size: clamp(2.1rem, 3.2vw, 2.65rem) !important;
+  line-height: 1.22 !important;
+  letter-spacing: -0.035em;
+  font-weight: 500 !important;
 }
 
 .sl-markdown-content h2 {
   font-size: 1.45rem !important;
   line-height: 1.32 !important;
   letter-spacing: -0.025em;
-  font-weight: 600;
-  margin-top: 3.1rem !important;
-  margin-bottom: 1.1rem !important;
-  padding-bottom: 0.55rem;
+  font-weight: 500 !important;
+  margin-top: 3.5rem !important;
+  margin-bottom: 1.15rem !important;
+  padding-bottom: 0.65rem;
   border-bottom: 1px solid var(--sl-color-hairline-light);
 }
 
 .sl-markdown-content h3 {
-  font-size: 1.16rem !important;
+  font-size: 1.14rem !important;
   letter-spacing: -0.02em;
-  font-weight: 600;
-  margin-top: 2.25rem !important;
+  font-weight: 500 !important;
+  margin-top: 2.4rem !important;
   margin-bottom: 0.75rem !important;
 }
 
 .sl-markdown-content li + li {
-  margin-top: 0.55rem;
+  margin-top: 0.6rem;
 }
 
 .sl-markdown-content pre {
   border: 1px solid var(--sl-color-hairline);
-  border-radius: 8px;
+  border-radius: 6px;
 }
 
 .expressive-code {
-  margin-block: 1.5rem !important;
+  margin-block: 1.65rem !important;
 }
 
-/* SVG diagram figure plates (strictly S = 0% neutral) */
+/* De-boxed architectural SVG figure: hairline top/bottom instead of heavy gray card */
 .uc-doc-figure {
-  margin: 2rem 0 2.5rem;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  background: #0b0b0b;
-  padding: 1.5rem;
+  margin: 2.5rem 0 2.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: transparent;
+  padding: 2rem 0.5rem;
   overflow: hidden;
-  box-shadow: 0 20px 52px rgba(0, 0, 0, 0.42);
 }
 
 :root[data-theme="light"] .uc-doc-figure {
-  border-color: #d4d4d4;
-  background: #0a0a0a;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+  border-color: #e0e0e0;
+  background: #080808;
+  border-radius: 6px;
+  padding: 1.75rem 1.25rem;
 }
 
 .uc-doc-figure figcaption {
-  margin-top: 1rem;
-  font-size: 0.85rem;
-  color: #a3a3a3;
+  margin-top: 1.15rem;
+  font-size: 0.84rem;
+  color: #737373;
   text-align: center;
-  line-height: 1.55;
+  line-height: 1.6;
 }
