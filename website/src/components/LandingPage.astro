@@ -38,6 +38,7 @@ const examplePrompt = zh
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
   <body>
+    <div class="uc-optical-horizon" aria-hidden="true"></div>
     <div class="uc-grain" aria-hidden="true"></div>
     <div class="uc-page">
       <header class="uc-nav">
@@ -61,9 +62,8 @@ const examplePrompt = zh
       </header>
 
       <main>
-        <!-- Hero: Pure Pitch-Black Architecture + Anamorphic Ice/Amber Optical Horizon -->
-        <section class="uc-hero">
-          <div class="uc-optical-horizon" aria-hidden="true"></div>
+        <!-- Hero: Pure Pitch-Black Architecture + Fixed Anamorphic Optical Horizon -->
+        <section class="uc-hero" data-lit>
           <div class="uc-container uc-hero-inner">
             <h1>{zh ? "一句目标，交付到底" : "One Goal. Delivered End-to-End."}</h1>
             <p class="uc-hero-sub">
@@ -100,7 +100,7 @@ const examplePrompt = zh
         </section>
 
         <!-- Section 2: Open-Canvas Trajectory Comparison (Zero Outer Box) -->
-        <section class="uc-section">
+        <section class="uc-section" data-lit>
           <div class="uc-container">
             <div class="uc-section-head">
               <h2>{zh ? "为什么装完立刻觉得 OpenCode 变强了" : "Why OpenCode Feels Immediately Stronger"}</h2>
@@ -117,7 +117,7 @@ const examplePrompt = zh
         </section>
 
         <!-- Section 3: 4-Column Architectural Hairline Rail -->
-        <section class="uc-section">
+        <section class="uc-section" data-lit>
           <div class="uc-container">
             <div class="uc-section-head">
               <h2>{zh ? "装完立刻试：1 分钟最小上手体验" : "Try It Immediately: 1-Minute Demo"}</h2>
@@ -151,7 +151,7 @@ const examplePrompt = zh
         </section>
 
         <!-- Section 4: Asymmetric Editorial Split — Roles & Experts -->
-        <section class="uc-section">
+        <section class="uc-section" data-lit>
           <div class="uc-container uc-split-grid">
             <div class="uc-split-copy">
               <h2>{zh ? "双主角色与 5 位后台专家" : "Two Primary Roles. Five Background Experts."}</h2>
@@ -168,7 +168,7 @@ const examplePrompt = zh
         </section>
 
         <!-- Section 5: Architectural 2-Column Hairline Split — Long-running & TUI Controls -->
-        <section class="uc-section">
+        <section class="uc-section" data-lit>
           <div class="uc-container">
             <div class="uc-dual-band">
               <div class="uc-dual-col">
@@ -199,8 +199,7 @@ const examplePrompt = zh
         </section>
 
         <!-- Section 6: Quiet Monumental Close -->
-        <section class="uc-close">
-          <div class="uc-close-blade" aria-hidden="true"></div>
+        <section class="uc-close" data-lit>
           <div class="uc-container uc-close-inner">
             <h2>{zh ? "一行命令装好，继续用你自己的模型" : "Install in One Line. Keep Your Models."}</h2>
             <p class="uc-close-trust">
@@ -265,6 +264,42 @@ const examplePrompt = zh
           }
         });
       });
+
+      // Scroll-coupled optical response against the stationary 58vh horizon light
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const litSections = Array.from(document.querySelectorAll<HTMLElement>("[data-lit]"));
+      const heroStage = document.querySelector<HTMLElement>(".uc-hero-stage");
+      if (!reduceMotion && litSections.length > 0) {
+        let ticking = false;
+        const updateOpticalField = () => {
+          ticking = false;
+          const vh = window.innerHeight || 900;
+          const horizonY = vh * 0.58;
+          for (const el of litSections) {
+            const rect = el.getBoundingClientRect();
+            const centerY = rect.top + rect.height * 0.45;
+            const dist = Math.abs(centerY - horizonY);
+            const lit = Math.max(0, Math.min(1, 1 - dist / (vh * 0.78)));
+            el.style.setProperty("--uc-lit", lit.toFixed(3));
+            const topProx = Math.max(0, Math.min(1, 1 - Math.abs(rect.top - horizonY) / (vh * 0.52)));
+            el.style.setProperty("--uc-edge", topProx.toFixed(3));
+          }
+          if (heroStage) {
+            const r = heroStage.getBoundingClientRect();
+            const rimProx = Math.max(0, Math.min(1, 1 - Math.abs(r.top - horizonY) / (vh * 0.48)));
+            heroStage.style.setProperty("--uc-rim", rimProx.toFixed(3));
+          }
+        };
+        const onScroll = () => {
+          if (!ticking) {
+            ticking = true;
+            window.requestAnimationFrame(updateOpticalField);
+          }
+        };
+        updateOpticalField();
+        window.addEventListener("scroll", onScroll, { passive: true });
+        window.addEventListener("resize", onScroll, { passive: true });
+      }
     </script>
   </body>
 </html>
@@ -307,10 +342,13 @@ const examplePrompt = zh
   }
 
   .uc-page {
+    position: relative;
+    z-index: 1;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     overflow-x: clip;
+    background: transparent;
   }
 
   .uc-container {
@@ -391,18 +429,17 @@ const examplePrompt = zh
   /* Hero */
   .uc-hero {
     position: relative;
-    min-height: calc(100svh - 70px);
+    min-height: calc(100svh - 74px);
     display: flex;
     align-items: center;
     padding: clamp(5.5rem, 10vh, 9rem) 0 clamp(3.5rem, 6vh, 5.5rem);
-    isolation: isolate;
   }
 
-  /* Anamorphic optical horizon: ice-cyan left bloom + warm tungsten amber right bloom */
+  /* Viewport-fixed anamorphic optical horizon: stays stationary as foreground glides over it */
   .uc-optical-horizon {
-    position: absolute;
+    position: fixed;
     inset: 0;
-    z-index: -1;
+    z-index: 0;
     pointer-events: none;
     background:
       radial-gradient(48% 24% at 32% 58%, rgba(186, 230, 253, 0.14), transparent 72%),
@@ -552,14 +589,46 @@ const examplePrompt = zh
     margin-top: 4.25rem;
   }
 
-  /* Architectural Hairline Sections — generous 140px+ visual breathing room */
+  /* Architectural Hairline Sections — optical response as foreground passes the fixed horizon */
   .uc-section {
+    position: relative;
     padding: 7.5rem 0;
     border-top: 1px solid var(--uc-hairline);
   }
 
+  .uc-section::before,
+  .uc-close::before {
+    content: "";
+    position: absolute;
+    top: -1px;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    pointer-events: none;
+    opacity: var(--uc-edge, 0.35);
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(186, 230, 253, 0.45) 30%,
+      rgba(255, 255, 255, 0.85) 50%,
+      rgba(229, 160, 61, 0.42) 70%,
+      transparent 100%
+    );
+    transition: opacity 120ms linear;
+  }
+
+  .uc-section > .uc-container,
+  .uc-close > .uc-container {
+    opacity: calc(0.76 + var(--uc-lit, 1) * 0.24);
+    transition: opacity 180ms ease-out;
+  }
+
+  .uc-hero-stage :global(.uc-specular-rim) {
+    opacity: calc(0.32 + var(--uc-rim, 1) * 0.68);
+  }
+
   .uc-section-head {
-    max-width: 680px;
+    max-width: 820px;
     margin-bottom: 3.25rem;
   }
 
@@ -650,17 +719,6 @@ const examplePrompt = zh
     position: relative;
     padding: 8.5rem 0 7.5rem;
     border-top: 1px solid var(--uc-hairline);
-    isolation: isolate;
-  }
-
-  .uc-close-blade {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    background:
-      radial-gradient(45% 55% at 44% 100%, rgba(186, 230, 253, 0.1), transparent 72%),
-      radial-gradient(38% 48% at 62% 100%, rgba(229, 160, 61, 0.08), transparent 72%);
   }
 
   .uc-close-inner {
