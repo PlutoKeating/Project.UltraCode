@@ -81,4 +81,4 @@ bun run --cwd website build
 - [社区调研](docs/RESEARCH.md)
 - [历史实施与验收](docs/IMPLEMENTATION_PLAN.md)
 
-主角色 `uc-apex`（总协调与执行，默认）和 `uc-atlas`（规划）直接安装在 `agents/`，可用 Shift+Tab 切换。
+主角色 `UltraBuild`（总协调与执行，默认）和 `UltraPlan`（规划）直接安装在 `agents/`，可用 Shift+Tab 切换。

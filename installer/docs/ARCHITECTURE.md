@@ -17,4 +17,4 @@ CLI 是小接口；`paths`、`install`、`config`、`runtime`、`release` 和 `o
 
 `uc doctor` 检查当前项目实际注册的角色、Superpowers 和 UltraCode 插件的活动状态，以及所选浏览器 MCP 的连接状态。
 
-主角色 `uc-apex`（总协调与执行，默认）和 `uc-atlas`（规划）直接安装在 `agents/`，可用 Shift+Tab 切换。
+主角色 `UltraBuild`（总协调与执行，默认）和 `UltraPlan`（规划）直接安装在 `agents/`，可用 Shift+Tab 切换。

@@ -52,4 +52,4 @@ Release 资产命名：`ultracode-{linux|darwin}-{x64|arm64}`，附 `.sha256`。
 
 OpenCode V2.3.x、Superpowers v7.0.2、Ralph v1.3.1 固定 commit、Playwright MCP 0.0.86。所有安装验收均不调用真实模型。
 
-主角色 `uc-apex`（总协调与执行，默认）和 `uc-atlas`（规划）直接安装在 `agents/`，可用 Shift+Tab 切换。
+主角色 `UltraBuild`（总协调与执行，默认）和 `UltraPlan`（规划）直接安装在 `agents/`，可用 Shift+Tab 切换。

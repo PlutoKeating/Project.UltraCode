@@ -1,6 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "default_agent": "uc-apex",
+  "default_agent": "UltraBuild",
   "permissions": [
     {
       "action": "shell",

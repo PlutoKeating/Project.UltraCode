@@ -1,6 +1,6 @@
 ---
 description: Execute an approved plan with bounded delegation and evidence-based completion
-agent: uc-apex
+agent: UltraBuild
 ---
 
 Execute this approved plan or bounded goal: $ARGUMENTS

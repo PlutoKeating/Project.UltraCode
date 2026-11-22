@@ -45,7 +45,7 @@ describe("isolated apply", () => {
     expect(once).toContain("ultracode_playwright");
     await apply(paths, { runtime: false });
     expect(await readFile(paths.opencodeConfigFile, "utf8")).toBe(once);
-    expect(await readFile(join(paths.config, "agents/uc-apex.md"), "utf8")).not.toContain("model:");
+    expect(await readFile(join(paths.config, "agents/UltraBuild.md"), "utf8")).not.toContain("model:");
   });
 
   test("preserves locally modified managed files and uninstalls only owned state", async () => {
@@ -170,8 +170,8 @@ test("migrates an explicitly selected managed planner to the new role ID", async
   await writeFile(paths.opencodeConfigFile, '{"default_agent":"ultracode/planner"}');
   await writeFile(paths.manifest, JSON.stringify({ schema: 2, files: { [oldPath]: sha256(content) }, owned: [], configFile: paths.opencodeConfigFile }));
   await apply(paths);
-  expect(JSON.parse(await readFile(paths.opencodeConfigFile, "utf8")).default_agent).toBe("uc-atlas");
+  expect(JSON.parse(await readFile(paths.opencodeConfigFile, "utf8")).default_agent).toBe("UltraPlan");
   await expect(readFile(join(paths.config, oldPath))).rejects.toThrow();
   await apply(paths);
-  expect(JSON.parse(await readFile(paths.opencodeConfigFile, "utf8")).default_agent).toBe("uc-atlas");
+  expect(JSON.parse(await readFile(paths.opencodeConfigFile, "utf8")).default_agent).toBe("UltraPlan");
 });

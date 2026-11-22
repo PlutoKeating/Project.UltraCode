@@ -11,7 +11,7 @@ import type { Paths } from "./paths";
 import { components } from "./components";
 import { browserReady, runtimeEntries, installRuntime } from "./runtime";
 
-export const VERSION = process.env.ULTRACODE_RELEASE_VERSION || "0.2.1";
+export const VERSION = process.env.ULTRACODE_RELEASE_VERSION || "0.2.2";
 
 export interface ApplyReport {
   added: string[];
@@ -64,7 +64,10 @@ export async function apply(paths: Paths, options: { runtime?: boolean } = {}): 
   if (options.runtime !== false && process.env.ULTRACODE_SKIP_RUNTIME !== "1") await installRuntime(paths);
 
   const retired = ["plan", "work", "review"].map(name => `commands/ultracode/${name}.md`);
-  for (const [oldID, newID] of Object.entries({ "ultracode/orchestrator": "uc-apex", "ultracode/planner": "uc-atlas" })) {
+  for (const [oldID, newID] of Object.entries({
+    "ultracode/orchestrator": "UltraBuild", "uc-apex": "UltraBuild",
+    "ultracode/planner": "UltraPlan", "uc-atlas": "UltraPlan",
+  })) {
     const legacy = `agents/${oldID}.md`;
     const hash = previous?.files[legacy];
     const path = join(paths.config, legacy);
@@ -165,12 +168,7 @@ export async function doctor(paths: Paths): Promise<string[]> {
       if (!(await exists(join(paths.runtime, path)))) issues.push("Missing runtime " + path);
     }
     try {
-      const agents = await run(paths.opencodeBinary, ["debug", "agents"]);
-      const ids = new Set((JSON.parse(agents.stdout) as { id: string }[]).map(agent => agent.id));
-      for (const asset of assets.filter(a => a.target.startsWith("agents/"))) {
-        const id = asset.target.slice(7, -3);
-        if (!ids.has(id)) issues.push("Missing registered agent " + id);
-      }
+      const roleIDs = assets.filter(a => a.target.startsWith("agents/")).map(a => a.target.slice(7, -3));
       const source = await readText(file);
       const { browser, managed } = await components(paths, parseJsonc(source));
       if (mergeJsonc(source, managed).conflicts.includes("mcp.servers.ultracode_playwright"))
@@ -181,7 +179,9 @@ export async function doctor(paths: Paths): Promise<string[]> {
         const servers = await run(paths.opencodeBinary, ["api", "get", "/api/mcp"]);
         const registry = JSON.parse(plugins.stdout).data as { id: string; state: { status: string; error?: string } }[];
         const mcp = JSON.parse(servers.stdout).data as { name: string; status: { status: string } }[];
-        pending = [];
+        const agents = await run(paths.opencodeBinary, ["debug", "agents"]);
+        const ids = new Set((JSON.parse(agents.stdout) as { id: string }[]).map(agent => agent.id));
+        pending = roleIDs.filter(id => !ids.has(id)).map(id => "Missing registered agent " + id);
         for (const id of ["superpowers", "ultracode-conversation"]) {
           const matches = registry.filter(p => p.id === id);
           if (matches.length !== 1 || matches[0]?.state.status !== "active")

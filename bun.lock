@@ -10,7 +10,7 @@
     },
     "installer": {
       "name": "@ultracode/cli",
-      "version": "0.2.1",
+      "version": "0.2.2",
       "bin": {
         "ultracode": "./src/cli.ts",
         "uc": "./src/cli.ts",
@@ -25,7 +25,7 @@
     },
     "website": {
       "name": "ultracode-website",
-      "version": "0.2.1",
+      "version": "0.2.2",
       "dependencies": {
         "@astrojs/starlight": "0.43.1",
         "astro": "7.4.13",

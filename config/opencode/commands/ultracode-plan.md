@@ -1,6 +1,6 @@
 ---
 description: Create a reviewable implementation plan and sprint acceptance contracts
-agent: uc-atlas
+agent: UltraPlan
 ---
 
 Plan the following work without implementing it: $ARGUMENTS

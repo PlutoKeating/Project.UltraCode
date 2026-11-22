@@ -3,7 +3,7 @@ import type { Paths } from "./paths";
 
 export function managedConfig(paths: Paths): { [key: string]: JsonValue } {
   return {
-    default_agent: "uc-apex",
+    default_agent: "UltraBuild",
     permissions: [
       { action: "shell", resource: "git push *", effect: "ask" },
       { action: "shell", resource: "git reset --hard *", effect: "ask" },
