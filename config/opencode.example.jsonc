@@ -46,6 +46,7 @@
     }
   },
   "plugins": [
+    "{env:HOME}/.config/opencode/ultracode/conversation",
     "{env:HOME}/.local/share/ultracode/runtime/superpowers"
   ]
 }

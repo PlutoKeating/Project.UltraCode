@@ -1,12 +1,18 @@
 # UltraCode
 
-UltraCode 是官方 OpenCode 的 Provider/Model 中立增强层，提供长程工程角色、Superpowers 工程纪律、Ralph 全新上下文迭代和 Playwright 独立视觉 QA。
+UltraCode 是面向官方 OpenCode V2 的 Provider/Model 中立增强层，聚焦 **Goal Engineering（目标工程）**——继 Prompt Engineering 与 Context Engineering 之后，让用户通过自然语言定义受众、目标与验收标准，把长程规划、实现、独立评审与视觉自检交由 Agent 体系持续推进。
 
-它不修改 OpenCode 官方二进制，不读取或配置 Provider 凭据，不在安装验收中调用真实模型。
+核心能力（v0.2.2）：
+
+- **双主角色与后台子代理**：`UltraBuild`（默认，总协调与执行）与 `UltraPlan`（规划，`Shift+Tab` 切换），配合 5 个独立后台子代理（`architect`、`implementer`、`librarian`、`reviewer`、`visual-evaluator`）。
+- **对话驱动里程碑续跑与交接**：在原对话内自主推进里程碑，长任务清单、进度与交接落盘在仓库内，服务重启后可自然语言接续。
+- **TUI 命令面板双开关**：可独立切换 **Command approvals**（默认 `auto`）与 **Direction questions**（默认 `manual`）。
+- **完整长程工程链路**：内置 Superpowers 工程纪律、Ralph 全新上下文外层迭代与 Playwright 独立视觉 QA。
+- **非侵入最大并集合并**：不修改 OpenCode 官方二进制，不读取或配置 Provider 凭据，不在安装验收中调用真实模型。
 
 ## 一行安装
 
-在已安装官方 OpenCode V2 的 Linux 或 macOS 上：
+在已安装官方 OpenCode V2（v2.3.2+）的 Linux 或 macOS 上：
 
 ```bash
 curl -fsSL https://ultracode.plutokeating.beer/install.sh | bash
@@ -22,9 +28,11 @@ bash /tmp/ultracode-install.sh
 
 ## 开始使用
 
-打开项目目录，运行 `opencode`，直接描述受众、目标和验收条件。可以随时补充要求或叫停。模型按需要派遣子代理、记录下一里程碑，在原对话继续。长期任务的清单、进度和交接保存在仓库内。服务重启后可要求“读取交接并继续”。
+打开项目目录，运行 `opencode`，直接描述受众、目标和验收条件，可随时补充要求或叫停。
 
-打开 TUI 命令面板，搜索 **UltraCode**，可独立切换 **Command approvals**（默认 auto）和 **Direction questions**（默认 manual）。权限 auto 自动放行宿主原本需要询问的操作，显式 deny 仍然生效。
+- **主角色切换**：默认进入 `UltraBuild`（总协调与执行）；按 `Shift+Tab` 可切换至 `UltraPlan`（规划）。两角色直接安装在 `agents/`，后台子代理（`architect`、`implementer`、`librarian`、`reviewer`、`visual-evaluator`）安装在 `agents/ultracode/`。
+- **里程碑续跑与交接**：模型按需要派遣后台子代理并登记下一里程碑，在原对话持续推进；长期任务的清单、进度与交接保存在仓库内，服务重启后可直接要求“读取交接并继续”。
+- **TUI 命令面板**：搜索 **UltraCode**，独立切换 **Command approvals**（默认 `auto`，自动放行宿主原本需要询问的操作，显式 `deny` 仍然生效）和 **Direction questions**（默认 `manual`）。
 
 ## 常用命令
 
@@ -70,7 +78,7 @@ bun run --cwd website build
 
 ## 发布
 
-为稳定 tag 手动触发 Release 工作流，使用 单个 Linux runner 交叉构建 Linux/macOS x64/arm64、版本冒烟、SHA-256、GitHub Artifact Attestations 和 Release 上传。项目采用 [MIT License](LICENSE)。
+为稳定 tag 手动触发 Release 工作流，使用单个 Linux runner 交叉构建 Linux/macOS x64/arm64、版本冒烟、SHA-256、GitHub Artifact Attestations 和 Release 上传。项目采用 [MIT License](LICENSE)。
 
 ## 文档
 
@@ -80,5 +88,3 @@ bun run --cwd website build
 - [Cloudflare 部署](docs/CLOUDFLARE.md)
 - [社区调研](docs/RESEARCH.md)
 - [历史实施与验收](docs/IMPLEMENTATION_PLAN.md)
-
-主角色 `UltraBuild`（总协调与执行，默认）和 `UltraPlan`（规划）直接安装在 `agents/`，可用 Shift+Tab 切换。

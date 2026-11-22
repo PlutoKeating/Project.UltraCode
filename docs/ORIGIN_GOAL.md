@@ -1,3 +1,5 @@
+> **历史立项背景**：本文件保留了 UltraCode **v0.1.0 之前**的原始问题提出与早期调研对话记录（基于当时个人多模型 / Vertex 实验场景）。当前公开版 UltraCode（v0.2.2）已演进为完全 **Provider/Model 中立**的 Goal Engineering（目标工程）增强层；最新设计与用法请参见 [README](../README.md) 与 [架构](ARCHITECTURE.md)。
+
 ## Question
 
 前情提要：我知道模型能力和coding agent能力，包括harness方法论在业界的发展是日新月异的，并且业界共识“大部分旧模型或二线、三线的模型（例如GLM/Qwen/Doubao等）确实就是智力和能力都跟不上”，所以以下的讨论存在限定范围：

@@ -1,5 +1,7 @@
 # 分步实施计划
 
+> **历史归档说明**：本文档的“大步骤 1–5”为 **v0.1.0 之前的早期个人原型实施与验收记录**（包含当时的 Vertex Gemini 4 与 REA 环境验证）。自 v0.1.0 起公开版 UltraCode 已完全 Provider/Model 中立；自 v0.2.0 起已转向对话式目标工程（Goal Engineering）架构并退役旧版 `/ultracode-*` 斜杠命令。当前架构与接口请以 [架构](ARCHITECTURE.md) 与 [命令与制品接口](API.md) 为准。
+
 ## 审批与交付规则
 
 每个大步骤开始前都单独说明变更和预期收益，经用户批准后执行。每一步都包含备份、真实验证和本地 Git 提交；失败时不进入下一步，不通过静默缩小目标来宣称完成。
@@ -121,11 +123,11 @@
 
 上述五项均已满足；最终 Git 清洁状态以交付提交后的 `git status` 为证。
 
-## 分发与教程网站实施（新增）
+## 分发与教程网站实施（v0.1.0 基线）
 
 ### Provider 中立化
 
-公开角色、命令和 Ralph 不再包含 Provider、Model 或凭据字段。当前会话模型由用户 OpenCode 配置决定，安装验收不执行真实模型调用。
+公开角色与 Ralph 不再包含 Provider、Model 或凭据字段（旧版 `/ultracode-*` 斜杠命令已在 v0.2.x 正式退役）。当前会话模型由用户 OpenCode 配置决定，安装验收不执行真实模型调用。
 
 ### 安装器与升级
 
@@ -134,19 +136,24 @@
 - JSONC 最大并集合并、注释保留、数组去重、冲突报告、原子写入、清单与精确卸载。
 - 私有 Bun 子进程管理 Ralph/Playwright；Superpowers/Ralph 固定源码 SHA-256。
 - 根 `install.sh` 下载平台二进制并验证 Release SHA-256。
-- 稳定 tag 通过四平台原生 Runner 构建、冒烟、校验、来源证明和上传。
+- 稳定 tag 通过单个 Linux Runner 交叉构建 Linux/macOS x64/arm64、宿主版本冒烟、SHA-256 校验、GitHub Artifact Attestations 来源证明与 Release 上传。
 
 ### 教程网站
 
-- Astro Starlight，中英各 14 个内容页面，59 个构建页面。
-- Stable/Next 由单一内容源生成；首页与文档提供双语路由。
+- Astro Starlight，中英双语 Stable/Next 由单一内容源生成；首页与文档提供双语路由。
 - 根安装脚本随网站发布为 `/install.sh`。
 - Cloudflare Workers Static Assets 配置与 Connect to Git 字段已写入 `docs/CLOUDFLARE.md` 和双语 Cloudflare 教程。
 
+### v0.2.0–v0.2.2 里程碑摘要
+
+- **v0.2.0**：引入对话式目标工程（Goal Engineering）插件对 `ultracode-conversation` / `ultracode-conversation-ui`，新增 `ultracode_checkpoint`、`ultracode_model`、TUI 命令面板双开关（`Command approvals` / `Direction questions`），并退役旧版 `/ultracode-*` 斜杠命令。
+- **v0.2.1**：补齐组件身份对账（插件身份识别、等价无头隔离 Playwright MCP 复用与工具名对齐）、清单 schema v2 与旧版清单安全迁移、`uc doctor` 实时注册与 MCP 连接检查。
+- **v0.2.2**：确立 `UltraBuild`（默认，总协调与执行）与 `UltraPlan`（规划，`Shift+Tab` 切换）双主角色（安装在 `agents/`）+ 5 个后台子代理（`agents/ultracode/`），完善中英双语文档与安装器隔离测试。
+
 ### 验证
 
-- 安装器 4 个隔离测试、严格 TypeScript、独立二进制版本冒烟通过。
-- 私有 Ralph 1.3.1 与 Playwright 0.0.86 在隔离 HOME 执行成功，doctor 无模型调用通过。
-- Starlight `astro check` 0 错误，生产构建 59 页通过，Pagefind 索引生成。
+- 安装器当前包含 12 个隔离测试（2 个测试文件）、严格 TypeScript 检查、独立二进制版本冒烟通过。
+- 私有 Ralph 1.3.1 与 Playwright 0.0.86 在隔离 HOME 执行成功，`uc doctor` 无模型调用通过。
+- Starlight `astro check` 0 错误，生产构建与 Pagefind 索引生成通过。
 - Wrangler `--dry-run` 通过；桌面中文首页、英文教程和移动中文教程均经真实浏览器渲染并人工查看。
-- 公开 GitHub Release、远程 CI 和 Cloudflare 实际部署需要用户推送/发布/连接 Git 后执行；本地实施未代替这些人工发布步骤。
+- 公开 GitHub Release、远程 CI 和 Cloudflare 实际部署需要维护者推送/发布/连接 Git 后执行；本地实施未代替这些人工发布步骤。
