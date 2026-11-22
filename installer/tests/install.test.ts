@@ -9,13 +9,50 @@ let root = "";
 let paths: Paths;
 let previousSkip: string | undefined;
 
+async function writeFakeOpenCode(binDir: string, mode: "version" | "duplicate-doctor" = "version"): Promise<string> {
+  await mkdir(binDir, { recursive: true });
+  if (process.platform === "win32") {
+    const file = join(binDir, "opencode.cmd");
+    if (mode === "version") {
+      await writeFile(file, "@echo off\r\necho opencode v2.3.2\r\n");
+    } else {
+      await writeFile(
+        file,
+        `@echo off\r\nif "%*"=="--version" (\r\n  echo opencode v2.3.2\r\n) else if "%*"=="debug agents" (\r\n  echo []\r\n) else if "%*"=="api get /api/plugin" (\r\n  echo {"data":[{"id":"superpowers","state":{"status":"active"}},{"id":"superpowers","state":{"status":"failed","error":"Duplicate plugin ID: superpowers"}}]}\r\n) else if "%*"=="api get /api/mcp" (\r\n  echo {"data":[]}\r\n)\r\n`,
+      );
+    }
+    return file;
+  }
+  const file = join(binDir, "opencode");
+  if (mode === "version") {
+    await writeFile(file, "#!/bin/sh\nprintf 'opencode v2.3.2\\n'\n", { mode: 0o755 });
+  } else {
+    await writeFile(
+      file,
+      `#!/bin/sh
+case "$*" in
+  --version) echo 'opencode v2.3.2';;
+  'debug agents') echo '[]';;
+  'api get /api/plugin') echo '{"data":[{"id":"superpowers","state":{"status":"active"}},{"id":"superpowers","state":{"status":"failed","error":"Duplicate plugin ID: superpowers"}}]}';;
+  'api get /api/mcp') echo '{"data":[]}';;
+esac
+`,
+      { mode: 0o755 },
+    );
+  }
+  return file;
+}
+
 beforeEach(async () => {
   root = await mkdtemp(join(tmpdir(), "ultracode-installer-test-"));
-  const bin = join(root, "bin");
-  await mkdir(bin, { recursive: true });
-  const fake = join(bin, "opencode");
-  await writeFile(fake, "#!/bin/sh\nprintf 'opencode v2.3.2\\n'\n", { mode: 0o755 });
-  paths = resolvePaths({ HOME: root, ULTRACODE_OPENCODE_BIN: fake, ULTRACODE_SKIP_RUNTIME: "1" });
+  const fake = await writeFakeOpenCode(join(root, "bin"));
+  paths = resolvePaths({
+    HOME: root,
+    USERPROFILE: root,
+    LOCALAPPDATA: join(root, "AppData", "Local"),
+    ULTRACODE_OPENCODE_BIN: fake,
+    ULTRACODE_SKIP_RUNTIME: "1",
+  });
   previousSkip = process.env.ULTRACODE_SKIP_RUNTIME;
   process.env.ULTRACODE_SKIP_RUNTIME = "1";
 });
@@ -29,12 +66,15 @@ afterEach(async () => {
 describe("isolated apply", () => {
   test("does not set a provider/model and is idempotent", async () => {
     await mkdir(paths.config, { recursive: true });
-    await writeFile(paths.opencodeConfigFile, `{
+    await writeFile(
+      paths.opencodeConfigFile,
+      `{
   // keep me
   "provider": {"mine": {"options": {"baseURL": "https://example.com"}}},
   "model": "mine/current",
   "default_agent": "mine"
-}`);
+}`,
+    );
     const first = await apply(paths, { runtime: false });
     expect(first.conflicts).toContain("config:default_agent");
     const once = await readFile(paths.opencodeConfigFile, "utf8");
@@ -60,7 +100,7 @@ describe("isolated apply", () => {
   });
 });
 
-test("installs both conversation entry points and only natural-language workflows", async () => {
+test("installs conversation entry points and only natural-language workflows", async () => {
   await apply(paths, { runtime: false });
   const plugin = join(paths.config, "ultracode/conversation");
   expect(await readFile(join(plugin, "server.js"), "utf8")).toContain("experimental.idle");
@@ -89,7 +129,10 @@ test("sync preserves equivalent user plugins, permission overrides and custom MC
 });
 
 test("reuses matching browser launch settings and adapts the evaluator permissions", async () => {
-  const server = { type: "local", command: ["npx", "-y", "@playwright/mcp@0.0.86", "--browser", "chromium", "--headless", "--isolated", "--output-dir", ".opencode/ultracode/qa"] };
+  const server = {
+    type: "local",
+    command: ["npx", "-y", "@playwright/mcp@0.0.86", "--browser", "chromium", "--headless", "--isolated", "--output-dir", ".opencode/ultracode/qa"],
+  };
   await mkdir(paths.config, { recursive: true });
   await writeFile(paths.opencodeConfigFile, JSON.stringify({ mcp: { servers: { browser: server } } }));
   await apply(paths);
@@ -97,28 +140,9 @@ test("reuses matching browser launch settings and adapts the evaluator permissio
   expect(await readFile(join(paths.config, "agents/ultracode/visual-evaluator.md"), "utf8")).toContain("action: browser_*");
 });
 
-test("migrates a legacy duplicate, preserves the original registration and survives a second sync", async () => {
-  const { managedConfig } = await import("../src/managed");
-  const { mergeJsonc } = await import("../src/config");
-  const original = { plugins: ["superpowers@git+https://github.com/obra/superpowers.git#v7.0.2"], compaction: {} };
-  const source = JSON.stringify(original);
-  await mkdir(paths.config, { recursive: true });
-  await mkdir(join(paths.home, "backups"), { recursive: true });
-  await writeFile(join(paths.home, "backups/100-opencode.jsonc"), source);
-  await writeFile(paths.opencodeConfigFile, mergeJsonc(source, { ...managedConfig(paths), default_agent: "ultracode/orchestrator" }).text);
-  await writeFile(paths.manifest, JSON.stringify({ schema: 1, version: "v0.2.0", files: {} }));
-  await apply(paths);
-  const after = await readFile(paths.opencodeConfigFile, "utf8");
-  expect(JSON.parse(after).plugins).toEqual([...original.plugins, join(paths.config, "ultracode/conversation")]);
-  await apply(paths);
-  expect(await readFile(paths.opencodeConfigFile, "utf8")).toBe(after);
-  await uninstall(paths);
-  expect(JSON.parse(await readFile(paths.opencodeConfigFile, "utf8"))).toEqual(original);
-});
-
 test("preserves pre-existing byte-identical assets across repeated sync and uninstall", async () => {
   const { assets } = await import("../src/assets");
-  const agent = assets.find(asset => asset.target.endsWith("/reviewer.md"))!;
+  const agent = assets.find((asset) => asset.target.endsWith("/reviewer.md"))!;
   await mkdir(join(paths.config, "agents/ultracode"), { recursive: true });
   const path = join(paths.config, agent.target);
   await writeFile(path, agent.content);
@@ -128,50 +152,12 @@ test("preserves pre-existing byte-identical assets across repeated sync and unin
   expect(await readFile(path, "utf8")).toBe(agent.content);
 });
 
-test("repairs legacy concatenated MCP commands without deleting the user's server", async () => {
-  const { managedConfig } = await import("../src/managed");
-  const { mergeJsonc } = await import("../src/config");
-  const original = { mcp: { servers: { ultracode_playwright: { type: "local", command: ["mine"] } } } };
-  const source = JSON.stringify(original);
-  await mkdir(paths.config, { recursive: true });
-  await mkdir(join(paths.home, "backups"), { recursive: true });
-  await writeFile(join(paths.home, "backups/100-opencode.jsonc"), source);
-  await writeFile(paths.opencodeConfigFile, mergeJsonc(source, { ...managedConfig(paths), default_agent: "ultracode/orchestrator" }, true).text);
-  await writeFile(paths.manifest, JSON.stringify({ schema: 1, files: {}, version: "v0.2.0" }));
-  await apply(paths);
-  await uninstall(paths);
-  expect(JSON.parse(await readFile(paths.opencodeConfigFile, "utf8"))).toEqual(original);
-});
-
 test("doctor reports duplicate runtime identities even when managed files exist", async () => {
   const { doctor } = await import("../src/install");
   await apply(paths);
   delete process.env.ULTRACODE_SKIP_RUNTIME;
-  await writeFile(paths.opencodeBinary, `#!/bin/sh
-case "$*" in
-  --version) echo 'opencode v2.3.2';;
-  'debug agents') echo '[]';;
-  'api get /api/plugin') echo '{"data":[{"id":"superpowers","state":{"status":"active"}},{"id":"superpowers","state":{"status":"failed","error":"Duplicate plugin ID: superpowers"}}]}';;
-  'api get /api/mcp') echo '{"data":[]}';;
-esac
-`);
+  await writeFakeOpenCode(join(root, "bin"), "duplicate-doctor");
   const issues = await doctor(paths);
-  expect(issues.some(issue => issue.includes("Duplicate plugin ID: superpowers"))).toBe(true);
+  expect(issues.some((issue) => issue.includes("Duplicate plugin ID: superpowers"))).toBe(true);
   expect(issues).toContain("ultracode_playwright: missing");
-});
-
-test("migrates an explicitly selected managed planner to the new role ID", async () => {
-  const { sha256 } = await import("../src/fs");
-  const oldPath = "agents/ultracode/planner.md";
-  const content = "old planner";
-  await mkdir(join(paths.config, "agents/ultracode"), { recursive: true });
-  await mkdir(paths.home, { recursive: true });
-  await writeFile(join(paths.config, oldPath), content);
-  await writeFile(paths.opencodeConfigFile, '{"default_agent":"ultracode/planner"}');
-  await writeFile(paths.manifest, JSON.stringify({ schema: 2, files: { [oldPath]: sha256(content) }, owned: [], configFile: paths.opencodeConfigFile }));
-  await apply(paths);
-  expect(JSON.parse(await readFile(paths.opencodeConfigFile, "utf8")).default_agent).toBe("UltraPlan");
-  await expect(readFile(join(paths.config, oldPath))).rejects.toThrow();
-  await apply(paths);
-  expect(JSON.parse(await readFile(paths.opencodeConfigFile, "utf8")).default_agent).toBe("UltraPlan");
 });

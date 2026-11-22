@@ -1,7 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { basename, isAbsolute, join, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
-import { run } from "./opencode";
+import { findOpenCode, run } from "./opencode";
 import { managedConfig } from "./managed";
 import type { JsonValue } from "./config";
 import type { Paths } from "./paths";
@@ -37,7 +37,8 @@ export async function components(paths: Paths, config: JsonValue) {
   // Scope registry evidence to globally configured sources or global auto-discovery.
   const registered = new Map<string, string>();
   if (process.env.ULTRACODE_SKIP_RUNTIME !== "1") {
-    const result = await run(paths.opencodeBinary, ["api", "get", "/api/plugin"]);
+    const opencode = (await findOpenCode(paths)) ?? paths.opencodeBinary;
+    const result = await run(opencode, ["api", "get", "/api/plugin"]).catch(() => ({ code: 1, stdout: "", stderr: "" }));
     if (result.code === 0) {
       try {
         for (const plugin of JSON.parse(result.stdout).data) {

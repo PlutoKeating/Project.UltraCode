@@ -4,7 +4,7 @@ import { mergeJsonc, parseJsonc, retire, additions } from "../src/config";
 const managed = {
   default_agent: "UltraBuild",
   permissions: [{ action: "shell", resource: "git push *", effect: "ask" }],
-  mcp: { servers: { ultracode_playwright: { type: "local", command: ["uc", "mcp"] } } },
+  mcp: { servers: { ultracode_playwright: { type: "local", command: ["ultracode", "_mcp"] } } },
 };
 
 describe("maximum-union JSONC merge", () => {
@@ -20,7 +20,7 @@ describe("maximum-union JSONC merge", () => {
     expect(value.provider.custom.apiKey).toBe("{env:CUSTOM_KEY}");
     expect(value.default_agent).toBe("mine");
     expect(value.permissions).toHaveLength(2);
-    expect(value.mcp.servers.ultracode_playwright.command).toEqual(["uc", "mcp"]);
+    expect(value.mcp.servers.ultracode_playwright.command).toEqual(["ultracode", "_mcp"]);
     expect(result.text).toContain("// user provider must survive");
     expect(result.conflicts).toContain("default_agent");
   });

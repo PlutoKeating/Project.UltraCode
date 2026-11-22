@@ -10,13 +10,12 @@ const RUNTIME_LOCK = JSON.stringify({ playwright: PLAYWRIGHT_VERSION, ralph: RAL
 
 async function downloadVerified(url: string, expectedHash: string, target: string): Promise<void> {
   if (await exists(target)) {
-    const cached = Buffer.from(await Bun.file(target).arrayBuffer());
+    const cached = new Uint8Array(await Bun.file(target).arrayBuffer());
     if (sha256(cached) === expectedHash) return;
   }
-  const temporary = `${target}.download`;
-  const result = await run("curl", ["-fsSL", url, "-o", temporary]);
-  if (result.code !== 0) throw new Error(`Download failed: ${url}: ${result.stderr}`);
-  const data = Buffer.from(await Bun.file(temporary).arrayBuffer());
+  const response = await fetch(url, { headers: { "User-Agent": "ultracode-installer" } });
+  if (!response.ok) throw new Error(`Download failed (${response.status}): ${url}`);
+  const data = new Uint8Array(await response.arrayBuffer());
   const actual = sha256(data);
   if (actual !== expectedHash) throw new Error(`Checksum mismatch for ${url}: expected ${expectedHash}, got ${actual}`);
   await atomicWrite(target, data);
@@ -56,13 +55,17 @@ async function installVendored(paths: Paths): Promise<void> {
   await extractTar(ralphArchive, join(vendor, "ralph"));
 }
 
-export const runtimeEntries = ["node_modules/@playwright/mcp/cli.js", "node_modules/@th0rgal/ralph-wiggum/bin/ralph.js", "superpowers/.opencode/plugins/superpowers.js"];
+export const runtimeEntries = [
+  "node_modules/@playwright/mcp/cli.js",
+  "node_modules/@th0rgal/ralph-wiggum/bin/ralph.js",
+  "superpowers/.opencode/plugins/superpowers.js",
+];
 
 export async function browserReady(paths: Paths): Promise<boolean> {
   const marker = join(paths.browsers, ".ultracode-ready");
   if (!(await exists(marker)) || (await Bun.file(marker).text()).trim() !== PLAYWRIGHT_VERSION) return false;
-  const dirs = await readdir(paths.browsers);
-  for (const dir of dirs.filter(name => name.startsWith("chromium_headless_shell-"))) {
+  const dirs = await readdir(paths.browsers).catch(() => [] as string[]);
+  for (const dir of dirs.filter((name) => name.startsWith("chromium_headless_shell-") || name.startsWith("chromium-"))) {
     if (await exists(join(paths.browsers, dir, "INSTALLATION_COMPLETE"))) return true;
   }
   return false;
@@ -71,29 +74,35 @@ export async function browserReady(paths: Paths): Promise<boolean> {
 export async function installRuntime(paths: Paths): Promise<void> {
   await mkdir(paths.runtime, { recursive: true });
   const lockFile = join(paths.runtime, ".ultracode-lock");
-  const ready = (await Promise.all(runtimeEntries.map(entry => exists(join(paths.runtime, entry))))).every(Boolean);
+  const ready = (await Promise.all(runtimeEntries.map((entry) => exists(join(paths.runtime, entry))))).every(Boolean);
   const locked = ready && (await exists(lockFile)) && (await Bun.file(lockFile).text()) === RUNTIME_LOCK;
   if (!locked) {
     await installVendored(paths);
-    await writeFile(join(paths.runtime, "package.json"), `${JSON.stringify({
-      private: true,
-      dependencies: {
-        "@playwright/mcp": PLAYWRIGHT_VERSION,
-        "@th0rgal/ralph-wiggum": "file:./vendor/ralph",
-      },
-    }, null, 2)}\n`);
+    await writeFile(
+      join(paths.runtime, "package.json"),
+      `${JSON.stringify(
+        {
+          private: true,
+          dependencies: {
+            "@playwright/mcp": PLAYWRIGHT_VERSION,
+            "@th0rgal/ralph-wiggum": "file:./vendor/ralph",
+          },
+        },
+        null,
+        2,
+      )}\n`,
+    );
     await runBun(["install"], { cwd: paths.runtime });
     await atomicWrite(lockFile, RUNTIME_LOCK);
   }
 
   const browserMarker = join(paths.browsers, ".ultracode-ready");
   if (process.env.ULTRACODE_SKIP_BROWSER !== "1" && !(await browserReady(paths))) {
-    const browserInstall = await runBun(["x", `@playwright/mcp@${PLAYWRIGHT_VERSION}`, "install-browser", "chrome-for-testing"], {
+    await runBun(["x", `@playwright/mcp@${PLAYWRIGHT_VERSION}`, "install-browser", "chrome-for-testing"], {
       cwd: paths.runtime,
       env: { PLAYWRIGHT_BROWSERS_PATH: paths.browsers },
-      inherit: true,
+      inherit: false,
     });
-    if (browserInstall.code !== 0) throw new Error(`Browser installer exited with ${browserInstall.code}`);
     await atomicWrite(browserMarker, `${PLAYWRIGHT_VERSION}\n`);
   }
 }
@@ -101,9 +110,10 @@ export async function installRuntime(paths: Paths): Promise<void> {
 export async function runPlaywright(paths: Paths, args: string[] = []): Promise<number> {
   if (process.env.ULTRACODE_SKIP_RUNTIME !== "1") await installRuntime(paths);
   const cli = join(paths.runtime, "node_modules", "@playwright", "mcp", "cli.js");
-  const serverArgs = args.length > 0
-    ? args
-    : ["--browser", "chromium", "--headless", "--isolated", "--output-dir", ".opencode/ultracode/qa"];
+  const serverArgs =
+    args.length > 0
+      ? args
+      : ["--browser", "chromium", "--headless", "--isolated", "--output-dir", ".opencode/ultracode/qa"];
   const result = await runBun(["run", cli, ...serverArgs], {
     env: { PLAYWRIGHT_BROWSERS_PATH: paths.browsers },
     inherit: true,
@@ -111,9 +121,9 @@ export async function runPlaywright(paths: Paths, args: string[] = []): Promise<
   return result.code;
 }
 
-export async function runRalph(paths: Paths, args: string[]): Promise<number> {
+export async function runRalph(paths: Paths, args: string[], options: { cwd?: string } = {}): Promise<number> {
   if (process.env.ULTRACODE_SKIP_RUNTIME !== "1") await installRuntime(paths);
   const cli = join(paths.runtime, "node_modules", "@th0rgal", "ralph-wiggum", "bin", "ralph.js");
-  const result = await runBun(["run", cli, ...args], { inherit: true });
+  const result = await runBun(["run", cli, ...args], { cwd: options.cwd, inherit: true });
   return result.code;
 }

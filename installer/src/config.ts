@@ -23,10 +23,6 @@ function edit(text: string, path: JSONPath, value: JsonValue | undefined): strin
   return applyEdits(text, modify(text, path, value, formatting));
 }
 
-export function renameDefault(source: string, role: string): string {
-  return edit(source, ["default_agent"], role);
-}
-
 export function parseJsonc(text: string): JsonValue {
   const errors: ParseError[] = [];
   const value = parse(text, errors, { allowTrailingComma: true, disallowComments: false }) as JsonValue;
@@ -34,7 +30,7 @@ export function parseJsonc(text: string): JsonValue {
   return value ?? {};
 }
 
-export function mergeJsonc(source: string, managed: { [key: string]: JsonValue }, legacy = false): MergeResult {
+export function mergeJsonc(source: string, managed: { [key: string]: JsonValue }): MergeResult {
   let text = source.trim() ? source : "{}";
   const added: string[] = [];
   const conflicts: string[] = [];
@@ -53,7 +49,7 @@ export function mergeJsonc(source: string, managed: { [key: string]: JsonValue }
       added.push(label);
       return;
     }
-    if (!legacy && path.length === 3 && path[0] === "mcp" && path[1] === "servers") {
+    if (path.length === 3 && path[0] === "mcp" && path[1] === "servers") {
       if (!same(current, expected)) conflicts.push(label);
       return;
     }
@@ -71,8 +67,12 @@ export function mergeJsonc(source: string, managed: { [key: string]: JsonValue }
           target = target[segment] as JsonValue;
         }
         if (!Array.isArray(target)) return;
-        if (!target.some((entry) => legacy ? JSON.stringify(entry) === JSON.stringify(item) : same(entry, item))) {
-          if (!legacy && label === "permissions" && isObject(item) && target.some(entry => isObject(entry) && same(entry.action!, item.action!) && same(entry.resource!, item.resource!))) {
+        if (!target.some((entry) => same(entry, item))) {
+          if (
+            label === "permissions" &&
+            isObject(item) &&
+            target.some((entry) => isObject(entry) && same(entry.action!, item.action!) && same(entry.resource!, item.resource!))
+          ) {
             conflicts.push(label + ":" + item.action + ":" + item.resource);
             continue;
           }
@@ -99,11 +99,13 @@ export interface Addition {
 
 export function additions(before: JsonValue | undefined, after: JsonValue, path: string[] = []): Addition[] {
   if (before !== undefined && same(before, after)) return [];
-  if (before === undefined && path.length === 3 && path[0] === "mcp" && path[1] === "servers") return [{ path, kind: "value", value: after }];
+  if (before === undefined && path.length === 3 && path[0] === "mcp" && path[1] === "servers") {
+    return [{ path, kind: "value", value: after }];
+  }
   if (Array.isArray(after)) {
     const records: Addition[] = before === undefined ? [{ path, kind: "array" }] : [];
     for (const value of after) {
-      if (!Array.isArray(before) || !before.some(item => same(item, value))) records.push({ path, kind: "member", value });
+      if (!Array.isArray(before) || !before.some((item) => same(item, value))) records.push({ path, kind: "member", value });
     }
     return records;
   }
@@ -132,9 +134,9 @@ export function retire(source: string, owned: Addition[], wanted: JsonValue): { 
     if (current === undefined) continue;
     if (entry.kind === "member") {
       if (!Array.isArray(current)) continue;
-      const index = current.findIndex(item => same(item, entry.value!));
+      const index = current.findIndex((item) => same(item, entry.value!));
       if (index < 0) continue;
-      if (Array.isArray(desired) && desired.some(item => same(item, entry.value!))) retained.unshift(entry);
+      if (Array.isArray(desired) && desired.some((item) => same(item, entry.value!))) retained.unshift(entry);
       else text = edit(text, [...entry.path, index], undefined);
     } else if (entry.kind === "value") {
       if (!same(current, entry.value!)) continue;
