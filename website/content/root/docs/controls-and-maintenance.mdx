@@ -1,0 +1,29 @@
+---
+title: TUI 开关、升级与卸载
+description: 在 OpenCode 命令面板随时切换自治程度，并用 4 条极简命令搞定升级、同步、体检与干净卸载。
+---
+
+import TuiControlsDiagram from "../../../components/diagrams/TuiControlsDiagram.astro";
+
+UltraCode 的日常控制全部集成在你熟悉的 OpenCode 界面和极简终端命令里，不需要手改配置文件。
+
+## 在 OpenCode 面板中切换双开关
+
+打开 OpenCode 的命令面板（Command Palette），搜索 **UltraCode**，即可随时调整两项核心偏好：
+
+<figure class="uc-doc-figure">
+  <TuiControlsDiagram lang="zh" />
+  <figcaption>在 OpenCode 命令面板搜索 UltraCode，一键切换命令审批与方向询问模式。</figcaption>
+</figure>
+
+- **Command approvals（命令审批）**：默认 `auto`，自动放行常规开发命令以减少打断；你明确设置的拒绝规则始终严格生效。
+- **Direction questions（方向询问）**：默认 `manual`，遇到关键架构或需求分岔时会先弹出选择题等你拍板。
+
+## 4 条常用维护命令
+
+| 命令 | 作用 | 什么时候用 |
+| --- | --- | --- |
+| `uc up` | 一键同步升级官方 OpenCode 与 UltraCode | 平时保持最新版 |
+| `uc sync` | 重新对齐集成状态 | 手动升级了官方 OpenCode 后 |
+| `uc doctor` | 快速健康体检（不调用任何 AI 模型） | 怀疑环境异常或刚装完想确认状态 |
+| `uc uninstall --yes` | 干净卸载 UltraCode，不破坏你原有的个人配置 | 不再需要时一键撤出 |

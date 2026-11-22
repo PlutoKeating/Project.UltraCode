@@ -6,6 +6,8 @@
       "name": "ultracode-website",
       "dependencies": {
         "@astrojs/starlight": "0.43.1",
+        "@fontsource/jetbrains-mono": "^5.3.0",
+        "@fontsource/sora": "^5.3.0",
         "astro": "7.4.13",
       },
       "devDependencies": {
@@ -201,6 +203,10 @@
     "@expressive-code/plugin-shiki": ["@expressive-code/plugin-shiki@0.44.4", "", { "dependencies": { "@expressive-code/core": "^0.44.4", "shiki": "^4.0.2" } }, "sha512-390h3iPn6eTYzQvdv/b5YD7K96/86PLPHzaEBNLm44dmSufcTqcOC8zR8R0T5DBE+KTlT/ValIhwjUNy/9DreA=="],
 
     "@expressive-code/plugin-text-markers": ["@expressive-code/plugin-text-markers@0.44.4", "", { "dependencies": { "@expressive-code/core": "^0.44.4" } }, "sha512-cfjqsNh4oYikxFeylXKhZ0BxvrwIIztu+g5JFFObYMO3YTmHwv66DrHCh91wTgTGz0q4+Tj/iTIYkngqCpX0Cg=="],
+
+    "@fontsource/jetbrains-mono": ["@fontsource/jetbrains-mono@5.3.0", "", {}, "sha512-fqDfB5I9f1p1TV486aUgB9t8zP84P0O1FtQR5Ol9vjwPy+S+EIGlVYm1cvj2W5shcZMTg2nZFdVMoH5wFu8a1A=="],
+
+    "@fontsource/sora": ["@fontsource/sora@5.3.0", "", {}, "sha512-SqW3OpKxxfKvxDLPlbdrWf2KooPfbd+W3jaYn483o+Y/JrmU87vjFPNptDqwP428c3vY+gnranLhjcbRaXB0Jw=="],
 
     "@img/colour": ["@img/colour@1.1.0", "", {}, "sha512-Td76q7j57o/tLVdgS746cYARfSyxk8iEfRxewL9h4OMzYhbW4TAcppl0mT4eyqXddh6L/jwoM75mo7ixa/pCeQ=="],
 

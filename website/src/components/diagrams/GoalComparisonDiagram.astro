@@ -1,0 +1,83 @@
+---
+interface Props {
+  lang?: "zh" | "en";
+}
+const { lang = "zh" } = Astro.props;
+const zh = lang === "zh";
+---
+
+<svg viewBox="0 0 920 330" fill="none" xmlns="http://www.w3.org/2000/svg" class="uc-svg-diagram" role="img" aria-label={zh ? "普通对话与 UltraCode 目标工程对比示意图" : "Ordinary chat vs UltraCode Goal Engineering diagram"}>
+  <rect x="0.5" y="0.5" width="919" height="329" rx="10" fill="#0A0D16" stroke="rgba(255,255,255,0.09)"/>
+
+  <!-- Subtle architectural vertical grid -->
+  <line x1="230" y1="16" x2="230" y2="314" stroke="rgba(255,255,255,0.04)"/>
+  <line x1="460" y1="16" x2="460" y2="314" stroke="rgba(255,255,255,0.04)"/>
+  <line x1="690" y1="16" x2="690" y2="314" stroke="rgba(255,255,255,0.04)"/>
+  <line x1="24" y1="162" x2="896" y2="162" stroke="rgba(255,255,255,0.07)"/>
+
+  <!-- Top Track: Ordinary Chat -->
+  <text x="36" y="44" fill="#9BA6B8" font-family="Sora, PingFang SC, sans-serif" font-size="14" font-weight="600">
+    {zh ? "普通 AI 对话" : "Ordinary AI Chat"}
+  </text>
+  <rect x="640" y="25" width="244" height="26" rx="4" fill="rgba(224,90,122,0.14)" stroke="rgba(224,90,122,0.34)"/>
+  <text x="762" y="42" text-anchor="middle" fill="#F28AA2" font-family="Sora, PingFang SC, sans-serif" font-size="12" font-weight="500">
+    {zh ? "猜需求 · 忘上下文 · 口头说完工" : "Guesses · Context rot · Self-certified"}
+  </text>
+
+  <path d="M 64 114 C 180 76, 300 76, 430 98 C 560 120, 650 132, 836 122" stroke="#E05A7A" stroke-opacity="0.45" stroke-width="2" stroke-dasharray="6 6"/>
+  <circle cx="64" cy="114" r="5" fill="#6C788E"/>
+  <circle cx="290" cy="84" r="5" fill="#6C788E"/>
+  <circle cx="540" cy="116" r="5.5" fill="#E05A7A"/>
+  <path d="M 828 114 L 844 130 M 844 114 L 828 130" stroke="#E05A7A" stroke-width="2" stroke-linecap="round"/>
+
+  <text x="64" y="142" fill="#6C788E" font-family="Sora, PingFang SC, sans-serif" font-size="12">
+    {zh ? "直接开写" : "Starts guessing"}
+  </text>
+  <text x="290" y="142" text-anchor="middle" fill="#6C788E" font-family="Sora, PingFang SC, sans-serif" font-size="12">
+    {zh ? "长对话开始跑偏" : "Drifts mid-task"}
+  </text>
+  <text x="540" y="142" text-anchor="middle" fill="#E05A7A" font-family="Sora, PingFang SC, sans-serif" font-size="12">
+    {zh ? "改坏旧逻辑" : "Silent regression"}
+  </text>
+  <text x="836" y="142" text-anchor="end" fill="#E05A7A" font-family="Sora, PingFang SC, sans-serif" font-size="12">
+    {zh ? "半成品收尾" : "Stops early"}
+  </text>
+
+  <!-- Bottom Track: UltraCode Goal Engineering -->
+  <text x="36" y="200" fill="#22D3EE" font-family="Sora, PingFang SC, sans-serif" font-size="14" font-weight="600">
+    {zh ? "UltraCode 目标工程" : "UltraCode Goal Engineering"}
+  </text>
+  <rect x="652" y="181" width="232" height="26" rx="4" fill="rgba(34,211,238,0.12)" stroke="rgba(34,211,238,0.34)"/>
+  <text x="768" y="198" text-anchor="middle" fill="#7BE7F7" font-family="Sora, PingFang SC, sans-serif" font-size="12" font-weight="500">
+    {zh ? "清晰对齐 · 独立验收 · 持久交付" : "Aligned · Verified · Durable Delivery"}
+  </text>
+
+  <path d="M 64 268 L 290 254 L 540 242 L 836 226" stroke="#22D3EE" stroke-width="2.5" stroke-linecap="round"/>
+
+  <circle cx="64" cy="268" r="6" fill="#06070D" stroke="#22D3EE" stroke-width="2.5"/>
+  <circle cx="290" cy="254" r="6" fill="#06070D" stroke="#22D3EE" stroke-width="2.5"/>
+  <circle cx="540" cy="242" r="6" fill="#06070D" stroke="#22D3EE" stroke-width="2.5"/>
+  <circle cx="836" cy="226" r="8" fill="#22D3EE"/>
+  <path d="M 832.5 226 L 835 228.5 L 840 223" stroke="#06070D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <text x="64" y="298" fill="#F3F6FA" font-family="Sora, PingFang SC, sans-serif" font-size="13" font-weight="500">
+    {zh ? "01 先调研并出选择题" : "01 Research & Clarify"}
+  </text>
+  <text x="290" y="298" text-anchor="middle" fill="#F3F6FA" font-family="Sora, PingFang SC, sans-serif" font-size="13" font-weight="500">
+    {zh ? "02 方案锁定再动工" : "02 Lock Plan First"}
+  </text>
+  <text x="540" y="298" text-anchor="middle" fill="#F3F6FA" font-family="Sora, PingFang SC, sans-serif" font-size="13" font-weight="500">
+    {zh ? "03 多角色隔离协作" : "03 Subagent Execution"}
+  </text>
+  <text x="836" y="298" text-anchor="end" fill="#22D3EE" font-family="Sora, PingFang SC, sans-serif" font-size="13" font-weight="600">
+    {zh ? "04 真机浏览器目视验收" : "04 Real-Browser Visual QA"}
+  </text>
+</svg>
+
+<style>
+  .uc-svg-diagram {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+</style>

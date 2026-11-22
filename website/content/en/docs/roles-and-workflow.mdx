@@ -1,0 +1,32 @@
+---
+title: Primary Roles & Background Experts
+description: Two simple front-stage roles (UltraBuild and UltraPlan) backed by five automatic specialists.
+---
+
+import RolesTopologyDiagram from "../../../../components/diagrams/RolesTopologyDiagram.astro";
+
+UltraCode hides multi-agent complexity behind a clean front door. You only ever interact with **2 primary roles**, while 5 background experts step in automatically when needed.
+
+<figure class="uc-doc-figure">
+  <RolesTopologyDiagram lang="en" />
+  <figcaption>Two clear primary roles up front, five background specialists collaborating automatically behind the scenes.</figcaption>
+</figure>
+
+## Choosing Between the Two Primary Roles
+
+Press `Shift+Tab` inside OpenCode at any time to switch:
+
+| Primary Role | Default | What It Does | Best For |
+| --- | --- | --- | --- |
+| **`UltraBuild`** | Default | Clarifies goals, plans milestones, coordinates specialists, and ships working results | Everyday building, bug fixing, and end-to-end delivery |
+| **`UltraPlan`** | `Shift+Tab` | Strictly read-only planning — never modifies your code | Exploring early ideas, trade-offs, and architecture safely |
+
+## What the 5 Background Experts Do Automatically
+
+You never have to summon them manually — `UltraBuild` brings each one in at the right moment:
+
+- **Research**: Explores your project conventions and external docs so nothing is built on guesswork.
+- **Architecture**: Maps out data flow, boundaries, and trade-offs before code is written.
+- **Implementation**: Writes clean, scoped changes together with matching tests.
+- **Skeptical Code Review**: Independently audits the diff for edge cases, regressions, and missed requirements.
+- **Real-Browser Visual QA**: Launches a real browser to click through flows and inspect desktop and mobile screenshots.

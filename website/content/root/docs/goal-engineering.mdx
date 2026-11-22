@@ -1,0 +1,31 @@
+---
+title: 什么是目标工程（Goal Engineering）
+description: 从提示词工程、上下文工程走向目标工程：把时间花在说清“要什么”，而不是微调怎么写代码。
+---
+
+import ThreeErasDiagram from "../../../components/diagrams/ThreeErasDiagram.astro";
+import GoalComparisonDiagram from "../../../components/diagrams/GoalComparisonDiagram.astro";
+
+AI 编程正在经历第三次范式跃迁。你不再需要研究玄学提示词，也不必手动拼接几十个文件喂给模型。
+
+<figure class="uc-doc-figure">
+  <ThreeErasDiagram lang="zh" />
+  <figcaption>AI 编程三阶段：从雕琢单句指令，到把完整目标交给系统闭环交付。</figcaption>
+</figure>
+
+## 为什么普通对话经常“写着写着就跑偏”？
+
+普通 AI 对话往往在没搞清需求时就急着写代码，聊久了忘记前面约定，最后改坏旧功能还自信宣布完工。UltraCode 把过程改成了受约束的工程闭环：
+
+<figure class="uc-doc-figure">
+  <GoalComparisonDiagram lang="zh" />
+  <figcaption>普通 AI 对话与 UltraCode 目标工程的执行轨迹对比。</figcaption>
+</figure>
+
+## 像产品经理和架构师一样和 UltraCode 说话
+
+不需要背任何斜杠命令或魔法提示词，只要用自然语言讲清三件事：
+
+- **给谁用**：目标用户是谁、在什么场景下使用（例如手机端还是桌面端）。
+- **要做成什么样**：核心流程、风格偏好，以及明确不想做的边界。
+- **怎么算做完**：你最看重的验收标准（例如测试全绿、手机端不重叠、接口返回稳定）。

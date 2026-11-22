@@ -15,4 +15,11 @@ website/.astro/
 website/src/content/docs/
 website/public/install.sh
 .playwright-mcp/
+.impeccable/mocks/
+.impeccable/review/
+.impeccable/build/
+.impeccable/live/
+.impeccable/questions/
+.impeccable/surfaces/
+.impeccable/surface-brief-*.md
 .DS_Store

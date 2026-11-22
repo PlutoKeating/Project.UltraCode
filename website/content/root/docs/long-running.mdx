@@ -1,0 +1,25 @@
+---
+title: 长程任务与断点续跑
+description: 大任务自动按里程碑推进，随时插话纠偏；隔天或重启终端后一句话无缝续跑。
+---
+
+import LongRunningDiagram from "../../../components/diagrams/LongRunningDiagram.astro";
+
+面对需要几十步甚至跨天完成的复杂项目，UltraCode 不会一口气吐出半成品就停下，也不会用成百上千行噪音刷屏。
+
+<figure class="uc-doc-figure">
+  <LongRunningDiagram lang="zh" />
+  <figcaption>按里程碑自动续进，关键节点留存交接，随时可插话转向或跨会话恢复。</figcaption>
+</figure>
+
+## 你在长程任务中的真实体验
+
+- **自动稳步推进**：每个里程碑完成后自动进入下一阶段，聊天界面只保留里程碑进展、阻塞点与验收结论。
+- **随时插话即刻生效**：你在任意时刻发出的新消息都会立即改变方向或暂停执行，控制权始终在你手里。
+- **重启或隔天无缝续跑**：哪怕关掉终端、换了一天，重新打开 `opencode` 只需说一句：
+
+```text
+读取交接并继续
+```
+
+UltraCode 会自动找回上次的进度、已完成的验收与下一步计划，接着把剩下的事情做完。

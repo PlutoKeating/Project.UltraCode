@@ -1,0 +1,33 @@
+---
+title: 常见问题与无侵入承诺
+description: 关于账号安全、模型兼容性、配置保护与日常维护的 5 个核心问题。
+---
+
+import TuiControlsDiagram from "../../../components/diagrams/TuiControlsDiagram.astro";
+
+UltraCode 恪守**零魔改、可逆、无侵入**原则：它只是站在官方 OpenCode 肩膀上的目标工程增强层。
+
+<figure class="uc-doc-figure">
+  <TuiControlsDiagram lang="zh" />
+  <figcaption>完全运行在官方 OpenCode 原生体系之内，随时可切换开关或一键干净撤出。</figcaption>
+</figure>
+
+## 1. 它会魔改官方 OpenCode，或者读取我的 API Key 吗？
+
+**不会。** UltraCode 采用纯增量扩展方式接入官方 OpenCode，不替换官方主程序，也不收集、不上传、不触碰你的 API Key 或账号凭据。
+
+## 2. UltraCode 支持哪些 AI 模型？
+
+**你原来在 OpenCode 里用什么模型，装完之后就继续用什么模型。** UltraCode 完全保持模型与服务商中立，不绑定任何特定模型厂商。
+
+## 3. 安装会覆盖我原有的 OpenCode 配置和技能吗？
+
+**不会。** 安装与同步过程会自动保留你原有的个性化配置、快捷键与自定义技能，只做无损合并；执行 `uc uninstall --yes` 也能干净撤出，不留脏数据。
+
+## 4. 官方 OpenCode 更新了怎么办？
+
+直接运行 `uc sync` 即可秒级重新对齐；更推荐平时直接用 `uc up`，一条命令同时升级官方 OpenCode 与 UltraCode。
+
+## 5. 怎么确认当前安装和环境一切健康？
+
+在终端运行 `uc doctor`。它只需几秒钟即可完成全项检查，且**全程零模型调用**，不会产生任何费用。

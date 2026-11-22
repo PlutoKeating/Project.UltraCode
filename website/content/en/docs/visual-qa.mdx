@@ -1,0 +1,20 @@
+---
+title: Real-Browser Visual QA
+description: Passing unit tests is not enough for UI. UltraCode opens a real browser, clicks through controls, inspects screenshots, and fixes defects before sign-off.
+---
+
+import VisualQaDiagram from "../../../../components/diagrams/VisualQaDiagram.astro";
+
+For web apps and interfaces, green unit tests alone can still hide overlapping buttons, broken mobile layouts, low-contrast text, or dead click handlers.
+
+<figure class="uc-doc-figure">
+  <VisualQaDiagram lang="en" />
+  <figcaption>Headless real-browser interaction, desktop and mobile screenshot checks, and automatic fix-and-recheck loops.</figcaption>
+</figure>
+
+## Four Visual Checks Before Calling Work Done
+
+1. **Runs your real app**: Starts the local app and opens it in a real headless browser.
+2. **Clicks like a real user**: Exercises buttons, forms, navigation, and interactive states to catch runtime or flow errors.
+3. **Inspects desktop & mobile screenshots**: Looks for overlapping elements, clipped text, alignment drift, and contrast issues across screen sizes.
+4. **Fixes and re-verifies**: Whenever a visual or interaction defect appears, UltraCode fixes it and captures fresh screenshots before delivering.

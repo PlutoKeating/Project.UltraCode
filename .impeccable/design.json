@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "world": "Vapor-Noir Smoked Glass",
+  "fonts": {
+    "display": ["Sora", "PingFang SC", "Noto Sans SC", "sans-serif"],
+    "mono": ["JetBrains Mono", "ui-monospace", "monospace"]
+  },
+  "tokens": {
+    "void": "#06070d",
+    "surface": "#0b0e17",
+    "surfaceElevated": "#101522",
+    "ink": "#f3f6fa",
+    "inkSecondary": "#9ba6b8",
+    "inkMuted": "#6c788e",
+    "cyan": "#22d3ee",
+    "coral": "#e05a7a",
+    "emerald": "#34d399"
+  },
+  "lightDocs": {
+    "bg": "#f7f8fa",
+    "sidebar": "#ffffff",
+    "ink": "#0f172a",
+    "accent": "#0284c7"
+  }
+}

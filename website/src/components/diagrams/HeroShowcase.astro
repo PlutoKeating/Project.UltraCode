@@ -1,0 +1,369 @@
+---
+interface Props {
+  lang?: "zh" | "en";
+}
+const { lang = "zh" } = Astro.props;
+const zh = lang === "zh";
+---
+
+<div class="uc-stage" aria-label={zh ? "UltraCode 工作流与真机视觉验收实景示意" : "UltraCode workflow and real-browser visual QA preview"}>
+  <div class="uc-stage-pane uc-stage-tui">
+    <div class="uc-pane-bar">
+      <span class="uc-pane-title">OpenCode · UltraBuild</span>
+      <span class="uc-pane-tag">{zh ? "目标工程运行中" : "Goal Engine Active"}</span>
+    </div>
+
+    <div class="uc-tui-body">
+      <div class="uc-tui-prompt">
+        <span class="uc-tui-chevron">&gt;</span>
+        <span>
+          {zh
+            ? "做一个个人作品集主页，克制暗色风格，桌面和手机都要好看。"
+            : "Build a clean dark portfolio homepage that looks sharp on desktop and mobile."}
+        </span>
+      </div>
+
+      <div class="uc-tui-cards-label">
+        {zh ? "先一次性澄清关键决策：" : "Clarifying key decisions upfront:"}
+      </div>
+
+      <div class="uc-choice-row">
+        <div class="uc-choice-card is-selected">
+          <div class="uc-choice-head">
+            <span>{zh ? "烟熏玻璃暗场" : "Smoked Obsidian"}</span>
+            <span class="uc-choice-dot"></span>
+          </div>
+          <p>{zh ? "深空底 + 极细冰青线" : "Obsidian + ice-cyan"}</p>
+        </div>
+        <div class="uc-choice-card">
+          <div class="uc-choice-head">
+            <span>{zh ? "瑞士工业网格" : "Swiss Grid"}</span>
+            <span class="uc-choice-ring"></span>
+          </div>
+          <p>{zh ? "哑光炭黑 + 1px 网格" : "Matte slate + hairlines"}</p>
+        </div>
+        <div class="uc-choice-card">
+          <div class="uc-choice-head">
+            <span>{zh ? "极简纸面排版" : "Editorial Light"}</span>
+            <span class="uc-choice-ring"></span>
+          </div>
+          <p>{zh ? "浅灰白底 + 高对比字" : "Crisp alabaster ink"}</p>
+        </div>
+      </div>
+
+      <div class="uc-milestones">
+        <div class="uc-ms-title">{zh ? "自动推进里程碑" : "Autonomous Milestones"}</div>
+        <ul>
+          <li class="is-done">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5L6.5 11.5L12.5 4.5" stroke="currentColor" stroke-width="1.75" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>{zh ? "需求澄清与架构方案已锁定" : "Scope clarified & plan locked"}</span>
+          </li>
+          <li class="is-done">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5L6.5 11.5L12.5 4.5" stroke="currentColor" stroke-width="1.75" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>{zh ? "子代理并行实现与独立代码评审通过" : "Subagent build & skeptical review passed"}</span>
+          </li>
+          <li class="is-active">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5L6.5 11.5L12.5 4.5" stroke="currentColor" stroke-width="1.75" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>{zh ? "真机浏览器桌面/移动端目视验收通过" : "Real browser desktop & mobile QA passed"}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="uc-stage-divider" aria-hidden="true"></div>
+
+  <div class="uc-stage-pane uc-stage-browser">
+    <div class="uc-browser-chrome">
+      <div class="uc-browser-dots" aria-hidden="true">
+        <span></span><span></span><span></span>
+      </div>
+      <div class="uc-browser-url">localhost:4321 · Chromium 1440×900</div>
+      <div class="uc-qa-badge">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5L6.5 11.5L12.5 4.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>{zh ? "视觉验收通过" : "Visual QA Passed"}</span>
+      </div>
+    </div>
+
+    <div class="uc-browser-viewport">
+      <svg viewBox="0 0 460 276" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label={zh ? "真机浏览器视觉检查示意图" : "Headless browser visual inspection diagram"}>
+        <rect x="0.5" y="0.5" width="459" height="275" rx="6" fill="#0B0F1A" stroke="rgba(255,255,255,0.08)"/>
+        <rect x="0.5" y="0.5" width="96" height="275" rx="6" fill="#0E1320"/>
+        <line x1="97" y1="1" x2="97" y2="275" stroke="rgba(255,255,255,0.07)"/>
+        <rect x="18" y="22" width="56" height="8" rx="2" fill="#22D3EE" fill-opacity="0.7"/>
+        <rect x="18" y="48" width="60" height="6" rx="2" fill="rgba(255,255,255,0.16)"/>
+        <rect x="18" y="64" width="46" height="6" rx="2" fill="rgba(255,255,255,0.10)"/>
+        <rect x="18" y="80" width="52" height="6" rx="2" fill="rgba(255,255,255,0.10)"/>
+        <rect x="18" y="96" width="42" height="6" rx="2" fill="rgba(255,255,255,0.10)"/>
+
+        <rect x="118" y="22" width="164" height="12" rx="2" fill="#F3F6FA" fill-opacity="0.88"/>
+        <rect x="118" y="42" width="220" height="6" rx="2" fill="rgba(255,255,255,0.22)"/>
+
+        <rect x="118" y="66" width="154" height="88" rx="5" fill="#121827" stroke="rgba(34,211,238,0.34)" stroke-dasharray="3 3"/>
+        <rect x="132" y="82" width="68" height="8" rx="2" fill="#22D3EE" fill-opacity="0.5"/>
+        <rect x="132" y="100" width="120" height="6" rx="2" fill="rgba(255,255,255,0.18)"/>
+        <rect x="132" y="114" width="96" height="6" rx="2" fill="rgba(255,255,255,0.12)"/>
+        <rect x="132" y="130" width="52" height="12" rx="3" fill="#22D3EE" fill-opacity="0.85"/>
+
+        <rect x="286" y="66" width="152" height="88" rx="5" fill="#121827" stroke="rgba(255,255,255,0.08)"/>
+        <path d="M304 134 L334 118 L366 122 L396 96 L422 86" stroke="#22D3EE" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="396" cy="96" r="3.5" fill="#22D3EE"/>
+        <circle cx="422" cy="86" r="3.5" fill="#34D399"/>
+
+        <rect x="118" y="170" width="320" height="86" rx="5" fill="#101624" stroke="rgba(52,211,153,0.28)"/>
+        <rect x="134" y="188" width="92" height="7" rx="2" fill="rgba(255,255,255,0.26)"/>
+        <rect x="134" y="204" width="280" height="6" rx="2" fill="rgba(255,255,255,0.12)"/>
+        <rect x="134" y="218" width="236" height="6" rx="2" fill="rgba(255,255,255,0.10)"/>
+        <rect x="134" y="234" width="110" height="10" rx="2" fill="rgba(52,211,153,0.18)"/>
+        <text x="142" y="242" fill="#34D399" font-family="JetBrains Mono, monospace" font-size="8.5">
+          {zh ? "对比度 · 溢出 · 交互 全部通过" : "Contrast · Layout · Flow OK"}
+        </text>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<style>
+  .uc-stage {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1.04fr 1px 1fr;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: linear-gradient(180deg, rgba(13, 17, 27, 0.86), rgba(8, 11, 18, 0.94));
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    box-shadow:
+      0 28px 80px rgba(0, 0, 0, 0.58),
+      inset 0 1px 0 rgba(255, 255, 255, 0.14);
+    overflow: hidden;
+    text-align: left;
+  }
+
+  .uc-stage-divider {
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .uc-stage-pane {
+    padding: 1.15rem 1.25rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    min-width: 0;
+  }
+
+  .uc-pane-bar,
+  .uc-browser-chrome {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding-bottom: 0.7rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    font-size: 0.78rem;
+  }
+
+  .uc-pane-title {
+    font-family: var(--uc-font-mono);
+    color: #dbe3ee;
+    font-weight: 500;
+  }
+
+  .uc-pane-tag {
+    font-size: 0.72rem;
+    color: var(--uc-cyan);
+    background: var(--uc-cyan-soft);
+    border: 1px solid var(--uc-cyan-border);
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+  }
+
+  .uc-tui-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .uc-tui-prompt {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.55rem;
+    font-size: 0.86rem;
+    line-height: 1.5;
+    color: #f3f6fa;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 8px;
+    padding: 0.65rem 0.8rem;
+  }
+
+  .uc-tui-chevron {
+    font-family: var(--uc-font-mono);
+    color: var(--uc-cyan);
+    font-weight: 600;
+  }
+
+  .uc-tui-cards-label,
+  .uc-ms-title {
+    font-size: 0.76rem;
+    color: var(--uc-ink-secondary);
+  }
+
+  .uc-choice-row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.55rem;
+  }
+
+  .uc-choice-card {
+    padding: 0.6rem 0.65rem;
+    border-radius: 7px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  .uc-choice-card.is-selected {
+    border-color: var(--uc-cyan-border);
+    background: rgba(34, 211, 238, 0.07);
+  }
+
+  .uc-choice-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.35rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #f3f6fa;
+    margin-bottom: 0.25rem;
+  }
+
+  .uc-choice-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--uc-cyan);
+    flex-shrink: 0;
+  }
+
+  .uc-choice-ring {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.26);
+    flex-shrink: 0;
+  }
+
+  .uc-choice-card p {
+    margin: 0;
+    font-size: 0.72rem;
+    color: var(--uc-ink-secondary);
+    line-height: 1.35;
+  }
+
+  .uc-milestones {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+
+  .uc-milestones ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .uc-milestones li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    color: #dbe3ee;
+  }
+
+  .uc-milestones li svg {
+    width: 15px;
+    height: 15px;
+    color: var(--uc-emerald);
+    flex-shrink: 0;
+  }
+
+  .uc-milestones li.is-active {
+    color: #f3f6fa;
+    font-weight: 500;
+  }
+
+  .uc-milestones li.is-active svg {
+    color: var(--uc-cyan);
+  }
+
+  .uc-browser-dots {
+    display: flex;
+    gap: 5px;
+  }
+
+  .uc-browser-dots span {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.16);
+  }
+
+  .uc-browser-url {
+    font-family: var(--uc-font-mono);
+    font-size: 0.72rem;
+    color: var(--uc-ink-secondary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .uc-qa-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.18rem 0.55rem;
+    border-radius: 999px;
+    background: var(--uc-emerald-soft);
+    border: 1px solid rgba(52, 211, 153, 0.34);
+    color: var(--uc-emerald);
+    font-size: 0.72rem;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .uc-qa-badge svg {
+    width: 13px;
+    height: 13px;
+  }
+
+  .uc-browser-viewport {
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  .uc-browser-viewport svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  @media (max-width: 900px) {
+    .uc-stage {
+      grid-template-columns: 1fr;
+    }
+
+    .uc-stage-divider {
+      height: 1px;
+      width: 100%;
+    }
+
+    .uc-choice-row {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

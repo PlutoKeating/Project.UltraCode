@@ -1,0 +1,661 @@
+---
+import "../styles/tokens.css";
+import HeroShowcase from "./diagrams/HeroShowcase.astro";
+import GoalComparisonDiagram from "./diagrams/GoalComparisonDiagram.astro";
+import MinimalDemoDiagram from "./diagrams/MinimalDemoDiagram.astro";
+import RolesTopologyDiagram from "./diagrams/RolesTopologyDiagram.astro";
+import LongRunningDiagram from "./diagrams/LongRunningDiagram.astro";
+import TuiControlsDiagram from "./diagrams/TuiControlsDiagram.astro";
+
+interface Props {
+  lang: "zh" | "en";
+}
+
+const { lang } = Astro.props;
+const zh = lang === "zh";
+
+const installCmd = "curl -fsSL https://ultracode.plutokeating.beer/install.sh | bash";
+const docsHref = zh ? "/docs/getting-started/" : "/en/docs/getting-started/";
+const altHref = zh ? "/en/" : "/";
+const altLabel = zh ? "EN" : "中文";
+const examplePrompt = zh
+  ? "帮我做一个个人作品集单页，克制暗色风格，桌面和手机都要好看，做完自己打开浏览器检查并修复所有排版问题。"
+  : "Build a restrained dark portfolio page that looks sharp on desktop and mobile, then open a real browser to inspect and fix any layout issues.";
+---
+
+<!doctype html>
+<html lang={zh ? "zh-CN" : "en"} data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{zh ? "UltraCode — 让 OpenCode 迈入目标工程时代" : "UltraCode — Goal Engineering for OpenCode"}</title>
+    <meta
+      name="description"
+      content={zh
+        ? "继 Prompt 与 Context 之后，为官方 OpenCode 带来目标工程（Goal Engineering）：先调研澄清、多角色协作、真机浏览器目视验收、持久交接续跑。"
+        : "Goal Engineering for official OpenCode V2: clarify upfront, orchestrate specialized subagents, verify in a real browser, and hand off cleanly across long-running work."}
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body>
+    <div class="uc-page">
+      <header class="uc-nav">
+        <div class="uc-nav-inner">
+          <a href={zh ? "/" : "/en/"} class="uc-brand" aria-label="UltraCode">
+            <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+              <path d="M16 2.5L28 9.25V22.75L16 29.5L4 22.75V9.25L16 2.5Z" stroke="#94A3B8" stroke-opacity="0.55" stroke-width="1.25"/>
+              <path d="M10.5 10.5V18.25L16 21.5L21.5 18.25V10.5" stroke="#F3F6FA" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"/>
+              <path d="M16 14.5V21.5" stroke="#22D3EE" stroke-width="2" stroke-linecap="square"/>
+              <circle cx="16" cy="10.25" r="1.75" fill="#22D3EE"/>
+            </svg>
+            <span>UltraCode</span>
+          </a>
+
+          <nav class="uc-nav-links" aria-label={zh ? "主导航" : "Main navigation"}>
+            <a href={docsHref}>{zh ? "文档" : "Docs"}</a>
+            <a href="https://github.com/PlutoKeating/Project.UltraCode" target="_blank" rel="noreferrer">GitHub</a>
+            <a href={altHref} class="uc-lang-link">{altLabel}</a>
+          </nav>
+        </div>
+      </header>
+
+      <main>
+        <!-- Hero: V2-C Vapor-Noir Smoked Glass Product Stage -->
+        <section class="uc-hero">
+          <div class="uc-horizon-mist" aria-hidden="true"></div>
+          <div class="uc-container uc-hero-inner">
+            <h1>{zh ? "一句目标，交付到底" : "One Goal. Delivered End-to-End."}</h1>
+            <p class="uc-hero-sub">
+              {zh
+                ? "继 Prompt 与 Context 之后，为官方 OpenCode 带来目标工程（Goal Engineering）"
+                : "Beyond Prompt and Context — Goal Engineering for official OpenCode V2."}
+            </p>
+
+            <div class="uc-install-row">
+              <div class="uc-install-bar">
+                <code class="uc-install-code">{installCmd}</code>
+                <button
+                  type="button"
+                  class="uc-copy-btn"
+                  data-copy={installCmd}
+                  data-copied-label={zh ? "已复制 ✓" : "Copied ✓"}
+                  data-default-label={zh ? "复制安装" : "Copy install"}
+                >
+                  {zh ? "复制安装" : "Copy install"}
+                </button>
+              </div>
+              <a href={docsHref} class="uc-quickstart-link">
+                <span>{zh ? "快速开始" : "Quick start"}</span>
+                <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M3.5 8H12.5M9 4.5L12.5 8L9 11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+            </div>
+
+            <div class="uc-hero-stage">
+              <HeroShowcase lang={lang} />
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 2: Before vs After Comparison -->
+        <section class="uc-section">
+          <div class="uc-container">
+            <div class="uc-section-head">
+              <h2>{zh ? "为什么装完立刻觉得 OpenCode 变强了？" : "Why OpenCode Feels Immediately Stronger"}</h2>
+              <p>
+                {zh
+                  ? "普通对话容易边猜边写、越聊越偏；UltraCode 用可验证的目标闭环替代盲目试错。"
+                  : "Ordinary chat guesses and drifts; UltraCode replaces trial-and-error with a verified goal loop."}
+              </p>
+            </div>
+            <GoalComparisonDiagram lang={lang} />
+          </div>
+        </section>
+
+        <!-- Section 3: 1-Minute Minimal Demo -->
+        <section class="uc-section uc-section-alt">
+          <div class="uc-container">
+            <div class="uc-section-head">
+              <h2>{zh ? "装完立刻试：1 分钟最小上手体验" : "Try It Right After Install: 1-Minute Demo"}</h2>
+              <p>
+                {zh
+                  ? "在任意空目录运行 opencode，直接发下面这一句话，亲眼见证完整目标工程。"
+                  : "Run opencode in any empty folder, send this single sentence, and watch Goal Engineering work."}
+              </p>
+            </div>
+
+            <MinimalDemoDiagram lang={lang} />
+
+            <div class="uc-prompt-strip">
+              <div class="uc-prompt-text">
+                <span class="uc-prompt-mark">&gt;</span>
+                <span>{examplePrompt}</span>
+              </div>
+              <button
+                type="button"
+                class="uc-copy-btn uc-copy-btn-subtle"
+                data-copy={examplePrompt}
+                data-copied-label={zh ? "已复制 ✓" : "Copied ✓"}
+                data-default-label={zh ? "复制示例" : "Copy prompt"}
+              >
+                {zh ? "复制示例" : "Copy prompt"}
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 4: Roles & Experts -->
+        <section class="uc-section">
+          <div class="uc-container">
+            <div class="uc-section-head">
+              <h2>{zh ? "双主角色 + 5 位后台专家，各司其职" : "Two Primary Roles + Five Background Experts"}</h2>
+              <p>
+                {zh
+                  ? "平时只需和 UltraBuild 自然对话；想先讨论方案不改代码时，按 Shift+Tab 切到 UltraPlan。"
+                  : "Talk naturally to UltraBuild for end-to-end delivery, or press Shift+Tab for read-only UltraPlan."}
+              </p>
+            </div>
+            <RolesTopologyDiagram lang={lang} />
+          </div>
+        </section>
+
+        <!-- Section 5: Long-running + TUI Controls -->
+        <section class="uc-section uc-section-alt">
+          <div class="uc-container uc-stack-lg">
+            <div>
+              <div class="uc-section-head">
+                <h2>{zh ? "长程任务不掉链子，重启也能接着做" : "Built for Multi-Hour Goals & Clean Resumption"}</h2>
+                <p>
+                  {zh
+                    ? "自动推进下一个里程碑，随时接受你的插话与叫停；换天回来一句“读取交接并继续”即可无缝接力。"
+                    : "Advances milestones automatically, yields immediately when you steer, and resumes cleanly after restarts."}
+                </p>
+              </div>
+              <LongRunningDiagram lang={lang} />
+            </div>
+
+            <div>
+              <div class="uc-section-head">
+                <h2>{zh ? "全自动还是先问你，在 TUI 里一键切换" : "Control Autonomy Live Inside the TUI"}</h2>
+                <p>
+                  {zh
+                    ? "打开 OpenCode 命令面板搜 UltraCode，独立切换「命令审批」与「方向询问」，安全边界始终受控。"
+                    : "Search UltraCode in the TUI Command Palette to toggle Command approvals and Direction questions independently."}
+                </p>
+              </div>
+              <TuiControlsDiagram lang={lang} />
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 6: Clean Anchor Close -->
+        <section class="uc-close">
+          <div class="uc-container uc-close-inner">
+            <h2>{zh ? "一行命令装好，继续用你自己的模型" : "Install in One Line. Keep Your Models."}</h2>
+            <p class="uc-close-trust">
+              {zh
+                ? "不改 OpenCode 官方二进制 · 不碰你的 API 密钥 · 不覆盖已有配置 · 随时可无痕卸载"
+                : "Never modifies official OpenCode · Never touches API keys · Preserves your config · Clean uninstall"}
+            </p>
+
+            <div class="uc-install-row">
+              <div class="uc-install-bar">
+                <code class="uc-install-code">{installCmd}</code>
+                <button
+                  type="button"
+                  class="uc-copy-btn"
+                  data-copy={installCmd}
+                  data-copied-label={zh ? "已复制 ✓" : "Copied ✓"}
+                  data-default-label={zh ? "复制安装" : "Copy install"}
+                >
+                  {zh ? "复制安装" : "Copy install"}
+                </button>
+              </div>
+              <a href={docsHref} class="uc-primary-cta">
+                <span>{zh ? "进入 1 分钟快速开始" : "Open 1-Minute Quick Start"}</span>
+                <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M3.5 8H12.5M9 4.5L12.5 8L9 11.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="uc-footer">
+        <div class="uc-container uc-footer-inner">
+          <span>UltraCode · MIT License</span>
+          <div class="uc-footer-links">
+            <a href={docsHref}>{zh ? "文档教程" : "Documentation"}</a>
+            <a href="https://github.com/PlutoKeating/Project.UltraCode" target="_blank" rel="noreferrer">GitHub</a>
+            <a href={altHref}>{zh ? "English" : "简体中文"}</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      document.querySelectorAll<HTMLButtonElement>("[data-copy]").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          const text = btn.dataset.copy ?? "";
+          if (!text) return;
+          try {
+            await navigator.clipboard.writeText(text);
+            const copied = btn.dataset.copiedLabel || "Copied ✓";
+            const original = btn.dataset.defaultLabel || btn.textContent || "";
+            btn.textContent = copied;
+            btn.classList.add("is-copied");
+            window.setTimeout(() => {
+              btn.textContent = original;
+              btn.classList.remove("is-copied");
+            }, 1800);
+          } catch {
+            // Fallback: select command text if clipboard API is blocked
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
+
+<style>
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    background: var(--uc-void);
+    color: var(--uc-ink);
+    font-family: var(--uc-font-sans);
+    -webkit-font-smoothing: antialiased;
+    font-variant-numeric: tabular-nums;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .uc-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: clip;
+  }
+
+  .uc-container {
+    width: 100%;
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  /* Header */
+  .uc-nav {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    height: 58px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(6, 7, 13, 0.78);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  .uc-nav-inner {
+    max-width: 1160px;
+    height: 100%;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .uc-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-weight: 600;
+    font-size: 0.98rem;
+    letter-spacing: -0.015em;
+    color: var(--uc-ink);
+  }
+
+  .uc-brand svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .uc-nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    font-size: 0.88rem;
+    color: var(--uc-ink-secondary);
+  }
+
+  .uc-nav-links a {
+    transition: color 160ms ease;
+  }
+
+  .uc-nav-links a:hover {
+    color: var(--uc-ink);
+  }
+
+  .uc-lang-link {
+    font-family: var(--uc-font-mono);
+    font-size: 0.8rem;
+    padding: 0.22rem 0.55rem;
+    border-radius: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #dbe3ee;
+  }
+
+  .uc-lang-link:hover {
+    border-color: var(--uc-cyan-border);
+    color: var(--uc-cyan);
+  }
+
+  /* Hero */
+  .uc-hero {
+    position: relative;
+    padding: 4.5rem 0 4.25rem;
+    isolation: isolate;
+  }
+
+  .uc-horizon-mist {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(66% 40% at 26% 56%, rgba(24, 184, 216, 0.22), transparent 72%),
+      radial-gradient(60% 38% at 76% 54%, rgba(124, 111, 168, 0.20), transparent 74%),
+      linear-gradient(180deg, #06070d 0%, rgba(11, 15, 26, 0.35) 54%, #06070d 100%);
+  }
+
+  .uc-hero-inner {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .uc-hero h1 {
+    margin: 0;
+    font-family: var(--uc-font-display);
+    font-size: clamp(2.4rem, 5vw, 3.85rem);
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    line-height: 1.12;
+    color: var(--uc-ink);
+    text-wrap: balance;
+  }
+
+  .uc-hero-sub {
+    margin: 1.1rem 0 0;
+    max-width: 640px;
+    font-size: clamp(1rem, 1.5vw, 1.15rem);
+    line-height: 1.6;
+    color: var(--uc-ink-secondary);
+    text-wrap: balance;
+  }
+
+  /* Install bar */
+  .uc-install-row {
+    margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.9rem;
+    width: 100%;
+  }
+
+  .uc-install-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.42rem 0.45rem 0.42rem 1rem;
+    border-radius: 9px;
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    background: rgba(12, 16, 26, 0.86);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    max-width: 100%;
+  }
+
+  .uc-install-code {
+    font-family: var(--uc-font-mono);
+    font-size: 0.84rem;
+    color: #dbe3ee;
+    white-space: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .uc-install-code::-webkit-scrollbar {
+    display: none;
+  }
+
+  .uc-copy-btn {
+    flex-shrink: 0;
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--uc-ink);
+    font-family: var(--uc-font-sans);
+    font-size: 0.82rem;
+    font-weight: 500;
+    padding: 0.48rem 0.95rem;
+    border-radius: 6px;
+    transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+  }
+
+  .uc-copy-btn:hover {
+    background: rgba(34, 211, 238, 0.16);
+    border-color: var(--uc-cyan-border);
+    color: var(--uc-cyan);
+  }
+
+  .uc-copy-btn.is-copied {
+    background: var(--uc-emerald-soft);
+    border-color: rgba(52, 211, 153, 0.42);
+    color: var(--uc-emerald);
+  }
+
+  .uc-quickstart-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #dbe3ee;
+    padding: 0.55rem 0.75rem;
+    border-radius: 7px;
+    transition: color 160ms ease, background 160ms ease;
+  }
+
+  .uc-quickstart-link:hover {
+    color: var(--uc-cyan);
+    background: rgba(34, 211, 238, 0.07);
+  }
+
+  .uc-quickstart-link svg,
+  .uc-primary-cta svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  .uc-hero-stage {
+    width: 100%;
+    margin-top: 2.75rem;
+  }
+
+  /* Content Sections */
+  .uc-section {
+    padding: 5.25rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .uc-section-alt {
+    background: linear-gradient(180deg, rgba(12, 16, 26, 0.55), rgba(6, 7, 13, 0.9));
+  }
+
+  .uc-section-head {
+    max-width: 680px;
+    margin-bottom: 2rem;
+  }
+
+  .uc-section-head h2 {
+    margin: 0;
+    font-family: var(--uc-font-display);
+    font-size: clamp(1.55rem, 2.8vw, 2.15rem);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.25;
+    color: var(--uc-ink);
+  }
+
+  .uc-section-head p {
+    margin: 0.75rem 0 0;
+    font-size: 0.98rem;
+    line-height: 1.65;
+    color: var(--uc-ink-secondary);
+  }
+
+  .uc-stack-lg {
+    display: flex;
+    flex-direction: column;
+    gap: 4.5rem;
+  }
+
+  /* Prompt example strip */
+  .uc-prompt-strip {
+    margin-top: 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.95rem 1.15rem;
+    border-radius: 10px;
+    border: 1px solid rgba(34, 211, 238, 0.24);
+    background: rgba(13, 18, 29, 0.84);
+  }
+
+  .uc-prompt-text {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    font-size: 0.92rem;
+    line-height: 1.55;
+    color: #e2e8f0;
+    flex: 1;
+    min-width: 240px;
+  }
+
+  .uc-prompt-mark {
+    font-family: var(--uc-font-mono);
+    color: var(--uc-cyan);
+    font-weight: 600;
+  }
+
+  /* Close CTA */
+  .uc-close {
+    padding: 5.5rem 0 5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    background:
+      radial-gradient(60% 70% at 50% 100%, rgba(24, 184, 216, 0.12), transparent 72%),
+      var(--uc-void);
+  }
+
+  .uc-close-inner {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .uc-close h2 {
+    margin: 0;
+    font-family: var(--uc-font-display);
+    font-size: clamp(1.7rem, 3.2vw, 2.4rem);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    color: var(--uc-ink);
+  }
+
+  .uc-close-trust {
+    margin: 0.9rem 0 0;
+    font-size: 0.92rem;
+    color: var(--uc-ink-secondary);
+  }
+
+  .uc-primary-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.65rem 1.2rem;
+    border-radius: 8px;
+    background: var(--uc-cyan);
+    color: #06070d;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: transform 150ms ease, filter 150ms ease;
+  }
+
+  .uc-primary-cta:hover {
+    filter: brightness(1.08);
+    transform: translateY(-1px);
+  }
+
+  /* Footer */
+  .uc-footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 1.5rem 0;
+    font-size: 0.84rem;
+    color: var(--uc-ink-muted);
+  }
+
+  .uc-footer-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .uc-footer-links {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  .uc-footer-links a:hover {
+    color: var(--uc-ink);
+  }
+
+  @media (max-width: 720px) {
+    .uc-hero {
+      padding: 3rem 0 3rem;
+    }
+
+    .uc-install-bar {
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    .uc-section {
+      padding: 3.5rem 0;
+    }
+  }
+</style>

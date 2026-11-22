@@ -1,0 +1,66 @@
+@import "@fontsource/sora/400.css";
+@import "@fontsource/sora/500.css";
+@import "@fontsource/sora/600.css";
+@import "@fontsource/sora/700.css";
+@import "@fontsource/jetbrains-mono/400.css";
+@import "@fontsource/jetbrains-mono/500.css";
+
+:root {
+  --uc-void: #06070d;
+  --uc-surface: #0b0e17;
+  --uc-surface-elevated: #101522;
+  --uc-glass: rgba(13, 17, 27, 0.78);
+  --uc-glass-strong: rgba(15, 20, 32, 0.9);
+  --uc-border: rgba(255, 255, 255, 0.09);
+  --uc-border-strong: rgba(255, 255, 255, 0.16);
+  --uc-hairline: rgba(148, 163, 184, 0.14);
+
+  --uc-ink: #f3f6fa;
+  --uc-ink-secondary: #9ba6b8;
+  --uc-ink-muted: #6c788e;
+
+  --uc-cyan: #22d3ee;
+  --uc-cyan-soft: rgba(34, 211, 238, 0.14);
+  --uc-cyan-border: rgba(34, 211, 238, 0.34);
+  --uc-violet-mist: rgba(124, 111, 168, 0.18);
+  --uc-coral: #e05a7a;
+  --uc-coral-soft: rgba(224, 90, 122, 0.14);
+  --uc-emerald: #34d399;
+  --uc-emerald-soft: rgba(52, 211, 153, 0.14);
+
+  --uc-font-display: "Sora", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  --uc-font-sans: "Sora", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  --uc-font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --uc-radius-sm: 4px;
+  --uc-radius-md: 8px;
+  --uc-radius-lg: 12px;
+}
+
+::selection {
+  background: rgba(34, 211, 238, 0.24);
+  color: #f8fafc;
+}
+
+:focus-visible {
+  outline: 2px solid var(--uc-cyan);
+  outline-offset: 2px;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #06070d;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e2638;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2f3b54;
+}

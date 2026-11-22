@@ -1,0 +1,29 @@
+---
+title: TUI Controls, Upgrades & Uninstall
+description: Toggle autonomy right inside OpenCode's Command Palette and manage upgrades, sync, health checks, or clean removal with 4 commands.
+---
+
+import TuiControlsDiagram from "../../../../components/diagrams/TuiControlsDiagram.astro";
+
+Day-to-day control stays right inside OpenCode's native UI and four simple terminal commands — no manual config editing needed.
+
+## Toggle Switches in the OpenCode Command Palette
+
+Open the OpenCode Command Palette and search **UltraCode** to adjust both switches anytime:
+
+<figure class="uc-doc-figure">
+  <TuiControlsDiagram lang="en" />
+  <figcaption>Search UltraCode in the OpenCode Command Palette to toggle Command approvals and Direction questions.</figcaption>
+</figure>
+
+- **Command approvals**: Defaults to `auto` so routine commands run smoothly without constant prompts, while any explicit deny rules you configured are always respected.
+- **Direction questions**: Defaults to `manual` so UltraCode pauses with choice cards whenever a major product or architecture fork needs your call.
+
+## 4-Command Maintenance Cheat Sheet
+
+| Command | What It Does | When to Run It |
+| --- | --- | --- |
+| `uc up` | Upgrades official OpenCode and UltraCode together | Routine updates to stay current |
+| `uc sync` | Re-aligns the integration cleanly | After updating official OpenCode on its own |
+| `uc doctor` | Runs a fast health check without calling any AI model | After install or whenever something feels off |
+| `uc uninstall --yes` | Cleanly removes UltraCode without touching your own configs | Whenever you want to uninstall completely |

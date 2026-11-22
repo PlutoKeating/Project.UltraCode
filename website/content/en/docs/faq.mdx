@@ -1,0 +1,33 @@
+---
+title: FAQ & Non-Invasive Guarantee
+description: Five straightforward answers on safety, model support, config preservation, updates, and health checks.
+---
+
+import TuiControlsDiagram from "../../../../components/diagrams/TuiControlsDiagram.astro";
+
+UltraCode is built around a **strictly additive, reversible, non-invasive** promise: it enhances official OpenCode without taking it over.
+
+<figure class="uc-doc-figure">
+  <TuiControlsDiagram lang="en" />
+  <figcaption>Lives cleanly inside official OpenCode — toggle behavior anytime or uninstall without a trace.</figcaption>
+</figure>
+
+## 1. Does it modify official OpenCode or read my API keys?
+
+**No.** UltraCode is strictly additive and provider/model-neutral. It never patches the official OpenCode binary and never reads, stores, or transmits your API keys.
+
+## 2. Which AI models does it support?
+
+**Whatever model and provider you already use in OpenCode.** UltraCode does not lock you into any model vendor.
+
+## 3. Will it overwrite my existing OpenCode config or skills?
+
+**No.** Install and sync merge cleanly while preserving your own settings and skills. If you ever run `uc uninstall --yes`, UltraCode removes only what it added.
+
+## 4. What if official OpenCode updates?
+
+Run `uc sync` to re-align in seconds — or simply use `uc up` to upgrade official OpenCode and UltraCode together in one step.
+
+## 5. How do I check if everything is healthy?
+
+Run `uc doctor`. It finishes in a few seconds and makes **zero AI model calls**, so it costs nothing to run.
