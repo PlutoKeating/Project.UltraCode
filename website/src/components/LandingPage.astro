@@ -150,10 +150,10 @@ const examplePrompt = zh
           </div>
         </section>
 
-        <!-- Section 4: Asymmetric Editorial Split — Roles & Experts -->
+        <!-- Section 4: Full-Width Roles & Experts -->
         <section class="uc-section" data-lit>
-          <div class="uc-container uc-split-grid">
-            <div class="uc-split-copy">
+          <div class="uc-container">
+            <div class="uc-section-head">
               <h2>{zh ? "双主角色与 5 位后台专家" : "Two Primary Roles. Five Background Experts."}</h2>
               <p>
                 {zh
@@ -161,39 +161,42 @@ const examplePrompt = zh
                   : "Talk naturally to UltraBuild for end-to-end delivery, or press Shift+Tab for read-only UltraPlan."}
               </p>
             </div>
-            <div class="uc-split-visual">
+            <div class="uc-open-canvas">
               <RolesTopologyDiagram lang={lang} />
             </div>
           </div>
         </section>
 
-        <!-- Section 5: Architectural 2-Column Hairline Split — Long-running & TUI Controls -->
+        <!-- Section 5: Full-Width Long-Running Continuation -->
         <section class="uc-section" data-lit>
           <div class="uc-container">
-            <div class="uc-dual-band">
-              <div class="uc-dual-col">
-                <div class="uc-section-head uc-head-compact">
-                  <h2>{zh ? "长程任务不掉链子" : "Built for Multi-Hour Goals"}</h2>
-                  <p>
-                    {zh
-                      ? "自动推进下一里程碑，随时响应插话与叫停；换天回来一句“读取交接并继续”即可无缝接力。"
-                      : "Advances milestones automatically, yields when you steer, and resumes cleanly after restarts."}
-                  </p>
-                </div>
-                <LongRunningDiagram lang={lang} />
-              </div>
+            <div class="uc-section-head">
+              <h2>{zh ? "长程任务不掉链子，重启也能接着做" : "Built for Multi-Hour Goals & Clean Resumption"}</h2>
+              <p>
+                {zh
+                  ? "自动推进下一里程碑，随时响应插话与叫停；换天回来一句“读取交接并继续”即可无缝接力。"
+                  : "Advances milestones automatically, yields when you steer, and resumes cleanly after restarts."}
+              </p>
+            </div>
+            <div class="uc-open-canvas">
+              <LongRunningDiagram lang={lang} />
+            </div>
+          </div>
+        </section>
 
-              <div class="uc-dual-col">
-                <div class="uc-section-head uc-head-compact">
-                  <h2>{zh ? "TUI 命令面板一键掌控" : "Live Control Inside the TUI"}</h2>
-                  <p>
-                    {zh
-                      ? "在 OpenCode 命令面板搜索 UltraCode，独立切换「命令审批」与「方向询问」，安全边界始终受控。"
-                      : "Search UltraCode in the TUI Command Palette to toggle Command approvals and Direction questions independently."}
-                  </p>
-                </div>
-                <TuiControlsDiagram lang={lang} />
-              </div>
+        <!-- Section 6: Full-Width TUI Controls -->
+        <section class="uc-section" data-lit>
+          <div class="uc-container">
+            <div class="uc-section-head">
+              <h2>{zh ? "TUI 命令面板一键掌控" : "Live Control Inside the TUI"}</h2>
+              <p>
+                {zh
+                  ? "在 OpenCode 命令面板搜索 UltraCode，独立切换「命令审批」与「方向询问」，安全边界始终受控。"
+                  : "Search UltraCode in the TUI Command Palette to toggle Command approvals and Direction questions independently."}
+              </p>
+            </div>
+            <div class="uc-open-canvas">
+              <TuiControlsDiagram lang={lang} />
             </div>
           </div>
         </section>
@@ -688,32 +691,6 @@ const examplePrompt = zh
     color: var(--uc-amber);
   }
 
-  /* Asymmetric 38/62 Split */
-  .uc-split-grid {
-    display: grid;
-    grid-template-columns: 0.78fr 1.22fr;
-    gap: 4rem;
-    align-items: center;
-  }
-
-  /* Architectural 2-Column Dual Band */
-  .uc-dual-band {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0;
-    border-top: 1px solid var(--uc-hairline);
-    border-bottom: 1px solid var(--uc-hairline);
-  }
-
-  .uc-dual-col {
-    padding: 3rem 3rem 3rem 0;
-  }
-
-  .uc-dual-col + .uc-dual-col {
-    padding: 3rem 0 3rem 3rem;
-    border-left: 1px solid var(--uc-hairline);
-  }
-
   /* Quiet Monumental Close */
   .uc-close {
     position: relative;
@@ -768,23 +745,6 @@ const examplePrompt = zh
 
   .uc-footer-links a:hover {
     color: #ffffff;
-  }
-
-  @media (max-width: 960px) {
-    .uc-split-grid,
-    .uc-dual-band {
-      grid-template-columns: 1fr;
-    }
-
-    .uc-dual-col,
-    .uc-dual-col + .uc-dual-col {
-      padding: 2.5rem 0;
-      border-left: none;
-    }
-
-    .uc-dual-col + .uc-dual-col {
-      border-top: 1px solid var(--uc-hairline);
-    }
   }
 
   @media (max-width: 720px) {

@@ -6,52 +6,54 @@ const { lang = "zh" } = Astro.props;
 const zh = lang === "zh";
 ---
 
-<svg viewBox="0 0 680 272" fill="none" xmlns="http://www.w3.org/2000/svg" class="uc-svg-diagram" role="img" aria-label={zh ? "UltraBuild 与 UltraPlan 双主角色及 5 位后台专家协作拓扑图" : "UltraBuild and UltraPlan primary roles plus 5 background experts topology"}>
-  <line x1="0" y1="0.5" x2="680" y2="0.5" stroke="rgba(255,255,255,0.08)"/>
-  <line x1="0" y1="271.5" x2="680" y2="271.5" stroke="rgba(255,255,255,0.08)"/>
+<svg viewBox="0 0 960 296" fill="none" xmlns="http://www.w3.org/2000/svg" class="uc-svg-diagram" role="img" aria-label={zh ? "UltraBuild 与 UltraPlan 双主角色及 5 位后台专家协作拓扑图" : "UltraBuild and UltraPlan primary roles plus 5 background experts topology"}>
+  <line x1="0" y1="0.5" x2="960" y2="0.5" stroke="rgba(255,255,255,0.08)"/>
+  <line x1="0" y1="295.5" x2="960" y2="295.5" stroke="rgba(255,255,255,0.08)"/>
 
-  <line x1="40" y1="24" x2="292" y2="24" stroke="#BAE6FD" stroke-width="1.5"/>
-  <rect x="40" y="24" width="252" height="72" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.12)"/>
-  <text x="58" y="52" fill="#FFFFFF" font-family="JetBrains Mono, monospace" font-size="12.5" font-weight="500">UltraBuild</text>
-  <text x="58" y="78" fill="#8A8A8A" font-family="Sora, PingFang SC, sans-serif" font-size="12">{zh ? "默认总控 · 执行与交付" : "Default · build & verify"}</text>
+  <!-- Primary roles -->
+  <line x1="72" y1="28" x2="412" y2="28" stroke="#BAE6FD" stroke-width="1.8"/>
+  <rect x="72" y="28" width="340" height="82" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.14)"/>
+  <text x="96" y="61" fill="#FFFFFF" font-family="JetBrains Mono, monospace" font-size="17" font-weight="500">UltraBuild</text>
+  <text x="96" y="90" fill="#B5B5B5" font-family="Sora, PingFang SC, sans-serif" font-size="14.5">{zh ? "默认总控 · 协调、执行与交付" : "Default · orchestrate, build & verify"}</text>
 
-  <line x1="292" y1="60" x2="388" y2="60" stroke="rgba(255,255,255,0.22)" stroke-dasharray="3 3"/>
-  <rect x="306" y="47" width="68" height="26" fill="#000000" stroke="rgba(255,255,255,0.18)"/>
-  <text x="340" y="64" text-anchor="middle" fill="#D4D4D4" font-family="JetBrains Mono, monospace" font-size="10">Shift+Tab</text>
+  <line x1="412" y1="69" x2="548" y2="69" stroke="rgba(255,255,255,0.24)" stroke-dasharray="4 4"/>
+  <rect x="434" y="52" width="92" height="34" fill="#000000" stroke="rgba(255,255,255,0.22)"/>
+  <text x="480" y="74" text-anchor="middle" fill="#E5E5E5" font-family="JetBrains Mono, monospace" font-size="13">Shift+Tab</text>
 
-  <rect x="388" y="24" width="252" height="72" fill="transparent" stroke="rgba(255,255,255,0.1)"/>
-  <text x="406" y="52" fill="#D4D4D4" font-family="JetBrains Mono, monospace" font-size="12.5" font-weight="500">UltraPlan</text>
-  <text x="406" y="78" fill="#737373" font-family="Sora, PingFang SC, sans-serif" font-size="12">{zh ? "只读规划 · 不改代码" : "Read-only planning"}</text>
+  <rect x="548" y="28" width="340" height="82" fill="transparent" stroke="rgba(255,255,255,0.12)"/>
+  <text x="572" y="61" fill="#E5E5E5" font-family="JetBrains Mono, monospace" font-size="17" font-weight="500">UltraPlan</text>
+  <text x="572" y="90" fill="#A3A3A3" font-family="Sora, PingFang SC, sans-serif" font-size="14.5">{zh ? "只读规划 · 推演方案不改代码" : "Read-only planning without code edits"}</text>
 
-  <line x1="166" y1="96" x2="166" y2="146" stroke="rgba(255,255,255,0.34)" stroke-width="1.2"/>
-  <line x1="68" y1="146" x2="612" y2="146" stroke="rgba(255,255,255,0.16)" stroke-width="1.2"/>
-  <line x1="68" y1="146" x2="68" y2="178" stroke="rgba(255,255,255,0.18)"/>
-  <line x1="204" y1="146" x2="204" y2="178" stroke="rgba(255,255,255,0.18)"/>
-  <line x1="340" y1="146" x2="340" y2="178" stroke="rgba(255,255,255,0.18)"/>
-  <line x1="476" y1="146" x2="476" y2="178" stroke="rgba(255,255,255,0.18)"/>
-  <line x1="612" y1="146" x2="612" y2="178" stroke="#BAE6FD" stroke-width="1.2"/>
+  <!-- Bus trunk & 5 branches -->
+  <line x1="242" y1="110" x2="242" y2="156" stroke="rgba(255,255,255,0.36)" stroke-width="1.4"/>
+  <line x1="96" y1="156" x2="864" y2="156" stroke="rgba(255,255,255,0.18)" stroke-width="1.4"/>
+  <line x1="96" y1="156" x2="96" y2="190" stroke="rgba(255,255,255,0.2)"/>
+  <line x1="288" y1="156" x2="288" y2="190" stroke="rgba(255,255,255,0.2)"/>
+  <line x1="480" y1="156" x2="480" y2="190" stroke="rgba(255,255,255,0.2)"/>
+  <line x1="672" y1="156" x2="672" y2="190" stroke="rgba(255,255,255,0.2)"/>
+  <line x1="864" y1="156" x2="864" y2="190" stroke="#BAE6FD" stroke-width="1.4"/>
 
-  <circle cx="68" cy="178" r="3" fill="#8A8A8A"/>
-  <circle cx="204" cy="178" r="3" fill="#8A8A8A"/>
-  <circle cx="340" cy="178" r="3" fill="#FFFFFF"/>
-  <circle cx="476" cy="178" r="3" fill="#E5A03D"/>
-  <circle cx="612" cy="178" r="3.5" fill="#BAE6FD"/>
+  <circle cx="96" cy="190" r="4" fill="#A3A3A3"/>
+  <circle cx="288" cy="190" r="4" fill="#A3A3A3"/>
+  <circle cx="480" cy="190" r="4" fill="#FFFFFF"/>
+  <circle cx="672" cy="190" r="4" fill="#E5A03D"/>
+  <circle cx="864" cy="190" r="4.5" fill="#BAE6FD"/>
 
   <g font-family="Sora, PingFang SC, sans-serif" text-anchor="middle">
-    <text x="68" y="210" fill="#FFFFFF" font-size="13.5" font-weight="500">{zh ? "调研专家" : "Librarian"}</text>
-    <text x="68" y="236" fill="#737373" font-size="11.5">{zh ? "查文档与开源" : "Docs & OSS"}</text>
+    <text x="96" y="228" fill="#FFFFFF" font-size="17" font-weight="500">{zh ? "调研专家" : "Librarian"}</text>
+    <text x="96" y="258" fill="#A8A8A8" font-size="14">{zh ? "查官方文档与开源" : "Docs & OSS research"}</text>
 
-    <text x="204" y="210" fill="#FFFFFF" font-size="13.5" font-weight="500">{zh ? "架构专家" : "Architect"}</text>
-    <text x="204" y="236" fill="#737373" font-size="11.5">{zh ? "权衡与根因" : "Design & debug"}</text>
+    <text x="288" y="228" fill="#FFFFFF" font-size="17" font-weight="500">{zh ? "架构专家" : "Architect"}</text>
+    <text x="288" y="258" fill="#A8A8A8" font-size="14">{zh ? "方案权衡与根因" : "Design & root cause"}</text>
 
-    <text x="340" y="210" fill="#FFFFFF" font-size="13.5" font-weight="500">{zh ? "实施专家" : "Implementer"}</text>
-    <text x="340" y="236" fill="#8A8A8A" font-size="11.5">{zh ? "专注单项落地" : "Bounded build"}</text>
+    <text x="480" y="228" fill="#FFFFFF" font-size="17" font-weight="500">{zh ? "实施专家" : "Implementer"}</text>
+    <text x="480" y="258" fill="#B5B5B5" font-size="14">{zh ? "专注单项落地验证" : "Bounded verified build"}</text>
 
-    <text x="476" y="210" fill="#FFFFFF" font-size="13.5" font-weight="500">{zh ? "挑刺评审" : "Reviewer"}</text>
-    <text x="476" y="236" fill="#E5A03D" font-size="11.5">{zh ? "独立查漏防回归" : "Skeptical audit"}</text>
+    <text x="672" y="228" fill="#FFFFFF" font-size="17" font-weight="500">{zh ? "挑刺评审" : "Reviewer"}</text>
+    <text x="672" y="258" fill="#E5A03D" font-size="14">{zh ? "独立查漏防回归" : "Skeptical code audit"}</text>
 
-    <text x="612" y="210" fill="#BAE6FD" font-size="13.5" font-weight="500">{zh ? "视觉验收" : "Visual QA"}</text>
-    <text x="612" y="236" fill="#A3A3A3" font-size="11.5">{zh ? "真机浏览器实测" : "Real Chromium"}</text>
+    <text x="864" y="228" fill="#BAE6FD" font-size="17" font-weight="500">{zh ? "视觉验收" : "Visual QA"}</text>
+    <text x="864" y="258" fill="#D4D4D4" font-size="14">{zh ? "真机浏览器目视实测" : "Real Chromium checks"}</text>
   </g>
 </svg>
 
