@@ -132,8 +132,8 @@ install_ultracode_step() {
     base="https://github.com/$repo/releases/download/$version"
   fi
 
-  curl -fsSL "$base/$asset" -o "$work/$asset"
-  curl -fsSL "$base/$asset.sha256" -o "$work/$asset.sha256"
+  curl -fsSL --retry 3 --retry-delay 2 "$base/$asset" -o "$work/$asset"
+  curl -fsSL --retry 3 --retry-delay 2 "$base/$asset.sha256" -o "$work/$asset.sha256"
   expected="$(awk '{print $1}' "$work/$asset.sha256")"
   if command -v sha256sum >/dev/null 2>&1; then
     actual="$(sha256sum "$work/$asset" | awk '{print $1}')"

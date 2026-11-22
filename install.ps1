@@ -37,6 +37,21 @@
     }
   }
 
+  function Download-File([string]$Uri, [string]$OutFile) {
+    $sysCurl = if ($env:SystemRoot) { Join-Path $env:SystemRoot 'System32\curl.exe' } else { $null }
+    if (-not ($sysCurl -and (Test-Path -LiteralPath $sysCurl))) {
+      $cmd = Get-Command curl.exe -ErrorAction SilentlyContinue | Select-Object -First 1
+      $sysCurl = if ($cmd) { $cmd.Source } else { $null }
+    }
+    if ($sysCurl) {
+      $res = Invoke-NativeLogged $sysCurl @('-fsSL', '--retry', '3', '--retry-delay', '2', '-o', $OutFile, $Uri)
+      if ($res.Code -eq 0 -and (Test-Path -LiteralPath $OutFile)) {
+        return
+      }
+    }
+    Invoke-WebRequest -Uri $Uri -OutFile $OutFile -UseBasicParsing -TimeoutSec 600
+  }
+
   function Invoke-Step([string]$Label, [scriptblock]$Action) {
     $interactive = (-not [Console]::IsOutputRedirected) -and (-not $env:NO_COLOR)
     if ($interactive) {
@@ -134,7 +149,7 @@
         $zipPath = Join-Path $workDir "opencode-windows-$arch.zip"
         $extractDir = Join-Path $workDir 'opencode-extract'
         New-Item -ItemType Directory -Path $extractDir -Force | Out-Null
-        Invoke-WebRequest -Uri $ocUrl -OutFile $zipPath -UseBasicParsing
+        Download-File $ocUrl $zipPath
         $tarCmd = Get-Command tar.exe -ErrorAction SilentlyContinue
         $extracted = $false
         if ($tarCmd) {
@@ -188,8 +203,8 @@
 
       $tmpExe = Join-Path $workDir $asset
       $tmpSha = Join-Path $workDir "$asset.sha256"
-      Invoke-WebRequest -Uri "$base/$asset" -OutFile $tmpExe -UseBasicParsing
-      Invoke-WebRequest -Uri "$base/$asset.sha256" -OutFile $tmpSha -UseBasicParsing
+      Download-File "$base/$asset" $tmpExe
+      Download-File "$base/$asset.sha256" $tmpSha
 
       $expected = ((Get-Content -LiteralPath $tmpSha -Raw).Trim() -split '\s+')[0].ToLowerInvariant()
       $actual = (Get-FileHash -LiteralPath $tmpExe -Algorithm SHA256).Hash.ToLowerInvariant()
