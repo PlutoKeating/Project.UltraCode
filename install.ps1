@@ -1,0 +1,211 @@
+$ErrorActionPreference = 'Stop'
+$ProgressPreference = 'SilentlyContinue'
+try {
+  [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+} catch {}
+
+$repo = if ($env:ULTRACODE_REPOSITORY) { $env:ULTRACODE_REPOSITORY } else { 'PlutoKeating/Project.UltraCode' }
+$version = if ($env:ULTRACODE_VERSION) { $env:ULTRACODE_VERSION } else { 'latest' }
+$localAppData = if ($env:LOCALAPPDATA) { $env:LOCALAPPDATA } else { Join-Path $HOME 'AppData\Local' }
+$ultracodeHome = if ($env:ULTRACODE_HOME) { $env:ULTRACODE_HOME } else { Join-Path $localAppData 'ultracode' }
+$binDir = if ($env:ULTRACODE_BIN_DIR) { $env:ULTRACODE_BIN_DIR } else { Join-Path $ultracodeHome 'bin' }
+
+$procArch = "$($env:PROCESSOR_ARCHITECTURE) $($env:PROCESSOR_ARCHITEW6432)"
+$arch = if ($procArch -match 'ARM64') { 'arm64' } else { 'x64' }
+
+$tempBase = if ($env:TEMP) { $env:TEMP } else { [System.IO.Path]::GetTempPath() }
+$workDir = Join-Path $tempBase ("ultracode-install-" + [Guid]::NewGuid().ToString('N'))
+$logFile = Join-Path $tempBase ("ultracode-install-" + $PID + ".log")
+New-Item -ItemType Directory -Path $workDir -Force | Out-Null
+
+function Write-StepLog([string]$Text) {
+  Add-Content -LiteralPath $logFile -Value $Text -Encoding UTF8
+}
+
+function Invoke-Step([string]$Label, [scriptblock]$Action) {
+  $interactive = (-not [Console]::IsOutputRedirected) -and (-not $env:NO_COLOR)
+  if ($interactive) {
+    $dot = [char]0x280B
+    [Console]::Error.Write("`r$dot $Label")
+  } else {
+    [Console]::Error.WriteLine($Label)
+  }
+  try {
+    & $Action
+    if ($interactive) {
+      $blank = ' ' * ($Label.Length + 4)
+      [Console]::Error.Write("`r$blank`r")
+    }
+  } catch {
+    if ($interactive) {
+      $blank = ' ' * ($Label.Length + 4)
+      [Console]::Error.Write("`r$blank`r")
+    }
+    [Console]::Error.WriteLine("UltraCode: $Label failed. Log: $logFile")
+    Write-StepLog $_.Exception.ToString()
+    throw
+  }
+}
+
+function Add-UserPath([string]$TargetDir) {
+  $currentSession = ($env:PATH -split ';') | Where-Object { $_ -ne '' }
+  if ($currentSession -notcontains $TargetDir) {
+    $env:PATH = "$TargetDir;$env:PATH"
+  }
+  $userPath = [Environment]::GetEnvironmentVariable('Path', 'User')
+  if (-not $userPath) { $userPath = '' }
+  $parts = ($userPath -split ';') | Where-Object { $_ -ne '' }
+  if ($parts -notcontains $TargetDir) {
+    [Environment]::SetEnvironmentVariable('Path', (($parts + $TargetDir) -join ';'), 'User')
+  }
+}
+
+function Find-OpenCode {
+  if ($env:ULTRACODE_OPENCODE_BIN -and (Test-Path -LiteralPath $env:ULTRACODE_OPENCODE_BIN)) {
+    return $env:ULTRACODE_OPENCODE_BIN
+  }
+  $cmd = Get-Command opencode -ErrorAction SilentlyContinue
+  if ($cmd -and $cmd.Source) {
+    return $cmd.Source
+  }
+  $candidates = @(
+    (Join-Path $localAppData 'opencode\bin\opencode.exe'),
+    (Join-Path $HOME '.opencode\bin\opencode.exe'),
+    (Join-Path $localAppData 'Programs\OpenCode\bin\opencode.exe')
+  )
+  foreach ($candidate in $candidates) {
+    if (Test-Path -LiteralPath $candidate) { return $candidate }
+  }
+  return $null
+}
+
+function Test-OpenCodeVersion([string]$Binary) {
+  $out = & $Binary --version 2>&1 | Out-String
+  Write-StepLog "opencode --version: $out"
+  if ($out -match 'v?(\d+)\.(\d+)\.(\d+)') {
+    $maj = [int]$Matches[1]
+    $min = [int]$Matches[2]
+    $pat = [int]$Matches[3]
+    if ($maj -eq 2 -and ($min -gt 3 -or ($min -eq 3 -and $pat -ge 2))) {
+      return $true
+    }
+  }
+  return $false
+}
+
+try {
+  $opencodeBin = Find-OpenCode
+  if ($opencodeBin) {
+    Invoke-Step 'Updating OpenCode' {
+      try {
+        $upOut = & $opencodeBin upgrade 2>&1 | Out-String
+        Write-StepLog $upOut
+      } catch {
+        Write-StepLog $_.Exception.Message
+      }
+      $resolved = Find-OpenCode
+      if (-not $resolved) { $resolved = $opencodeBin }
+      if (-not (Test-OpenCodeVersion $resolved)) {
+        throw "OpenCode 2.3.2 or newer is required."
+      }
+    }
+  } else {
+    Invoke-Step 'Installing OpenCode' {
+      $ocUrl = if ($env:ULTRACODE_OPENCODE_DOWNLOAD_URL) {
+        $env:ULTRACODE_OPENCODE_DOWNLOAD_URL
+      } else {
+        "https://opencode.ai/update/api/latest/cli/opencode/opencode-windows-$arch.zip"
+      }
+      $zipPath = Join-Path $workDir "opencode-windows-$arch.zip"
+      $extractDir = Join-Path $workDir 'opencode-extract'
+      New-Item -ItemType Directory -Path $extractDir -Force | Out-Null
+      Invoke-WebRequest -Uri $ocUrl -OutFile $zipPath -UseBasicParsing
+      $tarCmd = Get-Command tar.exe -ErrorAction SilentlyContinue
+      if ($tarCmd) {
+        & tar.exe -xf $zipPath -C $extractDir 2>&1 | Out-String | ForEach-Object { Write-StepLog $_ }
+      } else {
+        Expand-Archive -LiteralPath $zipPath -DestinationPath $extractDir -Force
+      }
+      $exeItem = Get-ChildItem -Path $extractDir -Filter 'opencode.exe' -Recurse | Select-Object -First 1
+      if (-not $exeItem) { throw 'opencode.exe not found in archive.' }
+      $ocBinDir = Join-Path $localAppData 'opencode\bin'
+      New-Item -ItemType Directory -Path $ocBinDir -Force | Out-Null
+      $ocDest = Join-Path $ocBinDir 'opencode.exe'
+      if (Test-Path -LiteralPath $ocDest) {
+        $ocOld = "$ocDest.old"
+        Remove-Item -LiteralPath $ocOld -Force -ErrorAction SilentlyContinue
+        Move-Item -LiteralPath $ocDest -Destination $ocOld -Force
+      }
+      Copy-Item -LiteralPath $exeItem.FullName -Destination $ocDest -Force
+      Remove-Item -LiteralPath "$ocDest.old" -Force -ErrorAction SilentlyContinue
+      Add-UserPath $ocBinDir
+      if (-not (Test-OpenCodeVersion $ocDest)) {
+        throw 'Installed OpenCode version check failed.'
+      }
+    }
+  }
+
+  $opencodeBin = Find-OpenCode
+  $env:ULTRACODE_OPENCODE_BIN = $opencodeBin
+  Add-UserPath (Split-Path -Parent $opencodeBin)
+
+  $targetExe = Join-Path $binDir 'ultracode.exe'
+  Invoke-Step 'Installing UltraCode' {
+    $asset = "ultracode-windows-$arch.exe"
+    $base = if ($env:ULTRACODE_RELEASE_BASE_URL) {
+      $env:ULTRACODE_RELEASE_BASE_URL.TrimEnd('/')
+    } elseif ($version -eq 'latest') {
+      "https://github.com/$repo/releases/latest/download"
+    } else {
+      "https://github.com/$repo/releases/download/$version"
+    }
+
+    $tmpExe = Join-Path $workDir $asset
+    $tmpSha = Join-Path $workDir "$asset.sha256"
+    Invoke-WebRequest -Uri "$base/$asset" -OutFile $tmpExe -UseBasicParsing
+    Invoke-WebRequest -Uri "$base/$asset.sha256" -OutFile $tmpSha -UseBasicParsing
+
+    $expected = ((Get-Content -LiteralPath $tmpSha -Raw).Trim() -split '\s+')[0].ToLowerInvariant()
+    $actual = (Get-FileHash -LiteralPath $tmpExe -Algorithm SHA256).Hash.ToLowerInvariant()
+    if (-not $expected -or ($actual -ne $expected)) {
+      throw "Checksum verification failed: expected $expected, got $actual"
+    }
+
+    New-Item -ItemType Directory -Path $binDir -Force | Out-Null
+    if (Test-Path -LiteralPath $targetExe) {
+      $backupDir = Join-Path $ultracodeHome 'backups'
+      New-Item -ItemType Directory -Path $backupDir -Force | Out-Null
+      $stamp = [DateTimeOffset]::UtcNow.ToUnixTimeSeconds()
+      Copy-Item -LiteralPath $targetExe -Destination (Join-Path $backupDir "preinstall-$stamp-ultracode.exe") -Force
+      $oldExe = "$targetExe.old"
+      Remove-Item -LiteralPath $oldExe -Force -ErrorAction SilentlyContinue
+      Move-Item -LiteralPath $targetExe -Destination $oldExe -Force
+    }
+    Copy-Item -LiteralPath $tmpExe -Destination $targetExe -Force
+    Remove-Item -LiteralPath "$targetExe.old" -Force -ErrorAction SilentlyContinue
+    Add-UserPath $binDir
+  }
+
+  Invoke-Step 'Setting up' {
+    $applyOut = & $targetExe apply 2>&1 | Out-String
+    Write-StepLog $applyOut
+    if ($LASTEXITCODE -ne 0) { throw "ultracode apply exited with $LASTEXITCODE" }
+    $docOut = & $targetExe doctor 2>&1 | Out-String
+    Write-StepLog $docOut
+    if ($LASTEXITCODE -ne 0) { throw "ultracode doctor exited with $LASTEXITCODE" }
+  }
+
+  Remove-Item -LiteralPath $logFile -Force -ErrorAction SilentlyContinue
+  $installedVersion = (& $targetExe version | Out-String).Trim().TrimStart('v')
+  $checkMark = [char]0x2713
+  Write-Output ""
+  Write-Output "UltraCode $installedVersion"
+  Write-Output ""
+  Write-Output "$checkMark Ready"
+  Write-Output ""
+  Write-Output "  ultracode"
+  Write-Output "  ultracode desktop"
+  Write-Output "  ultracode pair"
+} finally {
+  Remove-Item -LiteralPath $workDir -Recurse -Force -ErrorAction SilentlyContinue
+}

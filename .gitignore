@@ -14,6 +14,7 @@ website/dist/
 website/.astro/
 website/src/content/docs/
 website/public/install.sh
+website/public/install.ps1
 config/opencode/conversation/gui-experimental.cjs
 .superpowers/
 .playwright-mcp/

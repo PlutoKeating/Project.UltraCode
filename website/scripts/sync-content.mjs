@@ -1,7 +1,8 @@
 import { cp, mkdir, readdir, rm } from "node:fs/promises";
 import { dirname, join, relative } from "node:path";
+import { fileURLToPath } from "node:url";
 
-const root = new URL("..", import.meta.url).pathname;
+const root = fileURLToPath(new URL("..", import.meta.url));
 const generated = join(root, "src/content/docs");
 await rm(generated, { recursive: true, force: true });
 await mkdir(generated, { recursive: true });
@@ -30,3 +31,4 @@ for (const english of [false, true]) {
 
 await mkdir(join(root, "public"), { recursive: true });
 await cp(join(root, "../install.sh"), join(root, "public/install.sh"));
+await cp(join(root, "../install.ps1"), join(root, "public/install.ps1"));
