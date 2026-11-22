@@ -45,7 +45,7 @@ describe("isolated apply", () => {
     expect(once).toContain("ultracode_playwright");
     await apply(paths, { runtime: false });
     expect(await readFile(paths.opencodeConfigFile, "utf8")).toBe(once);
-    expect(await readFile(join(paths.config, "agents/ultracode/orchestrator.md"), "utf8")).not.toContain("model:");
+    expect(await readFile(join(paths.config, "agents/uc-apex.md"), "utf8")).not.toContain("model:");
   });
 
   test("preserves locally modified managed files and uninstalls only owned state", async () => {
@@ -105,7 +105,7 @@ test("migrates a legacy duplicate, preserves the original registration and survi
   await mkdir(paths.config, { recursive: true });
   await mkdir(join(paths.home, "backups"), { recursive: true });
   await writeFile(join(paths.home, "backups/100-opencode.jsonc"), source);
-  await writeFile(paths.opencodeConfigFile, mergeJsonc(source, managedConfig(paths)).text);
+  await writeFile(paths.opencodeConfigFile, mergeJsonc(source, { ...managedConfig(paths), default_agent: "ultracode/orchestrator" }).text);
   await writeFile(paths.manifest, JSON.stringify({ schema: 1, version: "v0.2.0", files: {} }));
   await apply(paths);
   const after = await readFile(paths.opencodeConfigFile, "utf8");
@@ -136,7 +136,7 @@ test("repairs legacy concatenated MCP commands without deleting the user's serve
   await mkdir(paths.config, { recursive: true });
   await mkdir(join(paths.home, "backups"), { recursive: true });
   await writeFile(join(paths.home, "backups/100-opencode.jsonc"), source);
-  await writeFile(paths.opencodeConfigFile, mergeJsonc(source, managedConfig(paths), true).text);
+  await writeFile(paths.opencodeConfigFile, mergeJsonc(source, { ...managedConfig(paths), default_agent: "ultracode/orchestrator" }, true).text);
   await writeFile(paths.manifest, JSON.stringify({ schema: 1, files: {}, version: "v0.2.0" }));
   await apply(paths);
   await uninstall(paths);
@@ -158,4 +158,20 @@ esac
   const issues = await doctor(paths);
   expect(issues.some(issue => issue.includes("Duplicate plugin ID: superpowers"))).toBe(true);
   expect(issues).toContain("ultracode_playwright: missing");
+});
+
+test("migrates an explicitly selected managed planner to the new role ID", async () => {
+  const { sha256 } = await import("../src/fs");
+  const oldPath = "agents/ultracode/planner.md";
+  const content = "old planner";
+  await mkdir(join(paths.config, "agents/ultracode"), { recursive: true });
+  await mkdir(paths.home, { recursive: true });
+  await writeFile(join(paths.config, oldPath), content);
+  await writeFile(paths.opencodeConfigFile, '{"default_agent":"ultracode/planner"}');
+  await writeFile(paths.manifest, JSON.stringify({ schema: 2, files: { [oldPath]: sha256(content) }, owned: [], configFile: paths.opencodeConfigFile }));
+  await apply(paths);
+  expect(JSON.parse(await readFile(paths.opencodeConfigFile, "utf8")).default_agent).toBe("uc-atlas");
+  await expect(readFile(join(paths.config, oldPath))).rejects.toThrow();
+  await apply(paths);
+  expect(JSON.parse(await readFile(paths.opencodeConfigFile, "utf8")).default_agent).toBe("uc-atlas");
 });

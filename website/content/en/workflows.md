@@ -21,8 +21,8 @@ Review the diff, original scope, and verification evidence independently.
 
 | Role | Responsibility |
 | --- | --- |
-| orchestrator | Direct small tasks and maintain scope/evidence for larger work |
-| planner | Plan without implementing product code |
+| uc-apex | Direct small tasks and maintain scope/evidence for larger work |
+| uc-atlas | Plan without implementing product code |
 | implementer | Deliver one bounded implementation unit |
 | architect | Read-only architecture, trade-offs, and deep debugging analysis |
 | reviewer | Independent correctness, regression, and evidence review |

@@ -80,3 +80,5 @@ bun run --cwd website build
 - [Cloudflare 部署](docs/CLOUDFLARE.md)
 - [社区调研](docs/RESEARCH.md)
 - [历史实施与验收](docs/IMPLEMENTATION_PLAN.md)
+
+主角色 `uc-apex`（总协调与执行，默认）和 `uc-atlas`（规划）直接安装在 `agents/`，可用 Shift+Tab 切换。

@@ -16,7 +16,7 @@
 
 ## OpenCode 角色与命令
 
-角色安装于 `agents/ultracode/`，包括 orchestrator、planner、implementer、architect、reviewer、librarian 和 visual-evaluator。角色无模型字段，继承当前会话。
+子角色安装于 `agents/ultracode/`，包括 implementer、architect、reviewer、librarian 和 visual-evaluator。角色无模型字段，继承当前会话。
 
 通过普通对话表达目标。TUI 命令面板的 UltraCode 项可分别切换权限审批和方向询问。
 
@@ -51,3 +51,5 @@ Release 资产命名：`ultracode-{linux|darwin}-{x64|arm64}`，附 `.sha256`。
 ## 版本基线
 
 OpenCode V2.3.x、Superpowers v7.0.2、Ralph v1.3.1 固定 commit、Playwright MCP 0.0.86。所有安装验收均不调用真实模型。
+
+主角色 `uc-apex`（总协调与执行，默认）和 `uc-atlas`（规划）直接安装在 `agents/`，可用 Shift+Tab 切换。

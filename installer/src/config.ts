@@ -23,6 +23,10 @@ function edit(text: string, path: JSONPath, value: JsonValue | undefined): strin
   return applyEdits(text, modify(text, path, value, formatting));
 }
 
+export function renameDefault(source: string, role: string): string {
+  return edit(source, ["default_agent"], role);
+}
+
 export function parseJsonc(text: string): JsonValue {
   const errors: ParseError[] = [];
   const value = parse(text, errors, { allowTrailingComma: true, disallowComments: false }) as JsonValue;

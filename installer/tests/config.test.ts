@@ -2,7 +2,7 @@ import { describe, expect, test } from "bun:test";
 import { mergeJsonc, parseJsonc, retire, additions } from "../src/config";
 
 const managed = {
-  default_agent: "ultracode/orchestrator",
+  default_agent: "uc-apex",
   permissions: [{ action: "shell", resource: "git push *", effect: "ask" }],
   mcp: { servers: { ultracode_playwright: { type: "local", command: ["uc", "mcp"] } } },
 };

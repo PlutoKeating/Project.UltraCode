@@ -89,3 +89,5 @@ Astro Starlight 从单一内容源生成中文/英文 Stable/Next 路由，并�
 安装器按插件身份、权限的 action/resource 和 MCP 启动配置识别冲突。等价的 Playwright MCP 可复用，视觉评审角色使用对应的工具名。配置清单记录安装器实际添加的字段和数组成员。旧版清单通过可验证的安装前备份迁移；来源无法确认时保留原值。
 
 `uc doctor` 检查当前项目实际注册的角色、Superpowers 和 UltraCode 插件的活动状态，以及所选浏览器 MCP 的连接状态。
+
+主角色 `uc-apex`（总协调与执行，默认）和 `uc-atlas`（规划）直接安装在 `agents/`，可用 Shift+Tab 切换。

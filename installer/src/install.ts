@@ -2,7 +2,7 @@ import { isDeepStrictEqual } from "node:util";
 import { mkdir, readdir, rm } from "node:fs/promises";
 import { basename, join } from "node:path";
 import { assets } from "./assets";
-import { additions, mergeJsonc, parseJsonc, retire, type Addition } from "./config";
+import { additions, renameDefault, mergeJsonc, parseJsonc, retire, type Addition } from "./config";
 import { atomicWrite, backup, exists, makeExecutable, readText, sha256 } from "./fs";
 import { managedConfig } from "./managed";
 import { readManifest, writeManifest, type InstallManifest } from "./manifest";
@@ -34,6 +34,7 @@ async function ownership(paths: Paths, manifest: InstallManifest | null, file: s
   if (!names[0]) return [];
   const before = await readText(join(directory, names[0]));
   const spec = managedConfig(paths);
+  spec.default_agent = "ultracode/orchestrator"; // Schema 1 used the original primary role ID.
   if (/^v?0\.1\./.test(manifest.version)) spec.plugins = [join(paths.runtime, "superpowers")];
   const baseline = parseJsonc(before);
   const expected = parseJsonc(mergeJsonc(before, spec, true).text);
@@ -62,8 +63,19 @@ export async function apply(paths: Paths, options: { runtime?: boolean } = {}): 
   const records = [...cleaned.retained, ...additions(parseJsonc(cleaned.text), parseJsonc(merged.text))];
   if (options.runtime !== false && process.env.ULTRACODE_SKIP_RUNTIME !== "1") await installRuntime(paths);
 
-  for (const name of ["plan", "work", "review"]) {
-    const legacy = `commands/ultracode/${name}.md`;
+  const retired = ["plan", "work", "review"].map(name => `commands/ultracode/${name}.md`);
+  for (const [oldID, newID] of Object.entries({ "ultracode/orchestrator": "uc-apex", "ultracode/planner": "uc-atlas" })) {
+    const legacy = `agents/${oldID}.md`;
+    const hash = previous?.files[legacy];
+    const path = join(paths.config, legacy);
+    if (hash && await exists(path) && sha256(await readText(path)) === hash) {
+      retired.push(legacy);
+      // A user may have explicitly selected the retiring role.
+      if ((parseJsonc(merged.text) as Record<string, unknown>).default_agent === oldID)
+        merged.text = renameDefault(merged.text, newID);
+    }
+  }
+  for (const legacy of retired) {
     const hash = previous?.files[legacy];
     const target = join(paths.config, legacy);
     if (hash && await exists(target) && sha256(await readText(target)) === hash) await rm(target);

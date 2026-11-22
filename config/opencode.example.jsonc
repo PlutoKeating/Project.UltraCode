@@ -1,6 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "default_agent": "ultracode/orchestrator",
+  "default_agent": "uc-apex",
   "permissions": [
     {
       "action": "shell",
