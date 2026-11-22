@@ -1,9 +1,9 @@
-import { join, win32 } from "node:path";
+import { posix, win32 } from "node:path";
 import type { JsonValue } from "./config";
 import type { Paths } from "./paths";
 
 export function managedConfig(paths: Paths): { [key: string]: JsonValue } {
-  const pathJoin = paths.config.includes("\\") ? win32.join : join;
+  const pathJoin = paths.config.includes("\\") ? win32.join : posix.join;
   return {
     default_agent: "UltraBuild",
     permissions: [
