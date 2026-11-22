@@ -1,9 +1,10 @@
 import { createHash } from "node:crypto";
 import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 
 const release = process.argv.includes("--release");
-const root = new URL("..", import.meta.url).pathname;
+const root = fileURLToPath(new URL("..", import.meta.url));
 const outdir = join(root, "dist");
 await mkdir(outdir, { recursive: true });
 const targets = release
@@ -13,20 +14,22 @@ const manifest: Record<string, { file: string; sha256: string }> = {};
 
 for (const target of targets) {
   const suffix = target?.replace("bun-", "") || "current";
-  const file = join(outdir, `ultracode-${suffix}`);
+  const ext = (target ? target.includes("windows") : process.platform === "win32") ? ".exe" : "";
+  const name = `ultracode-${suffix}${ext}`;
+  const file = join(outdir, name);
   const result = await Bun.build({
     entrypoints: [join(root, "src", "cli.ts")],
     compile: target ? { target, outfile: file } : { outfile: file },
     minify: true,
     define: {
-      "process.env.ULTRACODE_RELEASE_VERSION": JSON.stringify(process.env.ULTRACODE_RELEASE_VERSION || "0.2.2"),
+      "process.env.ULTRACODE_RELEASE_VERSION": JSON.stringify(process.env.ULTRACODE_RELEASE_VERSION || "0.3.0"),
     },
   });
   if (!result.success) throw new Error(result.logs.join("\n"));
   const data = await Bun.file(file).arrayBuffer();
   const hash = createHash("sha256").update(Buffer.from(data)).digest("hex");
-  await writeFile(`${file}.sha256`, `${hash}  ultracode-${suffix}\n`);
-  manifest[suffix] = { file: `ultracode-${suffix}`, sha256: hash };
+  await writeFile(`${file}.sha256`, `${hash}  ${name}\n`);
+  manifest[suffix] = { file: name, sha256: hash };
   console.log(`Built ${file}`);
 }
 

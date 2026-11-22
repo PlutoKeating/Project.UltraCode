@@ -1,11 +1,10 @@
 {
   "name": "@ultracode/cli",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "private": true,
   "type": "module",
   "bin": {
-    "ultracode": "./src/cli.ts",
-    "uc": "./src/cli.ts"
+    "ultracode": "./src/cli.ts"
   },
   "scripts": {
     "build": "bun run scripts/build.ts",

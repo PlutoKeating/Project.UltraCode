@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
-import { chmod, mkdir, readFile, rename, stat, writeFile } from "node:fs/promises";
-import { dirname, join } from "node:path";
+import { chmod, mkdir, readFile, rename, rm, stat, writeFile } from "node:fs/promises";
+import { basename, dirname, join, win32 } from "node:path";
 
 export async function exists(path: string): Promise<boolean> {
   try {
@@ -26,18 +26,38 @@ export async function readText(path: string): Promise<string> {
   return readFile(path, "utf8");
 }
 
-export function sha256(content: string | Buffer): string {
+export function sha256(content: string | Buffer | Uint8Array): string {
   return createHash("sha256").update(content).digest("hex");
 }
 
 export async function backup(path: string, directory: string): Promise<string | null> {
   if (!(await exists(path))) return null;
-  const target = join(directory, `${Date.now()}-${path.split("/").pop()}`);
+  const name = path.includes("\\") ? win32.basename(path) : basename(path);
+  const target = join(directory, `${Date.now()}-${name}`);
   await ensureParent(target);
   await writeFile(target, await readFile(path));
   return target;
 }
 
 export async function makeExecutable(path: string): Promise<void> {
+  if (process.platform === "win32") return;
   await chmod(path, 0o755);
+}
+
+export async function replaceBinary(
+  target: string,
+  data: Uint8Array,
+  platform: NodeJS.Platform = process.platform,
+): Promise<void> {
+  await ensureParent(target);
+  const old = `${target}.old`;
+  await rm(old, { force: true }).catch(() => {});
+  if (platform === "win32" && (await exists(target))) {
+    await rename(target, old);
+  }
+  await atomicWrite(target, data, 0o755);
+  if (platform !== "win32") await chmod(target, 0o755);
+  if (platform === "win32") {
+    await rm(old, { force: true }).catch(() => {});
+  }
 }

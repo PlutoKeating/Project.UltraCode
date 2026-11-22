@@ -19,6 +19,18 @@ declare module "*gitignore" {
   const content: string;
   export default content;
 }
+declare module "*.js" {
+  const content: string;
+  export default content;
+}
+declare module "*.cjs" {
+  const content: string;
+  export default content;
+}
+declare module "*.tsx" {
+  const content: string;
+  export default content;
+}
 
 declare module "bun:test" {
   export const afterEach: (...args: any[]) => any;
@@ -26,9 +38,4 @@ declare module "bun:test" {
   export const describe: (...args: any[]) => any;
   export const expect: (...args: any[]) => any;
   export const test: (...args: any[]) => any;
-}
-
-declare module "*.js" {
-  const content: string;
-  export default content;
 }

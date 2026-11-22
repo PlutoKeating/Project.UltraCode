@@ -1,8 +1,7 @@
 #!/usr/bin/env bun
-import { dirname, resolve } from "node:path";
-import { run } from "./opencode";
-import { readlink, rm, unlink } from "node:fs/promises";
+import { rm, unlink } from "node:fs/promises";
 import { createInterface } from "node:readline/promises";
+import { run } from "./opencode";
 import { apply, doctor, uninstall, VERSION } from "./install";
 import { resolvePaths } from "./paths";
 import { updateSelf, upgradeOpenCode } from "./release";
@@ -68,10 +67,6 @@ async function main(): Promise<number> {
       if (!args.includes("--yes") && !(await confirm())) return 2;
       const preserved = await uninstall(paths);
       await rm(paths.runtime, { recursive: true, force: true });
-      if (await exists(paths.shortBinary)) {
-        const link = await readlink(paths.shortBinary).catch(() => null);
-        if (link && resolve(dirname(paths.shortBinary), link) === paths.binary) await unlink(paths.shortBinary).catch(() => {});
-      }
       if (await exists(paths.binary)) await unlink(paths.binary).catch(() => {});
       for (const path of preserved) console.warn(`Preserved locally modified file: ${path}`);
       console.log("UltraCode removed. User configuration and backups were preserved.");

@@ -1,7 +1,9 @@
+import { join, win32 } from "node:path";
 import type { JsonValue } from "./config";
 import type { Paths } from "./paths";
 
 export function managedConfig(paths: Paths): { [key: string]: JsonValue } {
+  const pathJoin = paths.config.includes("\\") ? win32.join : join;
   return {
     default_agent: "UltraBuild",
     permissions: [
@@ -19,13 +21,13 @@ export function managedConfig(paths: Paths): { [key: string]: JsonValue } {
       servers: {
         ultracode_playwright: {
           type: "local",
-          command: [paths.binary, "mcp"],
+          command: [paths.binary, "_mcp"],
           disabled: false,
           codemode: false,
           timeout: { startup: 60000, catalog: 30000, execution: 600000 },
         },
       },
     },
-    plugins: [`${paths.config}/ultracode/conversation`, `${paths.runtime}/superpowers`],
+    plugins: [pathJoin(paths.config, "ultracode", "conversation"), pathJoin(paths.runtime, "superpowers")],
   };
 }
