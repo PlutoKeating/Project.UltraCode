@@ -51,6 +51,19 @@ header.header {
   padding-inline: 2rem;
 }
 
+.site-title {
+  gap: 0.72rem !important;
+  font-size: 1.24rem !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.025em;
+  color: #ffffff !important;
+}
+
+.site-title img {
+  height: 24px !important;
+  width: auto !important;
+}
+
 /* Left Sidebar — clean, quiet, zero visual noise */
 .sidebar-pane {
   border-inline-end: 1px solid var(--sl-color-hairline);

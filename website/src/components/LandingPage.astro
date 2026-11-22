@@ -276,6 +276,10 @@ const examplePrompt = zh
     box-sizing: border-box;
   }
 
+  html {
+    font-size: 17.5px;
+  }
+
   html,
   body {
     margin: 0;
@@ -311,7 +315,7 @@ const examplePrompt = zh
 
   .uc-container {
     width: 100%;
-    max-width: 1140px;
+    max-width: 1180px;
     margin: 0 auto;
     padding: 0 2.25rem;
   }
@@ -321,7 +325,7 @@ const examplePrompt = zh
     position: sticky;
     top: 0;
     z-index: 40;
-    height: 70px;
+    height: 74px;
     border-bottom: 1px solid var(--uc-hairline);
     background: rgba(0, 0, 0, 0.84);
     backdrop-filter: blur(16px);
@@ -329,7 +333,7 @@ const examplePrompt = zh
   }
 
   .uc-nav-inner {
-    max-width: 1220px;
+    max-width: 1260px;
     height: 100%;
     margin: 0 auto;
     padding: 0 2.25rem;
@@ -341,15 +345,16 @@ const examplePrompt = zh
   .uc-brand {
     display: inline-flex;
     align-items: center;
-    gap: 0.7rem;
-    font-weight: 500;
-    font-size: 1rem;
-    letter-spacing: -0.015em;
+    gap: 0.72rem;
+    font-weight: 600;
+    font-size: 1.28rem;
+    letter-spacing: -0.025em;
+    line-height: 1;
     color: #ffffff;
   }
 
   .uc-brand svg {
-    height: 22px;
+    height: 26px;
     width: auto;
   }
 
@@ -725,6 +730,10 @@ const examplePrompt = zh
   }
 
   @media (max-width: 720px) {
+    html {
+      font-size: 16px;
+    }
+
     .uc-container,
     .uc-nav-inner {
       padding: 0 1.25rem;
