@@ -7,6 +7,9 @@
     "ultracode": "./src/cli.ts"
   },
   "scripts": {
+    "build:gui": "bun run --cwd ../plugin-gui build",
+    "precheck": "bun run build:gui",
+    "pretest": "bun run build:gui",
     "build": "bun run scripts/build.ts",
     "check": "tsc --noEmit",
     "test": "bun test"

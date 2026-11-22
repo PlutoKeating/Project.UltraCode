@@ -1,0 +1,17 @@
+{
+  "name": "@ultracode/plugin-gui",
+  "version": "0.3.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@opencode/plugin": "2.3.2",
+    "solid-js": "^1.9.10",
+    "typescript": "^5.9.3",
+    "vite": "^7.1.0",
+    "vite-plugin-solid": "^2.11.10"
+  }
+}

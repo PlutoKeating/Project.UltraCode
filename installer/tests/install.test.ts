@@ -113,7 +113,10 @@ test("installs conversation package, rpc, settings, server, and tui entry points
   expect(await readFile(join(plugin, "server.js"), "utf8")).toContain("rpc.register");
   const tuiFile = pkg.exports["./tui"].slice(2);
   expect(await readFile(join(plugin, tuiFile), "utf8")).toContain('mode: "global"');
+  expect((await readFile(join(plugin, "gui-experimental.cjs"), "utf8")).length).toBeGreaterThan(100);
   await expect(readFile(join(paths.config, "commands/ultracode/work.md"))).rejects.toThrow();
+  await uninstall(paths);
+  await expect(readFile(join(plugin, "gui-experimental.cjs"))).rejects.toThrow();
 });
 
 test("conversation settings resolves ULTRACODE_HOME dynamically and persists getAll/set/toggle", async () => {

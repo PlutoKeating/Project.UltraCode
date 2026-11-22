@@ -14,6 +14,8 @@ website/dist/
 website/.astro/
 website/src/content/docs/
 website/public/install.sh
+config/opencode/conversation/gui-experimental.cjs
+.superpowers/
 .playwright-mcp/
 .impeccable/mocks/
 .impeccable/review/

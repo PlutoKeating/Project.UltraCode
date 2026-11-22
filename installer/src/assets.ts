@@ -3,6 +3,7 @@ import rpc from "../../config/opencode/conversation/rpc.js" with { type: "text" 
 import server from "../../config/opencode/conversation/server.js" with { type: "text" };
 import settings from "../../config/opencode/conversation/settings.js" with { type: "text" };
 import tui from "../../config/opencode/conversation/tui.tsx" with { type: "text" };
+import gui from "../../config/opencode/conversation/gui-experimental.cjs" with { type: "text" };
 import architect from "../../config/opencode/agents/architect.md" with { type: "text" };
 import implementer from "../../config/opencode/agents/implementer.md" with { type: "text" };
 import librarian from "../../config/opencode/agents/librarian.md" with { type: "text" };
@@ -32,6 +33,7 @@ export const assets: Asset[] = [
   { target: "ultracode/conversation/server.js", content: server },
   { target: "ultracode/conversation/settings.js", content: settings },
   { target: "ultracode/conversation/tui.tsx", content: tui },
+  { target: "ultracode/conversation/gui-experimental.cjs", content: gui },
   { target: "agents/ultracode/architect.md", content: architect },
   { target: "agents/ultracode/implementer.md", content: implementer },
   { target: "agents/ultracode/librarian.md", content: librarian },
