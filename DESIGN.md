@@ -25,3 +25,4 @@
 - **Display & UI**: `Sora` (self-hosted `@fontsource/sora`, weights 400–600 — deliberately avoiding heavy 700 bold) paired with system CJK sans.
 - **Mono**: `JetBrains Mono` (self-hosted `@fontsource/jetbrains-mono`, weights 400–500).
 - **Hairlines, not boxes**: All SVG diagrams sit directly on transparent `#000000` canvas anchored by 1px architectural hairlines and `+` crosshairs. Hero showcase fades seamlessly into `#000000` via bottom `mask-image` and catches directional top-edge specular light.
+- **Brand Mark**: **Stepped Ultra Monolith** (`viewBox="0 0 240 300"`, strict 4:5 whole-pixel grid in the lineage of OpenCode's monolith grammar): `#EEEEEE` open-top U monolith, two-step neutral inner core (`#4B4B4B` / `#2A2A2A`), and a single `#E5A03D` warm tungsten-amber top-right notch.
