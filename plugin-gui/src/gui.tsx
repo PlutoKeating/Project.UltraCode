@@ -26,6 +26,7 @@ export default Plugin.define({
       "settings.direction": "Direction questions",
       "command.permissions": "Toggle Command approvals",
       "command.direction": "Toggle Direction questions",
+      "error.sync": "Could not update UltraCode mode",
       "state.on": "On",
       "state.off": "Off",
     },
@@ -36,6 +37,7 @@ export default Plugin.define({
       "settings.direction": "关键方向确认",
       "command.permissions": "切换命令自动执行",
       "command.direction": "切换关键方向确认",
+      "error.sync": "无法更新 UltraCode 模式",
       "state.on": "开启",
       "state.off": "关闭",
     },
@@ -49,15 +51,32 @@ export default Plugin.define({
     createKeyed(
       () => ctx.client,
       (client) => {
+        const controller = new AbortController();
         const rpc = client.rpc(UltraCodeRpc);
-        void rpc
-          .getState({})
-          .then((next) => setState(normalizeState(next)))
-          .catch(() => {});
+
+        const loadInitialState = async () => {
+          for (let attempt = 0; attempt < 6; attempt++) {
+            if (controller.signal.aborted) return;
+            try {
+              const next = await rpc.getState({}, { signal: controller.signal } as any);
+              if (!controller.signal.aborted) setState(normalizeState(next));
+              return;
+            } catch (error) {
+              const type = error && typeof error === "object" ? (error as Record<string, unknown>).type : undefined;
+              if (type !== "rpc.unavailable" || attempt === 5) return;
+              await new Promise((resolve) => setTimeout(resolve, 120 * (attempt + 1)));
+            }
+          }
+        };
+
+        void loadInitialState();
         const unsubscribe = rpc.events.on("changed", (event) => {
-          setState(normalizeState(event.data));
+          if (!controller.signal.aborted) setState(normalizeState(event.data));
         });
-        onCleanup(() => unsubscribe());
+        onCleanup(() => {
+          controller.abort();
+          unsubscribe();
+        });
       },
     );
 
@@ -75,6 +94,10 @@ export default Plugin.define({
       return normalized;
     };
 
+    const handleError = () => {
+      ctx.toast.show({ variant: "error", title: ctx.t("error.sync") });
+    };
+
     ctx.add(ComposerPill, {
       id: "status",
       show: () => {
@@ -86,13 +109,13 @@ export default Plugin.define({
               id: "permissions",
               label: ctx.t("pill.permissions"),
               detail: current.permissions === "auto" ? ctx.t("state.on") : ctx.t("state.off"),
-              run: () => void flipMode("permissions"),
+              run: () => void flipMode("permissions").catch(handleError),
             },
             {
               id: "direction",
               label: ctx.t("pill.direction"),
               detail: current.direction === "manual" ? ctx.t("state.on") : ctx.t("state.off"),
-              run: () => void flipMode("direction"),
+              run: () => void flipMode("direction").catch(handleError),
             },
           ],
         };
@@ -129,7 +152,7 @@ export default Plugin.define({
                   label={ctx.t("settings.permissions")}
                   hideLabel
                   checked={state().permissions === "auto"}
-                  onChange={(checked) => void updateMode("permissions", checked ? "auto" : "manual")}
+                  onChange={(checked) => void updateMode("permissions", checked ? "auto" : "manual").catch(handleError)}
                 />
               </ui.SettingsRow>
               <ui.SettingsRow id="direction" title={ctx.t("settings.direction")}>
@@ -137,7 +160,7 @@ export default Plugin.define({
                   label={ctx.t("settings.direction")}
                   hideLabel
                   checked={state().direction === "manual"}
-                  onChange={(checked) => void updateMode("direction", checked ? "manual" : "auto")}
+                  onChange={(checked) => void updateMode("direction", checked ? "manual" : "auto").catch(handleError)}
                 />
               </ui.SettingsRow>
             </ui.SettingsSection>
@@ -153,10 +176,14 @@ export default Plugin.define({
         title: ctx.t("command.permissions"),
         group: "UltraCode",
         run: async () => {
-          const next = await flipMode("permissions");
-          ctx.toast.show({
-            title: `${ctx.t("settings.permissions")} · ${next.permissions === "auto" ? ctx.t("state.on") : ctx.t("state.off")}`,
-          });
+          try {
+            const next = await flipMode("permissions");
+            ctx.toast.show({
+              title: `${ctx.t("settings.permissions")} · ${next.permissions === "auto" ? ctx.t("state.on") : ctx.t("state.off")}`,
+            });
+          } catch {
+            handleError();
+          }
         },
       }),
     );
@@ -168,10 +195,14 @@ export default Plugin.define({
         title: ctx.t("command.direction"),
         group: "UltraCode",
         run: async () => {
-          const next = await flipMode("direction");
-          ctx.toast.show({
-            title: `${ctx.t("settings.direction")} · ${next.direction === "manual" ? ctx.t("state.on") : ctx.t("state.off")}`,
-          });
+          try {
+            const next = await flipMode("direction");
+            ctx.toast.show({
+              title: `${ctx.t("settings.direction")} · ${next.direction === "manual" ? ctx.t("state.on") : ctx.t("state.off")}`,
+            });
+          } catch {
+            handleError();
+          }
         },
       }),
     );

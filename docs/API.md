@@ -31,9 +31,10 @@
 | --- | --- | --- |
 | `ultracode_checkpoint` | Server 会话工具 | 登记下一里程碑（`{ next: string }`）；空字符串或新用户输入清除调度。 |
 | `ultracode_model` | Server 会话工具 | 列出可用模型 ID，或在用户明确指定/授权模型池内切换会话模型。 |
-| `UltraCodeRpc` (`getState` / `setMode` / `toggleMode` / `changed`) | Server ↔ TUI / Desktop / Web | 跨进程、跨远程浏览器/移动端的实时状态读写与事件同步契约。 |
-| `ComposerPill` (`UltraCode`) | Desktop / Web / Mobile | 输入框上方胶囊菜单，两行一键切换 **Auto-approve** 与 **Ask on direction**。 |
-| `SettingsPage` (`UltraCode`) | Desktop / Web / Mobile | **Settings → UltraCode** 独立设置页，提供两项原生开关。 |
+| `UltraCodeRpc` (`getState` / `setMode` / `toggleMode` / `changed`) | Server ↔ TUI / Desktop | 跨进程实时状态读写与事件同步契约（`getState` 返回 `{ permissions, direction, version }`）。 |
+| `/approvals` / `/direction` | Web / Mobile / TUI / Desktop | 服务端注册命令（实时展示当前模式，支持无参翻转或传入 `auto` / `manual`，零模型调用）。 |
+| `ComposerPill` (`UltraCode`) | OpenCode Desktop | 输入框上方胶囊菜单，两行一键切换 **Auto-approve** 与 **Ask on direction**。 |
+| `SettingsPage` (`UltraCode`) | OpenCode Desktop | **Settings → UltraCode** 独立设置页，提供两项原生开关。 |
 | `ultracode.toggle-permissions` / `ultracode.toggle-direction` | TUI & Desktop/Web 命令面板 | 切换 **Command approvals**（默认 `auto`）与 **Direction questions**（默认 `manual`）。 |
 
 模式状态文件（原子写入）：

@@ -5,8 +5,9 @@ const stateSchema = {
   properties: {
     permissions: { type: "string", enum: ["auto", "manual"] },
     direction: { type: "string", enum: ["auto", "manual"] },
+    version: { type: "string" },
   },
-  required: ["permissions", "direction"],
+  required: ["permissions", "direction", "version"],
   additionalProperties: false,
 }
 
@@ -14,6 +15,11 @@ export const UltraCodeRpc = Rpc.define({
   id: "ultracode",
   methods: {
     getState: {
+      input: {
+        type: "object",
+        properties: {},
+        additionalProperties: false,
+      },
       output: stateSchema,
     },
     setMode: {

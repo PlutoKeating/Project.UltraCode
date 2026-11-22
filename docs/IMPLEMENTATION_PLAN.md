@@ -131,7 +131,7 @@
 
 ### 安装器与升级
 
-- 独立编译 `ultracode`/`uc` CLI，用户级 XDG 路径。
+- 独立编译 `ultracode` CLI，用户级 XDG 路径。
 - `apply/sync`、`doctor`、`update`、`up`、`uninstall`。
 - JSONC 最大并集合并、注释保留、数组去重、冲突报告、原子写入、清单与精确卸载。
 - 私有 Bun 子进程管理 Ralph/Playwright；Superpowers/Ralph 固定源码 SHA-256。
@@ -147,13 +147,13 @@
 ### v0.2.0–v0.2.2 里程碑摘要
 
 - **v0.2.0**：引入对话式目标工程（Goal Engineering）插件对 `ultracode-conversation` / `ultracode-conversation-ui`，新增 `ultracode_checkpoint`、`ultracode_model`、TUI 命令面板双开关（`Command approvals` / `Direction questions`），并退役旧版 `/ultracode-*` 斜杠命令。
-- **v0.2.1**：补齐组件身份对账（插件身份识别、等价无头隔离 Playwright MCP 复用与工具名对齐）、清单 schema v2 与旧版清单安全迁移、`uc doctor` 实时注册与 MCP 连接检查。
+- **v0.2.1**：补齐组件身份对账（插件身份识别、等价无头隔离 Playwright MCP 复用与工具名对齐）、清单 schema v2 与旧版清单安全迁移、`ultracode doctor` 实时注册与 MCP 连接检查。
 - **v0.2.2**：确立 `UltraBuild`（默认，总协调与执行）与 `UltraPlan`（规划，`Shift+Tab` 切换）双主角色（安装在 `agents/`）+ 5 个后台子代理（`agents/ultracode/`），完善中英双语文档与安装器隔离测试。
 
 ### 验证
 
 - 安装器当前包含 12 个隔离测试（2 个测试文件）、严格 TypeScript 检查、独立二进制版本冒烟通过。
-- 私有 Ralph 1.3.1 与 Playwright 0.0.86 在隔离 HOME 执行成功，`uc doctor` 无模型调用通过。
+- 私有 Ralph 1.3.1 与 Playwright 0.0.86 在隔离 HOME 执行成功，`ultracode doctor` 无模型调用通过。
 - Starlight `astro check` 0 错误，生产构建与 Pagefind 索引生成通过。
 - Wrangler `--dry-run` 通过；桌面中文首页、英文教程和移动中文教程均经真实浏览器渲染并人工查看。
 - 公开 GitHub Release、远程 CI 和 Cloudflare 实际部署需要维护者推送/发布/连接 Git 后执行；本地实施未代替这些人工发布步骤。

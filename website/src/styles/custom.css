@@ -48,7 +48,12 @@ header.header {
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--sl-color-hairline);
-  padding-inline: 2rem;
+}
+
+@media (min-width: 50rem) {
+  header.header {
+    padding-inline: 2rem;
+  }
 }
 
 .site-title {

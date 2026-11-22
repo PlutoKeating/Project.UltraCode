@@ -9,7 +9,9 @@ function spawnDetached(command: string, args: string[] = []): void {
   const child = spawn(command, args, {
     detached: true,
     stdio: "ignore",
+    windowsHide: true,
   });
+  child.on("error", () => {});
   child.unref();
 }
 
@@ -70,19 +72,27 @@ function desktopDownloadAsset(platform: NodeJS.Platform, arch: string): { filena
 
 export async function launchOrInstallDesktop(
   paths: Paths,
-  options: { dryRun?: boolean; platform?: NodeJS.Platform; arch?: string } = {},
+  options: {
+    dryRun?: boolean;
+    platform?: NodeJS.Platform;
+    arch?: string;
+    skipInstalledCheck?: boolean;
+    statusStream?: NodeJS.WriteStream;
+  } = {},
 ): Promise<number> {
   const platform = options.platform ?? process.platform;
   const arch = options.arch ?? process.arch;
-  const installed = await findInstalledDesktop(paths, platform);
-  if (installed) {
-    if (!options.dryRun) spawnDetached(installed.command, installed.args);
-    return 0;
+  if (!options.skipInstalledCheck) {
+    const installed = await findInstalledDesktop(paths, platform);
+    if (installed) {
+      if (!options.dryRun) spawnDetached(installed.command, installed.args);
+      return 0;
+    }
   }
 
   const asset = desktopDownloadAsset(platform, arch);
   const url = process.env.ULTRACODE_DESKTOP_DOWNLOAD_URL || asset.url;
-  const spinner = createSpinner("Downloading OpenCode Desktop");
+  const spinner = createSpinner("Downloading OpenCode Desktop", options.statusStream);
   try {
     const response = await fetch(url, { headers: { "User-Agent": "ultracode-installer" } });
     if (!response.ok) throw new Error(`Failed to download OpenCode Desktop (${response.status}): ${url}`);
@@ -104,7 +114,14 @@ export async function launchOrInstallDesktop(
       if (platform === "darwin") {
         await run("open", [installerPath]);
       } else {
-        spawnDetached(installerPath, []);
+        // Use Start-Process so Windows UAC elevation prompts work cleanly via ShellExecute
+        spawnDetached("powershell.exe", [
+          "-NoProfile",
+          "-WindowStyle",
+          "Hidden",
+          "-Command",
+          `Start-Process -FilePath '${installerPath.replace(/'/g, "''")}'`,
+        ]);
       }
     }
     return 0;

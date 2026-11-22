@@ -26,12 +26,12 @@ UltraCode 在 `<config>/ultracode/conversation/` 安装单一多触点插件包�
 
 - **RPC 契约（`rpc.js`）**：基于 `@opencode/plugin/rpc` 定义零运行时依赖的 `UltraCodeRpc`（方法 `getState`、`setMode`、`toggleMode`，事件 `changed`）。
 - **Server 入口（`server.js`，ID `ultracode-conversation`）**：
-  - 注册 `UltraCodeRpc`，修改模式时广播 `changed` 事件，使 TUI、Desktop 与远程 Web/Mobile 会话无需直接访问本地文件系统即可实时同步。
+  - 注册 `UltraCodeRpc` 与 `/approvals`、`/direction` 服务端命令，修改模式时广播 `changed` 事件并刷新命令描述，使 TUI、Desktop 与远程 Web/Mobile 会话实时同步。
   - 注册 `permission.evaluate`（`permissions` 为 `auto` 时放行 `ask`，显式 `deny` 始终生效）、`ultracode_model`、`ultracode_checkpoint`、`session.prompt`、`session.context` 与 `experimental.idle` 续跑钩子。
 - **TUI 入口（`tui.tsx`，ID `ultracode-conversation-ui`）**：
   - 在命令面板（`UltraCode` 分组）注册双开关，调用 `UltraCodeRpc`（带本地回退），并在 `home.footer.status` 提供克制的 `UltraCode` 状态标识。
 - **GUI 入口（`gui-experimental.cjs`，由 `plugin-gui/` 通过 Vite + `@opencode/plugin/gui/vite` 预编译为单文件 CJS 并内嵌至二进制）**：
-  - 在 OpenCode Desktop、Web 与 Mobile 界面提供输入框上方的 **UltraCode** `ComposerPill`（两行一键切换）、独立的 **Settings → UltraCode** 页面（`SettingsLayout` + 双 `Switch`）以及命令面板动作，支持中英双语（`en` / `zh`）。
+  - 在 OpenCode Desktop 界面提供输入框上方的 **UltraCode** `ComposerPill`（两行一键切换）、独立的 **Settings → UltraCode** 页面（`SettingsLayout` + 双 `Switch`）以及命令面板动作，支持中英双语（`en` / `zh`）。
 
 模式状态原子持久化至 `$ULTRACODE_HOME/permissions.mode` 与 `$ULTRACODE_HOME/direction.mode`（Linux/macOS 默认 `~/.local/share/ultracode`，Windows 默认 `%LOCALAPPDATA%\ultracode`）。
 

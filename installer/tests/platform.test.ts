@@ -5,6 +5,7 @@ import { tmpdir } from "node:os";
 import { join, win32 } from "node:path";
 import { resolvePaths } from "../src/paths";
 import { backup, replaceBinary, sha256 } from "../src/fs";
+import { components } from "../src/components";
 import { managedConfig } from "../src/managed";
 import { ensureOpenCode, findOpenCode } from "../src/opencode";
 import { updateSelf } from "../src/release";
@@ -109,6 +110,19 @@ describe("cross-platform paths and fs", () => {
       else process.env.ULTRACODE_RELEASE_BASE_URL = prevBase;
       await new Promise<void>((resolve) => server.close(() => resolve()));
       await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  test("components handles npm-style file:./plugin specifier without throwing Invalid URL", async () => {
+    const prevSkip = process.env.ULTRACODE_SKIP_RUNTIME;
+    process.env.ULTRACODE_SKIP_RUNTIME = "1";
+    try {
+      const p = resolvePaths({ HOME: "/tmp/u" }, "linux");
+      const res = await components(p, { plugins: ["file:./my-local-plugin"] });
+      expect(Array.isArray(res.managed.plugins)).toBe(true);
+    } finally {
+      if (prevSkip === undefined) delete process.env.ULTRACODE_SKIP_RUNTIME;
+      else process.env.ULTRACODE_SKIP_RUNTIME = prevSkip;
     }
   });
 });

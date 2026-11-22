@@ -11,7 +11,21 @@ function object(value: JsonValue | undefined): Record<string, JsonValue> {
 }
 
 function isLocalSpec(spec: string): boolean {
-  return spec.startsWith("file:") || isAbsolute(spec) || /^[a-zA-Z]:[\\/]/.test(spec) || /^\.\.?[\\/]/.test(spec);
+  return spec.startsWith("file://") || spec.startsWith("file:") || isAbsolute(spec) || /^[a-zA-Z]:[\\/]/.test(spec) || /^\.\.?[\\/]/.test(spec);
+}
+
+function resolveLocalSpec(baseDir: string, spec: string): string | null {
+  try {
+    if (spec.startsWith("file://")) return fileURLToPath(spec);
+    if (spec.startsWith("file:")) return resolve(baseDir, spec.slice(5));
+    return resolve(baseDir, spec);
+  } catch {
+    return null;
+  }
+}
+
+function samePath(a: string, b: string): boolean {
+  return process.platform === "win32" ? a.toLowerCase() === b.toLowerCase() : a === b;
 }
 
 async function pluginID(value: JsonValue, paths: Paths): Promise<string | undefined> {
@@ -19,22 +33,23 @@ async function pluginID(value: JsonValue, paths: Paths): Promise<string | undefi
   if (typeof spec !== "string") return;
   if (/^(?:superpowers(?:@|$)|(?:git\+)?https:\/\/github\.com\/obra\/superpowers(?:\.git)?(?:#.*)?$|github:obra\/superpowers(?:#.*)?$)/i.test(spec)) return "superpowers";
   if (!isLocalSpec(spec)) return;
-  const location = spec.startsWith("file:") ? fileURLToPath(spec) : resolve(paths.config, spec);
-  if (location === resolve(join(paths.config, "ultracode", "conversation"))) return "ultracode-conversation";
-  if (location === resolve(join(paths.runtime, "superpowers"))) return "superpowers";
+  const location = resolveLocalSpec(paths.config, spec);
+  if (!location) return;
+  if (samePath(location, resolve(join(paths.config, "ultracode", "conversation")))) return "ultracode-conversation";
+  if (samePath(location, resolve(join(paths.runtime, "superpowers")))) return "superpowers";
   try {
     const pkg = JSON.parse(await readFile(join(location, "package.json"), "utf8"));
     return pkg.name;
-  } catch { return; }
+  } catch {
+    return;
+  }
 }
 
 export async function components(paths: Paths, config: JsonValue) {
   const managed = managedConfig(paths);
   const plugins = object(config).plugins;
   const ours = managed.plugins as string[];
-  const choices = await Promise.all((Array.isArray(plugins) ? plugins : []).map(async entry => ({ entry, id: await pluginID(entry, paths) })));
-  // A plugin may declare an ID unrelated to its npm name or directory.
-  // Scope registry evidence to globally configured sources or global auto-discovery.
+  const choices = await Promise.all((Array.isArray(plugins) ? plugins : []).map(async (entry) => ({ entry, id: await pluginID(entry, paths) })));
   const registered = new Map<string, string>();
   if (process.env.ULTRACODE_SKIP_RUNTIME !== "1") {
     const opencode = (await findOpenCode(paths)) ?? paths.opencodeBinary;
@@ -45,7 +60,9 @@ export async function components(paths: Paths, config: JsonValue) {
           const spec = plugin.source?.target ?? plugin.source?.path;
           if (typeof spec === "string") registered.set(spec, plugin.id);
         }
-      } catch { /* An initializing host can return no registry. Doctor verifies after sync. */ }
+      } catch {
+        /* An initializing host can return no registry. Doctor verifies after sync. */
+      }
     }
   }
   for (const choice of choices) {
@@ -53,20 +70,20 @@ export async function components(paths: Paths, config: JsonValue) {
     if (typeof spec === "string") choice.id = registered.get(spec) ?? choice.id;
   }
   const pluginsPrefix = resolve(join(paths.config, "plugins")) + sep;
+  const normalizedPrefix = process.platform === "win32" ? pluginsPrefix.toLowerCase() : pluginsPrefix;
   managed.plugins = ours.filter((path, i) => {
     const id = ["ultracode-conversation", "superpowers"][i];
     const discovered = [...registered].some(([spec, actual]) => {
       if (actual !== id || !isLocalSpec(spec)) return false;
-      const resolved = spec.startsWith("file:") ? fileURLToPath(spec) : resolve(paths.config, spec);
-      return resolved.startsWith(pluginsPrefix);
+      const resolved = resolveLocalSpec(paths.config, spec);
+      if (!resolved) return false;
+      return (process.platform === "win32" ? resolved.toLowerCase() : resolved).startsWith(normalizedPrefix);
     });
-    return !discovered && !choices.some(choice => choice.entry !== path && choice.id === id);
+    return !discovered && !choices.some((choice) => choice.entry !== path && choice.id === id);
   });
 
   const servers = object(object(object(config).mcp).servers);
   let browser = "ultracode_playwright";
-  // Reuse only a launch contract with the same private headless browser and
-  // evidence destination. Remote/persistent browsers are distinct resources.
   for (const [name, value] of Object.entries(servers)) {
     if (name === browser || !/^[a-zA-Z0-9_]+$/.test(name)) continue;
     const server = object(value);
@@ -80,7 +97,7 @@ export async function components(paths: Paths, config: JsonValue) {
     if (JSON.stringify(args) !== JSON.stringify(["@playwright/mcp@0.0.86", "--browser", "chromium", "--headless", "--isolated", "--output-dir", ".opencode/ultracode/qa"])) continue;
     browser = name;
     delete managed.mcp;
-    managed.permissions = (managed.permissions as JsonValue[]).filter(rule => object(rule).action !== "ultracode_playwright_*");
+    managed.permissions = (managed.permissions as JsonValue[]).filter((rule) => object(rule).action !== "ultracode_playwright_*");
     break;
   }
   return { managed, browser };

@@ -1,3 +1,5 @@
+import { spawn } from "node:child_process";
+import { randomUUID } from "node:crypto";
 import { mkdir, rm } from "node:fs/promises";
 import { join } from "node:path";
 import { assets } from "./assets";
@@ -149,39 +151,115 @@ export async function doctor(paths: Paths): Promise<string[]> {
         issues.push("Existing ultracode_playwright registration has a different launch configuration");
       }
       let pending: string[] = [];
-      for (let attempt = 0; attempt < 12; attempt++) {
-        const plugins = await run(opencode, ["api", "get", "/api/plugin"]);
-        const servers = await run(opencode, ["api", "get", "/api/mcp"]);
-        const agents = await run(opencode, ["debug", "agents"]);
-        const failedCmd = [plugins, servers, agents].find((r) => r.code !== 0);
-        if (failedCmd) {
-          const detail = (failedCmd.stderr || failedCmd.stdout)
-            .split(/\r?\n/)
-            .map((l) => l.trim())
-            .find((l) => l.length > 0 && !l.startsWith("at "));
-          throw new Error(detail ? `Could not verify the OpenCode runtime registries (${detail})` : "Could not verify the OpenCode runtime registries");
-        }
-        const registry = JSON.parse(plugins.stdout).data as { id: string; state: { status: string; error?: string } }[];
-        const mcp = JSON.parse(servers.stdout).data as { name: string; status: { status: string } }[];
-        const ids = new Set((JSON.parse(agents.stdout) as { id: string }[]).map((agent) => agent.id));
-        pending = roleIDs.filter((id) => !ids.has(id)).map((id) => "Missing registered agent " + id);
-        for (const id of ["superpowers", "ultracode-conversation"]) {
-          const matches = registry.filter((p) => p.id === id);
-          if (matches.length !== 1 || matches[0]?.state.status !== "active") {
-            pending.push(id + ": " + (matches.map((p) => p.state.error || p.state.status).join(", ") || "missing"));
+      let serverUrl: string | null = null;
+      let serverPassword = "";
+      let tempServer: ReturnType<typeof spawn> | null = null;
+      let useStandaloneFlag = false;
+      let fatalDetail = "";
+      try {
+        for (let attempt = 0; attempt < 12; attempt++) {
+          const env = serverUrl ? { ...process.env, OPENCODE_PASSWORD: serverPassword } : process.env;
+          const apiArgs = (path: string) =>
+            serverUrl
+              ? ["api", "--server", serverUrl, "get", path]
+              : useStandaloneFlag
+                ? ["api", "--standalone", "get", path]
+                : ["api", "get", path];
+          const debugArgs = serverUrl
+            ? ["debug", "agents", "--server", serverUrl]
+            : useStandaloneFlag
+              ? ["debug", "agents", "--standalone"]
+              : ["debug", "agents"];
+
+          const plugins = await run(opencode, apiArgs("/api/plugin"), { env });
+          const servers = await run(opencode, apiArgs("/api/mcp"), { env });
+          const agents = await run(opencode, debugArgs, { env });
+          const failedCmd = [plugins, servers, agents].find((r) => r.code !== 0);
+          if (failedCmd) {
+            const combined = `${failedCmd.stderr}\n${failedCmd.stdout}`;
+            if (!serverUrl && !useStandaloneFlag && /already in use|Failed to start server|EADDRINUSE/i.test(combined)) {
+              serverPassword = randomUUID();
+              const child = spawn(opencode, ["serve", "--hostname", "127.0.0.1", "--port", "0"], {
+                env: { ...process.env, OPENCODE_PASSWORD: serverPassword },
+                stdio: ["ignore", "pipe", "pipe"],
+                windowsHide: true,
+              });
+              child.on("error", () => {});
+              tempServer = child;
+              const discovered = await new Promise<string | null>((resolveUrl) => {
+                let buf = "";
+                const timer = setTimeout(() => resolveUrl(null), 3000);
+                const onChunk = (chunk: Buffer) => {
+                  buf += chunk.toString();
+                  const m = buf.match(/https?:\/\/127\.0\.0\.1:\d+/);
+                  if (m) {
+                    clearTimeout(timer);
+                    resolveUrl(m[0]);
+                  }
+                };
+                child.stdout?.on("data", onChunk);
+                child.stderr?.on("data", onChunk);
+                child.on("close", () => {
+                  clearTimeout(timer);
+                  resolveUrl(null);
+                });
+              });
+              if (discovered) {
+                serverUrl = discovered;
+              } else {
+                child.kill();
+                tempServer = null;
+                useStandaloneFlag = true;
+              }
+              continue;
+            }
+            fatalDetail =
+              combined
+                .split(/\r?\n/)
+                .map((l) => l.trim())
+                .find((l) => l.length > 0 && !l.startsWith("at ")) || "";
+            if (useStandaloneFlag || serverUrl) break;
+            await new Promise((resolve) => setTimeout(resolve, 250));
+            continue;
           }
+          fatalDetail = "";
+          let registry: { id: string; state: { status: string; error?: string } }[];
+          let mcp: { name: string; status: { status: string } }[];
+          let parsedAgents: { id: string }[];
+          try {
+            registry = JSON.parse(plugins.stdout).data;
+            mcp = JSON.parse(servers.stdout).data;
+            parsedAgents = JSON.parse(agents.stdout);
+          } catch {
+            await new Promise((resolve) => setTimeout(resolve, 400));
+            continue;
+          }
+          const ids = new Set(parsedAgents.map((agent) => agent.id));
+          pending = roleIDs.filter((id) => !ids.has(id)).map((id) => "Missing registered agent " + id);
+          for (const id of ["superpowers", "ultracode-conversation"]) {
+            const matches = registry.filter((p) => p.id === id);
+            if (matches.length !== 1 || matches[0]?.state.status !== "active") {
+              pending.push(id + ": " + (matches.map((p) => p.state.error || p.state.status).join(", ") || "missing"));
+            }
+          }
+          const status = mcp.find((m) => m.name === browser)?.status.status;
+          if (status !== "connected") pending.push(browser + ": " + (status || "missing"));
+          if (
+            !pending.length ||
+            registry.some((p) => p.state.status === "failed" && ["superpowers", "ultracode-conversation"].includes(p.id))
+          ) {
+            break;
+          }
+          await new Promise((resolve) => setTimeout(resolve, 500));
         }
-        const status = mcp.find((m) => m.name === browser)?.status.status;
-        if (status !== "connected") pending.push(browser + ": " + (status || "missing"));
-        if (
-          !pending.length ||
-          registry.some((p) => p.state.status === "failed" && ["superpowers", "ultracode-conversation"].includes(p.id))
-        ) {
-          break;
-        }
-        await new Promise((resolve) => setTimeout(resolve, 500));
+      } finally {
+        tempServer?.kill();
       }
-      issues.push(...pending);
+      if (fatalDetail) {
+        issues.push(`Could not verify the OpenCode runtime registries (${fatalDetail})`);
+      } else {
+        issues.push(...pending);
+      }
     } catch (err) {
       const msg = err instanceof Error && err.message.startsWith("Could not verify") ? err.message : "Could not verify the OpenCode runtime registries";
       issues.push(msg);

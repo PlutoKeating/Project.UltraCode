@@ -1,6 +1,7 @@
 import { getAll, mode, set, toggle } from "./settings.js"
 import { UltraCodeRpc } from "./rpc.js"
 
+const VERSION = "0.3.0"
 const guidance = `Help the user direct work in terms of audience, behavior, architecture and acceptance. Read project instructions. Directly handle bounded work. For ambiguous work research alternatives and batch consequential questions. A request to discuss or plan authorizes only that scope. For a clear extended delivery goal, use ultracode_checkpoint to schedule the next milestone when needed, without asking the user to activate a mode. Update or clear it as the user steers. Keep committable task, progress and handoff files in the repository for long work, using the project's convention or .ralph/. Record evidence and the next action. Delegate bounded work to fresh native subagents when useful. Keep the user's model unless their preferences, configured role mappings or allowed model pool justify another. Learn recurring preferences from feedback, with the user's ability to inspect, correct and forget them via conversation. Store only relevant working preferences in project notes. Follow repository Git rules and the user's configured author identity. Have complex changes independently reviewed; operate user-visible interfaces and visually inspect their rendered output. Keep routine messages to milestones, blockers and outcomes. If progress stalls, revise the approach or report the blocker. Continue while meaningful progress is possible. Close the checkpoint before asking the user a question, stopping, or reporting completion.`
 
 export default {
@@ -8,23 +9,55 @@ export default {
   async setup(ctx) {
     // A restart leaves the on-disk handoff available, without resuming unattended.
     const next = new Map()
+    let cached = { ...(await getAll()), version: VERSION }
+
+    const syncState = async () => {
+      cached = { ...(await getAll()), version: VERSION }
+      return cached
+    }
+
     const registration = await ctx.rpc.register(UltraCodeRpc, {
-      getState: async () => getAll(),
+      getState: async () => syncState(),
       setMode: async (input) => {
         const { key, value } = input
         await set(key, value)
-        const state = await getAll()
+        const state = await syncState()
+        await ctx.command.reload().catch(() => {})
         await registration.events.emit("changed", state)
         return state
       },
       toggleMode: async (input) => {
         const { key } = input
         await toggle(key)
-        const state = await getAll()
+        const state = await syncState()
+        await ctx.command.reload().catch(() => {})
         await registration.events.emit("changed", state)
         return state
       },
     })
+
+    const applySlashMode = async (key, rawText) => {
+      const arg = String(rawText || "").trim().toLowerCase()
+      if (arg === "auto" || arg === "manual") await set(key, arg)
+      else await toggle(key)
+      const state = await syncState()
+      await ctx.command.reload().catch(() => {})
+      await registration.events.emit("changed", state)
+    }
+
+    await ctx.command.transform((editor) => {
+      editor.add({
+        name: "approvals",
+        description: `UltraCode command approvals [auto|manual] (current: ${cached.permissions})`,
+        execute: async ({ prompt }) => applySlashMode("permissions", prompt?.text),
+      })
+      editor.add({
+        name: "direction",
+        description: `UltraCode direction questions [manual|auto] (current: ${cached.direction})`,
+        execute: async ({ prompt }) => applySlashMode("direction", prompt?.text),
+      })
+    })
+
     await ctx.permission.hook("evaluate", async (event) => {
       if (event.effect === "ask" && await mode("permissions") === "auto") event.effect = "allow"
     })

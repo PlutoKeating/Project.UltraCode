@@ -103,8 +103,9 @@ async function removeOwnBinary(binaryPath: string): Promise<void> {
         "-Command",
         `Start-Sleep -Milliseconds 500; Get-ChildItem -LiteralPath (Split-Path -Parent '${escaped}') -Filter ((Split-Path -Leaf '${escaped}') + '.old*') -ErrorAction SilentlyContinue | Remove-Item -Force -ErrorAction SilentlyContinue`,
       ],
-      { detached: true, stdio: "ignore" },
+      { detached: true, stdio: "ignore", windowsHide: true },
     );
+    child.on("error", () => {});
     child.unref();
   }
 }
@@ -116,6 +117,12 @@ export async function dispatch(argv: string[], paths: Paths = resolvePaths(), de
   }
 
   const [command, ...args] = argv;
+  const builtinsWithHelp = new Set(["apply", "sync", "doctor", "upgrade", "update", "up", "desktop", "uninstall"]);
+  if (command && builtinsWithHelp.has(command) && (args.includes("--help") || args.includes("-h"))) {
+    d.log(formatHelp());
+    return 0;
+  }
+
   switch (command) {
     case "apply":
     case "sync": {

@@ -1,7 +1,9 @@
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
+import { execFileSync } from "node:child_process";
 import { mkdtemp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { apply, uninstall } from "../src/install";
 import { resolvePaths, type Paths } from "../src/paths";
 
@@ -109,8 +111,21 @@ test("installs conversation package, rpc, settings, server, and tui entry points
   expect(pkg.exports["./gui-experimental"]).toBe("./gui-experimental.cjs");
   expect(pkg.exports["./tui"]).toMatch(/^\.\/tui\.(tsx|js)$/);
   expect(await readFile(join(plugin, "rpc.js"), "utf8")).toContain("UltraCodeRpc");
+  const pluginGuiDir = fileURLToPath(new URL("../../plugin-gui", import.meta.url));
+  const rpcCheck = execFileSync(
+    process.execPath,
+    [
+      "-e",
+      `import { Rpc } from "@opencode/plugin/rpc"; const src = await Bun.file("../config/opencode/conversation/rpc.js").text(); const body = src.replace(/^import[^\\n]+\\n/, "").replace("export const UltraCodeRpc =", "return"); const def = new Function("Rpc", body)(Rpc); console.log(JSON.stringify({ input: def.methods.getState.input, required: def.methods.getState.output.required }));`,
+    ],
+    { cwd: pluginGuiDir, encoding: "utf8" },
+  );
+  const parsedRpc = JSON.parse(rpcCheck.trim());
+  expect(parsedRpc.input).toEqual({ type: "object", properties: {}, additionalProperties: false });
+  expect(parsedRpc.required).toContain("version");
   expect(await readFile(join(plugin, "server.js"), "utf8")).toContain("experimental.idle");
   expect(await readFile(join(plugin, "server.js"), "utf8")).toContain("rpc.register");
+  expect(await readFile(join(plugin, "server.js"), "utf8")).toContain("command.transform");
   const tuiFile = pkg.exports["./tui"].slice(2);
   expect(await readFile(join(plugin, tuiFile), "utf8")).toContain('mode: "global"');
   expect((await readFile(join(plugin, "gui-experimental.cjs"), "utf8")).length).toBeGreaterThan(100);
@@ -209,4 +224,65 @@ test("doctor surfaces OpenCode service error detail when runtime registry comman
   }
   const issues = await doctor(paths);
   expect(issues.some((issue) => issue.includes("Managed service port 49374"))).toBe(true);
+});
+
+test("doctor falls back to --standalone when managed service port is already in use", async () => {
+  const { doctor } = await import("../src/install");
+  await apply(paths);
+  delete process.env.ULTRACODE_SKIP_RUNTIME;
+  process.env.ULTRACODE_SKIP_BROWSER = "1";
+  for (const rel of [
+    "node_modules/@playwright/mcp/cli.js",
+    "node_modules/@th0rgal/ralph-wiggum/bin/ralph.js",
+    "superpowers/.opencode/plugins/superpowers.js",
+  ]) {
+    const f = join(paths.runtime, rel);
+    await mkdir(join(f, ".."), { recursive: true });
+    await writeFile(f, "// stub\n");
+  }
+  const agentList = JSON.stringify([
+    { id: "UltraBuild" },
+    { id: "UltraPlan" },
+    { id: "ultracode/architect" },
+    { id: "ultracode/implementer" },
+    { id: "ultracode/librarian" },
+    { id: "ultracode/reviewer" },
+    { id: "ultracode/visual-evaluator" },
+  ]);
+  const pluginList = JSON.stringify({
+    data: [
+      { id: "superpowers", state: { status: "active" } },
+      { id: "ultracode-conversation", state: { status: "active" } },
+    ],
+  });
+  const mcpList = JSON.stringify({
+    data: [{ name: "ultracode_playwright", status: { status: "connected" } }],
+  });
+  if (process.platform === "win32") {
+    await writeFile(
+      paths.opencodeBinary,
+      `@echo off\r\nif "%*"=="--version" (\r\n  echo opencode v2.3.2\r\n  exit /b 0\r\n)\r\nif "%*"=="api --standalone get /api/plugin" (\r\n  echo ${pluginList}\r\n  exit /b 0\r\n)\r\nif "%*"=="api --standalone get /api/mcp" (\r\n  echo ${mcpList}\r\n  exit /b 0\r\n)\r\nif "%*"=="debug agents --standalone" (\r\n  echo ${agentList}\r\n  exit /b 0\r\n)\r\necho Error: Managed service port 49374 on 127.0.0.1 is already in use 1>&2\r\nexit /b 1\r\n`,
+    );
+  } else {
+    await writeFile(
+      paths.opencodeBinary,
+      `#!/bin/sh
+case "$*" in
+  --version) echo 'opencode v2.3.2'; exit 0;;
+  'api --standalone get /api/plugin') printf '%s\\n' '${pluginList}'; exit 0;;
+  'api --standalone get /api/mcp') printf '%s\\n' '${mcpList}'; exit 0;;
+  'debug agents --standalone') printf '%s\\n' '${agentList}'; exit 0;;
+esac
+echo 'Error: Managed service port 49374 on 127.0.0.1 is already in use' >&2
+exit 1
+`,
+      { mode: 0o755 },
+    );
+  }
+  try {
+    const issues = await doctor(paths);
+    expect(issues).toEqual([]);
+  } finally {
+    delete process.env.ULTRACODE_SKIP_BROWSER;
+  }
 });

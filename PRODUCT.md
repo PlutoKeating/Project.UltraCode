@@ -28,7 +28,7 @@ Success for the website means a first-time visitor on macOS, Linux, or Windows u
 
 - Installed via one command on macOS/Linux (`curl -fsSL https://ultracode.plutokeating.beer/install.sh | bash`) or Windows PowerShell (`irm https://ultracode.plutokeating.beer/install.ps1 | iex`).
 - Launched via `ultracode` (Terminal), `ultracode desktop` (Desktop app), or `ultracode pair` (Browser & Mobile).
-- Live switches for Command approvals (default auto) and Direction questions (default manual) synced via RPC across Desktop/Web/Mobile (`UltraCode` composer pill + `Settings > UltraCode`) and TUI Command Palette.
+- Live switches for Command approvals (default auto) and Direction questions (default manual) synced via RPC across OpenCode Desktop (`UltraCode` composer pill + `Settings > UltraCode`), TUI Command Palette, and Web/Mobile (`/approvals` and `/direction`).
 - Maintained with `ultracode upgrade`, `ultracode sync`, `ultracode doctor`, `ultracode uninstall --yes`.
 - Website & docs live in `website/` (Astro + Starlight), bilingual Chinese (`/`) and English (`/en/`), deployed to Cloudflare Workers Static Assets at `https://ultracode.plutokeating.beer`.
 
@@ -37,7 +37,7 @@ Success for the website means a first-time visitor on macOS, Linux, or Windows u
 - Confirmed v0.3.0 capabilities:
   - Unified `ultracode` CLI with full `opencode` passthrough, zero-prerequisite OpenCode V2 auto-install/upgrade, `ultracode desktop` launcher, and cross-platform TS-native `ultracode ralph run`.
   - Native 6-target standalone builds (`linux`/`darwin`/`windows` × `x64`/`arm64`) plus minimalist `install.sh` and `install.ps1`.
-  - Multi-surface `ultracode-conversation` plugin package: Server RPC (`UltraCodeRpc`), TUI Command Palette + quiet footer status, and Desktop/Web/Mobile GUI (`ComposerPill`, `SettingsPage`, `Command`, `en`/`zh`).
+  - Multi-surface `ultracode-conversation` plugin package: Server RPC (`UltraCodeRpc`) + `/approvals` & `/direction` commands for Web/Mobile, TUI Command Palette + quiet footer status, and OpenCode Desktop GUI (`ComposerPill`, `SettingsPage`, `Command`, `en`/`zh`).
   - Primary roles `UltraBuild` and `UltraPlan` (`Shift+Tab`), plus 5 specialized background subagents (Architect, Implementer, Librarian, Reviewer, Visual Evaluator).
 - Constraints:
   - Provider/model neutral; never claims specific model partnerships or benchmarks.

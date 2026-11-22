@@ -114,4 +114,4 @@
 - [GitHub Artifact Attestations](https://docs.github.com/en/actions/security-guides/using-artifact-attestations-to-establish-provenance-for-builds)用于发布来源证明；每个平台另附 SHA-256。
 - 安装器测试采用 GitHub 干净 VM 与临时 HOME，不引入 Docker，不读取 Provider 凭据，不执行真实模型。
 
-最终设计选择独立 CLI + 最大并集 JSONC 合并，而非 chezmoi 或覆盖模板：UltraCode 的复杂验收和所有权清单需要更深的安装模块，同时用户只接触 `uc sync/up/doctor` 等小接口。
+最终设计选择独立 CLI + 最大并集 JSONC 合并，而非 chezmoi 或覆盖模板：UltraCode 的复杂验收和所有权清单需要更深的安装模块，同时用户只接触 `ultracode sync/upgrade/doctor` 等小接口。

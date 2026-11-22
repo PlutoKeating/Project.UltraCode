@@ -33,6 +33,9 @@ export default defineConfig({
         root: { label: "简体中文", lang: "zh-CN" },
         en: { label: "English", lang: "en" },
       },
+      expressiveCode: {
+        locales: ["zh-CN", "en"],
+      },
       social: [
         { icon: "github", label: "GitHub", href: "https://github.com/PlutoKeating/Project.UltraCode" },
       ],

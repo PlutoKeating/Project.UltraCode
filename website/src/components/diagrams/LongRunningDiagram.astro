@@ -33,12 +33,16 @@ const zh = lang === "zh";
   <line x1="380.5" y1="143" x2="380.5" y2="219" stroke="rgba(255,255,255,0.08)"/>
 
   <circle cx="14" cy="180" r="3.5" fill="#E5A03D"/>
-  <text x="28" y="185" fill="#FFFFFF" font-family="Sora, PingFang SC, sans-serif" font-size="14.5" font-weight="500">{zh ? "随时插话叫停：" : "Steer anytime:"}</text>
-  <text x="136" y="185" fill="#B5B5B5" font-family="Sora, PingFang SC, sans-serif" font-size="14">{zh ? "新消息立即接管节奏" : "Overrides immediately"}</text>
+  <text x="28" y="185" font-family="Sora, PingFang SC, sans-serif" font-size="14">
+    <tspan fill="#FFFFFF" font-weight="500">{zh ? "随时插话叫停：" : "Steer anytime:"}</tspan>
+    <tspan dx="8" fill="#B5B5B5">{zh ? "新消息立即接管节奏" : "Overrides immediately"}</tspan>
+  </text>
 
-  <circle cx="402" cy="180" r="3.5" fill="#BAE6FD"/>
-  <text x="416" y="185" fill="#FFFFFF" font-family="Sora, PingFang SC, sans-serif" font-size="14.5" font-weight="500">{zh ? "重启接力：" : "Resume:"}</text>
-  <text x="494" y="185" fill="#B5B5B5" font-family="Sora, PingFang SC, sans-serif" font-size="14">{zh ? "说“读取交接并继续”" : "\"read handoff & continue\""}</text>
+  <circle cx="398" cy="180" r="3.5" fill="#BAE6FD"/>
+  <text x="412" y="185" font-family="Sora, PingFang SC, sans-serif" font-size="14">
+    <tspan fill="#FFFFFF" font-weight="500">{zh ? "重启接力：" : "Resume:"}</tspan>
+    <tspan dx="8" fill="#B5B5B5">{zh ? "说“读取交接并继续”" : "\"read handoff & continue\""}</tspan>
+  </text>
 </svg>
 
 <style>

@@ -6,6 +6,7 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { resolvePaths } from "../src/paths";
 import { dispatch, type CliDeps } from "../src/cli";
+import { launchOrInstallDesktop } from "../src/desktop";
 import { runRalphWorkflow } from "../src/ralph";
 import { apply } from "../src/install";
 
@@ -90,6 +91,47 @@ describe("unified ultracode CLI router", () => {
     const code = await dispatch(["desktop"], paths, makeDeps(calls, []));
     expect(code).toBe(0);
     expect(calls).toEqual(["desktop"]);
+  });
+
+  test("subcommand --help prints help without running destructive or mutating actions", async () => {
+    const calls: string[] = [];
+    const out: string[] = [];
+    const code1 = await dispatch(["upgrade", "--help"], paths, makeDeps(calls, out));
+    const code2 = await dispatch(["uninstall", "--help"], paths, makeDeps(calls, out));
+    expect(code1).toBe(0);
+    expect(code2).toBe(0);
+    expect(calls).toEqual([]);
+    expect(out[0]).toContain("UltraCode 0.3.0");
+  });
+
+  test("launchOrInstallDesktop downloads installer cleanly in dryRun when Desktop is not installed", async () => {
+    const { createServer } = await import("node:http");
+    const dir = await mkdtemp(join(tmpdir(), "uc-desktop-"));
+    const srv = createServer((_req, res) => {
+      res.writeHead(200, { "content-type": "application/octet-stream" });
+      res.end("mock-desktop-binary");
+    });
+    await new Promise<void>((resolve) => srv.listen(0, "127.0.0.1", resolve));
+    const port = (srv.address() as { port: number }).port;
+    const prevUrl = process.env.ULTRACODE_DESKTOP_DOWNLOAD_URL;
+    process.env.ULTRACODE_DESKTOP_DOWNLOAD_URL = `http://127.0.0.1:${port}/desktop-installer`;
+    const silentStream = { isTTY: false, write: () => true } as unknown as NodeJS.WriteStream;
+    try {
+      const p = resolvePaths({ HOME: dir, USERPROFILE: dir, LOCALAPPDATA: dir });
+      const code = await launchOrInstallDesktop(p, {
+        dryRun: true,
+        platform: "darwin",
+        arch: "arm64",
+        skipInstalledCheck: true,
+        statusStream: silentStream,
+      });
+      expect(code).toBe(0);
+    } finally {
+      if (prevUrl === undefined) delete process.env.ULTRACODE_DESKTOP_DOWNLOAD_URL;
+      else process.env.ULTRACODE_DESKTOP_DOWNLOAD_URL = prevUrl;
+      await new Promise<void>((resolve) => srv.close(() => resolve()));
+      await rm(dir, { recursive: true, force: true });
+    }
   });
 
   test("--help prints minimal help with zero uc references", async () => {

@@ -107,7 +107,7 @@ check_opencode_version() {
 
 install_opencode_step() {
   local cmd="${ULTRACODE_OPENCODE_INSTALL_CMD:-curl -fsSL https://opencode.ai/v2/install | bash}"
-  bash -c "$cmd"
+  env -u VERSION bash -c "$cmd"
   local found
   found="$(resolve_opencode)" || return 1
   check_opencode_version "$found"
@@ -173,7 +173,7 @@ ensure_shell_path() {
     *) profile="$HOME/.profile" ;;
   esac
 
-  if [[ -f "$profile" ]] && grep -Fq "$bin_dir" "$profile" 2>/dev/null; then
+  if [[ -f "$profile" ]] && { grep -Fq "# ultracode" "$profile" 2>/dev/null || grep -Eq "(^|[:\"'=])${bin_dir}([:\"'/]|$)" "$profile" 2>/dev/null; }; then
     return 0
   fi
   mkdir -p "$(dirname "$profile")"

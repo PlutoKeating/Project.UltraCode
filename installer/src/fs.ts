@@ -61,14 +61,22 @@ export async function replaceBinary(
   platform: NodeJS.Platform = process.platform,
 ): Promise<void> {
   await ensureParent(target);
+  let movedOld: string | null = null;
   if (platform === "win32") {
     await sweepOldBinaries(target);
     if (await exists(target)) {
-      const old = `${target}.old-${process.pid}-${Date.now()}`;
-      await rename(target, old);
+      movedOld = `${target}.old-${process.pid}-${Date.now()}`;
+      await rename(target, movedOld);
     }
   }
-  await atomicWrite(target, data, 0o755);
+  try {
+    await atomicWrite(target, data, 0o755);
+  } catch (error) {
+    if (movedOld && !(await exists(target))) {
+      await rename(movedOld, target).catch(() => {});
+    }
+    throw error;
+  }
   if (platform !== "win32") await chmod(target, 0o755);
   if (platform === "win32") {
     await sweepOldBinaries(target);

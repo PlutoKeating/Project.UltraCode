@@ -15,6 +15,9 @@ export async function run(
   args: string[],
   options: { cwd?: string; env?: NodeJS.ProcessEnv; inherit?: boolean } = {},
 ): Promise<CommandResult> {
+  if (process.platform === "win32" && /\.ps1$/i.test(command)) {
+    return run("powershell.exe", ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", command, ...args], options);
+  }
   const useShell = process.platform === "win32" && /\.(cmd|bat)$/i.test(command);
   return new Promise((resolve, reject) => {
     const child = spawn(command, args, {
@@ -78,8 +81,18 @@ function defaultOpenCodeLocations(paths: Paths): string[] {
 
 export async function findOpenCode(paths: Paths): Promise<string | null> {
   const explicit = Boolean(process.env.ULTRACODE_OPENCODE_BIN) || paths.opencodeBinary !== "opencode";
-  const candidates = explicit ? [paths.opencodeBinary] : [paths.opencodeBinary, ...defaultOpenCodeLocations(paths)];
-  for (const candidate of candidates) {
+  const baseCandidates: string[] = [];
+  if (process.platform === "win32" && /\.ps1$/i.test(paths.opencodeBinary)) {
+    const stem = paths.opencodeBinary.slice(0, -4);
+    baseCandidates.push(`${stem}.exe`, `${stem}.cmd`, paths.opencodeBinary);
+  } else if (process.platform === "win32" && !explicit) {
+    baseCandidates.push("opencode.exe", "opencode.cmd", paths.opencodeBinary, ...defaultOpenCodeLocations(paths));
+  } else if (explicit) {
+    baseCandidates.push(paths.opencodeBinary);
+  } else {
+    baseCandidates.push(paths.opencodeBinary, ...defaultOpenCodeLocations(paths));
+  }
+  for (const candidate of baseCandidates) {
     try {
       await opencodeVersion(candidate);
       return candidate;
@@ -156,7 +169,9 @@ async function installOfficialOpenCode(paths: Paths): Promise<void> {
   }
 
   const installScript = process.env.ULTRACODE_OPENCODE_INSTALL_CMD || "curl -fsSL https://opencode.ai/v2/install | bash";
-  const result = await run("bash", ["-c", installScript]);
+  const childEnv: NodeJS.ProcessEnv = { ...process.env };
+  delete childEnv.VERSION;
+  const result = await run("bash", ["-c", installScript], { env: childEnv });
   if (result.code !== 0) {
     throw new Error(`Failed to install OpenCode: ${(result.stderr || result.stdout).trim()}`);
   }

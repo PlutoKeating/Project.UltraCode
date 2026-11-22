@@ -212,8 +212,8 @@ const examplePrompt = zh
               <h2>{zh ? "终端、桌面与手机实时同步掌控" : "Live Control Across Terminal, Desktop & Mobile"}</h2>
               <p>
                 {zh
-                  ? "无论是终端命令面板、桌面端输入框上方的 UltraCode 胶囊，还是手机扫码网页端，双开关实时同步。"
-                  : "Toggle Command approvals and Direction questions from the Desktop/Web composer pill, Settings, or TUI Command Palette."}
+                  ? "桌面端通过输入框上方 UltraCode 胶囊与设置页切换，终端通过命令面板，网页与手机端直接输入 /approvals 或 /direction，状态实时同步。"
+                  : "Toggle Command approvals and Direction questions via the Desktop composer pill & Settings, the TUI Command Palette, or /approvals & /direction on Web and Mobile."}
               </p>
             </div>
             <div class="uc-open-canvas">
@@ -877,6 +877,16 @@ const examplePrompt = zh
     .uc-container,
     .uc-nav-inner {
       padding: 0 1.25rem;
+    }
+
+    .uc-brand {
+      font-size: 1.12rem;
+      gap: 0.55rem;
+    }
+
+    .uc-nav-links {
+      gap: 1.05rem;
+      font-size: 0.84rem;
     }
 
     .uc-hero {
