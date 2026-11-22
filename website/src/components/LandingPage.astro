@@ -396,7 +396,10 @@ const examplePrompt = zh
   /* Hero */
   .uc-hero {
     position: relative;
-    padding: 6.5rem 0 4.5rem;
+    min-height: calc(100svh - 70px);
+    display: flex;
+    align-items: center;
+    padding: clamp(5.5rem, 10vh, 9rem) 0 clamp(3.5rem, 6vh, 5.5rem);
     isolation: isolate;
   }
 
@@ -407,8 +410,8 @@ const examplePrompt = zh
     z-index: -1;
     pointer-events: none;
     background:
-      radial-gradient(48% 24% at 32% 54%, rgba(186, 230, 253, 0.14), transparent 72%),
-      radial-gradient(42% 22% at 70% 54%, rgba(229, 160, 61, 0.11), transparent 74%);
+      radial-gradient(48% 24% at 32% 58%, rgba(186, 230, 253, 0.14), transparent 72%),
+      radial-gradient(42% 22% at 70% 58%, rgba(229, 160, 61, 0.11), transparent 74%);
   }
 
   .uc-hero-inner {
@@ -766,7 +769,9 @@ const examplePrompt = zh
     }
 
     .uc-hero {
-      padding: 4rem 0 3rem;
+      min-height: auto;
+      display: block;
+      padding: 4.5rem 0 3rem;
     }
 
     .uc-install-bar {
