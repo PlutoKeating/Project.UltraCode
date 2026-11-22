@@ -6,46 +6,135 @@ const { lang = "zh" } = Astro.props;
 const zh = lang === "zh";
 ---
 
-<svg viewBox="0 0 960 206" fill="none" xmlns="http://www.w3.org/2000/svg" class="uc-svg-diagram" role="img" aria-label={zh ? "OpenCode TUI 命令面板 UltraCode 双开关示意图" : "OpenCode TUI Command Palette UltraCode switches schematic"}>
-  <line x1="0" y1="0.5" x2="960" y2="0.5" stroke="rgba(255,255,255,0.1)"/>
-  <line x1="0" y1="54.5" x2="960" y2="54.5" stroke="rgba(255,255,255,0.08)"/>
-  <line x1="0" y1="205.5" x2="960" y2="205.5" stroke="rgba(255,255,255,0.08)"/>
-  <line x1="480.5" y1="55" x2="480.5" y2="205" stroke="rgba(255,255,255,0.08)"/>
-
-  <text x="16" y="34" fill="#E5A03D" font-family="JetBrains Mono, monospace" font-size="16">&gt;</text>
-  <text x="40" y="34" fill="#FFFFFF" font-family="Sora, PingFang SC, sans-serif" font-size="16" font-weight="500">UltraCode</text>
-
-  <!-- Left switch: Command approvals -->
-  <text x="16" y="102" fill="#FFFFFF" font-family="Sora, PingFang SC, sans-serif" font-size="17" font-weight="500">
-    Command approvals · {zh ? "命令审批" : "Approvals"}
-  </text>
-  <circle cx="386" cy="96" r="4" fill="#BAE6FD"/>
-  <text x="400" y="101" fill="#BAE6FD" font-family="JetBrains Mono, monospace" font-size="14" font-weight="500">AUTO</text>
-  <text x="16" y="140" fill="#B5B5B5" font-family="Sora, PingFang SC, sans-serif" font-size="14.5">
-    {zh ? "默认自动放行常规操作，减少中断；" : "Auto-approves routine actions so work flows;"}
-  </text>
-  <text x="16" y="168" fill="#A3A3A3" font-family="Sora, PingFang SC, sans-serif" font-size="14.5">
-    {zh ? "显式禁止的危险规则始终保持生效。" : "explicit deny rules always stay enforced."}
-  </text>
-
-  <!-- Right switch: Direction questions -->
-  <text x="508" y="102" fill="#FFFFFF" font-family="Sora, PingFang SC, sans-serif" font-size="17" font-weight="500">
-    Direction questions · {zh ? "方向询问" : "Direction"}
-  </text>
-  <circle cx="868" cy="96" r="4" fill="#E5A03D"/>
-  <text x="882" y="101" fill="#E5A03D" font-family="JetBrains Mono, monospace" font-size="14" font-weight="500">MANUAL</text>
-  <text x="508" y="140" fill="#B5B5B5" font-family="Sora, PingFang SC, sans-serif" font-size="14.5">
-    {zh ? "默认重大方向变化先问你再改；" : "Asks before major direction shifts by default;"}
-  </text>
-  <text x="508" y="168" fill="#A3A3A3" font-family="Sora, PingFang SC, sans-serif" font-size="14.5">
-    {zh ? "想完全放手推进时可随时切为 auto。" : "toggle to auto anytime for full autonomy."}
-  </text>
-</svg>
+<div class="uc-tui-panel" role="group" aria-label={zh ? "OpenCode TUI 命令面板 UltraCode 双开关" : "OpenCode TUI Command Palette UltraCode switches"}>
+  <div class="uc-tui-search">
+    <span class="uc-caret">&gt;</span>
+    <span>UltraCode</span>
+  </div>
+  <div class="uc-tui-grid">
+    <div class="uc-tui-item">
+      <div class="uc-tui-top">
+        <h3>Command approvals · {zh ? "命令审批" : "Approvals"}</h3>
+        <span class="uc-state is-ice"><i aria-hidden="true"></i>AUTO</span>
+      </div>
+      <p>{zh ? "默认自动放行常规操作，减少打断；你显式禁止的危险规则始终生效。" : "Auto-approves routine actions so work flows; explicit deny rules always stay enforced."}</p>
+    </div>
+    <div class="uc-tui-item">
+      <div class="uc-tui-top">
+        <h3>Direction questions · {zh ? "方向询问" : "Direction"}</h3>
+        <span class="uc-state is-amber"><i aria-hidden="true"></i>MANUAL</span>
+      </div>
+      <p>{zh ? "默认遇到重大方向变化先问你再改；想完全放手推进时可随时切为 auto。" : "Asks before major direction shifts by default; switch to auto anytime for full autonomy."}</p>
+    </div>
+  </div>
+</div>
 
 <style>
-  .uc-svg-diagram {
-    width: 100%;
-    height: auto;
-    display: block;
+  .uc-tui-panel {
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: left;
+  }
+
+  .uc-tui-search {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.9rem 0.25rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 0.98rem;
+    font-weight: 500;
+    color: #ffffff;
+  }
+
+  .uc-caret {
+    font-family: var(--uc-font-mono);
+    color: #e5a03d;
+  }
+
+  .uc-tui-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .uc-tui-item {
+    padding: 1.5rem 1.75rem 1.5rem 0.25rem;
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .uc-tui-item:last-child {
+    padding: 1.5rem 0.25rem 1.5rem 1.75rem;
+    border-right: none;
+  }
+
+  .uc-tui-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.7rem;
+  }
+
+  .uc-tui-top h3 {
+    margin: 0 !important;
+    font-size: 1.02rem !important;
+    font-weight: 500 !important;
+    color: #ffffff !important;
+  }
+
+  .uc-state {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: var(--uc-font-mono);
+    font-size: 0.82rem;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .uc-state i {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    display: inline-block;
+  }
+
+  .uc-state.is-ice {
+    color: #bae6fd;
+  }
+
+  .uc-state.is-ice i {
+    background: #bae6fd;
+  }
+
+  .uc-state.is-amber {
+    color: #e5a03d;
+  }
+
+  .uc-state.is-amber i {
+    background: #e5a03d;
+  }
+
+  .uc-tui-item p {
+    margin: 0 !important;
+    font-size: 0.92rem !important;
+    line-height: 1.65 !important;
+    color: #b5b5b5 !important;
+  }
+
+  @media (max-width: 720px) {
+    .uc-tui-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .uc-tui-item,
+    .uc-tui-item:last-child {
+      padding: 1.25rem 0.25rem;
+      border-right: none;
+    }
+
+    .uc-tui-item {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
   }
 </style>

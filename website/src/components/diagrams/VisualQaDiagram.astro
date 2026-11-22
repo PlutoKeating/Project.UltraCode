@@ -6,47 +6,135 @@ const { lang = "zh" } = Astro.props;
 const zh = lang === "zh";
 ---
 
-<svg viewBox="0 0 920 220" fill="none" xmlns="http://www.w3.org/2000/svg" class="uc-svg-diagram" role="img" aria-label={zh ? "真机浏览器目视验收闭环示意图" : "Real-browser visual QA verification loop"}>
-  <!-- 4-column hairline sequence -->
-  <line x1="0" y1="0.5" x2="920" y2="0.5" stroke="rgba(255,255,255,0.08)"/>
-  <line x1="0" y1="156.5" x2="920" y2="156.5" stroke="rgba(255,255,255,0.08)"/>
-  <line x1="230.5" y1="0" x2="230.5" y2="156" stroke="rgba(255,255,255,0.07)"/>
-  <line x1="460.5" y1="0" x2="460.5" y2="156" stroke="rgba(255,255,255,0.07)"/>
-  <line x1="690.5" y1="0" x2="690.5" y2="156" stroke="rgba(255,255,255,0.07)"/>
-  <line x1="691" y1="0.5" x2="920" y2="0.5" stroke="#BAE6FD" stroke-width="1.5"/>
-
-  <text x="18" y="34" fill="#666666" font-family="JetBrains Mono, monospace" font-size="11">01</text>
-  <text x="18" y="68" fill="#FFFFFF" font-family="Sora, PingFang SC, sans-serif" font-size="15" font-weight="500">{zh ? "启动真实页面" : "Launch Real App"}</text>
-  <text x="18" y="98" fill="#8A8A8A" font-family="Sora, PingFang SC, sans-serif" font-size="12">{zh ? "打开真实 Chromium" : "Opens real Chromium"}</text>
-  <text x="18" y="120" fill="#8A8A8A" font-family="Sora, PingFang SC, sans-serif" font-size="12">{zh ? "覆盖桌面与手机视口" : "Desktop & mobile views"}</text>
-
-  <text x="248" y="34" fill="#BAE6FD" font-family="JetBrains Mono, monospace" font-size="11">02</text>
-  <text x="248" y="68" fill="#FFFFFF" font-family="Sora, PingFang SC, sans-serif" font-size="15" font-weight="500">{zh ? "实操并目视检查" : "Click & Inspect"}</text>
-  <text x="248" y="98" fill="#8A8A8A" font-family="Sora, PingFang SC, sans-serif" font-size="12">{zh ? "真实点击交互与表单" : "Operates real controls"}</text>
-  <text x="248" y="120" fill="#8A8A8A" font-family="Sora, PingFang SC, sans-serif" font-size="12">{zh ? "逐张检视排版与对比度" : "Checks layout & contrast"}</text>
-
-  <text x="478" y="34" fill="#E5A03D" font-family="JetBrains Mono, monospace" font-size="11">03</text>
-  <text x="478" y="68" fill="#E5A03D" font-family="Sora, PingFang SC, sans-serif" font-size="15" font-weight="500">{zh ? "发现瑕疵即打回" : "Reject & Fix"}</text>
-  <text x="478" y="98" fill="#8A8A8A" font-family="Sora, PingFang SC, sans-serif" font-size="12">{zh ? "遮挡、错位、低对比度" : "Overlap, clip, contrast"}</text>
-  <text x="478" y="120" fill="#8A8A8A" font-family="Sora, PingFang SC, sans-serif" font-size="12">{zh ? "自动退回修复后重测" : "Loops back until fixed"}</text>
-
-  <text x="708" y="34" fill="#BAE6FD" font-family="JetBrains Mono, monospace" font-size="11">04</text>
-  <text x="708" y="68" fill="#BAE6FD" font-family="Sora, PingFang SC, sans-serif" font-size="15" font-weight="500">{zh ? "眼见为实交付" : "Verified Ship"}</text>
-  <text x="708" y="98" fill="#A3A3A3" font-family="Sora, PingFang SC, sans-serif" font-size="12">{zh ? "杜绝“测试通过" : "No more \"tests pass"}</text>
-  <text x="708" y="120" fill="#A3A3A3" font-family="Sora, PingFang SC, sans-serif" font-size="12">{zh ? "但界面崩坏”" : "but UI is broken\""}</text>
-
-  <!-- Loopback hairline -->
-  <path d="M 575 156 L 575 190 L 345 190 L 345 162" stroke="#E5A03D" stroke-opacity="0.7" stroke-width="1.2" stroke-dasharray="4 4"/>
-  <path d="M 340 168 L 345 162 L 350 168" stroke="#E5A03D" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-  <text x="460" y="210" text-anchor="middle" fill="#737373" font-family="Sora, PingFang SC, sans-serif" font-size="11.5">
-    {zh ? "独立视觉角色只负责挑刺验收，绝不替开发者放水" : "Independent visual evaluator never rubber-stamps broken UI"}
-  </text>
-</svg>
+<div class="uc-vqa" role="group" aria-label={zh ? "真机浏览器目视验收闭环" : "Real-browser visual QA verification loop"}>
+  <div class="uc-vqa-grid">
+    <div class="uc-vqa-step">
+      <span class="uc-num">01</span>
+      <h3>{zh ? "启动真实页面" : "Launch Real App"}</h3>
+      <p>{zh ? "打开真实 Chromium，覆盖桌面与手机视口。" : "Opens real Chromium at desktop & mobile sizes."}</p>
+    </div>
+    <div class="uc-vqa-step">
+      <span class="uc-num is-ice">02</span>
+      <h3>{zh ? "实操并目视检查" : "Click & Inspect"}</h3>
+      <p>{zh ? "真实点击交互与表单，逐张检视排版与对比度。" : "Operates real controls and inspects layout & contrast."}</p>
+    </div>
+    <div class="uc-vqa-step">
+      <span class="uc-num is-amber">03</span>
+      <h3 class="is-amber">{zh ? "发现瑕疵即打回" : "Reject & Fix"}</h3>
+      <p>{zh ? "发现遮挡、错位或低对比度，自动退回修复后重测。" : "Flags overlap, clipping, or contrast and loops back."}</p>
+    </div>
+    <div class="uc-vqa-step is-accent">
+      <span class="uc-num is-ice">04</span>
+      <h3 class="is-ice">{zh ? "眼见为实交付" : "Verified Ship"}</h3>
+      <p>{zh ? "杜绝“测试通过但界面崩坏”的半成品交付。" : "No more \"tests pass but UI is broken\"."}</p>
+    </div>
+  </div>
+  <div class="uc-vqa-loop">
+    <span class="uc-loop-dot" aria-hidden="true"></span>
+    <span>{zh ? "发现瑕疵自动回到第 02 步重测，独立视觉角色绝不放水" : "Defects loop back to step 02 — independent visual QA never rubber-stamps"}</span>
+  </div>
+</div>
 
 <style>
-  .uc-svg-diagram {
-    width: 100%;
-    height: auto;
+  .uc-vqa {
+    text-align: left;
+  }
+
+  .uc-vqa-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .uc-vqa-step {
+    padding: 1.5rem 1.25rem;
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .uc-vqa-step:last-child {
+    border-right: none;
+  }
+
+  .uc-vqa-step.is-accent {
+    border-top: 1.5px solid #bae6fd;
+    margin-top: -1px;
+  }
+
+  .uc-num {
     display: block;
+    font-family: var(--uc-font-mono);
+    font-size: 0.82rem;
+    color: #8a8a8a;
+    margin-bottom: 0.65rem;
+  }
+
+  .is-amber {
+    color: #e5a03d !important;
+  }
+
+  .is-ice {
+    color: #bae6fd !important;
+  }
+
+  .uc-vqa-step h3 {
+    margin: 0 0 0.6rem !important;
+    font-size: 1.05rem !important;
+    font-weight: 500 !important;
+    color: #ffffff;
+    line-height: 1.35 !important;
+  }
+
+  .uc-vqa-step p {
+    margin: 0 !important;
+    font-size: 0.9rem !important;
+    line-height: 1.65 !important;
+    color: #b5b5b5 !important;
+  }
+
+  .uc-vqa-loop {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding-top: 1rem;
+    font-size: 0.88rem;
+    color: #a3a3a3;
+  }
+
+  .uc-loop-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: #e5a03d;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 820px) {
+    .uc-vqa-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .uc-vqa-step:nth-child(2n) {
+      border-right: none;
+    }
+
+    .uc-vqa-step:nth-child(-n + 2) {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+  }
+
+  @media (max-width: 540px) {
+    .uc-vqa-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .uc-vqa-step {
+      border-right: none;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .uc-vqa-step:last-child {
+      border-bottom: none;
+    }
   }
 </style>

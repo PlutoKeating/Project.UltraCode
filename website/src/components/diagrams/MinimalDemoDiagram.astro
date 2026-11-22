@@ -6,39 +6,109 @@ const { lang = "zh" } = Astro.props;
 const zh = lang === "zh";
 ---
 
-<svg viewBox="0 0 960 156" fill="none" xmlns="http://www.w3.org/2000/svg" class="uc-svg-diagram" role="img" aria-label={zh ? "1 分钟最小上手体验 4 步精密导轨" : "4-step minimal onboarding architectural rail"}>
-  <line x1="0" y1="0.5" x2="960" y2="0.5" stroke="rgba(255,255,255,0.09)"/>
-  <line x1="0" y1="155.5" x2="960" y2="155.5" stroke="rgba(255,255,255,0.09)"/>
-  <line x1="240.5" y1="0" x2="240.5" y2="156" stroke="rgba(255,255,255,0.08)"/>
-  <line x1="480.5" y1="0" x2="480.5" y2="156" stroke="rgba(255,255,255,0.08)"/>
-  <line x1="720.5" y1="0" x2="720.5" y2="156" stroke="rgba(255,255,255,0.08)"/>
-  <line x1="721" y1="0.5" x2="960" y2="0.5" stroke="#BAE6FD" stroke-width="1.5"/>
-
-  <text x="20" y="38" fill="#8A8A8A" font-family="JetBrains Mono, monospace" font-size="12.5">01</text>
-  <text x="20" y="76" fill="#FFFFFF" font-family="Sora, PingFang SC, sans-serif" font-size="18" font-weight="500">{zh ? "一句话说出目标" : "State Your Goal"}</text>
-  <text x="20" y="110" fill="#B0B0B0" font-family="Sora, PingFang SC, sans-serif" font-size="14">{zh ? "任意空目录运行 opencode" : "Run opencode anywhere"}</text>
-  <text x="20" y="134" fill="#B0B0B0" font-family="Sora, PingFang SC, sans-serif" font-size="14">{zh ? "直接说出想要的结果" : "Describe what you want"}</text>
-
-  <text x="260" y="38" fill="#E5A03D" font-family="JetBrains Mono, monospace" font-size="12.5">02</text>
-  <text x="260" y="76" fill="#FFFFFF" font-family="Sora, PingFang SC, sans-serif" font-size="18" font-weight="500">{zh ? "收到一次性选择题" : "Answer Choice Cards"}</text>
-  <text x="260" y="110" fill="#B0B0B0" font-family="Sora, PingFang SC, sans-serif" font-size="14">{zh ? "先调研，把所有关键分歧" : "Researches first, batches"}</text>
-  <text x="260" y="134" fill="#B0B0B0" font-family="Sora, PingFang SC, sans-serif" font-size="14">{zh ? "一次问齐，每题带推荐项" : "key trade-offs once"}</text>
-
-  <text x="500" y="38" fill="#8A8A8A" font-family="JetBrains Mono, monospace" font-size="12.5">03</text>
-  <text x="500" y="76" fill="#FFFFFF" font-family="Sora, PingFang SC, sans-serif" font-size="18" font-weight="500">{zh ? "后台专家分工实现" : "Experts Build It"}</text>
-  <text x="500" y="110" fill="#B0B0B0" font-family="Sora, PingFang SC, sans-serif" font-size="14">{zh ? "主控自动拆解里程碑" : "Orchestrator delegates"}</text>
-  <text x="500" y="134" fill="#B0B0B0" font-family="Sora, PingFang SC, sans-serif" font-size="14">{zh ? "并行编码并触发独立评审" : "build & skeptical audit"}</text>
-
-  <text x="740" y="38" fill="#BAE6FD" font-family="JetBrains Mono, monospace" font-size="12.5">04</text>
-  <text x="740" y="76" fill="#FFFFFF" font-family="Sora, PingFang SC, sans-serif" font-size="18" font-weight="500">{zh ? "真机浏览器目视交付" : "Real-Browser QA"}</text>
-  <text x="740" y="110" fill="#C4C4C4" font-family="Sora, PingFang SC, sans-serif" font-size="14">{zh ? "亲自打开真实浏览器截屏" : "Opens real Chromium,"}</text>
-  <text x="740" y="134" fill="#C4C4C4" font-family="Sora, PingFang SC, sans-serif" font-size="14">{zh ? "修完排版错位再汇报完工" : "fixes layout before finish"}</text>
-</svg>
+<div class="uc-grid-4" role="group" aria-label={zh ? "1 分钟最小上手体验 4 步导轨" : "4-step minimal onboarding rail"}>
+  <div class="uc-step">
+    <span class="uc-num">01</span>
+    <h3>{zh ? "一句话说出目标" : "State Your Goal"}</h3>
+    <p>{zh ? "任意空目录运行 opencode，直接说出想要的结果。" : "Run opencode anywhere and describe the outcome."}</p>
+  </div>
+  <div class="uc-step">
+    <span class="uc-num is-amber">02</span>
+    <h3>{zh ? "收到一次性选择题" : "Answer Choice Cards"}</h3>
+    <p>{zh ? "先调研，把关键分歧一次问齐，每题自带推荐项。" : "Researches first and batches key trade-offs once."}</p>
+  </div>
+  <div class="uc-step">
+    <span class="uc-num">03</span>
+    <h3>{zh ? "后台专家分工实现" : "Experts Build It"}</h3>
+    <p>{zh ? "主控拆解里程碑，后台并行编码并触发独立评审。" : "Orchestrator delegates build and skeptical audit."}</p>
+  </div>
+  <div class="uc-step is-accent">
+    <span class="uc-num is-ice">04</span>
+    <h3>{zh ? "真机浏览器目视交付" : "Real-Browser QA"}</h3>
+    <p>{zh ? "亲自打开真实浏览器截屏，修完排版错位再汇报完工。" : "Opens real Chromium and fixes layout before finish."}</p>
+  </div>
+</div>
 
 <style>
-  .uc-svg-diagram {
-    width: 100%;
-    height: auto;
+  .uc-grid-4 {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: left;
+  }
+
+  .uc-step {
+    padding: 1.5rem 1.25rem;
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .uc-step:last-child {
+    border-right: none;
+  }
+
+  .uc-step.is-accent {
+    border-top: 1.5px solid #bae6fd;
+    margin-top: -1px;
+  }
+
+  .uc-num {
     display: block;
+    font-family: var(--uc-font-mono);
+    font-size: 0.82rem;
+    color: #8a8a8a;
+    margin-bottom: 0.65rem;
+  }
+
+  .uc-num.is-amber {
+    color: #e5a03d;
+  }
+
+  .uc-num.is-ice {
+    color: #bae6fd;
+  }
+
+  .uc-step h3 {
+    margin: 0 0 0.6rem !important;
+    font-size: 1.05rem !important;
+    font-weight: 500 !important;
+    color: #ffffff !important;
+    line-height: 1.35 !important;
+  }
+
+  .uc-step p {
+    margin: 0 !important;
+    font-size: 0.9rem !important;
+    line-height: 1.65 !important;
+    color: #b5b5b5 !important;
+  }
+
+  @media (max-width: 820px) {
+    .uc-grid-4 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .uc-step:nth-child(2n) {
+      border-right: none;
+    }
+
+    .uc-step:nth-child(-n + 2) {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+  }
+
+  @media (max-width: 540px) {
+    .uc-grid-4 {
+      grid-template-columns: 1fr;
+    }
+
+    .uc-step {
+      border-right: none;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .uc-step:last-child {
+      border-bottom: none;
+    }
   }
 </style>

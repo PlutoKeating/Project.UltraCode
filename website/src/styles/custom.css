@@ -2,9 +2,9 @@
 
 :root {
   --sl-nav-height: 4.5rem;
-  --sl-sidebar-width: 19.5rem;
-  --sl-content-width: 46rem;
-  --sl-text-base: 0.98rem;
+  --sl-sidebar-width: 19rem;
+  --sl-content-width: 54rem;
+  --sl-text-base: 1rem;
   --sl-line-height: 1.85;
 
   --sl-font: var(--uc-font-sans);
@@ -223,6 +223,17 @@ h1#_top {
   padding: 1.25rem 0;
   background: transparent;
   overflow: hidden;
+}
+
+.uc-doc-figure .uc-cell,
+.uc-doc-figure .uc-step,
+.uc-doc-figure .uc-vqa-step,
+.uc-doc-figure .uc-tui-item {
+  margin-top: 0 !important;
+}
+
+.uc-doc-figure .is-accent {
+  margin-top: -1px !important;
 }
 
 .uc-doc-figure figcaption {

@@ -6,41 +6,39 @@ const { lang = "zh" } = Astro.props;
 const zh = lang === "zh";
 ---
 
-<svg viewBox="0 0 960 228" fill="none" xmlns="http://www.w3.org/2000/svg" class="uc-svg-diagram" role="img" aria-label={zh ? "长程任务自动推进、随时插话与重启续跑流程图" : "Long-running milestone continuation, steering, and resumption flow"}>
-  <line x1="0" y1="0.5" x2="960" y2="0.5" stroke="rgba(255,255,255,0.08)"/>
-  <line x1="0" y1="227.5" x2="960" y2="227.5" stroke="rgba(255,255,255,0.08)"/>
+<svg viewBox="0 0 760 220" fill="none" xmlns="http://www.w3.org/2000/svg" class="uc-svg-diagram" role="img" aria-label={zh ? "长程任务自动推进、随时插话与重启续跑流程图" : "Long-running milestone continuation, steering, and resumption flow"}>
+  <line x1="0" y1="0.5" x2="760" y2="0.5" stroke="rgba(255,255,255,0.08)"/>
+  <line x1="0" y1="219.5" x2="760" y2="219.5" stroke="rgba(255,255,255,0.08)"/>
 
-  <!-- Main optical rail -->
-  <line x1="48" y1="78" x2="912" y2="78" stroke="rgba(255,255,255,0.18)" stroke-width="1.5"/>
-  <line x1="48" y1="78" x2="640" y2="78" stroke="#FFFFFF" stroke-width="2"/>
+  <line x1="36" y1="74" x2="724" y2="74" stroke="rgba(255,255,255,0.18)" stroke-width="1.5"/>
+  <line x1="36" y1="74" x2="508" y2="74" stroke="#FFFFFF" stroke-width="2"/>
 
-  <circle cx="56" cy="78" r="5.5" fill="#000000" stroke="#FFFFFF" stroke-width="2"/>
-  <text x="56" y="46" fill="#FFFFFF" font-family="Sora, PingFang SC, sans-serif" font-size="16" font-weight="500">{zh ? "里程碑 1 完成" : "Milestone 1 Done"}</text>
-  <text x="56" y="114" fill="#A8A8A8" font-family="Sora, PingFang SC, sans-serif" font-size="14">{zh ? "自动记录下一目标" : "Arms next milestone"}</text>
+  <circle cx="44" cy="74" r="5.5" fill="#000000" stroke="#FFFFFF" stroke-width="2"/>
+  <text x="44" y="42" fill="#FFFFFF" font-family="Sora, PingFang SC, sans-serif" font-size="15.5" font-weight="500">{zh ? "里程碑 1 完成" : "Milestone 1"}</text>
+  <text x="44" y="110" fill="#B5B5B5" font-family="Sora, PingFang SC, sans-serif" font-size="13.5">{zh ? "自动记下一目标" : "Arms next step"}</text>
 
-  <circle cx="348" cy="78" r="5.5" fill="#000000" stroke="#FFFFFF" stroke-width="2"/>
-  <text x="348" y="46" text-anchor="middle" fill="#FFFFFF" font-family="Sora, PingFang SC, sans-serif" font-size="16" font-weight="500">{zh ? "自动续跑下一阶段" : "Auto-Continues"}</text>
-  <text x="348" y="114" text-anchor="middle" fill="#A8A8A8" font-family="Sora, PingFang SC, sans-serif" font-size="14">{zh ? "无需反复手动催促" : "Zero manual nudging"}</text>
+  <circle cx="276" cy="74" r="5.5" fill="#000000" stroke="#FFFFFF" stroke-width="2"/>
+  <text x="276" y="42" text-anchor="middle" fill="#FFFFFF" font-family="Sora, PingFang SC, sans-serif" font-size="15.5" font-weight="500">{zh ? "自动续跑" : "Auto-Continue"}</text>
+  <text x="276" y="110" text-anchor="middle" fill="#B5B5B5" font-family="Sora, PingFang SC, sans-serif" font-size="13.5">{zh ? "无需反复催促" : "Zero nudging"}</text>
 
-  <circle cx="640" cy="78" r="5.5" fill="#E5A03D"/>
-  <text x="640" y="46" text-anchor="middle" fill="#E5A03D" font-family="Sora, PingFang SC, sans-serif" font-size="16" font-weight="500">{zh ? "持久交接落盘" : "Handoff Saved"}</text>
-  <text x="640" y="114" text-anchor="middle" fill="#B5B5B5" font-family="Sora, PingFang SC, sans-serif" font-size="14">{zh ? "任务与进度存入仓库" : "Tasks & progress stored"}</text>
+  <circle cx="508" cy="74" r="5.5" fill="#E5A03D"/>
+  <text x="508" y="42" text-anchor="middle" fill="#E5A03D" font-family="Sora, PingFang SC, sans-serif" font-size="15.5" font-weight="500">{zh ? "交接落盘" : "Handoff Saved"}</text>
+  <text x="508" y="110" text-anchor="middle" fill="#C4C4C4" font-family="Sora, PingFang SC, sans-serif" font-size="13.5">{zh ? "进度存入仓库" : "Stored in repo"}</text>
 
-  <circle cx="904" cy="78" r="6.5" fill="#BAE6FD"/>
-  <text x="904" y="46" text-anchor="end" fill="#BAE6FD" font-family="Sora, PingFang SC, sans-serif" font-size="16" font-weight="500">{zh ? "目标闭环交付" : "Goal Delivered"}</text>
-  <text x="904" y="114" text-anchor="end" fill="#B5B5B5" font-family="Sora, PingFang SC, sans-serif" font-size="14">{zh ? "验证通过再汇报" : "Verified before done"}</text>
+  <circle cx="716" cy="74" r="6" fill="#BAE6FD"/>
+  <text x="716" y="42" text-anchor="end" fill="#BAE6FD" font-family="Sora, PingFang SC, sans-serif" font-size="15.5" font-weight="500">{zh ? "闭环交付" : "Delivered"}</text>
+  <text x="716" y="110" text-anchor="end" fill="#C4C4C4" font-family="Sora, PingFang SC, sans-serif" font-size="13.5">{zh ? "验证通过再汇报" : "Verified done"}</text>
 
-  <!-- Bottom 2 clean hairline items side by side -->
-  <line x1="0" y1="146.5" x2="960" y2="146.5" stroke="rgba(255,255,255,0.08)"/>
-  <line x1="480.5" y1="147" x2="480.5" y2="227" stroke="rgba(255,255,255,0.08)"/>
+  <line x1="0" y1="142.5" x2="760" y2="142.5" stroke="rgba(255,255,255,0.08)"/>
+  <line x1="380.5" y1="143" x2="380.5" y2="219" stroke="rgba(255,255,255,0.08)"/>
 
-  <circle cx="16" cy="186" r="3.5" fill="#E5A03D"/>
-  <text x="32" y="191" fill="#FFFFFF" font-family="Sora, PingFang SC, sans-serif" font-size="15" font-weight="500">{zh ? "随时插话或叫停：" : "Steer anytime:"}</text>
-  <text x="166" y="191" fill="#A8A8A8" font-family="Sora, PingFang SC, sans-serif" font-size="14.5">{zh ? "任何新消息立即接管节奏" : "Any prompt overrides immediately"}</text>
+  <circle cx="14" cy="180" r="3.5" fill="#E5A03D"/>
+  <text x="28" y="185" fill="#FFFFFF" font-family="Sora, PingFang SC, sans-serif" font-size="14.5" font-weight="500">{zh ? "随时插话叫停：" : "Steer anytime:"}</text>
+  <text x="136" y="185" fill="#B5B5B5" font-family="Sora, PingFang SC, sans-serif" font-size="14">{zh ? "新消息立即接管节奏" : "Overrides immediately"}</text>
 
-  <circle cx="504" cy="186" r="3.5" fill="#BAE6FD"/>
-  <text x="520" y="191" fill="#FFFFFF" font-family="Sora, PingFang SC, sans-serif" font-size="15" font-weight="500">{zh ? "重启无缝接力：" : "Resume cleanly:"}</text>
-  <text x="642" y="191" fill="#A8A8A8" font-family="Sora, PingFang SC, sans-serif" font-size="14.5">{zh ? "一句“读取交接并继续”即可续跑" : "Say \"read handoff and continue\""}</text>
+  <circle cx="402" cy="180" r="3.5" fill="#BAE6FD"/>
+  <text x="416" y="185" fill="#FFFFFF" font-family="Sora, PingFang SC, sans-serif" font-size="14.5" font-weight="500">{zh ? "重启接力：" : "Resume:"}</text>
+  <text x="494" y="185" fill="#B5B5B5" font-family="Sora, PingFang SC, sans-serif" font-size="14">{zh ? "说“读取交接并继续”" : "\"read handoff & continue\""}</text>
 </svg>
 
 <style>
