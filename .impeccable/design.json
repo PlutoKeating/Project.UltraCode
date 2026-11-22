@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "world": "Precision Cinema Monochrome (GMUNK x Linear Ice/Amber)",
+  "world": "Precision Cinema Monochrome (Single Unified Pitch-Black)",
   "fonts": {
     "display": ["Sora", "PingFang SC", "Noto Sans SC", "sans-serif"],
     "mono": ["JetBrains Mono", "ui-monospace", "monospace"]
@@ -14,11 +14,5 @@
     "inkMuted": "#525252",
     "ice": "#bae6fd",
     "amber": "#e5a03d"
-  },
-  "lightDocs": {
-    "bg": "#fafafa",
-    "sidebar": "#ffffff",
-    "ink": "#0a0a0a",
-    "accent": "#111111"
   }
 }

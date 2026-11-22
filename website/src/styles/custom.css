@@ -1,25 +1,22 @@
-/* Starlight Documentation Theme — Pure Pitch-Black Architecture (S = 0%) + Crisp Monochrome */
+/* Starlight Documentation Theme — Single Unified Pitch-Black (Linear / Apple Notes Minimalism) */
 
 :root {
   --sl-nav-height: 4.5rem;
-  --sl-sidebar-width: 20rem;
-  --sl-content-width: 48rem;
+  --sl-sidebar-width: 19.5rem;
+  --sl-content-width: 46rem;
   --sl-text-base: 0.98rem;
   --sl-line-height: 1.85;
-}
 
-:root,
-:root[data-theme="dark"] {
   --sl-font: var(--uc-font-sans);
   --sl-font-mono: var(--uc-font-mono);
 
   /* Strictly S = 0% Pure Black & Neutral Grays */
   --sl-color-bg: #000000;
   --sl-color-bg-nav: rgba(0, 0, 0, 0.88);
-  --sl-color-bg-sidebar: #060606;
+  --sl-color-bg-sidebar: #000000;
   --sl-color-bg-inline-code: #141414;
-  --sl-color-hairline-light: rgba(255, 255, 255, 0.075);
-  --sl-color-hairline: rgba(255, 255, 255, 0.085);
+  --sl-color-hairline-light: rgba(255, 255, 255, 0.07);
+  --sl-color-hairline: rgba(255, 255, 255, 0.08);
   --sl-color-hairline-shade: rgba(255, 255, 255, 0.06);
 
   --sl-color-white: #ffffff;
@@ -31,46 +28,19 @@
   --sl-color-gray-6: #0e0e0e;
   --sl-color-black: #000000;
 
-  /* Restrained optical ice-white accent (zero plastic neon) */
-  --sl-color-accent-low: rgba(255, 255, 255, 0.07);
-  --sl-color-accent: #e5e5e5;
+  --sl-color-accent-low: rgba(255, 255, 255, 0.06);
+  --sl-color-accent: #ffffff;
   --sl-color-accent-high: #ffffff;
-  --sl-color-text-accent: #bae6fd;
+  --sl-color-text-accent: #e5e5e5;
   --sl-color-text-invert: #000000;
 
-  /* Expressive Code pure neutral black override */
+  /* Expressive Code pure neutral black */
   --ec-codeBg: #0a0a0a;
   --ec-frm-edBg: #0a0a0a;
   --ec-frm-trmBg: #0a0a0a;
-  --ec-frm-trmTtbBg: #101010;
-  --ec-frm-edTabBarBg: #101010;
-  --ec-brdCol: rgba(255, 255, 255, 0.085);
-}
-
-:root[data-theme="light"] {
-  --sl-font: var(--uc-font-sans);
-  --sl-font-mono: var(--uc-font-mono);
-  --sl-color-bg: #fafafa;
-  --sl-color-bg-nav: rgba(250, 250, 250, 0.92);
-  --sl-color-bg-sidebar: #ffffff;
-  --sl-color-bg-inline-code: #efefef;
-  --sl-color-hairline-light: #e5e5e5;
-  --sl-color-hairline: #e0e0e0;
-
-  --sl-color-white: #0a0a0a;
-  --sl-color-gray-1: #262626;
-  --sl-color-gray-2: #525252;
-  --sl-color-gray-3: #737373;
-  --sl-color-gray-4: #a3a3a3;
-  --sl-color-gray-5: #d4d4d4;
-  --sl-color-gray-6: #f2f2f2;
-  --sl-color-black: #ffffff;
-
-  --sl-color-accent-low: #f0f0f0;
-  --sl-color-accent: #111111;
-  --sl-color-accent-high: #000000;
-  --sl-color-text-accent: #0f172a;
-  --sl-color-text-invert: #ffffff;
+  --ec-frm-trmTtbBg: #0a0a0a;
+  --ec-frm-edTabBarBg: #0a0a0a;
+  --ec-brdCol: rgba(255, 255, 255, 0.09);
 }
 
 /* Header */
@@ -81,13 +51,13 @@ header.header {
   padding-inline: 2rem;
 }
 
-/* Left Sidebar: architectural calm & generous whitespace */
+/* Left Sidebar — clean, quiet, zero visual noise */
 .sidebar-pane {
   border-inline-end: 1px solid var(--sl-color-hairline);
 }
 
 .sidebar-content {
-  padding: 2rem 1.5rem 4rem !important;
+  padding: 2.25rem 1.5rem 4rem !important;
 }
 
 .sidebar-content ul.top-level > li + li {
@@ -95,44 +65,38 @@ header.header {
 }
 
 .sidebar-content .group-label {
-  padding-bottom: 0.55rem;
+  padding-bottom: 0.45rem;
 }
 
 .sidebar-content .large {
-  font-size: 0.75rem !important;
+  font-size: 0.76rem !important;
   font-weight: 500 !important;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--sl-color-gray-3) !important;
+  letter-spacing: 0.04em;
+  color: #666666 !important;
 }
 
 .sidebar-content li a {
-  padding: 0.58rem 0.9rem !important;
-  margin-block: 0.22rem;
+  padding: 0.52rem 0.85rem !important;
+  margin-block: 0.16rem;
   border-radius: 5px !important;
   font-size: 0.9rem !important;
   font-weight: 400;
   line-height: 1.5 !important;
-  color: var(--sl-color-gray-2);
+  color: #8f8f8f;
   border-left: 1.5px solid transparent;
-  transition: background 150ms ease, color 150ms ease, border-color 150ms ease;
+  transition: color 140ms ease, background 140ms ease;
 }
 
 .sidebar-content li a:hover {
-  color: var(--sl-color-white);
-  background: rgba(255, 255, 255, 0.04);
-}
-
-:root[data-theme="light"] .sidebar-content li a:hover {
-  background: rgba(0, 0, 0, 0.04);
-}
-
-:root[data-theme="dark"] .sidebar-content a[aria-current="page"],
-:root:not([data-theme="light"]) .sidebar-content a[aria-current="page"] {
-  background: rgba(255, 255, 255, 0.06);
   color: #ffffff;
-  border-left: 1.5px solid #bae6fd;
-  font-weight: 500;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.sidebar-content a[aria-current="page"] {
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: #ffffff !important;
+  border-left: 1.5px solid #ffffff !important;
+  font-weight: 500 !important;
 }
 
 /* Right TOC Sidebar */
@@ -141,33 +105,33 @@ header.header {
 }
 
 .right-sidebar-panel h2 {
-  font-size: 0.75rem !important;
+  font-size: 0.76rem !important;
   font-weight: 500 !important;
-  letter-spacing: 0.06em;
-  color: var(--sl-color-gray-3) !important;
-  margin-bottom: 1rem !important;
+  letter-spacing: 0.04em;
+  color: #666666 !important;
+  margin-bottom: 0.9rem !important;
 }
 
 starlight-toc a {
-  padding-block: 0.4rem !important;
+  padding-block: 0.36rem !important;
   font-size: 0.84rem !important;
   line-height: 1.55 !important;
-  color: var(--sl-color-gray-3);
+  color: #6e6e6e;
 }
 
 starlight-toc a:hover,
 starlight-toc a[aria-current="true"] {
-  color: var(--sl-color-white);
+  color: #ffffff;
 }
 
-/* Main article typography — avoid 700, sharp weight 500 */
+/* Main article canvas — Apple Notes / Linear calm */
 @media (min-width: 72rem) {
   .content-panel {
     padding: 2.75rem 3.75rem !important;
   }
 
   .content-panel + .content-panel {
-    padding-top: 2.25rem !important;
+    padding-top: 2rem !important;
     padding-bottom: 5rem !important;
   }
 }
@@ -175,75 +139,79 @@ starlight-toc a[aria-current="true"] {
 .sl-markdown-content {
   font-feature-settings: "cv02", "cv03", "cv04";
   font-size: 0.98rem;
-  line-height: 1.88;
-  color: var(--sl-color-gray-1);
+  line-height: 1.85;
+  color: #d4d4d4;
 }
 
 .sl-markdown-content p {
-  margin-top: 1.25rem;
+  margin-top: 1.2rem;
 }
 
 .sl-markdown-content h1,
 h1#_top {
-  font-size: clamp(2.1rem, 3.2vw, 2.65rem) !important;
-  line-height: 1.22 !important;
+  font-size: clamp(2rem, 3.1vw, 2.5rem) !important;
+  line-height: 1.24 !important;
   letter-spacing: -0.035em;
   font-weight: 500 !important;
+  color: #ffffff;
 }
 
 .sl-markdown-content h2 {
-  font-size: 1.45rem !important;
+  font-size: 1.4rem !important;
   line-height: 1.32 !important;
   letter-spacing: -0.025em;
   font-weight: 500 !important;
-  margin-top: 3.5rem !important;
-  margin-bottom: 1.15rem !important;
-  padding-bottom: 0.65rem;
-  border-bottom: 1px solid var(--sl-color-hairline-light);
+  color: #ffffff;
+  margin-top: 3.25rem !important;
+  margin-bottom: 1rem !important;
+  padding-bottom: 0.55rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
 }
 
 .sl-markdown-content h3 {
-  font-size: 1.14rem !important;
+  font-size: 1.12rem !important;
   letter-spacing: -0.02em;
   font-weight: 500 !important;
-  margin-top: 2.4rem !important;
-  margin-bottom: 0.75rem !important;
+  color: #ffffff;
+  margin-top: 2.25rem !important;
+  margin-bottom: 0.7rem !important;
 }
 
 .sl-markdown-content li + li {
-  margin-top: 0.6rem;
+  margin-top: 0.55rem;
 }
 
-.sl-markdown-content pre {
-  border: 1px solid var(--sl-color-hairline);
-  border-radius: 6px;
+.sl-markdown-content blockquote {
+  border-inline-start: 1.5px solid rgba(255, 255, 255, 0.28);
+  padding: 0.85rem 1.25rem;
+  margin: 1.5rem 0;
+  background: #0a0a0a;
+  color: #f0f0f0;
+  border-radius: 0 6px 6px 0;
 }
 
+/* Strip fake macOS terminal titlebar dots from code blocks */
 .expressive-code {
-  margin-block: 1.65rem !important;
+  margin-block: 1.4rem !important;
 }
 
-/* De-boxed architectural SVG figure: hairline top/bottom instead of heavy gray card */
+.expressive-code .frame.is-terminal .header {
+  display: none !important;
+}
+
+.expressive-code .frame pre {
+  border-radius: 6px !important;
+  border: 1px solid rgba(255, 255, 255, 0.09) !important;
+}
+
+/* Clean borderless SVG figures */
 .uc-doc-figure {
-  margin: 2.5rem 0 2.75rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 2.25rem 0 2.5rem;
+  padding: 1.25rem 0;
   background: transparent;
-  padding: 2rem 0.5rem;
   overflow: hidden;
 }
 
-:root[data-theme="light"] .uc-doc-figure {
-  border-color: #e0e0e0;
-  background: #080808;
-  border-radius: 6px;
-  padding: 1.75rem 1.25rem;
-}
-
 .uc-doc-figure figcaption {
-  margin-top: 1.15rem;
-  font-size: 0.84rem;
-  color: #737373;
-  text-align: center;
-  line-height: 1.6;
+  display: none;
 }

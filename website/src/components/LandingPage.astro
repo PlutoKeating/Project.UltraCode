@@ -157,19 +157,9 @@ const examplePrompt = zh
               <h2>{zh ? "双主角色与 5 位后台专家" : "Two Primary Roles. Five Background Experts."}</h2>
               <p>
                 {zh
-                  ? "平时只需和 UltraBuild 自然对话；想先讨论方案、绝不误改代码时，按 Shift+Tab 切到 UltraPlan。"
+                  ? "日常直接和 UltraBuild 对话即可；想先推演方案、绝不误改代码时，按 Shift+Tab 切到 UltraPlan。"
                   : "Talk naturally to UltraBuild for end-to-end delivery, or press Shift+Tab for read-only UltraPlan."}
               </p>
-              <div class="uc-key-legend">
-                <div>
-                  <span class="uc-key-cap">UltraBuild</span>
-                  <span>{zh ? "默认总控 · 协调、实施、验收" : "Default · orchestrate & verify"}</span>
-                </div>
-                <div>
-                  <span class="uc-key-cap">UltraPlan</span>
-                  <span>{zh ? "Shift+Tab 切换 · 只读规划" : "Shift+Tab · read-only planning"}</span>
-                </div>
-              </div>
             </div>
             <div class="uc-split-visual">
               <RolesTopologyDiagram lang={lang} />
@@ -627,37 +617,9 @@ const examplePrompt = zh
   /* Asymmetric 38/62 Split */
   .uc-split-grid {
     display: grid;
-    grid-template-columns: 0.82fr 1.18fr;
+    grid-template-columns: 0.78fr 1.22fr;
     gap: 4rem;
     align-items: center;
-  }
-
-  .uc-key-legend {
-    margin-top: 2.25rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.9rem;
-    border-top: 1px solid var(--uc-hairline);
-    padding-top: 1.5rem;
-  }
-
-  .uc-key-legend > div {
-    display: flex;
-    align-items: center;
-    gap: 0.9rem;
-    font-size: 0.88rem;
-    color: var(--uc-ink-secondary);
-  }
-
-  .uc-key-cap {
-    font-family: var(--uc-font-mono);
-    font-size: 0.78rem;
-    color: #ffffff;
-    border: 1px solid rgba(255, 255, 255, 0.16);
-    padding: 0.22rem 0.55rem;
-    border-radius: 4px;
-    min-width: 96px;
-    text-align: center;
   }
 
   /* Architectural 2-Column Dual Band */

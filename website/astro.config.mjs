@@ -26,8 +26,7 @@ export default defineConfig({
       title: "UltraCode",
       description: "让 OpenCode 迈入目标工程（Goal Engineering）时代",
       logo: {
-        dark: "./src/assets/logo-dark.svg",
-        light: "./src/assets/logo-light.svg",
+        src: "./src/assets/logo-dark.svg",
       },
       defaultLocale: "root",
       locales: {
@@ -37,11 +36,14 @@ export default defineConfig({
       social: [
         { icon: "github", label: "GitHub", href: "https://github.com/PlutoKeating/Project.UltraCode" },
       ],
+      components: {
+        ThemeSelect: "./src/components/EmptyThemeSelect.astro",
+      },
       head: [
         {
           tag: "script",
           content:
-            "try{if(!localStorage.getItem('starlight-theme')){localStorage.setItem('starlight-theme','dark');document.documentElement.dataset.theme='dark';}}catch(e){}",
+            "try{localStorage.setItem('starlight-theme','dark');document.documentElement.dataset.theme='dark';}catch(e){}",
         },
       ],
       sidebar: [
@@ -63,8 +65,8 @@ export default defineConfig({
           ],
         },
         {
-          label: "日常控制与维护",
-          translations: { en: "Controls & Maintenance" },
+          label: "控制与维护",
+          translations: { en: "Controls" },
           items: [
             { slug: "docs/controls-and-maintenance" },
             { slug: "docs/faq" },

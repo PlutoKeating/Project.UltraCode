@@ -6,33 +6,29 @@ const { lang = "zh" } = Astro.props;
 const zh = lang === "zh";
 ---
 
-<svg viewBox="0 0 520 220" fill="none" xmlns="http://www.w3.org/2000/svg" class="uc-svg-diagram" role="img" aria-label={zh ? "OpenCode TUI 命令面板 UltraCode 双开关示意图" : "OpenCode TUI Command Palette UltraCode switches schematic"}>
-  <!-- Minimal search header line -->
+<svg viewBox="0 0 520 212" fill="none" xmlns="http://www.w3.org/2000/svg" class="uc-svg-diagram" role="img" aria-label={zh ? "OpenCode TUI 命令面板 UltraCode 双开关示意图" : "OpenCode TUI Command Palette UltraCode switches schematic"}>
   <line x1="0" y1="0.5" x2="520" y2="0.5" stroke="rgba(255,255,255,0.1)"/>
   <line x1="0" y1="42.5" x2="520" y2="42.5" stroke="rgba(255,255,255,0.08)"/>
   <text x="10" y="26" fill="#E5A03D" font-family="JetBrains Mono, monospace" font-size="13">&gt;</text>
   <text x="30" y="26" fill="#FFFFFF" font-family="Sora, PingFang SC, sans-serif" font-size="13" font-weight="500">UltraCode</text>
-  <text x="510" y="25" text-anchor="end" fill="#525252" font-family="JetBrains Mono, PingFang SC, sans-serif" font-size="11">{zh ? "TUI 命令面板" : "COMMAND PALETTE"}</text>
 
-  <!-- Row 1: Command approvals -->
-  <line x1="0" y1="132.5" x2="520" y2="132.5" stroke="rgba(255,255,255,0.08)"/>
+  <line x1="0" y1="128.5" x2="520" y2="128.5" stroke="rgba(255,255,255,0.08)"/>
   <text x="10" y="76" fill="#FFFFFF" font-family="Sora, PingFang SC, sans-serif" font-size="14" font-weight="500">
     Command approvals · {zh ? "命令审批" : "Approvals"}
   </text>
   <circle cx="446" cy="71" r="3" fill="#BAE6FD"/>
   <text x="458" y="75" fill="#BAE6FD" font-family="JetBrains Mono, monospace" font-size="11.5" font-weight="500">AUTO</text>
-  <text x="10" y="106" fill="#8A8A8A" font-family="Sora, PingFang SC, sans-serif" font-size="12">
+  <text x="10" y="104" fill="#8A8A8A" font-family="Sora, PingFang SC, sans-serif" font-size="12">
     {zh ? "默认自动放行常规操作；显式禁止的危险规则始终生效。" : "Auto-approves routine work; explicit deny rules stay active."}
   </text>
 
-  <!-- Row 2: Direction questions -->
-  <line x1="0" y1="219.5" x2="520" y2="219.5" stroke="rgba(255,255,255,0.08)"/>
-  <text x="10" y="164" fill="#FFFFFF" font-family="Sora, PingFang SC, sans-serif" font-size="14" font-weight="500">
+  <line x1="0" y1="211.5" x2="520" y2="211.5" stroke="rgba(255,255,255,0.08)"/>
+  <text x="10" y="160" fill="#FFFFFF" font-family="Sora, PingFang SC, sans-serif" font-size="14" font-weight="500">
     Direction questions · {zh ? "方向询问" : "Direction"}
   </text>
-  <circle cx="432" cy="159" r="3" fill="#E5A03D"/>
-  <text x="444" y="163" fill="#E5A03D" font-family="JetBrains Mono, monospace" font-size="11.5" font-weight="500">MANUAL</text>
-  <text x="10" y="194" fill="#8A8A8A" font-family="Sora, PingFang SC, sans-serif" font-size="12">
+  <circle cx="432" cy="155" r="3" fill="#E5A03D"/>
+  <text x="444" y="159" fill="#E5A03D" font-family="JetBrains Mono, monospace" font-size="11.5" font-weight="500">MANUAL</text>
+  <text x="10" y="188" fill="#8A8A8A" font-family="Sora, PingFang SC, sans-serif" font-size="12">
     {zh ? "默认重大方向变化先问你再改；可随时一键切为 auto。" : "Asks before major direction shifts; toggle auto anytime."}
   </text>
 </svg>
