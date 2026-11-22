@@ -19,7 +19,7 @@ for (const target of targets) {
     compile: target ? { target, outfile: file } : { outfile: file },
     minify: true,
     define: {
-      "process.env.ULTRACODE_RELEASE_VERSION": JSON.stringify(process.env.ULTRACODE_RELEASE_VERSION || "0.1.0"),
+      "process.env.ULTRACODE_RELEASE_VERSION": JSON.stringify(process.env.ULTRACODE_RELEASE_VERSION || "0.2.0"),
     },
   });
   if (!result.success) throw new Error(result.logs.join("\n"));

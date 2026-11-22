@@ -20,6 +20,12 @@ less /tmp/ultracode-install.sh
 bash /tmp/ultracode-install.sh
 ```
 
+## 开始使用
+
+打开项目目录，运行 `opencode`，直接描述受众、目标和验收条件。可以随时补充要求或叫停。模型按需要派遣子代理、记录下一里程碑，在原对话继续。长期任务的清单、进度和交接保存在仓库内。服务重启后可要求“读取交接并继续”。
+
+打开 TUI 命令面板，搜索 **UltraCode**，可独立切换 **Command approvals**（默认 auto）和 **Direction questions**（默认 manual）。权限 auto 自动放行宿主原本需要询问的操作，显式 deny 仍然生效。
+
 ## 常用命令
 
 ```bash
@@ -64,7 +70,7 @@ bun run --cwd website build
 
 ## 发布
 
-稳定 tag 触发 Linux/macOS x64/arm64 原生构建、版本冒烟、SHA-256、GitHub Artifact Attestations 和 Release 上传。项目采用 [MIT License](LICENSE)。
+为稳定 tag 手动触发 Release 工作流，使用 单个 Linux runner 交叉构建 Linux/macOS x64/arm64、版本冒烟、SHA-256、GitHub Artifact Attestations 和 Release 上传。项目采用 [MIT License](LICENSE)。
 
 ## 文档
 

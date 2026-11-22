@@ -8,7 +8,7 @@ description: 在已安装官方 OpenCode V2 的 Linux 或 macOS 上完成安装
 ## 前置条件
 
 - Linux x64/arm64 或 macOS x64/arm64。
-- 官方 OpenCode V2.3.0 或更新版本。
+- 官方 OpenCode V2.3.2 或更新版本。
 - `curl`、 `tar` 和可用的网络连接。
 - 用户主目录可写，不需要 sudo。
 
@@ -44,12 +44,12 @@ uc doctor
 打开新的 OpenCode 会话后，可使用：
 
 ```text
-/ultracode/plan 为一个功能制定计划
-/ultracode/work 按确认的范围执行
-/ultracode/review 独立审查当前变更
+为一个功能制定计划
+按确认的范围执行
+独立审查当前变更
 ```
 
-具体命令名以安装版本的 OpenCode 命令列表为准。
+直接描述目标即可。
 
 ## 不修改模型的含义
 

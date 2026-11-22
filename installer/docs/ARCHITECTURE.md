@@ -10,3 +10,5 @@ CLI 是小接口；`paths`、`install`、`config`、`runtime`、`release` 和 `o
 - `assets.ts`：把公开 Provider 中立角色、命令和模板嵌入独立二进制。
 
 测试 seam 是公开 apply/uninstall 和 JSONC 接口；外部进程通过 `ULTRACODE_OPENCODE_BIN` 注入伪 Adapter。
+
+普通对话插件随 CLI 嵌入并注册 server 和 TUI 入口。权限钩子只处理 ask，方向询问由提示词引导。原生 idle 钩子取出模型登记的一次性下一里程碑；新的用户输入清除旧调度。

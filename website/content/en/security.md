@@ -12,7 +12,7 @@ UltraCode never reads, copies, prints, or tests provider credentials. Documentat
 - User-level XDG paths; no sudo.
 - No modification of the official OpenCode binary.
 - No shell for visual evaluation.
-- No implicit `--allow-all` for long runs.
+- Conversational command approvals default to auto and can be switched to manual.
 - No automatic pushes or protected-branch merges.
 
 ## Release integrity

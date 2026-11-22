@@ -18,7 +18,7 @@
 
 角色安装于 `agents/ultracode/`，包括 orchestrator、planner、implementer、architect、reviewer、librarian 和 visual-evaluator。角色无模型字段，继承当前会话。
 
-命令安装于 `commands/ultracode/`，典型形式为 `/ultracode/plan`、`/ultracode/work`、`/ultracode/review`。以安装版本的 OpenCode 注册表为准。
+通过普通对话表达目标。TUI 命令面板的 UltraCode 项可分别切换权限审批和方向询问。
 
 ## Ralph
 

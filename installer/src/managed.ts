@@ -26,6 +26,6 @@ export function managedConfig(paths: Paths): { [key: string]: JsonValue } {
         },
       },
     },
-    plugins: [`${paths.runtime}/superpowers`],
+    plugins: [`${paths.config}/ultracode/conversation`, `${paths.runtime}/superpowers`],
   };
 }

@@ -3,7 +3,7 @@
 ## 1. 前置条件
 
 - Linux/macOS x64 或 arm64。
-- 官方 OpenCode V2.3.0+。
+- 官方 OpenCode V2.3.2+。
 - `curl`、`tar` 和网络。
 - 用户目录可写，无 sudo。
 
@@ -35,29 +35,11 @@ uc doctor
 
 没有真实模型调用的结构检查通过即可。Provider 或模型问题仍由 OpenCode 自身配置负责。
 
-## 4. 工作流
+## 4. 日常使用
 
-```text
-/ultracode/plan 先给出带验收条件的计划，不要实现
-/ultracode/work 按确认计划实施并运行真实检查
-/ultracode/review 独立审查当前 diff 和证据
-```
+打开项目目录，运行 `opencode`，直接描述受众、目标和验收条件。可以随时补充要求或叫停。模型按需要派遣子代理、记录下一里程碑，在原对话继续。长期任务的清单、进度和交接保存在仓库内。服务重启后可要求“读取交接并继续”。
 
-## 5. Ralph 长跑
-
-```bash
-git worktree add -b feature/my-task ../my-task
-cd ../my-task
-mkdir -p .ralph
-cp ~/.config/opencode/ultracode/templates/PROGRESS.md .ralph/
-cp ~/.config/opencode/ultracode/templates/HANDOFF.md .ralph/
-```
-
-准备 `.ralph/ralph-tasks.md` 和目标文件后：
-
-```bash
-~/.config/opencode/ultracode/run.sh GOAL.md 20 --no-questions
-```
+打开 TUI 命令面板，搜索 **UltraCode**，可独立切换 **Command approvals**（默认 auto）和 **Direction questions**（默认 manual）。权限 auto 自动放行宿主原本需要询问的操作，显式 deny 仍然生效。
 
 ## 6. 官方升级后
 

@@ -9,7 +9,7 @@ import { assertSupportedOpenCode, opencodeVersion } from "./opencode";
 import type { Paths } from "./paths";
 import { installRuntime } from "./runtime";
 
-export const VERSION = process.env.ULTRACODE_RELEASE_VERSION || "0.1.0";
+export const VERSION = process.env.ULTRACODE_RELEASE_VERSION || "0.2.0";
 
 export interface ApplyReport {
   added: string[];
@@ -30,6 +30,13 @@ export async function apply(paths: Paths, options: { runtime?: boolean } = {}): 
   const previous = await readManifest(paths);
   const hashes: Record<string, string> = {};
   const conflicts: string[] = [];
+
+  for (const name of ["plan", "work", "review"]) {
+    const legacy = `commands/ultracode/${name}.md`;
+    const hash = previous?.files[legacy];
+    const target = join(paths.config, legacy);
+    if (hash && await exists(target) && sha256(await readText(target)) === hash) await rm(target);
+  }
 
   for (const asset of assets) {
     const target = join(paths.config, asset.target);

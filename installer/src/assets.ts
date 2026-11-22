@@ -1,3 +1,6 @@
+import server from "../../config/opencode/conversation/server.js" with { type: "text" };
+import settings from "../../config/opencode/conversation/settings.js" with { type: "text" };
+import tui from "../../config/opencode/conversation/tui.js" with { type: "text" };
 import architect from "../../config/opencode/agents/architect.md" with { type: "text" };
 import implementer from "../../config/opencode/agents/implementer.md" with { type: "text" };
 import librarian from "../../config/opencode/agents/librarian.md" with { type: "text" };
@@ -5,9 +8,6 @@ import orchestrator from "../../config/opencode/agents/orchestrator.md" with { t
 import planner from "../../config/opencode/agents/planner.md" with { type: "text" };
 import reviewer from "../../config/opencode/agents/reviewer.md" with { type: "text" };
 import visualEvaluator from "../../config/opencode/agents/visual-evaluator.md" with { type: "text" };
-import planCommand from "../../config/opencode/commands/ultracode-plan.md" with { type: "text" };
-import reviewCommand from "../../config/opencode/commands/ultracode-review.md" with { type: "text" };
-import workCommand from "../../config/opencode/commands/ultracode-work.md" with { type: "text" };
 import ralphPrompt from "../../config/opencode/ralph/prompt.md" with { type: "text" };
 import ralphRunner from "../../config/opencode/ralph/run.sh" with { type: "text" };
 import featureList from "../../config/opencode/ralph/templates/FEATURE_LIST.json" with { type: "text" };
@@ -26,6 +26,9 @@ export interface Asset {
 }
 
 export const assets: Asset[] = [
+  { target: "ultracode/conversation/server.js", content: server },
+  { target: "ultracode/conversation/settings.js", content: settings },
+  { target: "ultracode/conversation/tui.js", content: tui },
   { target: "agents/ultracode/architect.md", content: architect },
   { target: "agents/ultracode/implementer.md", content: implementer },
   { target: "agents/ultracode/librarian.md", content: librarian },
@@ -33,9 +36,6 @@ export const assets: Asset[] = [
   { target: "agents/ultracode/planner.md", content: planner },
   { target: "agents/ultracode/reviewer.md", content: reviewer },
   { target: "agents/ultracode/visual-evaluator.md", content: visualEvaluator },
-  { target: "commands/ultracode/plan.md", content: planCommand },
-  { target: "commands/ultracode/review.md", content: reviewCommand },
-  { target: "commands/ultracode/work.md", content: workCommand },
   { target: "ultracode/prompt.md", content: ralphPrompt },
   { target: "ultracode/run.sh", content: ralphRunner, executable: true },
   { target: "ultracode/templates/FEATURE_LIST.json", content: featureList as unknown as string },

@@ -59,3 +59,11 @@ describe("isolated apply", () => {
     expect(config).not.toContain("ultracode_playwright");
   });
 });
+
+test("installs both conversation entry points and only natural-language workflows", async () => {
+  await apply(paths, { runtime: false });
+  const plugin = join(paths.config, "ultracode/conversation");
+  expect(await readFile(join(plugin, "server.js"), "utf8")).toContain("experimental.idle");
+  expect(await readFile(join(plugin, "tui.js"), "utf8")).toContain('mode: "global"');
+  await expect(readFile(join(paths.config, "commands/ultracode/work.md"))).rejects.toThrow();
+});

@@ -8,7 +8,7 @@ description: Install on Linux or macOS with the official OpenCode V2 already pre
 ## Prerequisites
 
 - Linux x64/arm64 or macOS x64/arm64.
-- Official OpenCode V2.3.0 or newer.
+- Official OpenCode V2.3.2 or newer.
 - `curl`, `tar`, and network access.
 - A writable home directory; no sudo is required.
 
@@ -36,12 +36,12 @@ uc doctor
 In a new OpenCode session:
 
 ```text
-/ultracode/plan Plan a feature without implementing it
-/ultracode/work Execute the approved scope with real checks
-/ultracode/review Independently review the current changes
+Plan a feature without implementing it
+Execute the approved scope with real checks
+Independently review the current changes
 ```
 
-Use the command registry of the installed OpenCode version as the final authority.
+Describe your goal in the conversation.
 
 ## Model neutrality
 

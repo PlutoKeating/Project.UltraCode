@@ -31,7 +31,7 @@ export async function opencodeVersion(binary: string): Promise<string> {
 }
 
 export function assertSupportedOpenCode(version: string): void {
-  const [major, minor] = version.split(".").map(Number);
-  if (major !== 2 || (minor ?? 0) < 3) throw new Error(`OpenCode ${version} is unsupported; install a recent V2 release (2.3.0 or newer).`);
+  const [major, minor, patch] = version.split(".").map(Number);
+  if (major !== 2 || (minor ?? 0) < 3 || (minor === 3 && (patch ?? 0) < 2)) throw new Error(`OpenCode ${version} is unsupported; install a recent V2 release (2.3.2 or newer).`);
   if ((minor ?? 0) > 3) console.warn(`OpenCode ${version} is newer than the tested 2.3.x matrix; running structural checks only.`);
 }

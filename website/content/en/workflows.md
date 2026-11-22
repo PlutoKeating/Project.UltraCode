@@ -12,9 +12,9 @@ Give a bounded task directly to the orchestrator. It reads local conventions, ma
 ## Complex tasks
 
 ```text
-/ultracode/plan Add export support to this system. Inspect first and define acceptance criteria; do not implement.
-/ultracode/work Execute the approved plan without weakening its acceptance criteria.
-/ultracode/review Review the diff, original scope, and verification evidence independently.
+Add export support to this system. Inspect first and define acceptance criteria; do not implement.
+Execute the approved plan without weakening its acceptance criteria.
+Review the diff, original scope, and verification evidence independently.
 ```
 
 ## Roles

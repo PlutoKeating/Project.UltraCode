@@ -27,3 +27,8 @@ declare module "bun:test" {
   export const expect: (...args: any[]) => any;
   export const test: (...args: any[]) => any;
 }
+
+declare module "*.js" {
+  const content: string;
+  export default content;
+}
