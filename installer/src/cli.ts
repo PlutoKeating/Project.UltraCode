@@ -1,92 +1,192 @@
 #!/usr/bin/env bun
-import { rm, unlink } from "node:fs/promises";
+import { spawn } from "node:child_process";
+import { rename, rm, unlink } from "node:fs/promises";
 import { createInterface } from "node:readline/promises";
-import { run } from "./opencode";
-import { apply, doctor, uninstall, VERSION } from "./install";
-import { resolvePaths } from "./paths";
-import { updateSelf, upgradeOpenCode } from "./release";
-import { runPlaywright, runRalph } from "./runtime";
+import { launchOrInstallDesktop } from "./desktop";
 import { exists } from "./fs";
+import { apply, doctor, uninstall, VERSION } from "./install";
+import { ensureOpenCode, passthroughOpenCode, run } from "./opencode";
+import { resolvePaths, type Paths } from "./paths";
+import { runRalphWorkflow } from "./ralph";
+import { updateSelf } from "./release";
+import { runPlaywright } from "./runtime";
+import { createSpinner } from "./ui";
 
-const help = `UltraCode ${VERSION}
-
-Usage:
-  uc apply              Install or repair the additive OpenCode configuration
-  uc sync               Alias for apply; safe after an official OpenCode update
-  uc doctor             Check versions, files and configuration without model calls
-  uc update             Update UltraCode to the latest stable release, then sync
-  uc up                 Run the official OpenCode upgrade, then update and sync
-  uc uninstall --yes    Remove only unmodified UltraCode-owned state
-  uc mcp                Internal: start the managed Playwright MCP server
-  uc ralph [args...]    Run the managed Ralph CLI
-  uc version            Print the UltraCode version
-
-No command reads provider credentials or makes a real model call.
-`;
-
-async function confirm(): Promise<boolean> {
-  if (!process.stdin.isTTY) return false;
-  const prompt = createInterface({ input: process.stdin, output: process.stdout });
-  const answer = await prompt.question("Remove UltraCode-owned state? User configuration and backups are preserved. [y/N] ");
-  prompt.close();
-  return answer.toLowerCase() === "y";
+export interface CliDeps {
+  passthroughOpenCode: (paths: Paths, args: string[]) => Promise<number>;
+  ensureOpenCode: typeof ensureOpenCode;
+  updateSelf: (paths: Paths) => Promise<string>;
+  sync: (paths: Paths) => Promise<number>;
+  doctor: (paths: Paths) => Promise<string[]>;
+  uninstall: (paths: Paths) => Promise<string[]>;
+  runPlaywright: (paths: Paths, args: string[]) => Promise<number>;
+  runRalphWorkflow: (paths: Paths, args: string[]) => Promise<number>;
+  launchOrInstallDesktop: (paths: Paths) => Promise<number>;
+  log: (msg: string) => void;
+  error: (msg: string) => void;
 }
 
-async function main(): Promise<number> {
-  const [command = "help", ...args] = process.argv.slice(2);
-  const paths = resolvePaths();
-  switch (command) {
-    case "apply":
-    case "sync": {
-      const report = await apply(paths);
-      console.log(`UltraCode synchronized: ${report.files} files, ${report.added.length} configuration additions.`);
-      for (const conflict of report.conflicts) console.warn(`Preserved: ${conflict}`);
-      return 0;
-    }
-    case "doctor": {
-      const issues = await doctor(paths);
-      if (issues.length === 0) {
-        console.log("UltraCode checks passed. No model call was made.");
-        return 0;
+export function formatHelp(version = VERSION): string {
+  return `UltraCode ${version.replace(/^v/, "")}
+
+  ultracode [args...]     Open OpenCode
+  ultracode desktop       Open or install Desktop app
+  ultracode pair          Connect browser or mobile
+  ultracode upgrade       Update OpenCode and UltraCode
+  ultracode sync          Sync configuration
+  ultracode doctor        Check setup
+  ultracode uninstall     Remove UltraCode
+  ultracode ralph         Run Ralph loop
+  ultracode version       Print version`;
+}
+
+async function confirmRemoval(): Promise<boolean> {
+  if (!process.stdin.isTTY) return false;
+  const prompt = createInterface({ input: process.stdin, output: process.stdout });
+  const answer = await prompt.question("Remove UltraCode? User configuration and backups are preserved. [y/N] ");
+  prompt.close();
+  return answer.trim().toLowerCase() === "y";
+}
+
+async function runSyncInPlace(paths: Paths, errorLog: (msg: string) => void): Promise<number> {
+  const report = await apply(paths);
+  for (const conflict of report.conflicts) errorLog(`Preserved: ${conflict}`);
+  return 0;
+}
+
+function defaultDeps(): CliDeps {
+  return {
+    passthroughOpenCode,
+    ensureOpenCode,
+    updateSelf,
+    sync: async (paths) => {
+      if (await exists(paths.binary)) {
+        const res = await run(paths.binary, ["sync"]);
+        if (res.stderr.trim()) console.error(res.stderr.trim());
+        return res.code;
       }
-      for (const issue of issues) console.error(issue);
-      return 1;
-    }
-    case "update": {
-      const version = await updateSelf(paths);
-      console.log(`Updated UltraCode to ${version}`);
-      return (await run(paths.binary, ["sync"], { inherit: true })).code;
-    }
-    case "up": {
-      await upgradeOpenCode(paths);
-      const version = await updateSelf(paths);
-      console.log(`Updated UltraCode to ${version}`);
-      return (await run(paths.binary, ["sync"], { inherit: true })).code;
-    }
-    case "uninstall": {
-      if (!args.includes("--yes") && !(await confirm())) return 2;
-      const preserved = await uninstall(paths);
-      await rm(paths.runtime, { recursive: true, force: true });
-      if (await exists(paths.binary)) await unlink(paths.binary).catch(() => {});
-      for (const path of preserved) console.warn(`Preserved locally modified file: ${path}`);
-      console.log("UltraCode removed. User configuration and backups were preserved.");
-      return 0;
-    }
-    case "mcp": return runPlaywright(paths, args);
-    case "ralph": return runRalph(paths, args);
-    case "version":
-    case "--version":
-    case "-v": console.log(VERSION); return 0;
-    case "help":
-    case "--help":
-    case "-h": console.log(help); return 0;
-    default:
-      console.error(`Unknown command: ${command}\n\n${help}`);
-      return 2;
+      return runSyncInPlace(paths, (msg) => console.warn(msg));
+    },
+    doctor,
+    uninstall,
+    runPlaywright,
+    runRalphWorkflow: (paths, args) => runRalphWorkflow(paths, args),
+    launchOrInstallDesktop: (paths) => launchOrInstallDesktop(paths),
+    log: (msg) => console.log(msg),
+    error: (msg) => console.error(msg),
+  };
+}
+
+async function removeOwnBinary(binaryPath: string): Promise<void> {
+  if (!(await exists(binaryPath))) return;
+  if (process.platform !== "win32") {
+    await unlink(binaryPath).catch(() => {});
+    return;
+  }
+  try {
+    await unlink(binaryPath);
+  } catch {
+    const oldPath = `${binaryPath}.old`;
+    await rm(oldPath, { force: true }).catch(() => {});
+    await rename(binaryPath, oldPath).catch(() => {});
+    const child = spawn("cmd.exe", ["/d", "/s", "/c", `ping -n 2 127.0.0.1 >nul & del /f /q "${oldPath}"`], {
+      detached: true,
+      stdio: "ignore",
+    });
+    child.unref();
   }
 }
 
-main().then((code) => { process.exitCode = code; }).catch((error) => {
-  console.error(`UltraCode: ${(error as Error).message}`);
-  process.exitCode = 1;
-});
+export async function dispatch(argv: string[], paths: Paths = resolvePaths(), deps?: CliDeps): Promise<number> {
+  const d = deps ?? defaultDeps();
+  if (argv.length === 0) {
+    return d.passthroughOpenCode(paths, []);
+  }
+
+  const [command, ...args] = argv;
+  switch (command) {
+    case "apply":
+    case "sync": {
+      const spinner = deps ? null : createSpinner("Setting up");
+      try {
+        const code = deps ? await d.sync(paths) : await runSyncInPlace(paths, d.error);
+        spinner?.stop();
+        if (code === 0 && !deps) d.log("✓ Ready");
+        return code;
+      } catch (err) {
+        spinner?.stop();
+        throw err;
+      }
+    }
+    case "doctor": {
+      const issues = await d.doctor(paths);
+      if (issues.length === 0) {
+        d.log("✓ Ready");
+        return 0;
+      }
+      for (const issue of issues) d.error(issue);
+      return 1;
+    }
+    case "upgrade":
+    case "update":
+    case "up": {
+      const spinner = deps ? null : createSpinner("Checking OpenCode");
+      try {
+        await d.ensureOpenCode(paths, {
+          installIfMissing: true,
+          upgradeIfPresent: true,
+          onStatus: (msg) => spinner?.update(msg),
+        });
+        spinner?.update("Updating UltraCode");
+        const tag = await d.updateSelf(paths);
+        spinner?.update("Setting up");
+        const code = await d.sync(paths);
+        spinner?.stop();
+        if (code === 0) d.log(`✓ UltraCode ${tag.replace(/^v/, "")}`);
+        return code;
+      } catch (err) {
+        spinner?.stop();
+        throw err;
+      }
+    }
+    case "desktop":
+      return d.launchOrInstallDesktop(paths);
+    case "uninstall": {
+      if (!args.includes("--yes") && !(await confirmRemoval())) return 2;
+      const preserved = await d.uninstall(paths);
+      await rm(paths.runtime, { recursive: true, force: true });
+      await rm(paths.browsers, { recursive: true, force: true });
+      await removeOwnBinary(paths.binary);
+      for (const path of preserved) d.error(`Preserved: ${path}`);
+      d.log("✓ Removed");
+      return 0;
+    }
+    case "_mcp":
+      return d.runPlaywright(paths, args);
+    case "ralph":
+      return d.runRalphWorkflow(paths, args);
+    case "version":
+    case "--version":
+    case "-v":
+      d.log(VERSION);
+      return 0;
+    case "help":
+    case "--help":
+    case "-h":
+      d.log(formatHelp());
+      return 0;
+    default:
+      return d.passthroughOpenCode(paths, argv);
+  }
+}
+
+if (import.meta.main) {
+  dispatch(process.argv.slice(2))
+    .then((code) => {
+      process.exitCode = code;
+    })
+    .catch((error) => {
+      console.error(`UltraCode: ${(error as Error).message}`);
+      process.exitCode = 1;
+    });
+}

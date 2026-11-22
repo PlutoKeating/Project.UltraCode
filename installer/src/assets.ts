@@ -9,7 +9,6 @@ import planner from "../../config/opencode/agents/planner.md" with { type: "text
 import reviewer from "../../config/opencode/agents/reviewer.md" with { type: "text" };
 import visualEvaluator from "../../config/opencode/agents/visual-evaluator.md" with { type: "text" };
 import ralphPrompt from "../../config/opencode/ralph/prompt.md" with { type: "text" };
-import ralphRunner from "../../config/opencode/ralph/run.sh" with { type: "text" };
 import featureList from "../../config/opencode/ralph/templates/FEATURE_LIST.json" with { type: "text" };
 import handoff from "../../config/opencode/ralph/templates/HANDOFF.md" with { type: "text" };
 import progress from "../../config/opencode/ralph/templates/PROGRESS.md" with { type: "text" };
@@ -37,7 +36,6 @@ export const assets: Asset[] = [
   { target: "agents/ultracode/reviewer.md", content: reviewer },
   { target: "agents/ultracode/visual-evaluator.md", content: visualEvaluator },
   { target: "ultracode/prompt.md", content: ralphPrompt },
-  { target: "ultracode/run.sh", content: ralphRunner, executable: true },
   { target: "ultracode/templates/FEATURE_LIST.json", content: featureList as unknown as string },
   { target: "ultracode/templates/HANDOFF.md", content: handoff },
   { target: "ultracode/templates/PROGRESS.md", content: progress },
