@@ -11,16 +11,18 @@
 
 ## Color Tokens
 
+All dark backgrounds, surfaces, sidebars, code blocks, and diagram plates strictly use **zero-saturation (`S = 0%`, `R = G = B`) pure neutral black and charcoal grays**. Chromatic color is reserved strictly for ambient horizon glow and functional signal accents.
+
 | Role | Dark Token | Hex / Value | Usage |
 | --- | --- | --- | --- |
-| Void ground | `--uc-void` | `#06070d` | Page canvas |
-| Surface | `--uc-surface` | `#0b0e17` | Sidebar, recessed panels |
-| Elevated surface | `--uc-surface-elevated` | `#101522` | Cards, diagram plates |
-| Smoked glass | `--uc-glass` | `rgba(13, 17, 27, 0.78)` | Command bars, hero showcase |
-| Hairline border | `--uc-border` | `rgba(255, 255, 255, 0.09)` | Structural 1px dividers |
-| Primary ink | `--uc-ink` | `#f3f6fa` | Headlines, active text |
-| Secondary ink | `--uc-ink-secondary` | `#9ba6b8` | Subtitles, captions |
-| Muted ink | `--uc-ink-muted` | `#6c788e` | Metadata, inactive labels |
+| Void ground | `--uc-void` | `#050505` | Page canvas |
+| Surface | `--uc-surface` | `#0a0a0a` | Sidebar, recessed panels |
+| Elevated surface | `--uc-surface-elevated` | `#121212` | Cards, diagram plates |
+| Smoked glass | `--uc-glass` | `rgba(14, 14, 14, 0.8)` | Command bars, hero showcase |
+| Hairline border | `--uc-border` | `rgba(255, 255, 255, 0.085)` | Structural 1px dividers |
+| Primary ink | `--uc-ink` | `#f5f5f5` | Headlines, active text |
+| Secondary ink | `--uc-ink-secondary` | `#a3a3a3` | Subtitles, captions |
+| Muted ink | `--uc-ink-muted` | `#737373` | Metadata, inactive labels |
 | Primary signal | `--uc-cyan` | `#22d3ee` | Active path, CTA, Goal Engineering track |
 | Drift contrast | `--uc-coral` | `#e05a7a` | Ordinary chat failure/drift track only |
 | Verified state | `--uc-emerald` | `#34d399` | Visual QA pass & completed milestones |

@@ -1,81 +1,212 @@
-/* Starlight Documentation Theme — Vapor-Noir Smoked Glass (Dark Default) + Clean Alabaster (Optional Light) */
+/* Starlight Documentation Theme — Pure Neutral Obsidian (S = 0%) + Editorial Breathing Room */
+
+:root {
+  --sl-nav-height: 4.25rem;
+  --sl-sidebar-width: 19.5rem;
+  --sl-content-width: 48rem;
+  --sl-text-base: 0.98rem;
+  --sl-line-height: 1.82;
+}
 
 :root,
 :root[data-theme="dark"] {
   --sl-font: var(--uc-font-sans);
   --sl-font-mono: var(--uc-font-mono);
-  --sl-color-bg: #06070d;
-  --sl-color-bg-nav: rgba(6, 7, 13, 0.86);
-  --sl-color-bg-sidebar: #090c14;
-  --sl-color-bg-inline-code: rgba(255, 255, 255, 0.06);
-  --sl-color-hairline-light: rgba(255, 255, 255, 0.08);
+
+  /* Strictly S = 0% neutral blacks & grays */
+  --sl-color-bg: #050505;
+  --sl-color-bg-nav: rgba(5, 5, 5, 0.88);
+  --sl-color-bg-sidebar: #090909;
+  --sl-color-bg-inline-code: #161616;
+  --sl-color-hairline-light: rgba(255, 255, 255, 0.075);
   --sl-color-hairline: rgba(255, 255, 255, 0.09);
   --sl-color-hairline-shade: rgba(255, 255, 255, 0.06);
 
-  --sl-color-white: #f3f6fa;
-  --sl-color-gray-1: #dbe3ee;
-  --sl-color-gray-2: #a9b4c6;
-  --sl-color-gray-3: #7f8ca3;
-  --sl-color-gray-4: #4b5568;
-  --sl-color-gray-5: #1f2636;
-  --sl-color-gray-6: #101522;
-  --sl-color-black: #06070d;
+  --sl-color-white: #f5f5f5;
+  --sl-color-gray-1: #e0e0e0;
+  --sl-color-gray-2: #a8a8a8;
+  --sl-color-gray-3: #808080;
+  --sl-color-gray-4: #525252;
+  --sl-color-gray-5: #242424;
+  --sl-color-gray-6: #121212;
+  --sl-color-black: #050505;
 
   --sl-color-accent-low: rgba(34, 211, 238, 0.12);
   --sl-color-accent: #22d3ee;
   --sl-color-accent-high: #a5f3fc;
   --sl-color-text-accent: #22d3ee;
-  --sl-color-text-invert: #06070d;
-}
+  --sl-color-text-invert: #050505;
 
-:root[data-theme="dark"] .sidebar-content a[aria-current="page"],
-:root:not([data-theme="light"]) .sidebar-content a[aria-current="page"] {
-  background: rgba(34, 211, 238, 0.13);
-  color: #a5f3fc;
-  border: 1px solid rgba(34, 211, 238, 0.32);
-  font-weight: 600;
+  /* Expressive Code neutral black override (zero blue cast) */
+  --ec-codeBg: #101010;
+  --ec-frm-edBg: #101010;
+  --ec-frm-trmBg: #101010;
+  --ec-frm-trmTtbBg: #141414;
+  --ec-frm-edTabBarBg: #141414;
+  --ec-brdCol: rgba(255, 255, 255, 0.09);
 }
 
 :root[data-theme="light"] {
   --sl-font: var(--uc-font-sans);
   --sl-font-mono: var(--uc-font-mono);
-  --sl-color-bg: #f7f8fa;
-  --sl-color-bg-nav: rgba(247, 248, 250, 0.9);
+  --sl-color-bg: #fafafa;
+  --sl-color-bg-nav: rgba(250, 250, 250, 0.92);
   --sl-color-bg-sidebar: #ffffff;
-  --sl-color-bg-inline-code: #edf2f7;
-  --sl-color-hairline-light: #e2e8f0;
-  --sl-color-hairline: #dbe3ee;
+  --sl-color-bg-inline-code: #efefef;
+  --sl-color-hairline-light: #e5e5e5;
+  --sl-color-hairline: #e0e0e0;
 
-  --sl-color-white: #0f172a;
-  --sl-color-gray-1: #1e293b;
-  --sl-color-gray-2: #334155;
-  --sl-color-gray-3: #64748b;
-  --sl-color-gray-4: #94a3b8;
-  --sl-color-gray-5: #cbd5e1;
-  --sl-color-gray-6: #f1f5f9;
+  --sl-color-white: #111111;
+  --sl-color-gray-1: #262626;
+  --sl-color-gray-2: #4a4a4a;
+  --sl-color-gray-3: #737373;
+  --sl-color-gray-4: #a3a3a3;
+  --sl-color-gray-5: #d4d4d4;
+  --sl-color-gray-6: #f2f2f2;
   --sl-color-black: #ffffff;
 
   --sl-color-accent-low: #e0f2fe;
   --sl-color-accent: #0284c7;
   --sl-color-accent-high: #075985;
   --sl-color-text-accent: #0284c7;
+  --sl-color-text-invert: #ffffff;
 }
 
+/* Header breathing room */
 header.header {
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--sl-color-hairline);
+  padding-inline: 1.75rem;
+}
+
+/* Left Sidebar: generous padding, calmer hierarchy & spacing */
+.sidebar-pane {
+  border-inline-end: 1px solid var(--sl-color-hairline);
+}
+
+.sidebar-content {
+  padding: 1.75rem 1.35rem 3.5rem !important;
+}
+
+.sidebar-content ul.top-level > li + li {
+  margin-top: 1.65rem;
+}
+
+.sidebar-content .group-label {
+  padding-bottom: 0.45rem;
+}
+
+.sidebar-content .large {
+  font-size: 0.78rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.04em;
+  color: var(--sl-color-gray-3) !important;
+}
+
+.sidebar-content li a {
+  padding: 0.56rem 0.85rem !important;
+  margin-block: 0.18rem;
+  border-radius: 7px !important;
+  font-size: 0.9rem !important;
+  line-height: 1.48 !important;
+  color: var(--sl-color-gray-2);
+  transition: background 150ms ease, color 150ms ease, border-color 150ms ease;
+}
+
+.sidebar-content li a:hover {
+  color: var(--sl-color-white);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+:root[data-theme="light"] .sidebar-content li a:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+:root[data-theme="dark"] .sidebar-content a[aria-current="page"],
+:root:not([data-theme="light"]) .sidebar-content a[aria-current="page"] {
+  background: rgba(34, 211, 238, 0.12);
+  color: #a5f3fc;
+  border: 1px solid rgba(34, 211, 238, 0.3);
+  font-weight: 600;
+}
+
+/* Right TOC Sidebar: airy spacing & clear typography */
+.right-sidebar-panel {
+  padding: 2.25rem 1.5rem 3rem !important;
+}
+
+.right-sidebar-panel h2 {
+  font-size: 0.78rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.04em;
+  color: var(--sl-color-gray-3) !important;
+  margin-bottom: 0.9rem !important;
+}
+
+starlight-toc a {
+  padding-block: 0.36rem !important;
+  font-size: 0.84rem !important;
+  line-height: 1.55 !important;
+  color: var(--sl-color-gray-3);
+}
+
+starlight-toc a:hover,
+starlight-toc a[aria-current="true"] {
+  color: var(--sl-color-text-accent);
+}
+
+/* Main article canvas & typography rhythm */
+@media (min-width: 72rem) {
+  .content-panel {
+    padding: 2.5rem 3.25rem !important;
+  }
+
+  .content-panel + .content-panel {
+    padding-top: 2rem !important;
+    padding-bottom: 4.5rem !important;
+  }
 }
 
 .sl-markdown-content {
   font-feature-settings: "cv02", "cv03", "cv04";
+  font-size: 0.98rem;
+  line-height: 1.85;
+}
+
+.sl-markdown-content p {
+  margin-top: 1.15rem;
 }
 
 .sl-markdown-content h1,
-.sl-markdown-content h2,
-.sl-markdown-content h3 {
+h1#_top {
+  font-size: clamp(2rem, 3.1vw, 2.55rem) !important;
+  line-height: 1.24 !important;
+  letter-spacing: -0.03em;
+  font-weight: 600;
+}
+
+.sl-markdown-content h2 {
+  font-size: 1.45rem !important;
+  line-height: 1.32 !important;
   letter-spacing: -0.025em;
   font-weight: 600;
+  margin-top: 3.1rem !important;
+  margin-bottom: 1.1rem !important;
+  padding-bottom: 0.55rem;
+  border-bottom: 1px solid var(--sl-color-hairline-light);
+}
+
+.sl-markdown-content h3 {
+  font-size: 1.16rem !important;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  margin-top: 2.25rem !important;
+  margin-bottom: 0.75rem !important;
+}
+
+.sl-markdown-content li + li {
+  margin-top: 0.55rem;
 }
 
 .sl-markdown-content pre {
@@ -83,53 +214,31 @@ header.header {
   border-radius: 8px;
 }
 
+.expressive-code {
+  margin-block: 1.5rem !important;
+}
+
+/* SVG diagram figure plates (strictly S = 0% neutral) */
 .uc-doc-figure {
-  margin: 1.5rem 0 2rem;
+  margin: 2rem 0 2.5rem;
   border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: linear-gradient(180deg, rgba(14, 19, 30, 0.92), rgba(8, 11, 18, 0.96));
-  padding: 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: #0b0b0b;
+  padding: 1.5rem;
   overflow: hidden;
-  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.36);
+  box-shadow: 0 20px 52px rgba(0, 0, 0, 0.42);
 }
 
 :root[data-theme="light"] .uc-doc-figure {
-  border-color: #cbd5e1;
-  background: #0b0e17;
-  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.12);
+  border-color: #d4d4d4;
+  background: #0a0a0a;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
 }
 
 .uc-doc-figure figcaption {
-  margin-top: 0.75rem;
-  font-size: 0.84rem;
-  color: #9ba6b8;
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: #a3a3a3;
   text-align: center;
-}
-
-.uc-install-card {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  padding: 0.85rem 1rem;
-  margin: 1.25rem 0;
-  border-radius: 8px;
-  border: 1px solid rgba(34, 211, 238, 0.28);
-  background: rgba(11, 15, 24, 0.92);
-  font-family: var(--uc-font-mono);
-  font-size: 0.88rem;
-  color: #e2e8f0;
-}
-
-:root[data-theme="light"] .uc-install-card {
-  background: #0f172a;
-  color: #f8fafc;
-}
-
-.uc-install-card code {
-  background: transparent !important;
-  color: inherit !important;
-  padding: 0 !important;
-  word-break: break-all;
+  line-height: 1.55;
 }

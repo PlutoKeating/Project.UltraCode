@@ -7,18 +7,18 @@ const zh = lang === "zh";
 ---
 
 <svg viewBox="0 0 920 220" fill="none" xmlns="http://www.w3.org/2000/svg" class="uc-svg-diagram" role="img" aria-label={zh ? "Prompt、Context、Goal 三代工程演进图" : "Evolution from Prompt to Context to Goal Engineering"}>
-  <rect x="0.5" y="0.5" width="919" height="219" rx="10" fill="#0A0D16" stroke="rgba(255,255,255,0.09)"/>
+  <rect x="0.5" y="0.5" width="919" height="219" rx="10" fill="#0A0A0A" stroke="rgba(255,255,255,0.09)"/>
 
   <!-- Stage 1 -->
-  <rect x="28" y="34" width="252" height="152" rx="8" fill="#0E121E" stroke="rgba(255,255,255,0.08)"/>
-  <text x="48" y="64" fill="#6C788E" font-family="JetBrains Mono, monospace" font-size="11">GEN 01</text>
-  <text x="48" y="92" fill="#CBD5E1" font-family="Sora, PingFang SC, sans-serif" font-size="17" font-weight="600">
+  <rect x="28" y="34" width="252" height="152" rx="8" fill="#111111" stroke="rgba(255,255,255,0.08)"/>
+  <text x="48" y="64" fill="#737373" font-family="JetBrains Mono, monospace" font-size="11">GEN 01</text>
+  <text x="48" y="92" fill="#D4D4D4" font-family="Sora, PingFang SC, sans-serif" font-size="17" font-weight="600">
     Prompt Engineering
   </text>
-  <text x="48" y="122" fill="#9BA6B8" font-family="Sora, PingFang SC, sans-serif" font-size="13">
+  <text x="48" y="122" fill="#A3A3A3" font-family="Sora, PingFang SC, sans-serif" font-size="13">
     {zh ? "反复打磨单句提示词" : "Polishing one-shot prompts"}
   </text>
-  <text x="48" y="148" fill="#6C788E" font-family="Sora, PingFang SC, sans-serif" font-size="12">
+  <text x="48" y="148" fill="#737373" font-family="Sora, PingFang SC, sans-serif" font-size="12">
     {zh ? "局限：任务一长就失忆、跑偏" : "Limit: breaks on multi-step work"}
   </text>
 
@@ -26,15 +26,15 @@ const zh = lang === "zh";
   <path d="M 292 110 L 322 110 M 316 104 L 322 110 L 316 116" stroke="rgba(255,255,255,0.28)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
 
   <!-- Stage 2 -->
-  <rect x="334" y="34" width="252" height="152" rx="8" fill="#0E121E" stroke="rgba(255,255,255,0.10)"/>
-  <text x="354" y="64" fill="#9BA6B8" font-family="JetBrains Mono, monospace" font-size="11">GEN 02</text>
-  <text x="354" y="92" fill="#E2E8F0" font-family="Sora, PingFang SC, sans-serif" font-size="17" font-weight="600">
+  <rect x="334" y="34" width="252" height="152" rx="8" fill="#111111" stroke="rgba(255,255,255,0.10)"/>
+  <text x="354" y="64" fill="#A3A3A3" font-family="JetBrains Mono, monospace" font-size="11">GEN 02</text>
+  <text x="354" y="92" fill="#E5E5E5" font-family="Sora, PingFang SC, sans-serif" font-size="17" font-weight="600">
     Context Engineering
   </text>
-  <text x="354" y="122" fill="#9BA6B8" font-family="Sora, PingFang SC, sans-serif" font-size="13">
+  <text x="354" y="122" fill="#A3A3A3" font-family="Sora, PingFang SC, sans-serif" font-size="13">
     {zh ? "给模型喂对文档、工具与记忆" : "Curating right docs & memory"}
   </text>
-  <text x="354" y="148" fill="#6C788E" font-family="Sora, PingFang SC, sans-serif" font-size="12">
+  <text x="354" y="148" fill="#737373" font-family="Sora, PingFang SC, sans-serif" font-size="12">
     {zh ? "局限：看懂了却仍会偷懒或自评过关" : "Limit: still drifts or self-approves"}
   </text>
 
@@ -44,10 +44,10 @@ const zh = lang === "zh";
   <!-- Stage 3: Goal Engineering -->
   <rect x="640" y="34" width="252" height="152" rx="8" fill="rgba(34,211,238,0.06)" stroke="rgba(34,211,238,0.42)"/>
   <text x="660" y="64" fill="#22D3EE" font-family="JetBrains Mono, monospace" font-size="11">GEN 03 · ULTRACODE</text>
-  <text x="660" y="92" fill="#F3F6FA" font-family="Sora, PingFang SC, sans-serif" font-size="17" font-weight="700">
+  <text x="660" y="92" fill="#F5F5F5" font-family="Sora, PingFang SC, sans-serif" font-size="17" font-weight="700">
     {zh ? "Goal Engineering 目标工程" : "Goal Engineering"}
   </text>
-  <text x="660" y="122" fill="#DBE3EE" font-family="Sora, PingFang SC, sans-serif" font-size="13">
+  <text x="660" y="122" fill="#E0E0E0" font-family="Sora, PingFang SC, sans-serif" font-size="13">
     {zh ? "以可验证的最终目标驱动全程" : "Outcome-driven autonomous delivery"}
   </text>
   <text x="660" y="148" fill="#22D3EE" font-family="Sora, PingFang SC, sans-serif" font-size="12">

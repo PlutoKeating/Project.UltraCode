@@ -6,23 +6,25 @@
 @import "@fontsource/jetbrains-mono/500.css";
 
 :root {
-  --uc-void: #06070d;
-  --uc-surface: #0b0e17;
-  --uc-surface-elevated: #101522;
-  --uc-glass: rgba(13, 17, 27, 0.78);
-  --uc-glass-strong: rgba(15, 20, 32, 0.9);
-  --uc-border: rgba(255, 255, 255, 0.09);
+  /* Strictly zero-saturation (S = 0%) neutral blacks & grays */
+  --uc-void: #050505;
+  --uc-surface: #0a0a0a;
+  --uc-surface-elevated: #121212;
+  --uc-glass: rgba(14, 14, 14, 0.8);
+  --uc-glass-strong: rgba(16, 16, 16, 0.92);
+  --uc-border: rgba(255, 255, 255, 0.085);
   --uc-border-strong: rgba(255, 255, 255, 0.16);
-  --uc-hairline: rgba(148, 163, 184, 0.14);
+  --uc-hairline: rgba(255, 255, 255, 0.09);
 
-  --uc-ink: #f3f6fa;
-  --uc-ink-secondary: #9ba6b8;
-  --uc-ink-muted: #6c788e;
+  --uc-ink: #f5f5f5;
+  --uc-ink-secondary: #a3a3a3;
+  --uc-ink-muted: #737373;
 
+  /* Disciplined signal accents & ambient mist (allowed chromatic light) */
   --uc-cyan: #22d3ee;
-  --uc-cyan-soft: rgba(34, 211, 238, 0.14);
+  --uc-cyan-soft: rgba(34, 211, 238, 0.13);
   --uc-cyan-border: rgba(34, 211, 238, 0.34);
-  --uc-violet-mist: rgba(124, 111, 168, 0.18);
+  --uc-violet-mist: rgba(139, 92, 246, 0.14);
   --uc-coral: #e05a7a;
   --uc-coral-soft: rgba(224, 90, 122, 0.14);
   --uc-emerald: #34d399;
@@ -39,7 +41,7 @@
 
 ::selection {
   background: rgba(34, 211, 238, 0.24);
-  color: #f8fafc;
+  color: #ffffff;
 }
 
 :focus-visible {
@@ -53,14 +55,14 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #06070d;
+  background: #050505;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1e2638;
+  background: #262626;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #2f3b54;
+  background: #3d3d3d;
 }

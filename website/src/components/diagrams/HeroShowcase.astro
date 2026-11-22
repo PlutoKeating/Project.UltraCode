@@ -87,30 +87,30 @@ const zh = lang === "zh";
 
     <div class="uc-browser-viewport">
       <svg viewBox="0 0 460 276" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label={zh ? "真机浏览器视觉检查示意图" : "Headless browser visual inspection diagram"}>
-        <rect x="0.5" y="0.5" width="459" height="275" rx="6" fill="#0B0F1A" stroke="rgba(255,255,255,0.08)"/>
-        <rect x="0.5" y="0.5" width="96" height="275" rx="6" fill="#0E1320"/>
+        <rect x="0.5" y="0.5" width="459" height="275" rx="6" fill="#0B0B0B" stroke="rgba(255,255,255,0.08)"/>
+        <rect x="0.5" y="0.5" width="96" height="275" rx="6" fill="#101010"/>
         <line x1="97" y1="1" x2="97" y2="275" stroke="rgba(255,255,255,0.07)"/>
-        <rect x="18" y="22" width="56" height="8" rx="2" fill="#22D3EE" fill-opacity="0.7"/>
+        <rect x="18" y="22" width="56" height="8" rx="2" fill="#22D3EE" fill-opacity="0.72"/>
         <rect x="18" y="48" width="60" height="6" rx="2" fill="rgba(255,255,255,0.16)"/>
         <rect x="18" y="64" width="46" height="6" rx="2" fill="rgba(255,255,255,0.10)"/>
         <rect x="18" y="80" width="52" height="6" rx="2" fill="rgba(255,255,255,0.10)"/>
         <rect x="18" y="96" width="42" height="6" rx="2" fill="rgba(255,255,255,0.10)"/>
 
-        <rect x="118" y="22" width="164" height="12" rx="2" fill="#F3F6FA" fill-opacity="0.88"/>
+        <rect x="118" y="22" width="164" height="12" rx="2" fill="#F5F5F5" fill-opacity="0.88"/>
         <rect x="118" y="42" width="220" height="6" rx="2" fill="rgba(255,255,255,0.22)"/>
 
-        <rect x="118" y="66" width="154" height="88" rx="5" fill="#121827" stroke="rgba(34,211,238,0.34)" stroke-dasharray="3 3"/>
+        <rect x="118" y="66" width="154" height="88" rx="5" fill="#141414" stroke="rgba(34,211,238,0.34)" stroke-dasharray="3 3"/>
         <rect x="132" y="82" width="68" height="8" rx="2" fill="#22D3EE" fill-opacity="0.5"/>
         <rect x="132" y="100" width="120" height="6" rx="2" fill="rgba(255,255,255,0.18)"/>
         <rect x="132" y="114" width="96" height="6" rx="2" fill="rgba(255,255,255,0.12)"/>
         <rect x="132" y="130" width="52" height="12" rx="3" fill="#22D3EE" fill-opacity="0.85"/>
 
-        <rect x="286" y="66" width="152" height="88" rx="5" fill="#121827" stroke="rgba(255,255,255,0.08)"/>
+        <rect x="286" y="66" width="152" height="88" rx="5" fill="#141414" stroke="rgba(255,255,255,0.08)"/>
         <path d="M304 134 L334 118 L366 122 L396 96 L422 86" stroke="#22D3EE" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
         <circle cx="396" cy="96" r="3.5" fill="#22D3EE"/>
         <circle cx="422" cy="86" r="3.5" fill="#34D399"/>
 
-        <rect x="118" y="170" width="320" height="86" rx="5" fill="#101624" stroke="rgba(52,211,153,0.28)"/>
+        <rect x="118" y="170" width="320" height="86" rx="5" fill="#121212" stroke="rgba(52,211,153,0.28)"/>
         <rect x="134" y="188" width="92" height="7" rx="2" fill="rgba(255,255,255,0.26)"/>
         <rect x="134" y="204" width="280" height="6" rx="2" fill="rgba(255,255,255,0.12)"/>
         <rect x="134" y="218" width="236" height="6" rx="2" fill="rgba(255,255,255,0.10)"/>
@@ -129,13 +129,13 @@ const zh = lang === "zh";
     display: grid;
     grid-template-columns: 1.04fr 1px 1fr;
     border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    background: linear-gradient(180deg, rgba(13, 17, 27, 0.86), rgba(8, 11, 18, 0.94));
+    border: 1px solid rgba(255, 255, 255, 0.11);
+    background: linear-gradient(180deg, rgba(16, 16, 16, 0.88), rgba(10, 10, 10, 0.95));
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
     box-shadow:
-      0 28px 80px rgba(0, 0, 0, 0.58),
-      inset 0 1px 0 rgba(255, 255, 255, 0.14);
+      0 28px 80px rgba(0, 0, 0, 0.62),
+      inset 0 1px 0 rgba(255, 255, 255, 0.12);
     overflow: hidden;
     text-align: left;
   }
@@ -145,10 +145,10 @@ const zh = lang === "zh";
   }
 
   .uc-stage-pane {
-    padding: 1.15rem 1.25rem 1.25rem;
+    padding: 1.65rem 1.75rem 1.85rem;
     display: flex;
     flex-direction: column;
-    gap: 0.9rem;
+    gap: 1.25rem;
     min-width: 0;
   }
 
@@ -157,44 +157,44 @@ const zh = lang === "zh";
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 0.5rem;
-    padding-bottom: 0.7rem;
+    gap: 0.65rem;
+    padding-bottom: 0.9rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-    font-size: 0.78rem;
+    font-size: 0.82rem;
   }
 
   .uc-pane-title {
     font-family: var(--uc-font-mono);
-    color: #dbe3ee;
+    color: #e5e5e5;
     font-weight: 500;
   }
 
   .uc-pane-tag {
-    font-size: 0.72rem;
+    font-size: 0.74rem;
     color: var(--uc-cyan);
     background: var(--uc-cyan-soft);
     border: 1px solid var(--uc-cyan-border);
-    padding: 0.15rem 0.5rem;
+    padding: 0.2rem 0.6rem;
     border-radius: 999px;
   }
 
   .uc-tui-body {
     display: flex;
     flex-direction: column;
-    gap: 0.85rem;
+    gap: 1.15rem;
   }
 
   .uc-tui-prompt {
     display: flex;
     align-items: flex-start;
-    gap: 0.55rem;
-    font-size: 0.86rem;
-    line-height: 1.5;
-    color: #f3f6fa;
+    gap: 0.65rem;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #f5f5f5;
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.07);
     border-radius: 8px;
-    padding: 0.65rem 0.8rem;
+    padding: 0.85rem 1rem;
   }
 
   .uc-tui-chevron {
@@ -205,21 +205,21 @@ const zh = lang === "zh";
 
   .uc-tui-cards-label,
   .uc-ms-title {
-    font-size: 0.76rem;
+    font-size: 0.8rem;
     color: var(--uc-ink-secondary);
   }
 
   .uc-choice-row {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0.55rem;
+    gap: 0.75rem;
   }
 
   .uc-choice-card {
-    padding: 0.6rem 0.65rem;
-    border-radius: 7px;
+    padding: 0.8rem 0.85rem;
+    border-radius: 8px;
     border: 1px solid rgba(255, 255, 255, 0.08);
-    background: rgba(255, 255, 255, 0.02);
+    background: rgba(255, 255, 255, 0.025);
   }
 
   .uc-choice-card.is-selected {
@@ -231,11 +231,11 @@ const zh = lang === "zh";
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 0.35rem;
-    font-size: 0.78rem;
+    gap: 0.4rem;
+    font-size: 0.82rem;
     font-weight: 600;
-    color: #f3f6fa;
-    margin-bottom: 0.25rem;
+    color: #f5f5f5;
+    margin-bottom: 0.35rem;
   }
 
   .uc-choice-dot {
@@ -256,15 +256,15 @@ const zh = lang === "zh";
 
   .uc-choice-card p {
     margin: 0;
-    font-size: 0.72rem;
+    font-size: 0.75rem;
     color: var(--uc-ink-secondary);
-    line-height: 1.35;
+    line-height: 1.45;
   }
 
   .uc-milestones {
     display: flex;
     flex-direction: column;
-    gap: 0.45rem;
+    gap: 0.6rem;
   }
 
   .uc-milestones ul {
@@ -273,15 +273,16 @@ const zh = lang === "zh";
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
+    gap: 0.58rem;
   }
 
   .uc-milestones li {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    font-size: 0.8rem;
-    color: #dbe3ee;
+    gap: 0.6rem;
+    font-size: 0.85rem;
+    line-height: 1.45;
+    color: #d4d4d4;
   }
 
   .uc-milestones li svg {
@@ -292,7 +293,7 @@ const zh = lang === "zh";
   }
 
   .uc-milestones li.is-active {
-    color: #f3f6fa;
+    color: #f5f5f5;
     font-weight: 500;
   }
 

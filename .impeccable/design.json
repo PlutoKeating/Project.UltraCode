@@ -1,25 +1,25 @@
 {
   "schema": 1,
-  "world": "Vapor-Noir Smoked Glass",
+  "world": "Vapor-Noir Smoked Glass (Pure Neutral S=0 Obsidian)",
   "fonts": {
     "display": ["Sora", "PingFang SC", "Noto Sans SC", "sans-serif"],
     "mono": ["JetBrains Mono", "ui-monospace", "monospace"]
   },
   "tokens": {
-    "void": "#06070d",
-    "surface": "#0b0e17",
-    "surfaceElevated": "#101522",
-    "ink": "#f3f6fa",
-    "inkSecondary": "#9ba6b8",
-    "inkMuted": "#6c788e",
+    "void": "#050505",
+    "surface": "#0a0a0a",
+    "surfaceElevated": "#121212",
+    "ink": "#f5f5f5",
+    "inkSecondary": "#a3a3a3",
+    "inkMuted": "#737373",
     "cyan": "#22d3ee",
     "coral": "#e05a7a",
     "emerald": "#34d399"
   },
   "lightDocs": {
-    "bg": "#f7f8fa",
+    "bg": "#fafafa",
     "sidebar": "#ffffff",
-    "ink": "#0f172a",
+    "ink": "#111111",
     "accent": "#0284c7"
   }
 }

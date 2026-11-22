@@ -7,31 +7,31 @@ const zh = lang === "zh";
 ---
 
 <svg viewBox="0 0 920 250" fill="none" xmlns="http://www.w3.org/2000/svg" class="uc-svg-diagram" role="img" aria-label={zh ? "真机浏览器目视验收闭环示意图" : "Real-browser visual QA verification loop"}>
-  <rect x="0.5" y="0.5" width="919" height="249" rx="10" fill="#0A0D16" stroke="rgba(255,255,255,0.09)"/>
+  <rect x="0.5" y="0.5" width="919" height="249" rx="10" fill="#0A0A0A" stroke="rgba(255,255,255,0.09)"/>
 
   <!-- Step 1 -->
-  <rect x="32" y="42" width="186" height="122" rx="8" fill="#0E121E" stroke="rgba(255,255,255,0.09)"/>
-  <text x="52" y="74" fill="#F3F6FA" font-family="Sora, PingFang SC, sans-serif" font-size="14" font-weight="600">
+  <rect x="32" y="42" width="186" height="122" rx="8" fill="#111111" stroke="rgba(255,255,255,0.09)"/>
+  <text x="52" y="74" fill="#F5F5F5" font-family="Sora, PingFang SC, sans-serif" font-size="14" font-weight="600">
     {zh ? "1. 启动真实页面" : "1. Launch Real App"}
   </text>
-  <text x="52" y="102" fill="#9BA6B8" font-family="Sora, PingFang SC, sans-serif" font-size="12">
+  <text x="52" y="102" fill="#A3A3A3" font-family="Sora, PingFang SC, sans-serif" font-size="12">
     {zh ? "打开真实 Chromium" : "Opens real Chromium"}
   </text>
-  <text x="52" y="124" fill="#9BA6B8" font-family="Sora, PingFang SC, sans-serif" font-size="12">
+  <text x="52" y="124" fill="#A3A3A3" font-family="Sora, PingFang SC, sans-serif" font-size="12">
     {zh ? "加载桌面与手机视口" : "Desktop & mobile sizes"}
   </text>
 
   <path d="M 228 103 L 254 103 M 248 97 L 254 103 L 248 109" stroke="#22D3EE" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
 
   <!-- Step 2 -->
-  <rect x="262" y="42" width="186" height="122" rx="8" fill="#0E121E" stroke="rgba(34,211,238,0.34)"/>
+  <rect x="262" y="42" width="186" height="122" rx="8" fill="#111111" stroke="rgba(34,211,238,0.34)"/>
   <text x="282" y="74" fill="#22D3EE" font-family="Sora, PingFang SC, sans-serif" font-size="14" font-weight="600">
     {zh ? "2. 实操并目视检查" : "2. Click & Inspect"}
   </text>
-  <text x="282" y="102" fill="#DBE3EE" font-family="Sora, PingFang SC, sans-serif" font-size="12">
+  <text x="282" y="102" fill="#E0E0E0" font-family="Sora, PingFang SC, sans-serif" font-size="12">
     {zh ? "真实点击按钮与表单" : "Operates real controls"}
   </text>
-  <text x="282" y="124" fill="#DBE3EE" font-family="Sora, PingFang SC, sans-serif" font-size="12">
+  <text x="282" y="124" fill="#E0E0E0" font-family="Sora, PingFang SC, sans-serif" font-size="12">
     {zh ? "逐张检查截图排版" : "Checks layout & contrast"}
   </text>
 
@@ -42,10 +42,10 @@ const zh = lang === "zh";
   <text x="512" y="74" fill="#F28AA2" font-family="Sora, PingFang SC, sans-serif" font-size="14" font-weight="600">
     {zh ? "3. 发现瑕疵即打回" : "3. Reject & Fix"}
   </text>
-  <text x="512" y="102" fill="#DBE3EE" font-family="Sora, PingFang SC, sans-serif" font-size="12">
+  <text x="512" y="102" fill="#E0E0E0" font-family="Sora, PingFang SC, sans-serif" font-size="12">
     {zh ? "遮挡、错位、对比度低" : "Overlap, clip, low contrast"}
   </text>
-  <text x="512" y="124" fill="#DBE3EE" font-family="Sora, PingFang SC, sans-serif" font-size="12">
+  <text x="512" y="124" fill="#E0E0E0" font-family="Sora, PingFang SC, sans-serif" font-size="12">
     {zh ? "自动退回修复后重测" : "Loops back until fixed"}
   </text>
 
@@ -56,17 +56,17 @@ const zh = lang === "zh";
   <text x="742" y="74" fill="#34D399" font-family="Sora, PingFang SC, sans-serif" font-size="14" font-weight="600">
     {zh ? "4. 眼见为实交付" : "4. Verified Ship"}
   </text>
-  <text x="742" y="102" fill="#DBE3EE" font-family="Sora, PingFang SC, sans-serif" font-size="12">
+  <text x="742" y="102" fill="#E0E0E0" font-family="Sora, PingFang SC, sans-serif" font-size="12">
     {zh ? "杜绝“测试通过" : "No more \"tests pass"}
   </text>
-  <text x="742" y="124" fill="#DBE3EE" font-family="Sora, PingFang SC, sans-serif" font-size="12">
+  <text x="742" y="124" fill="#E0E0E0" font-family="Sora, PingFang SC, sans-serif" font-size="12">
     {zh ? "但界面崩坏”" : "but UI is broken\""}
   </text>
 
   <!-- Loopback arrow -->
   <path d="M 585 164 L 585 204 L 355 204 L 355 170" stroke="rgba(224,90,122,0.55)" stroke-width="1.5" stroke-dasharray="4 4"/>
   <path d="M 349 176 L 355 170 L 361 176" stroke="rgba(224,90,122,0.75)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-  <text x="470" y="224" text-anchor="middle" fill="#9BA6B8" font-family="Sora, PingFang SC, sans-serif" font-size="11.5">
+  <text x="470" y="224" text-anchor="middle" fill="#A3A3A3" font-family="Sora, PingFang SC, sans-serif" font-size="11.5">
     {zh ? "独立视觉角色只负责挑刺验收，绝不替开发者放水" : "Independent visual evaluator cannot self-approve broken UI"}
   </text>
 </svg>
