@@ -34,7 +34,7 @@
     "servers": {
       "ultracode_playwright": {
         "type": "local",
-        "command": ["uc", "mcp"],
+        "command": ["ultracode", "_mcp"],
         "disabled": false,
         "codemode": false,
         "timeout": {

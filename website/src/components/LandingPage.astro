@@ -14,7 +14,8 @@ interface Props {
 const { lang } = Astro.props;
 const zh = lang === "zh";
 
-const installCmd = "curl -fsSL https://ultracode.plutokeating.beer/install.sh | bash";
+const unixInstallCmd = "curl -fsSL https://ultracode.plutokeating.beer/install.sh | bash";
+const winInstallCmd = "irm https://ultracode.plutokeating.beer/install.ps1 | iex";
 const docsHref = zh ? "/docs/getting-started/" : "/en/docs/getting-started/";
 const altHref = zh ? "/en/" : "/";
 const altLabel = zh ? "EN" : "中文";
@@ -32,8 +33,8 @@ const examplePrompt = zh
     <meta
       name="description"
       content={zh
-        ? "继 Prompt 与 Context 之后，为官方 OpenCode 带来目标工程（Goal Engineering）：先调研澄清、多角色协作、真机浏览器目视验收、持久交接续跑。"
-        : "Goal Engineering for official OpenCode V2: clarify upfront, orchestrate specialized subagents, verify in a real browser, and hand off cleanly across long-running work."}
+        ? "继 Prompt 与 Context 之后，为官方 OpenCode 带来目标工程（Goal Engineering）：覆盖 macOS、Linux、Windows 及终端、桌面端、网页与移动端。"
+        : "Goal Engineering for official OpenCode V2 across macOS, Linux, and Windows — Terminal, Desktop App, Web, and Mobile."}
     />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
@@ -68,29 +69,49 @@ const examplePrompt = zh
             <h1>{zh ? "一句目标，交付到底" : "One Goal. Delivered End-to-End."}</h1>
             <p class="uc-hero-sub">
               {zh
-                ? "继 Prompt 与 Context 之后，为官方 OpenCode 带来目标工程（Goal Engineering）"
-                : "Beyond Prompt and Context — Goal Engineering for official OpenCode V2."}
+                ? "面向 macOS、Linux 与 Windows 的一体化目标工程，无缝覆盖终端、桌面端、网页与移动端。"
+                : "Goal Engineering across macOS, Linux, and Windows — Terminal, Desktop, Web, and Mobile."}
             </p>
 
-            <div class="uc-install-row">
-              <div class="uc-install-bar">
-                <code class="uc-install-code">{installCmd}</code>
-                <button
-                  type="button"
-                  class="uc-btn-white"
-                  data-copy={installCmd}
-                  data-copied-label={zh ? "已复制" : "Copied"}
-                  data-default-label={zh ? "复制安装" : "Copy install"}
-                >
-                  {zh ? "复制安装" : "Copy install"}
+            <div class="uc-install-stack" data-install-widget data-unix={unixInstallCmd} data-win={winInstallCmd}>
+              <div class="uc-os-tabs" role="tablist" aria-label={zh ? "选择操作系统" : "Select operating system"}>
+                <button type="button" role="tab" aria-selected="true" class="uc-os-tab is-active" data-os="unix">
+                  macOS / Linux
+                </button>
+                <button type="button" role="tab" aria-selected="false" class="uc-os-tab" data-os="win">
+                  Windows
                 </button>
               </div>
-              <a href={docsHref} class="uc-quickstart-link">
-                <span>{zh ? "快速开始" : "Quick start"}</span>
-                <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                  <path d="M3.5 8H12.5M9 4.5L12.5 8L9 11.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </a>
+
+              <div class="uc-install-row">
+                <div class="uc-install-bar">
+                  <code class="uc-install-code" data-install-code>{unixInstallCmd}</code>
+                  <button
+                    type="button"
+                    class="uc-btn-white"
+                    data-copy={unixInstallCmd}
+                    data-install-copy
+                    data-copied-label={zh ? "已复制" : "Copied"}
+                    data-default-label={zh ? "复制安装" : "Copy install"}
+                  >
+                    {zh ? "复制安装" : "Copy install"}
+                  </button>
+                </div>
+                <a href={docsHref} class="uc-quickstart-link">
+                  <span>{zh ? "快速开始" : "Quick start"}</span>
+                  <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path d="M3.5 8H12.5M9 4.5L12.5 8L9 11.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </a>
+              </div>
+
+              <div class="uc-surfaces-line" aria-label={zh ? "启动入口" : "Entry commands"}>
+                <code>ultracode</code>
+                <span aria-hidden="true">·</span>
+                <code>ultracode desktop</code>
+                <span aria-hidden="true">·</span>
+                <code>ultracode pair</code>
+              </div>
             </div>
 
             <div class="uc-hero-stage">
@@ -103,7 +124,7 @@ const examplePrompt = zh
         <section class="uc-section" data-lit>
           <div class="uc-container">
             <div class="uc-section-head">
-              <h2>{zh ? "为什么装完立刻觉得 OpenCode 变强了" : "Why OpenCode Feels Immediately Stronger"}</h2>
+              <h2>{zh ? "为什么装完立刻觉得更可靠了" : "Why Delivery Feels Immediately Stronger"}</h2>
               <p>
                 {zh
                   ? "普通对话边猜边写、越聊越偏；UltraCode 用可验证的目标闭环替代盲目试错。"
@@ -123,8 +144,8 @@ const examplePrompt = zh
               <h2>{zh ? "装完立刻试：1 分钟最小上手体验" : "Try It Immediately: 1-Minute Demo"}</h2>
               <p>
                 {zh
-                  ? "在任意空目录运行 opencode，直接发下面这一句话，亲眼见证完整目标工程。"
-                  : "Run opencode in any empty folder, send this single sentence, and watch Goal Engineering work."}
+                  ? "在任意空目录运行 ultracode（或打开 ultracode desktop），直接发送这一句话。"
+                  : "Run ultracode (or open ultracode desktop) in any empty folder and send this single sentence."}
               </p>
             </div>
 
@@ -184,15 +205,15 @@ const examplePrompt = zh
           </div>
         </section>
 
-        <!-- Section 6: Full-Width TUI Controls -->
+        <!-- Section 6: Full-Width Live Controls Across Surfaces -->
         <section class="uc-section" data-lit>
           <div class="uc-container">
             <div class="uc-section-head">
-              <h2>{zh ? "TUI 命令面板一键掌控" : "Live Control Inside the TUI"}</h2>
+              <h2>{zh ? "终端、桌面与手机实时同步掌控" : "Live Control Across Terminal, Desktop & Mobile"}</h2>
               <p>
                 {zh
-                  ? "在 OpenCode 命令面板搜索 UltraCode，独立切换「命令审批」与「方向询问」，安全边界始终受控。"
-                  : "Search UltraCode in the TUI Command Palette to toggle Command approvals and Direction questions independently."}
+                  ? "无论是终端命令面板、桌面端输入框上方的 UltraCode 胶囊，还是手机扫码网页端，双开关实时同步。"
+                  : "Toggle Command approvals and Direction questions from the Desktop/Web composer pill, Settings, or TUI Command Palette."}
               </p>
             </div>
             <div class="uc-open-canvas">
@@ -201,35 +222,47 @@ const examplePrompt = zh
           </div>
         </section>
 
-        <!-- Section 6: Quiet Monumental Close -->
+        <!-- Section 7: Quiet Monumental Close -->
         <section class="uc-close" data-lit>
           <div class="uc-container uc-close-inner">
-            <h2>{zh ? "一行命令装好，继续用你自己的模型" : "Install in One Line. Keep Your Models."}</h2>
+            <h2>{zh ? "一条命令装好，继续用你自己的模型" : "Install in One Line. Keep Your Models."}</h2>
             <p class="uc-close-trust">
               {zh
-                ? "不改 OpenCode 官方二进制 · 不碰你的 API 密钥 · 不覆盖已有配置 · 随时可无痕卸载"
-                : "Never modifies official OpenCode · Never touches API keys · Preserves your config · Clean uninstall"}
+                ? "自动就绪 OpenCode V2 · 不改官方二进制 · 不碰 API 密钥 · 随时可无痕卸载"
+                : "Auto-sets up official OpenCode V2 · Never touches API keys · Preserves your config · Clean uninstall"}
             </p>
 
-            <div class="uc-install-row">
-              <div class="uc-install-bar">
-                <code class="uc-install-code">{installCmd}</code>
-                <button
-                  type="button"
-                  class="uc-btn-white"
-                  data-copy={installCmd}
-                  data-copied-label={zh ? "已复制" : "Copied"}
-                  data-default-label={zh ? "复制安装" : "Copy install"}
-                >
-                  {zh ? "复制安装" : "Copy install"}
+            <div class="uc-install-stack" data-install-widget data-unix={unixInstallCmd} data-win={winInstallCmd}>
+              <div class="uc-os-tabs" role="tablist" aria-label={zh ? "选择操作系统" : "Select operating system"}>
+                <button type="button" role="tab" aria-selected="true" class="uc-os-tab is-active" data-os="unix">
+                  macOS / Linux
+                </button>
+                <button type="button" role="tab" aria-selected="false" class="uc-os-tab" data-os="win">
+                  Windows
                 </button>
               </div>
-              <a href={docsHref} class="uc-btn-outline">
-                <span>{zh ? "进入 1 分钟快速开始" : "Open 1-Minute Quick Start"}</span>
-                <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                  <path d="M3.5 8H12.5M9 4.5L12.5 8L9 11.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </a>
+
+              <div class="uc-install-row">
+                <div class="uc-install-bar">
+                  <code class="uc-install-code" data-install-code>{unixInstallCmd}</code>
+                  <button
+                    type="button"
+                    class="uc-btn-white"
+                    data-copy={unixInstallCmd}
+                    data-install-copy
+                    data-copied-label={zh ? "已复制" : "Copied"}
+                    data-default-label={zh ? "复制安装" : "Copy install"}
+                  >
+                    {zh ? "复制安装" : "Copy install"}
+                  </button>
+                </div>
+                <a href={docsHref} class="uc-btn-outline">
+                  <span>{zh ? "进入 1 分钟快速开始" : "Open 1-Minute Quick Start"}</span>
+                  <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path d="M3.5 8H12.5M9 4.5L12.5 8L9 11.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </a>
+              </div>
             </div>
           </div>
         </section>
@@ -248,6 +281,34 @@ const examplePrompt = zh
     </div>
 
     <script>
+      const widgets = Array.from(document.querySelectorAll<HTMLElement>("[data-install-widget]"));
+      const setInstallOs = (os: "unix" | "win") => {
+        for (const widget of widgets) {
+          const cmd = os === "win" ? widget.dataset.win ?? "" : widget.dataset.unix ?? "";
+          const code = widget.querySelector<HTMLElement>("[data-install-code]");
+          const copyBtn = widget.querySelector<HTMLButtonElement>("[data-install-copy]");
+          if (code && cmd) code.textContent = cmd;
+          if (copyBtn && cmd) copyBtn.dataset.copy = cmd;
+          widget.querySelectorAll<HTMLButtonElement>("[data-os]").forEach((tab) => {
+            const active = tab.dataset.os === os;
+            tab.classList.toggle("is-active", active);
+            tab.setAttribute("aria-selected", active ? "true" : "false");
+          });
+        }
+      };
+
+      widgets.forEach((widget) => {
+        widget.querySelectorAll<HTMLButtonElement>("[data-os]").forEach((tab) => {
+          tab.addEventListener("click", () => {
+            setInstallOs(tab.dataset.os === "win" ? "win" : "unix");
+          });
+        });
+      });
+
+      if (/Win/i.test(navigator.userAgent)) {
+        setInstallOs("win");
+      }
+
       document.querySelectorAll<HTMLButtonElement>("[data-copy]").forEach((btn) => {
         btn.addEventListener("click", async () => {
           const text = btn.dataset.copy ?? "";
@@ -316,6 +377,12 @@ const examplePrompt = zh
 
   html {
     font-size: 17.5px;
+    color-scheme: dark;
+  }
+
+  ::selection {
+    background: rgba(186, 230, 253, 0.24);
+    color: #ffffff;
   }
 
   html,
@@ -332,6 +399,11 @@ const examplePrompt = zh
   a {
     color: inherit;
     text-decoration: none;
+  }
+
+  :focus-visible {
+    outline: 1px solid var(--uc-ice);
+    outline-offset: 3px;
   }
 
   /* Subtle cinema film grain (pure monochrome, zero color cast) */
@@ -435,7 +507,7 @@ const examplePrompt = zh
     min-height: calc(100svh - 74px);
     display: flex;
     align-items: center;
-    padding: clamp(5.5rem, 10vh, 9rem) 0 clamp(3.5rem, 6vh, 5.5rem);
+    padding: clamp(5rem, 9vh, 8.5rem) 0 clamp(3.5rem, 6vh, 5.5rem);
   }
 
   /* Viewport-fixed anamorphic optical horizon: stays stationary as foreground glides over it */
@@ -462,7 +534,7 @@ const examplePrompt = zh
     font-family: var(--uc-font-display);
     font-size: clamp(2.8rem, 5.2vw, 4.35rem);
     font-weight: 500;
-    letter-spacing: -0.045em;
+    letter-spacing: -0.04em;
     line-height: 1.12;
     color: #ffffff;
     text-wrap: balance;
@@ -470,17 +542,57 @@ const examplePrompt = zh
 
   .uc-hero-sub {
     margin: 1.5rem 0 0;
-    max-width: 660px;
-    font-size: clamp(1.04rem, 1.5vw, 1.18rem);
+    max-width: 66ch;
+    font-size: clamp(1.02rem, 1.45vw, 1.16rem);
     font-weight: 400;
     line-height: 1.72;
     color: var(--uc-ink-secondary);
     text-wrap: balance;
   }
 
-  /* Precision monochrome install rail */
+  /* Precision monochrome install stack */
+  .uc-install-stack {
+    margin-top: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.9rem;
+    width: 100%;
+  }
+
+  .uc-os-tabs {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+    padding: 0.2rem;
+    border-radius: 6px;
+    border: 1px solid var(--uc-hairline);
+    background: rgba(8, 8, 8, 0.72);
+  }
+
+  .uc-os-tab {
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    color: var(--uc-ink-secondary);
+    font-family: var(--uc-font-sans);
+    font-size: 0.78rem;
+    font-weight: 500;
+    padding: 0.32rem 0.8rem;
+    border-radius: 4px;
+    transition: color 150ms ease, background 150ms ease;
+  }
+
+  .uc-os-tab:hover {
+    color: #ffffff;
+  }
+
+  .uc-os-tab.is-active {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+  }
+
   .uc-install-row {
-    margin-top: 2.8rem;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -511,6 +623,22 @@ const examplePrompt = zh
 
   .uc-install-code::-webkit-scrollbar {
     display: none;
+  }
+
+  .uc-surfaces-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    font-family: var(--uc-font-mono);
+    font-size: 0.78rem;
+    color: var(--uc-ink-secondary);
+  }
+
+  .uc-surfaces-line code {
+    font-family: inherit;
+    color: #b5b5b5;
   }
 
   /* Flagship pure white primary action button */
@@ -589,7 +717,7 @@ const examplePrompt = zh
 
   .uc-hero-stage {
     width: 100%;
-    margin-top: 4.25rem;
+    margin-top: 3.85rem;
   }
 
   /* Architectural Hairline Sections — optical response as foreground passes the fixed horizon */
@@ -631,16 +759,11 @@ const examplePrompt = zh
   }
 
   .uc-section-head {
-    max-width: 820px;
+    max-width: 72ch;
     margin-bottom: 3.25rem;
   }
 
-  .uc-head-compact {
-    margin-bottom: 2.25rem;
-  }
-
-  .uc-section-head h2,
-  .uc-split-copy h2 {
+  .uc-section-head h2 {
     margin: 0;
     font-family: var(--uc-font-display);
     font-size: clamp(1.75rem, 2.9vw, 2.35rem);
@@ -650,8 +773,7 @@ const examplePrompt = zh
     color: #ffffff;
   }
 
-  .uc-section-head p,
-  .uc-split-copy p {
+  .uc-section-head p {
     margin: 1rem 0 0;
     font-size: 1rem;
     line-height: 1.78;

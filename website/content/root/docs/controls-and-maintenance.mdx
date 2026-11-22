@@ -1,29 +1,33 @@
 ---
-title: TUI 开关、升级与卸载
-description: 在 OpenCode 命令面板随时切换自治程度，并用 4 条极简命令搞定升级、同步、体检与干净卸载。
+title: 跨端开关、升级与卸载
+description: 在终端、桌面端与网页/移动端实时切换自治开关，并用统一命令管理升级、同步、体检与卸载。
 ---
 
 import TuiControlsDiagram from "../../../components/diagrams/TuiControlsDiagram.astro";
 
-UltraCode 的日常控制全部集成在你熟悉的 OpenCode 界面和极简终端命令里，不需要手改配置文件。
+UltraCode 的日常控制统一融入终端、桌面应用和手机/网页端，状态实时同步，无需手改任何配置文件。
 
-## 在 OpenCode 面板中切换双开关
+## 在任意端随时切换双开关
 
-打开 OpenCode 的命令面板（Command Palette），搜索 **UltraCode**，即可随时调整两项核心偏好：
+- **桌面端 / 网页端 / 移动端**：点击输入框上方的 **UltraCode** 胶囊即可一键切换；也可在 **Settings → UltraCode** 中打开开关页。
+- **终端（TUI）**：打开命令面板搜索 **UltraCode** 即可切换。
 
 <figure class="uc-doc-figure">
   <TuiControlsDiagram lang="zh" />
-  <figcaption>在 OpenCode 命令面板搜索 UltraCode，一键切换命令审批与方向询问模式。</figcaption>
+  <figcaption>终端、桌面端与网页/移动端共享同一套实时同步的命令审批与方向询问开关。</figcaption>
 </figure>
 
-- **Command approvals（命令审批）**：默认 `auto`，自动放行常规开发命令以减少打断；你明确设置的拒绝规则始终严格生效。
-- **Direction questions（方向询问）**：默认 `manual`，遇到关键架构或需求分岔时会先弹出选择题等你拍板。
+- **Command approvals（命令自动执行）**：默认开启（`auto`），自动放行常规操作减少打断；显式禁止的危险规则始终生效。
+- **Direction questions（关键方向确认）**：默认开启（`manual`），遇到重大产品或架构分岔时先弹出选择题等你拍板。
 
-## 4 条常用维护命令
+## 常用命令速查
 
-| 命令 | 作用 | 什么时候用 |
-| --- | --- | --- |
-| `uc up` | 一键同步升级官方 OpenCode 与 UltraCode | 平时保持最新版 |
-| `uc sync` | 重新对齐集成状态 | 手动升级了官方 OpenCode 后 |
-| `uc doctor` | 快速健康体检（不调用任何 AI 模型） | 怀疑环境异常或刚装完想确认状态 |
-| `uc uninstall --yes` | 干净卸载 UltraCode，不破坏你原有的个人配置 | 不再需要时一键撤出 |
+| 命令 | 作用 |
+| --- | --- |
+| `ultracode` | 启动终端界面（所有 OpenCode 参数与子命令直接互通） |
+| `ultracode desktop` | 打开官方桌面客户端；若未安装则自动下载官方安装包 |
+| `ultracode pair` | 生成连接链接与二维码，接入浏览器或手机客户端 |
+| `ultracode upgrade` | 一键更新官方 OpenCode 与 UltraCode 并同步配置 |
+| `ultracode sync` | 重新对齐配置与运行时状态 |
+| `ultracode doctor` | 零模型调用快速健康体检 |
+| `ultracode uninstall --yes` | 干净卸载 UltraCode，完整保留你的个人配置与备份 |

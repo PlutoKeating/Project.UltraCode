@@ -3,6 +3,7 @@
 !.env.example
 node_modules/
 .omo/
+.opencode/
 .ralph/
 .ralph-rlm/
 playwright-report/

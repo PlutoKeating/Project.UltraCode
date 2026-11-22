@@ -2,89 +2,62 @@
 
 ## 1. 目标
 
-UltraCode 解决两类问题：长程工程中的目标漂移、上下文腐烂与自评宽容；以及增强链路在新机、已有复杂配置和 OpenCode 官方升级后的可重复安装。
+UltraCode 解决两类问题：长程工程中的目标漂移、上下文腐烂与自评宽容；以及在 macOS、Linux、Windows 新机、已有复杂配置和 OpenCode 官方升级后的零前置可重复安装与全触点一致性。
 
-核心约束：Provider/Model 中立，不读取凭据，不做真实模型安装测试，不侵入官方二进制。
+核心约束：单一 `ultracode` 命令、Provider/Model 中立、不读取凭据、不做真实模型安装测试、不侵入官方 CLI 或 Desktop 二进制。
 
 ## 2. 长程工作流与目标工程（Goal Engineering）
 
 ```text
-用户目标 / Spec（自然语言）
-  → UltraBuild（默认主角色）/ UltraPlan（Shift+Tab 规划）
-  → ultracode-conversation 插件（里程碑调度 / 权限与方向模式 / 模型池工具）
+用户目标 / Spec（自然语言，来自 TUI / Desktop / Web / Mobile）
+  → UltraBuild（默认主角色）/ UltraPlan（Shift+Tab 只读规划）
+  → ultracode-conversation 多触点插件包（Server RPC + TUI + Desktop/Web/Mobile GUI）
   → Superpowers：澄清、TDD、系统化调试
   → 后台子代理（agents/ultracode/）：architect / implementer / librarian / reviewer / visual-evaluator
-  → Ralph 外层全新 opencode run（需要彻底重置上下文时）
+  → ultracode ralph run 外层全新会话循环（需要彻底重置上下文时）
   → Git、任务、Progress、Handoff 持久化
 ```
 
-子代理隔离会话内上下文，Ralph 在顶层迭代之间创建新会话。二者不可互相替代。
+子代理隔离会话内上下文，Ralph 在顶层迭代之间创建新会话。二者不可互相替代。所有角色不包含 `model`，默认继承当前 OpenCode 会话模型；模型可通过 `ultracode_model` 查询可用模型池并在用户授权范围内切换。
 
-所有角色不包含 `model`，Ralph 不传 `--model`。默认继承当前 OpenCode 会话模型；模型可通过 `ultracode_model` 查询可用模型池，并在用户明确指定或授权的模型池内切换。
+## 3. 多触点插件包与实时 RPC 控制面
 
-## 3. 对话式目标工程插件与控制面
+UltraCode 在 `<config>/ultracode/conversation/` 安装单一多触点插件包（`package.json` 导出 `.`、`./tui`、`./gui-experimental`、`./rpc`）：
 
-UltraCode 在 `~/.config/opencode/ultracode/conversation/` 注册一对嵌入式插件（随 CLI 内嵌，由安装器自动写入配置）：
+- **RPC 契约（`rpc.js`）**：基于 `@opencode/plugin/rpc` 定义零运行时依赖的 `UltraCodeRpc`（方法 `getState`、`setMode`、`toggleMode`，事件 `changed`）。
+- **Server 入口（`server.js`，ID `ultracode-conversation`）**：
+  - 注册 `UltraCodeRpc`，修改模式时广播 `changed` 事件，使 TUI、Desktop 与远程 Web/Mobile 会话无需直接访问本地文件系统即可实时同步。
+  - 注册 `permission.evaluate`（`permissions` 为 `auto` 时放行 `ask`，显式 `deny` 始终生效）、`ultracode_model`、`ultracode_checkpoint`、`session.prompt`、`session.context` 与 `experimental.idle` 续跑钩子。
+- **TUI 入口（`tui.tsx`，ID `ultracode-conversation-ui`）**：
+  - 在命令面板（`UltraCode` 分组）注册双开关，调用 `UltraCodeRpc`（带本地回退），并在 `home.footer.status` 提供克制的 `UltraCode` 状态标识。
+- **GUI 入口（`gui-experimental.cjs`，由 `plugin-gui/` 通过 Vite + `@opencode/plugin/gui/vite` 预编译为单文件 CJS 并内嵌至二进制）**：
+  - 在 OpenCode Desktop、Web 与 Mobile 界面提供输入框上方的 **UltraCode** `ComposerPill`（两行一键切换）、独立的 **Settings → UltraCode** 页面（`SettingsLayout` + 双 `Switch`）以及命令面板动作，支持中英双语（`en` / `zh`）。
 
-- **`ultracode-conversation`（Server 入口，`server.js`）**：
-  - 注入主会话系统引导（仅主会话，不重复注入子会话），按 `direction.mode` 切换方向决策约束。
-  - 注册工具 `ultracode_checkpoint`：由模型登记或清除一次性下一里程碑；用户发送新输入（`session.prompt` 钩子）时自动清除旧调度；在 `experimental.idle` 且无关联后台子任务运行时，自动触发合成续跑消息推进下一里程碑。
-  - 注册工具 `ultracode_model`：列出当前可用模型 ID，或在用户显式请求/授权模型池内调用 `ctx.session.switchModel` 切换当前会话模型。
-  - 注册 `permission.evaluate` 钩子：当 `permissions.mode` 为 `auto` 时，自动放行宿主原本为 `ask` 的操作；显式 `deny` 规则始终保持生效。
-- **`ultracode-conversation-ui`（TUI 入口，`tui.js`）**：
-  - 在 TUI 命令面板（`UltraCode` 分组）注册全局开关命令：`ultracode.toggle-permissions`（**Command approvals**，默认 `auto`）和 `ultracode.toggle-direction`（**Direction questions**，默认 `manual`）。
-  - 模式状态原子持久化至 `$ULTRACODE_HOME/permissions.mode` 与 `$ULTRACODE_HOME/direction.mode`（`0600` 权限）。
+模式状态原子持久化至 `$ULTRACODE_HOME/permissions.mode` 与 `$ULTRACODE_HOME/direction.mode`（Linux/macOS 默认 `~/.local/share/ultracode`，Windows 默认 `%LOCALAPPDATA%\ultracode`）。
 
-**跨重启与续跑边界**：只要 OpenCode 服务端进程持续运行，已登记的里程碑会在会话空闲时自动续跑；新用户输入或明确叫停会立即清除待续跑里程碑。服务进程重启后，内存中的里程碑调度不会无人值守地自动恢复，但长任务的任务清单、进度与交接文档持久保存在仓库内（`.ralph/` 或项目既有约定），用户可直接用自然语言要求“读取交接并继续”。
-
-**工程与协作原则**：开工前先读仓库，涉及范围、验收或不可逆决策时集中调研并一次问齐；原对话聚焦里程碑、阻塞与结果；默认在当前工作区串行写入，必要时隔离到 linked worktree，遵守仓库 Git 规则与用户身份；复杂改动独立评审，用户可见界面必须实际操作并目视检查渲染结果；按真实进展决定续跑，公共版不施加默认硬性时间或轮次预算。
-
-## 4. 分发模块与接口
+## 4. 统一 CLI 与分发模块
 
 ```text
-                  小接口
-        apply / sync / doctor / update / up / uninstall
-                         │
-      ┌──────────────────┼──────────────────┐
-      │                  │                  │
- Install Module     Config Module      Release Module
- 文件所有权/卸载     最大并集 JSONC       稳定版本/SHA256
-      │                  │                  │
- Runtime Module     OpenCode Adapter    Website Module
- 私有运行时/浏览器   版本/官方升级        Stable/Next 双语站点
+                       ultracode CLI 路由
+   内置命令：apply/sync | doctor | upgrade/update/up | desktop | ralph | _mcp | uninstall | version | help
+   其余全部参数 / 路径 / 子命令（如 pair、run、mcp list、models 等）→ 直接透传至官方 opencode
+                               │
+       ┌───────────────────────┼───────────────────────┐
+       │                       │                       │
+  Install & Config        OpenCode & Desktop       Runtime & Ralph
+  最大并集 JSONC / 清单     零前置安装升级 / 桌面启动   Bun fetch / 浏览器 / TS Ralph
 ```
 
-接口只暴露调用者需要的操作；平台、路径、备份、锁版本、原子写入、组件对账和验收属于内部实现。
+- **零前置 OpenCode 管理（`opencode.ts`、`install.sh`、`install.ps1`）**：自动查找官方 `opencode`；缺失时通过官方渠道安装（Linux/macOS 官方安装脚本，Windows 官方独立 zip 包写入 `%LOCALAPPDATA%\opencode\bin` 并加入用户 `PATH`）；存在时静默尝试 `opencode upgrade`，若离线或包管理器接管导致升级返回非零但现有版本满足 `>= 2.3.2`，自动平稳保留继续执行。
+- **Windows 原生一等公民（`paths.ts`、`fs.ts`、`release.ts`、`ralph.ts`）**：所有网络下载使用 Bun 原生 `fetch()` + SHA-256 校验；Windows 下通过重命名运行中 `.exe` 为 `.old` 实现无锁自更新与卸载清理；`ultracode ralph run` 使用纯 TypeScript 实现 linked worktree 守卫与模板初始化，不依赖 bash；托管 Playwright MCP 使用内部命令 `[paths.binary, "_mcp"]`，避免遮蔽 `ultracode mcp <subcommand>` 透传。
 
-## 5. 最大并集合并与组件身份对账
+## 5. 最大并集合并与精确卸载
 
-- 对象递归补缺失键。
-- 数组按值去重追加，避免重复权限和插件。
-- 已有不同标量保留并报告。
-- JSONC 注释、未知字段、Provider、凭据引用和用户 MCP 原样保留。
-- 主角色 `UltraBuild`（默认，总协调与执行）与 `UltraPlan`（规划，`Shift+Tab` 切换）安装在 `agents/`；5 个后台子代理（`architect`、`implementer`、`librarian`、`reviewer`、`visual-evaluator`）安装在 `agents/ultracode/`；不再安装旧版 `/ultracode-*` 斜杠命令。
-- MCP 默认注册 `ultracode_playwright`；安装器按插件身份（`ultracode-conversation`、`superpowers`）、权限 `action`/`resource` 以及 MCP 启动契约识别冲突与等价组件——若用户已配置等价的无头隔离 Playwright MCP，安装器自动复用该服务名，并将视觉评审角色的权限与工具名对齐到复用名。
-- 清单（schema v2）记录安装器实际添加的字段、数组成员与文件哈希，区分上游旧文件与用户本地修改；旧版清单（schema v1）通过可验证的安装前备份迁移，来源无法确认时保留原值。
-- 卸载仅精确删除未修改的 UltraCode 所有状态。
+- JSONC 注释、未知字段、已有 Provider、Model、MCP、Skill 原样保留；对象递归补键，数组去重追加，标量冲突保留用户值并提示。
+- 清单（schema v2）记录安装器新增配置路径与受管文件 SHA-256；本地修改过的受管文件在同步与卸载时均受保护不被覆盖或误删。
 
-## 6. 私有运行时
+## 6. 网站与 6 平台构建发布
 
-独立编译 CLI 内嵌 Bun 能力。安装器以子进程方式使用同一二进制安装固定版本 Ralph 与 Playwright，无需用户预装 Node/Bun，也不写全局包目录。
+`website/` 使用 Astro Starlight 构建中英双语站点，`sync-content.mjs` 将根 `install.sh` 与 `install.ps1` 同步至 `website/public/`，由 Cloudflare Workers Static Assets 发布至 `https://ultracode.plutokeating.beer/`。
 
-Superpowers 与 Ralph 的固定源码归档具有 SHA-256；Playwright 使用精确 npm 版本。浏览器存入 UltraCode 数据目录。
-
-## 7. 官方升级接缝与运行时诊断
-
-OpenCode 二进制只由官方安装脚本或 `opencode upgrade` 管理。
-
-- `uc up`：显式执行官方升级，再更新 UltraCode 并 sync。
-- `uc sync`：官方 `/update` 或安装脚本后的幂等修复。
-- `uc doctor`：无真实模型调用的实时结构与运行时检查——校验 OpenCode 版本、受管文件完整性、当前项目实际注册的角色、Superpowers 与 UltraCode 插件的活动状态，以及所选浏览器 MCP 的连接状态。
-
-当前测试基线为 OpenCode V2.3.x（v2.3.2+）；更新的 V2 只承诺结构检查，未来大版本需要显式适配。
-
-## 8. 网站与发布
-
-Astro Starlight 从单一内容源生成中文/英文 Stable/Next 路由，并把根 `install.sh` 复制到静态站点。Cloudflare Workers Static Assets 发布 `website/dist`。
-
-维护者为稳定 tag 手动触发 Release 工作流，使用单个 Linux Runner 交叉编译四种目标，在宿主执行版本冒烟，生成 SHA-256 与 Artifact Attestations。CI 不使用真实模型、用户凭据或 Docker。
+`installer/scripts/build.ts --release` 先构建 `plugin-gui`，再由单个 Linux Runner 交叉编译 6 个目标（`linux-x64`、`linux-arm64`、`darwin-x64`、`darwin-arm64`、`windows-x64.exe`、`windows-arm64.exe`），生成 `.sha256` 与 GitHub Artifact Attestations 并发布 Release。

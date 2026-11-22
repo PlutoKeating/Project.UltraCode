@@ -1,27 +1,37 @@
 ---
 title: 1-Minute Install & First Wow Moment
-description: Install UltraCode with one command and experience a complete Goal Engineering loop in an empty folder.
+description: Install UltraCode in one command on macOS, Linux, or Windows — OpenCode V2 is set up automatically if needed.
 ---
 
 import MinimalDemoDiagram from "../../../../components/diagrams/MinimalDemoDiagram.astro";
 
-**Just two steps**: all you need is Linux or macOS with official **OpenCode V2** installed.
+Zero prerequisites required — if official **OpenCode V2** is not installed yet, the installer sets it up or updates it automatically.
 
 ## Step 1: One-Line Install
+
+**macOS / Linux**:
 
 ```bash
 curl -fsSL https://ultracode.plutokeating.beer/install.sh | bash
 ```
 
-Verify everything is green (zero AI model calls):
+**Windows (PowerShell)**:
+
+```powershell
+irm https://ultracode.plutokeating.beer/install.ps1 | iex
+```
+
+Once installed, you only ever need one command — `ultracode`:
 
 ```bash
-uc doctor
+ultracode           # Open the terminal interface
+ultracode desktop   # Open or install the official Desktop app
+ultracode pair      # Pair your browser or mobile phone via link / QR
 ```
 
 ## Step 2: Feel the Difference
 
-Open an empty folder, run `opencode`, and send this single sentence:
+Open an empty folder, run `ultracode` (or open Desktop), and send this single sentence:
 
 > Build a minimalist reservation page for an indie coffee shop where guests pick a date, time slot, and party size, then see a confirmation card. Make sure both desktop and mobile layouts look clean with zero overlap.
 
@@ -32,8 +42,8 @@ Open an empty folder, run `opencode`, and send this single sentence:
 Watch how different this feels from ordinary AI chat:
 
 1. **Clarifies upfront with choice cards**: Instead of guessing blindly, UltraCode groups key style and scope questions into quick options.
-2. **Plans, builds, and reviews in the background**: Specialist roles coordinate behind the scenes while your chat stays focused on milestones.
-3. **Opens a real Chromium browser to check its own UI**: It clicks through controls, inspects desktop and mobile screenshots, and fixes layout glitches before saying it is done.
+2. **Plans, builds, and reviews in the background**: Specialist roles coordinate behind the scenes while your session stays focused on milestones.
+3. **Opens a real Chromium browser to check its own UI**: It clicks through controls, inspects desktop and mobile screenshots, and fixes layout glitches before finishing.
 
 ## Next Steps
 

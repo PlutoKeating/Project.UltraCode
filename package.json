@@ -1,11 +1,11 @@
 {
   "name": "project-ultracode",
   "private": true,
-  "version": "0.2.2",
+  "version": "0.3.0",
   "scripts": {
     "build": "bun run --cwd installer build && bun run --cwd website build",
-    "test": "bun test installer/tests",
-    "check": "bun run --cwd installer check && bun run --cwd website check"
+    "test": "bun run --cwd installer test",
+    "check": "bun run --cwd plugin-gui check && bun run --cwd installer check && bun run --cwd website check"
   },
   "devDependencies": {
     "typescript": "^5.9.3"

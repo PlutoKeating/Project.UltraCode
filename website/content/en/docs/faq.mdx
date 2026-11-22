@@ -1,11 +1,11 @@
 ---
 title: FAQ & Non-Invasive Guarantee
-description: Five straightforward answers on safety, model support, config preservation, updates, and health checks.
+description: Straightforward answers on cross-platform setup, safety, model support, config preservation, and updates.
 ---
 
 import TuiControlsDiagram from "../../../../components/diagrams/TuiControlsDiagram.astro";
 
-UltraCode is built around a **strictly additive, reversible, non-invasive** promise: it enhances official OpenCode without taking it over.
+UltraCode is built around a **strictly additive, reversible, non-invasive** promise across macOS, Linux, and Windows — Terminal, Desktop, Web, and Mobile.
 
 <figure class="uc-doc-figure">
   <TuiControlsDiagram lang="en" />
@@ -14,20 +14,20 @@ UltraCode is built around a **strictly additive, reversible, non-invasive** prom
 
 ## 1. Does it modify official OpenCode or read my API keys?
 
-**No.** UltraCode is strictly additive and provider/model-neutral. It never patches the official OpenCode binary and never reads, stores, or transmits your API keys.
+**No.** UltraCode is strictly additive and provider/model-neutral. It never patches the official OpenCode CLI or Desktop app, and never reads, stores, or transmits your API keys.
 
-## 2. Which AI models does it support?
+## 2. Do I need to install OpenCode before installing UltraCode?
+
+**No.** On macOS, Linux, and Windows, both the installer and `ultracode upgrade` automatically detect official OpenCode V2 — installing it from the official channel if missing, or keeping it current if already present.
+
+## 3. Which AI models does it support?
 
 **Whatever model and provider you already use in OpenCode.** UltraCode does not lock you into any model vendor.
 
-## 3. Will it overwrite my existing OpenCode config or skills?
+## 4. Will it overwrite my existing OpenCode config or skills?
 
-**No.** Install and sync merge cleanly while preserving your own settings and skills. If you ever run `uc uninstall --yes`, UltraCode removes only what it added.
+**No.** Install and sync merge cleanly while preserving your own settings and skills. Running `ultracode uninstall --yes` removes only what UltraCode added.
 
-## 4. What if official OpenCode updates?
+## 5. How do I update or check health?
 
-Run `uc sync` to re-align in seconds — or simply use `uc up` to upgrade official OpenCode and UltraCode together in one step.
-
-## 5. How do I check if everything is healthy?
-
-Run `uc doctor`. It finishes in a few seconds and makes **zero AI model calls**, so it costs nothing to run.
+Run `ultracode upgrade` to update official OpenCode and UltraCode together in one step, or run `ultracode doctor` anytime for a fast check that makes **zero AI model calls**.

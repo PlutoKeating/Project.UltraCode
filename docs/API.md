@@ -1,79 +1,72 @@
 # 命令与制品接口
 
-## UltraCode CLI
+## 统一 `ultracode` CLI
+
+`ultracode` 是唯一用户命令（Linux/macOS 位于 `~/.local/bin/ultracode`，Windows 位于 `%LOCALAPPDATA%\ultracode\bin\ultracode.exe`）。
 
 | 命令 | 行为 | 真实模型调用 |
 | --- | --- | --- |
-| `uc apply` | 完整幂等安装 | 否 |
-| `uc sync` | apply 别名；官方升级后修复 | 否 |
-| `uc doctor` | 版本、文件、插件活动状态、角色和 MCP 连接检查 | 否 |
-| `uc update` | 更新 UltraCode 稳定 Release 并 sync | 否 |
-| `uc up` | 官方 OpenCode 升级 + UltraCode 更新 + sync | 否 |
-| `uc uninstall --yes` | 删除未修改的 UltraCode 所有状态 | 否 |
-| `uc version` | 输出版本 | 否 |
-| `uc ralph ...` | 执行私有 Ralph | 由用户任务决定 |
-| `uc mcp` | 启动私有 Playwright MCP | 否 |
+| `ultracode` / `ultracode <path>` / `ultracode <opencode-args...>` | 直接透传启动官方 `opencode`（包括 `pair`、`run`、`mini`、`serve`、`mcp list`、`models`、`auth` 等全部子命令与标志） | 由用户会话决定 |
+| `ultracode desktop` | 启动已安装的官方 OpenCode Desktop；未安装时下载并打开当前平台官方安装包 | 否 |
+| `ultracode pair [--remote]` | 透传至 `opencode pair`，输出浏览器/移动端配对链接与二维码 | 否 |
+| `ultracode upgrade`（别名 `update`、`up`） | 自动检测安装/升级官方 OpenCode V2 → 更新 UltraCode 二进制 → 执行 `sync` | 否 |
+| `ultracode sync`（别名 `apply`） | 幂等应用配置、插件、角色与私有运行时 | 否 |
+| `ultracode doctor` | 校验 OpenCode 版本、受管文件、插件活动状态、角色与 MCP 连接状态 | 否 |
+| `ultracode uninstall [--yes]` | 精确移除未修改的 UltraCode 受管状态、运行时与自身二进制（保留用户配置与备份） | 否 |
+| `ultracode ralph run <goal-file> [max-iterations] [flags...]` | 跨平台 TypeScript 原生 linked-worktree Ralph 运行器 | 由用户任务决定 |
+| `ultracode ralph [args...]` | 直接透传至受管私有 Ralph CLI | 由用户任务决定 |
+| `ultracode _mcp [args...]` | 内部命令：启动受管私有 Playwright MCP 服务 | 否 |
+| `ultracode version` / `-v` / `--version` | 输出当前 UltraCode 版本 | 否 |
+| `ultracode help` / `-h` / `--help` | 输出极简命令帮助 | 否 |
 
-## OpenCode 角色与工具
+## OpenCode 角色、工具与跨端控制面
 
-- **主角色**（直接安装在 `agents/`，可用 `Shift+Tab` 切换）：
-  - `UltraBuild`：默认主角色，负责总协调与执行。
-  - `UltraPlan`：规划角色，负责需求澄清、架构与计划制定。
+- **主角色**（安装在 `agents/`，`Shift+Tab` 切换）：`UltraBuild`（默认总协调与执行）、`UltraPlan`（只读规划）。
 - **后台子代理**（安装在 `agents/ultracode/`）：`architect`、`implementer`、`librarian`、`reviewer`、`visual-evaluator`。
 - 所有角色均不含 `model` 字段，默认继承当前 OpenCode 会话模型。
 
-通过普通自然语言对话表达目标（旧版 `/ultracode-*` 斜杠命令已退役）。`ultracode-conversation` 与 `ultracode-conversation-ui` 插件提供以下运行时工具与 TUI 控制项：
+`ultracode-conversation` 插件包提供以下工具、RPC 与多端 UI 控制项：
 
-| 接口 / 控制项 | 类型 | 说明 |
+| 接口 / 控制项 | 触点 | 说明 |
 | --- | --- | --- |
-| `ultracode_checkpoint` | 会话工具（`{ next: string }`） | 登记下一里程碑；传入空字符串清除当前续跑调度。新用户输入会自动清除旧调度。 |
-| `ultracode_model` | 会话工具（`{ providerID?: string, id?: string }`） | 省略参数列出可用模型 ID；传入 `providerID` 与 `id` 在用户明确指定或授权模型池内切换当前会话模型。 |
-| `ultracode.toggle-permissions` | TUI 命令面板（`UltraCode` 分组） | 切换 **Command approvals**（`auto` / `manual`，默认 `auto`；显式 `deny` 始终生效）。 |
-| `ultracode.toggle-direction` | TUI 命令面板（`UltraCode` 分组） | 切换 **Direction questions**（`manual` / `auto`，默认 `manual`）。 |
+| `ultracode_checkpoint` | Server 会话工具 | 登记下一里程碑（`{ next: string }`）；空字符串或新用户输入清除调度。 |
+| `ultracode_model` | Server 会话工具 | 列出可用模型 ID，或在用户明确指定/授权模型池内切换会话模型。 |
+| `UltraCodeRpc` (`getState` / `setMode` / `toggleMode` / `changed`) | Server ↔ TUI / Desktop / Web | 跨进程、跨远程浏览器/移动端的实时状态读写与事件同步契约。 |
+| `ComposerPill` (`UltraCode`) | Desktop / Web / Mobile | 输入框上方胶囊菜单，两行一键切换 **Auto-approve** 与 **Ask on direction**。 |
+| `SettingsPage` (`UltraCode`) | Desktop / Web / Mobile | **Settings → UltraCode** 独立设置页，提供两项原生开关。 |
+| `ultracode.toggle-permissions` / `ultracode.toggle-direction` | TUI & Desktop/Web 命令面板 | 切换 **Command approvals**（默认 `auto`）与 **Direction questions**（默认 `manual`）。 |
 
-模式状态文件（`0600` 权限，原子写入）：
+模式状态文件（原子写入）：
 
-- `$ULTRACODE_HOME/permissions.mode`（内容为 `auto` 或 `manual`，缺失时默认 `auto`）
-- `$ULTRACODE_HOME/direction.mode`（内容为 `auto` 或 `manual`，缺失时默认 `manual`）
+- `$ULTRACODE_HOME/permissions.mode`（`auto` 或 `manual`，默认 `auto`）
+- `$ULTRACODE_HOME/direction.mode`（`auto` 或 `manual`，默认 `manual`）
 
 ## Ralph
 
 ```bash
-~/.config/opencode/ultracode/run.sh <目标文件> <最大轮数> --no-questions
+ultracode ralph run <目标文件> [最大轮数] --no-questions
 ```
 
-要求 linked Git worktree 和 `.ralph/ralph-tasks.md`。默认 `--no-commit --no-allow-all`，任务代理验证后创建一个本地提交。无人值守时显式追加 `--allow-all`。
+要求在专用 linked Git worktree 中运行且存在 `.ralph/ralph-tasks.md`。默认 `--no-commit --no-allow-all`；无人值守时可显式追加 `--allow-all`。
 
-退出码：`0` 完成且干净；`1` 阻塞/失败；`2` 用法或 worktree 拒绝；`3` 上限/未完成；`5` 最终有未提交修改。
+退出码：`0` 完成且工作区干净；`1` 阻塞/失败；`2` 用法或非 linked worktree 拒绝；`3` 达到上限或未完成；`5` 存在未提交改动。
 
-## 持久制品
+## 路径、环境变量与 Release 资产
 
-- `.ralph/ralph-tasks.md`
-- `.ralph/PROGRESS.md`
-- `.ralph/HANDOFF.md`
-- `.opencode/ultracode/FEATURE_LIST.json`
-- `.opencode/ultracode/SPRINT_CONTRACT.md`
-- `.opencode/ultracode/UI_RUBRIC.md`
-- `.opencode/ultracode/QA_REPORT.md`
+| 平台 | `ULTRACODE_HOME` 默认值 | `ULTRACODE_BIN_DIR` 默认值 | OpenCode 配置目录默认值 |
+| --- | --- | --- | --- |
+| Linux / macOS | `${XDG_DATA_HOME:-$HOME/.local/share}/ultracode` | `$HOME/.local/bin` | `${XDG_CONFIG_HOME:-$HOME/.config}/opencode` |
+| Windows | `%LOCALAPPDATA%\ultracode` | `%LOCALAPPDATA%\ultracode\bin` | `%USERPROFILE%\.config\opencode` |
 
-自动截图进入被忽略的 `.opencode/ultracode/qa/`。Ralph 内部 state/history 不是唯一审计记录。
+常用环境变量：`ULTRACODE_HOME`、`ULTRACODE_BIN_DIR`、`OPENCODE_CONFIG_DIR`、`ULTRACODE_OPENCODE_BIN`、`ULTRACODE_VERSION`、`ULTRACODE_REPOSITORY`、`ULTRACODE_RELEASE_BASE_URL`、`NO_COLOR`。
 
-## 路径、环境变量与 Release
+Release 资产命名（6 平台，均附 `.sha256`）：
+- `ultracode-linux-x64`、`ultracode-linux-arm64`
+- `ultracode-darwin-x64`、`ultracode-darwin-arm64`
+- `ultracode-windows-x64.exe`、`ultracode-windows-arm64.exe`
 
-默认 CLI 在 `~/.local/bin`，数据在 `~/.local/share/ultracode`，OpenCode 配置在 `~/.config/opencode`。遵循 XDG 与 `OPENCODE_CONFIG_DIR`。
-
-常用 `ULTRACODE_*` 环境变量：
-
-| 变量 | 用途 | 默认值 |
-| --- | --- | --- |
-| `ULTRACODE_HOME` | UltraCode 数据、运行时、清单与模式文件目录 | `${XDG_DATA_HOME:-$HOME/.local/share}/ultracode` |
-| `ULTRACODE_BIN_DIR` | `ultracode` / `uc` 二进制安装目录 | `$HOME/.local/bin` |
-| `ULTRACODE_VERSION` | `install.sh` 指定的固定 Release 版本号（如 `v0.2.2`） | `latest` |
-| `ULTRACODE_REPOSITORY` | `install.sh` 下载 Release 的 GitHub 仓库 | `PlutoKeating/Project.UltraCode` |
-| `ULTRACODE_RELEASE_BASE_URL` | 覆盖 `install.sh` 的 Release 下载基地址（镜像/离线安装） | 按仓库与版本推导 |
-
-Release 资产命名：`ultracode-{linux|darwin}-{x64|arm64}`，附 `.sha256`。根 `install.sh` 同时由教程网站发布。
+安装脚本由教程网站同步托管于 `/install.sh` 与 `/install.ps1`。
 
 ## 版本基线
 
-UltraCode `v0.2.2`、OpenCode V2.3.2+、Superpowers `v7.0.2`、Ralph `v1.3.1` 固定 commit、Playwright MCP `0.0.86`。所有安装验收均不调用真实模型。
+UltraCode `v0.3.0`、OpenCode `v2.3.2+`、Superpowers `v7.0.2`、Ralph `v1.3.1` 固定 commit、Playwright MCP `0.0.86`。
