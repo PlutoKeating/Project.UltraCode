@@ -100,12 +100,38 @@ describe("isolated apply", () => {
   });
 });
 
-test("installs conversation entry points and only natural-language workflows", async () => {
+test("installs conversation package, rpc, settings, server, and tui entry points", async () => {
   await apply(paths, { runtime: false });
   const plugin = join(paths.config, "ultracode/conversation");
+  const pkg = JSON.parse(await readFile(join(plugin, "package.json"), "utf8"));
+  expect(pkg.name).toBe("ultracode-conversation");
+  expect(pkg.exports["."]).toBe("./server.js");
+  expect(pkg.exports["./gui-experimental"]).toBe("./gui-experimental.cjs");
+  expect(pkg.exports["./tui"]).toMatch(/^\.\/tui\.(tsx|js)$/);
+  expect(await readFile(join(plugin, "rpc.js"), "utf8")).toContain("UltraCodeRpc");
   expect(await readFile(join(plugin, "server.js"), "utf8")).toContain("experimental.idle");
-  expect(await readFile(join(plugin, "tui.js"), "utf8")).toContain('mode: "global"');
+  expect(await readFile(join(plugin, "server.js"), "utf8")).toContain("rpc.register");
+  const tuiFile = pkg.exports["./tui"].slice(2);
+  expect(await readFile(join(plugin, tuiFile), "utf8")).toContain('mode: "global"');
   await expect(readFile(join(paths.config, "commands/ultracode/work.md"))).rejects.toThrow();
+});
+
+test("conversation settings resolves ULTRACODE_HOME dynamically and persists getAll/set/toggle", async () => {
+  const settingsUrl = new URL("../../config/opencode/conversation/settings.js", import.meta.url).href;
+  const settings = await import(settingsUrl);
+  const prevHome = process.env.ULTRACODE_HOME;
+  const isolatedHome = join(root, "isolated-ultracode-home");
+  process.env.ULTRACODE_HOME = isolatedHome;
+  try {
+    expect(await settings.getAll()).toEqual({ permissions: "auto", direction: "manual" });
+    expect(await settings.set("permissions", "manual")).toBe("manual");
+    expect(await settings.getAll()).toEqual({ permissions: "manual", direction: "manual" });
+    expect(await settings.toggle("direction")).toBe("auto");
+    expect(await settings.getAll()).toEqual({ permissions: "manual", direction: "auto" });
+  } finally {
+    if (prevHome === undefined) delete process.env.ULTRACODE_HOME;
+    else process.env.ULTRACODE_HOME = prevHome;
+  }
 });
 
 test("sync preserves equivalent user plugins, permission overrides and custom MCP commands through uninstall", async () => {

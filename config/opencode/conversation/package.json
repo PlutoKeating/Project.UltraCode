@@ -1,0 +1,12 @@
+{
+  "name": "ultracode-conversation",
+  "version": "0.3.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./server.js",
+    "./tui": "./tui.tsx",
+    "./gui-experimental": "./gui-experimental.cjs",
+    "./rpc": "./rpc.js"
+  }
+}
