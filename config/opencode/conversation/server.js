@@ -1,3 +1,4 @@
+import { spawn } from "node:child_process"
 import { getAll, mode, set, toggle } from "./settings.js"
 import { UltraCodeRpc } from "./rpc.js"
 
@@ -7,13 +8,27 @@ const guidance = `Help the user direct work in terms of audience, behavior, arch
 export default {
   id: "ultracode-conversation",
   async setup(ctx) {
-    // A restart leaves the on-disk handoff available, without resuming unattended.
-    const next = new Map()
+    // Process-scoped Map survives hot location reloads while still clearing on full server restart.
+    const next = (globalThis.__ultracodeCheckpoints ??= new Map())
     let cached = { ...(await getAll()), version: VERSION }
 
     const syncState = async () => {
       cached = { ...(await getAll()), version: VERSION }
       return cached
+    }
+
+    const notifyLocations = () => {
+      try {
+        const child = spawn(process.execPath, ["api", "post", "/api/location/reload", "--data", "{}"], {
+          cwd: ctx.location?.directory,
+          stdio: "ignore",
+          windowsHide: true,
+        })
+        child.on("error", () => {})
+        child.unref?.()
+      } catch {
+        // Ignore in standalone one-shot contexts where background service API is unused
+      }
     }
 
     const registration = await ctx.rpc.register(UltraCodeRpc, {
@@ -24,6 +39,7 @@ export default {
         const state = await syncState()
         await ctx.command.reload().catch(() => {})
         await registration.events.emit("changed", state)
+        notifyLocations()
         return state
       },
       toggleMode: async (input) => {
@@ -32,6 +48,7 @@ export default {
         const state = await syncState()
         await ctx.command.reload().catch(() => {})
         await registration.events.emit("changed", state)
+        notifyLocations()
         return state
       },
     })
@@ -43,17 +60,18 @@ export default {
       const state = await syncState()
       await ctx.command.reload().catch(() => {})
       await registration.events.emit("changed", state)
+      notifyLocations()
     }
 
     await ctx.command.transform((editor) => {
       editor.add({
         name: "approvals",
-        description: `UltraCode command approvals [auto|manual] (current: ${cached.permissions})`,
+        description: `[${cached.permissions}] Command approvals (auto|manual)`,
         execute: async ({ prompt }) => applySlashMode("permissions", prompt?.text),
       })
       editor.add({
         name: "direction",
-        description: `UltraCode direction questions [manual|auto] (current: ${cached.direction})`,
+        description: `[${cached.direction}] Direction questions (manual|auto)`,
         execute: async ({ prompt }) => applySlashMode("direction", prompt?.text),
       })
     })
