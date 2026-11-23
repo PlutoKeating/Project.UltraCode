@@ -1,4 +1,5 @@
 import { describe, expect, test } from "bun:test";
+import { spawn } from "node:child_process";
 import { createServer } from "node:http";
 import { mkdtemp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -125,6 +126,94 @@ exit 0
       expect(res.code).toBe(0);
       expect(await exists(join(home, ".opencode", "bin", "opencode"))).toBe(true);
       expect(await exists(join(home, ".local", "bin", "ultracode"))).toBe(true);
+      expect(res.stdout).toContain("✓ Ready");
+    } finally {
+      await new Promise<void>((resolve) => server.close(() => resolve()));
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  test("survives curl | bash when opencode upgrade reads from stdin", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "uc-install-sh-pipe-"));
+    const scriptPath = fileURLToPath(new URL("../../../scripts/install.sh", import.meta.url));
+    const scriptContent = await readFile(scriptPath, "utf8");
+    const mockUltracode = `#!/bin/sh
+case "$1" in
+  version) printf 'v1.0.0\\n';;
+  apply) printf 'apply ok\\n';;
+  doctor) printf 'doctor ok\\n';;
+esac
+exit 0
+`;
+    const hash = sha256(mockUltracode);
+    let requestedBinary = false;
+    const server = createServer((req, res) => {
+      if (req.url?.endsWith(".sha256")) {
+        res.writeHead(200, { "content-type": "text/plain" });
+        res.end(`${hash}  artifact\n`);
+        return;
+      }
+      requestedBinary = true;
+      res.writeHead(200, { "content-type": "application/octet-stream" });
+      res.end(mockUltracode);
+    });
+    await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve));
+    const port = (server.address() as { port: number }).port;
+
+    try {
+      const home = join(dir, "home");
+      const mockBin = join(dir, "mock-bin");
+      await mkdir(home, { recursive: true });
+      await mkdir(mockBin, { recursive: true });
+      const fakeOpenCode = join(mockBin, "opencode");
+      await writeFile(
+        fakeOpenCode,
+        `#!/bin/sh
+if [ "$1" = "--version" ]; then
+  printf 'opencode v2.3.2\\n'
+  exit 0
+fi
+if [ "$1" = "upgrade" ]; then
+  cat >/dev/null
+  printf 'Done\\n'
+  exit 0
+fi
+exit 0
+`,
+        { mode: 0o755 },
+      );
+
+      const res = await new Promise<{ code: number; stdout: string; stderr: string }>((resolve, reject) => {
+        const child = spawn("bash", [], {
+          env: {
+            ...process.env,
+            HOME: home,
+            SHELL: "/bin/zsh",
+            PATH: `${mockBin}:/usr/bin:/bin`,
+            ULTRACODE_RELEASE_BASE_URL: `http://127.0.0.1:${port}`,
+            ULTRACODE_OPENCODE_BIN: fakeOpenCode,
+            ULTRACODE_SKIP_RUNTIME: "1",
+            NO_COLOR: "1",
+          },
+          stdio: ["pipe", "pipe", "pipe"],
+        });
+        let stdout = "";
+        let stderr = "";
+        child.stdout.on("data", (chunk) => {
+          stdout += chunk;
+        });
+        child.stderr.on("data", (chunk) => {
+          stderr += chunk;
+        });
+        child.on("error", reject);
+        child.on("close", (code) => resolve({ code: code ?? 1, stdout, stderr }));
+        child.stdin.end(scriptContent);
+      });
+
+      expect(res.code).toBe(0);
+      expect(requestedBinary).toBe(true);
+      expect(await exists(join(home, ".local", "bin", "ultracode"))).toBe(true);
+      expect(res.stdout).toContain("UltraCode 1.0.0");
       expect(res.stdout).toContain("✓ Ready");
     } finally {
       await new Promise<void>((resolve) => server.close(() => resolve()));

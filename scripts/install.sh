@@ -1,15 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-repo="${ULTRACODE_REPOSITORY:-PlutoKeating/Project.UltraCode}"
-version="${ULTRACODE_VERSION:-latest}"
-bin_dir="${ULTRACODE_BIN_DIR:-$HOME/.local/bin}"
-work="$(mktemp -d "${TMPDIR:-/tmp}/ultracode-install.XXXXXX")"
-log_file="${TMPDIR:-/tmp}/ultracode-install-$$.log"
+work=""
+log_file=""
 spinner_pid=""
 
 stop_spinner() {
-  if [[ -n "$spinner_pid" ]]; then
+  if [[ -n "${spinner_pid:-}" ]]; then
     kill "$spinner_pid" 2>/dev/null || true
     wait "$spinner_pid" 2>/dev/null || true
     spinner_pid=""
@@ -21,27 +18,10 @@ stop_spinner() {
 
 cleanup() {
   stop_spinner
-  rm -rf "$work"
+  if [[ -n "${work:-}" ]]; then
+    rm -rf "$work"
+  fi
 }
-trap cleanup EXIT INT TERM
-
-case "$(uname -s)" in
-  Linux) os=linux ;;
-  Darwin) os=darwin ;;
-  *)
-    printf 'Unsupported OS: %s. On Windows run: irm https://ultracode.plutokeating.beer/install.ps1 | iex\n' "$(uname -s)" >&2
-    exit 2
-    ;;
-esac
-
-case "$(uname -m)" in
-  x86_64|amd64) arch=x64 ;;
-  arm64|aarch64) arch=arm64 ;;
-  *)
-    printf 'Unsupported architecture: %s\n' "$(uname -m)" >&2
-    exit 2
-    ;;
-esac
 
 run_step() {
   local label="$1"
@@ -55,13 +35,13 @@ run_step() {
         i=$((i + 1))
         sleep 0.1
       done
-    ) &
+    ) </dev/null &
     spinner_pid="$!"
   else
     printf '%s\n' "$label" >&2
   fi
 
-  if "$@" >>"$log_file" 2>&1; then
+  if "$@" </dev/null >>"$log_file" 2>&1; then
     stop_spinner
   else
     stop_spinner
@@ -92,7 +72,7 @@ resolve_opencode() {
 check_opencode_version() {
   local bin="$1"
   local out ver major minor patch
-  out="$("$bin" --version 2>/dev/null || true)"
+  out="$("$bin" --version </dev/null 2>/dev/null || true)"
   ver="$(printf '%s\n' "$out" | grep -Eo 'v?[0-9]+\.[0-9]+\.[0-9]+' | head -n 1 || true)"
   ver="${ver#v}"
   if [[ -z "$ver" ]]; then
@@ -107,7 +87,7 @@ check_opencode_version() {
 
 install_opencode_step() {
   local cmd="${ULTRACODE_OPENCODE_INSTALL_CMD:-curl -fsSL https://opencode.ai/v2/install | bash}"
-  env -u VERSION bash -c "$cmd"
+  env -u VERSION bash -c "$cmd" </dev/null
   local found
   found="$(resolve_opencode)" || return 1
   check_opencode_version "$found"
@@ -115,7 +95,7 @@ install_opencode_step() {
 
 upgrade_opencode_step() {
   local bin="$1"
-  "$bin" upgrade || true
+  "$bin" upgrade </dev/null || true
   local found
   found="$(resolve_opencode || printf '%s\n' "$bin")"
   check_opencode_version "$found"
@@ -155,8 +135,8 @@ install_ultracode_step() {
 }
 
 setup_ultracode_step() {
-  "$bin_dir/ultracode" apply
-  "$bin_dir/ultracode" doctor
+  "$bin_dir/ultracode" apply </dev/null
+  "$bin_dir/ultracode" doctor </dev/null
 }
 
 ensure_shell_path() {
@@ -184,34 +164,65 @@ ensure_shell_path() {
   } >>"$profile"
 }
 
-in_invoking_path=0
-case ":${PATH:-}:" in
-  *":$bin_dir:"*) in_invoking_path=1 ;;
-esac
+main() {
+  repo="${ULTRACODE_REPOSITORY:-PlutoKeating/Project.UltraCode}"
+  version="${ULTRACODE_VERSION:-latest}"
+  bin_dir="${ULTRACODE_BIN_DIR:-$HOME/.local/bin}"
+  work="$(mktemp -d "${TMPDIR:-/tmp}/ultracode-install.XXXXXX")"
+  log_file="${TMPDIR:-/tmp}/ultracode-install-$$.log"
+  trap cleanup EXIT INT TERM
 
-if opencode_bin="$(resolve_opencode)"; then
-  run_step "Updating OpenCode" upgrade_opencode_step "$opencode_bin"
-else
-  run_step "Installing OpenCode" install_opencode_step
-fi
+  case "$(uname -s)" in
+    Linux) os=linux ;;
+    Darwin) os=darwin ;;
+    *)
+      printf 'Unsupported OS: %s. On Windows run: irm https://ultracode.plutokeating.beer/install.ps1 | iex\n' "$(uname -s)" >&2
+      exit 2
+      ;;
+  esac
 
-opencode_bin="$(resolve_opencode)"
-export ULTRACODE_OPENCODE_BIN="$opencode_bin"
-export PATH="$(dirname "$opencode_bin"):$bin_dir:${PATH:-}"
+  case "$(uname -m)" in
+    x86_64|amd64) arch=x64 ;;
+    arm64|aarch64) arch=arm64 ;;
+    *)
+      printf 'Unsupported architecture: %s\n' "$(uname -m)" >&2
+      exit 2
+      ;;
+  esac
 
-run_step "Installing UltraCode" install_ultracode_step
+  local in_invoking_path=0
+  case ":${PATH:-}:" in
+    *":$bin_dir:"*) in_invoking_path=1 ;;
+  esac
 
-if [[ "$in_invoking_path" -eq 0 ]]; then
-  ensure_shell_path
-fi
+  local opencode_bin=""
+  if opencode_bin="$(resolve_opencode)"; then
+    run_step "Updating OpenCode" upgrade_opencode_step "$opencode_bin"
+  else
+    run_step "Installing OpenCode" install_opencode_step
+  fi
 
-run_step "Setting up" setup_ultracode_step
+  opencode_bin="$(resolve_opencode)"
+  export ULTRACODE_OPENCODE_BIN="$opencode_bin"
+  export PATH="$(dirname "$opencode_bin"):$bin_dir:${PATH:-}"
 
-rm -f "$log_file"
-installed_version="$("$bin_dir/ultracode" version)"
-installed_version="${installed_version#v}"
+  run_step "Installing UltraCode" install_ultracode_step
 
-printf '\nUltraCode %s\n\n✓ Ready\n\n  ultracode\n  ultracode desktop\n  ultracode pair\n' "$installed_version"
-if [[ "$in_invoking_path" -eq 0 ]]; then
-  printf '\nRestart your terminal to use ultracode\n'
-fi
+  if [[ "$in_invoking_path" -eq 0 ]]; then
+    ensure_shell_path
+  fi
+
+  run_step "Setting up" setup_ultracode_step
+
+  rm -f "$log_file"
+  local installed_version
+  installed_version="$("$bin_dir/ultracode" version </dev/null)"
+  installed_version="${installed_version#v}"
+
+  printf '\nUltraCode %s\n\n✓ Ready\n\n  ultracode\n  ultracode desktop\n  ultracode pair\n' "$installed_version"
+  if [[ "$in_invoking_path" -eq 0 ]]; then
+    printf '\nRestart your terminal to use ultracode\n'
+  fi
+}
+
+main "$@"
