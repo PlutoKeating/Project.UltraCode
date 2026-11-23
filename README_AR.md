@@ -1,20 +1,20 @@
 <div align="center">
 
 <a href="https://ultracode.plutokeating.beer/ar/">
-  <img src="./docs/assets/hero-banner.svg" alt="UltraCode v1.0.0 — حدّد الهدف واستلم عملاً مُتحقَّقاً منه" width="100%" />
+  <img src="./docs/assets/ar/hero-banner.svg" alt="UltraCode v1.0.0 — حدّد الهدف واستلم عملاً مُتحقَّقاً منه" width="100%" />
 </a>
 
 <br />
 
-[![Release](https://img.shields.io/badge/Release-v1.0.0-ffffff?style=flat-square&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/releases/latest)
-[![Website](https://img.shields.io/badge/Website-ultracode.plutokeating.beer-bae6fd?style=flat-square&labelColor=0a0a0a)](https://ultracode.plutokeating.beer/ar/)
-[![Platforms](https://img.shields.io/badge/Platform-macOS%20%7C%20Linux%20%7C%20Windows-d4d4d4?style=flat-square&labelColor=0a0a0a)](https://ultracode.plutokeating.beer/ar/docs/getting-started/)
-[![Provenance](https://img.shields.io/badge/Built%20with-UltraCode%20v0.3.0-e5a03d?style=flat-square&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/releases/tag/v0.3.0)
-[![CI](https://img.shields.io/github/actions/workflow/status/PlutoKeating/Project.UltraCode/ci.yml?branch=main&style=flat-square&label=CI&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/actions/workflows/ci.yml)
+[![الإصدار](https://img.shields.io/badge/%D8%A7%D9%84%D8%A5%D8%B5%D8%AF%D8%A7%D8%B1-v1.0.0-ffffff?style=flat-square&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/releases/latest)
+[![الموقع الرسمي](https://img.shields.io/badge/%D8%A7%D9%84%D9%85%D9%88%D9%82%D8%B9-ultracode.plutokeating.beer-bae6fd?style=flat-square&labelColor=0a0a0a)](https://ultracode.plutokeating.beer/ar/)
+[![المنصات](https://img.shields.io/badge/%D8%A7%D9%84%D9%85%D9%86%D8%B5%D8%A7%D8%AA-macOS%20%7C%20Linux%20%7C%20Windows-d4d4d4?style=flat-square&labelColor=0a0a0a)](https://ultracode.plutokeating.beer/ar/docs/getting-started/)
+[![بُنِيَ بمساعدة](https://img.shields.io/badge/%D8%A8%D9%8F%D9%86%D9%90%D9%8A%D9%8E%20%D8%A8%D9%85%D8%B3%D8%A7%D8%B9%D8%AF%D8%A9-UltraCode%20v0.3.0-e5a03d?style=flat-square&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/releases/tag/v0.3.0)
+[![التكامل المستمر](https://img.shields.io/github/actions/workflow/status/PlutoKeating/Project.UltraCode/ci.yml?branch=main&style=flat-square&label=%D8%A7%D9%84%D9%81%D8%AD%D8%B5%20%D8%A7%D9%84%D8%A2%D9%84%D9%8A&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/actions/workflows/ci.yml)
 
 [English](README.md) · [简体中文](README_ZH.md) · **العربية** · [Français](README_FR.md) · [Русский](README_RU.md) · [Español](README_ES.md)
 
-[الموقع الرسمي](https://ultracode.plutokeating.beer/ar/) • [دليل البدء في دقيقة](https://ultracode.plutokeating.beer/ar/docs/getting-started/) • [البنية المعمارية](docs/ARCHITECTURE.md) • [مرجع الأوامر](docs/API.md)
+[الموقع الرسمي](https://ultracode.plutokeating.beer/ar/) • [دليل البدء في دقيقة](https://ultracode.plutokeating.beer/ar/docs/getting-started/) • [الأدوار وسير العمل](https://ultracode.plutokeating.beer/ar/docs/roles-and-workflow/) • [مرجع الأوامر](https://ultracode.plutokeating.beer/ar/docs/controls-and-maintenance/)
 
 </div>
 
@@ -30,7 +30,7 @@
 > **توثيق البناء الذاتي:** تم تطوير وبناء الإصدار الرسمي `UltraCode v1.0.0` (بما يشمل الحزم الأساسية والموقع السداسي اللغات وخطوط النشر) بمساعدة **UltraCode `v0.3.0`**.
 
 <div align="center">
-  <img src="./docs/assets/workflow-comparison.svg" alt="مقارنة بين الدردشة التقليدية وسير عمل UltraCode" width="100%" />
+  <img src="./docs/assets/ar/workflow-comparison.svg" alt="مقارنة بين الدردشة التقليدية وسير عمل UltraCode" width="100%" />
 </div>
 
 <div dir="rtl">
@@ -46,7 +46,7 @@
 </div>
 
 <div align="center">
-  <img src="./docs/assets/roles-topology.svg" alt="الدوران الرئيسيان UltraBuild وUltraPlan وخمسة خبراء" width="100%" />
+  <img src="./docs/assets/ar/roles-topology.svg" alt="الدوران الرئيسيان UltraBuild وUltraPlan وخمسة خبراء" width="100%" />
 </div>
 
 <div dir="rtl">
@@ -146,7 +146,7 @@ bun run --cwd website build
 ## الوثائق والروابط
 
 - **الموقع الرسمي والأدلة بست لغات**: [English](https://ultracode.plutokeating.beer) · [简体中文](https://ultracode.plutokeating.beer/zh/) · [العربية](https://ultracode.plutokeating.beer/ar/) · [Français](https://ultracode.plutokeating.beer/fr/) · [Русский](https://ultracode.plutokeating.beer/ru/) · [Español](https://ultracode.plutokeating.beer/es/)
-- [البنية المعمارية](docs/ARCHITECTURE.md) · [مرجع الواجهات والأوامر](docs/API.md) · [البدء السريع](docs/QUICK_START.md) · [النشر على Cloudflare](docs/CLOUDFLARE.md)
+- [البدء السريع](https://ultracode.plutokeating.beer/ar/docs/getting-started/) · [هندسة الأهداف](https://ultracode.plutokeating.beer/ar/docs/goal-engineering/) · [الأدوار وسير العمل](https://ultracode.plutokeating.beer/ar/docs/roles-and-workflow/) · [مرجع الأوامر](https://ultracode.plutokeating.beer/ar/docs/controls-and-maintenance/) · [الأسئلة الشائعة](https://ultracode.plutokeating.beer/ar/docs/faq/)
 - فهرس مخصص لوكلاء الذكاء الاصطناعي: [`llms.txt`](https://ultracode.plutokeating.beer/llms.txt) · [`llms-full.txt`](https://ultracode.plutokeating.beer/llms-full.txt)
 
 </div>

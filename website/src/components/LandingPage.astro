@@ -18,7 +18,7 @@ const copy = LANDING_COPY[lang];
 
 const siteOrigin = Astro.site?.origin ?? "https://ultracode.plutokeating.beer";
 const canonicalUrl = new URL(meta.homePath, siteOrigin).href;
-const ogImageUrl = new URL("/og-card.png", siteOrigin).href;
+const ogImageUrl = new URL(meta.ogImagePath, siteOrigin).href;
 
 const unixInstallCmd = "curl -fsSL https://ultracode.plutokeating.beer/install.sh | bash";
 const winInstallCmd = "irm https://ultracode.plutokeating.beer/install.ps1 | iex";

@@ -1,16 +1,16 @@
 <div align="center">
 
 <a href="https://ultracode.plutokeating.beer/zh/">
-  <img src="./docs/assets/hero-banner.svg" alt="UltraCode v1.0.0 — 说清目标，稳妥交付" width="100%" />
+  <img src="./docs/assets/zh/hero-banner.svg" alt="UltraCode v1.0.0 — 说清目标，稳妥交付" width="100%" />
 </a>
 
 <br />
 
-[![Release](https://img.shields.io/badge/Release-v1.0.0-ffffff?style=flat-square&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/releases/latest)
-[![Website](https://img.shields.io/badge/Website-ultracode.plutokeating.beer-bae6fd?style=flat-square&labelColor=0a0a0a)](https://ultracode.plutokeating.beer/zh/)
-[![Platforms](https://img.shields.io/badge/Platform-macOS%20%7C%20Linux%20%7C%20Windows-d4d4d4?style=flat-square&labelColor=0a0a0a)](https://ultracode.plutokeating.beer/zh/docs/getting-started/)
-[![Provenance](https://img.shields.io/badge/Built%20with-UltraCode%20v0.3.0-e5a03d?style=flat-square&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/releases/tag/v0.3.0)
-[![CI](https://img.shields.io/github/actions/workflow/status/PlutoKeating/Project.UltraCode/ci.yml?branch=main&style=flat-square&label=CI&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/actions/workflows/ci.yml)
+[![正式版](https://img.shields.io/badge/%E6%AD%A3%E5%BC%8F%E7%89%88-v1.0.0-ffffff?style=flat-square&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/releases/latest)
+[![官方网站](https://img.shields.io/badge/%E5%AE%98%E6%96%B9%E7%BD%91%E7%AB%99-ultracode.plutokeating.beer-bae6fd?style=flat-square&labelColor=0a0a0a)](https://ultracode.plutokeating.beer/zh/)
+[![支持平台](https://img.shields.io/badge/%E6%94%AF%E6%8C%81%E5%B9%B3%E5%8F%B0-macOS%20%7C%20Linux%20%7C%20Windows-d4d4d4?style=flat-square&labelColor=0a0a0a)](https://ultracode.plutokeating.beer/zh/docs/getting-started/)
+[![辅助构建](https://img.shields.io/badge/%E8%BE%85%E5%8A%A9%E6%9E%84%E5%BB%BA-UltraCode%20v0.3.0-e5a03d?style=flat-square&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/releases/tag/v0.3.0)
+[![持续集成](https://img.shields.io/github/actions/workflow/status/PlutoKeating/Project.UltraCode/ci.yml?branch=main&style=flat-square&label=%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/actions/workflows/ci.yml)
 
 [English](README.md) · **简体中文** · [العربية](README_AR.md) · [Français](README_FR.md) · [Русский](README_RU.md) · [Español](README_ES.md)
 
@@ -26,7 +26,7 @@
 ## 核心概览
 
 <div align="center">
-  <img src="./docs/assets/workflow-comparison.svg" alt="普通 AI 对话与 UltraCode 工作流对比" width="100%" />
+  <img src="./docs/assets/zh/workflow-comparison.svg" alt="普通 AI 对话与 UltraCode 工作流对比" width="100%" />
 </div>
 
 ### 核心特性
@@ -38,7 +38,7 @@
 - **纯增量且随时可逆**：不修改官方 OpenCode 二进制程序，不读取或上传任何 API 密钥，完整保留原有 JSONC 注释、快捷键与自定义技能，支持一键干净卸载。
 
 <div align="center">
-  <img src="./docs/assets/roles-topology.svg" alt="UltraBuild 与 UltraPlan 双主角色及 5 位后台专家" width="100%" />
+  <img src="./docs/assets/zh/roles-topology.svg" alt="UltraBuild 与 UltraPlan 双主角色及 5 位后台专家" width="100%" />
 </div>
 
 ## 快速开始

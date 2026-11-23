@@ -7,6 +7,7 @@ export interface LocaleMeta {
   htmlLang: string;
   hreflang: string;
   ogLocale: string;
+  ogImagePath: string;
   dir: "ltr" | "rtl";
   nativeLabel: string;
   shortLabel: string;
@@ -20,6 +21,7 @@ export const LOCALE_META: Record<Locale, LocaleMeta> = {
     htmlLang: "en",
     hreflang: "en",
     ogLocale: "en_US",
+    ogImagePath: "/og-card.png",
     dir: "ltr",
     nativeLabel: "English",
     shortLabel: "EN",
@@ -31,6 +33,7 @@ export const LOCALE_META: Record<Locale, LocaleMeta> = {
     htmlLang: "zh-CN",
     hreflang: "zh-CN",
     ogLocale: "zh_CN",
+    ogImagePath: "/og-card-zh.png",
     dir: "ltr",
     nativeLabel: "简体中文",
     shortLabel: "中文",
@@ -42,6 +45,7 @@ export const LOCALE_META: Record<Locale, LocaleMeta> = {
     htmlLang: "ar",
     hreflang: "ar",
     ogLocale: "ar_SA",
+    ogImagePath: "/og-card-ar.png",
     dir: "rtl",
     nativeLabel: "العربية",
     shortLabel: "AR",
@@ -53,6 +57,7 @@ export const LOCALE_META: Record<Locale, LocaleMeta> = {
     htmlLang: "fr",
     hreflang: "fr",
     ogLocale: "fr_FR",
+    ogImagePath: "/og-card-fr.png",
     dir: "ltr",
     nativeLabel: "Français",
     shortLabel: "FR",
@@ -64,6 +69,7 @@ export const LOCALE_META: Record<Locale, LocaleMeta> = {
     htmlLang: "ru",
     hreflang: "ru",
     ogLocale: "ru_RU",
+    ogImagePath: "/og-card-ru.png",
     dir: "ltr",
     nativeLabel: "Русский",
     shortLabel: "RU",
@@ -75,6 +81,7 @@ export const LOCALE_META: Record<Locale, LocaleMeta> = {
     htmlLang: "es",
     hreflang: "es",
     ogLocale: "es_ES",
+    ogImagePath: "/og-card-es.png",
     dir: "ltr",
     nativeLabel: "Español",
     shortLabel: "ES",
@@ -195,7 +202,7 @@ export const LANDING_COPY: Record<Locale, LandingCopy> = {
     closeTrust:
       "自动安装或更新官方 OpenCode V2 · 不改官方程序 · 不碰 API 密钥 · 随时可干净卸载",
     openQuickStart: "查看 1 分钟快速开始",
-    footerLicense: "UltraCode v1.0.0 · 使用 UltraCode v0.3.0 辅助开发与构建 · MIT License",
+    footerLicense: "UltraCode v1.0.0 · 使用 UltraCode v0.3.0 辅助开发与构建 · MIT 开源许可",
     footerDocs: "使用文档",
   },
   ar: {
@@ -317,7 +324,7 @@ export const LANDING_COPY: Record<Locale, LandingCopy> = {
     closeTrust:
       "Автоустановка OpenCode V2 · Без патчей бинарников · Без доступа к API-ключам · Чистое удаление",
     openQuickStart: "Открыть быстрый старт",
-    footerLicense: "UltraCode v1.0.0 · Собрано с помощью UltraCode v0.3.0 · MIT License",
+    footerLicense: "UltraCode v1.0.0 · Собрано с помощью UltraCode v0.3.0 · Лицензия MIT",
     footerDocs: "Документация",
   },
   es: {
@@ -437,9 +444,10 @@ export interface DiagramsCopy {
   };
   controls: {
     aria: string;
-    approvalsLabel: string;
+    surfacesMeta: string;
+    approvalsTitle: string;
     approvalsSub: string;
-    directionLabel: string;
+    directionTitle: string;
     directionSub: string;
   };
   vqa: {
@@ -456,8 +464,10 @@ export interface DiagramsCopy {
   };
   eras: {
     aria: string;
+    p1Title: string;
     p1Sub: string;
     p1Muted: string;
+    p2Title: string;
     p2Sub: string;
     p2Muted: string;
     p3Title: string;
@@ -541,9 +551,10 @@ export const DIAGRAMS_COPY: Record<Locale, DiagramsCopy> = {
     },
     controls: {
       aria: "Live-synced UltraCode switches across Terminal, Desktop, and Web",
-      approvalsLabel: "Approvals",
+      surfacesMeta: "Terminal · Desktop · Web",
+      approvalsTitle: "Command approvals",
       approvalsSub: "Auto-approves routine steps so work flows; explicit deny rules always remain enforced.",
-      directionLabel: "Direction",
+      directionTitle: "Direction questions",
       directionSub: "Asks before major product or design forks by default; switch to auto anytime for full autonomy.",
     },
     vqa: {
@@ -560,8 +571,10 @@ export const DIAGRAMS_COPY: Record<Locale, DiagramsCopy> = {
     },
     eras: {
       aria: "Prompt, Context, and Goal Engineering comparison",
+      p1Title: "Prompt Engineering",
       p1Sub: "Tweaking single-turn prompts",
       p1Muted: "Loses track on multi-step work",
+      p2Title: "Context Engineering",
       p2Sub: "Curating docs, tools & memory",
       p2Muted: "Still stops early or self-approves",
       p3Title: "Goal Engineering",
@@ -643,9 +656,10 @@ export const DIAGRAMS_COPY: Record<Locale, DiagramsCopy> = {
     },
     controls: {
       aria: "UltraCode 跨端同步双开关",
-      approvalsLabel: "命令审批",
+      surfacesMeta: "终端 · 桌面端 · 网页端",
+      approvalsTitle: "命令审批 · Command approvals",
       approvalsSub: "默认自动放行常规步骤，减少频繁打断；你显式禁止的危险操作始终拦截。",
-      directionLabel: "方向确认",
+      directionTitle: "方向确认 · Direction questions",
       directionSub: "默认遇到重大产品或架构分岔先询问你；想全程放手推进时可随时切为 auto。",
     },
     vqa: {
@@ -661,12 +675,14 @@ export const DIAGRAMS_COPY: Record<Locale, DiagramsCopy> = {
       loopNote: "只要界面或交互仍有瑕疵，会自动回到第 02 步重测直至达标",
     },
     eras: {
-      aria: "Prompt、Context、Goal 三阶段对比",
+      aria: "提示词、上下文与目标工程三阶段对比",
+      p1Title: "提示词工程",
       p1Sub: "反复推敲单句提示词",
       p1Muted: "步骤一多就遗忘或跑偏",
+      p2Title: "上下文工程",
       p2Sub: "手动整理文档、工具与上下文",
       p2Muted: "看懂资料仍可能中途停工或草率交差",
-      p3Title: "Goal Engineering 目标工程",
+      p3Title: "目标工程",
       p3Sub: "以可验证的最终结果驱动完整闭环",
       p3Ice: "前置澄清 → 分工实现 → 独立验证 → 断点续跑",
     },
@@ -745,9 +761,10 @@ export const DIAGRAMS_COPY: Record<Locale, DiagramsCopy> = {
     },
     controls: {
       aria: "مفاتيح UltraCode المتزامنة عبر الطرفية وسطح المكتب والويب",
-      approvalsLabel: "موافقات الأوامر",
+      surfacesMeta: "الطرفية · سطح المكتب · الويب",
+      approvalsTitle: "موافقات الأوامر · Command approvals",
       approvalsSub: "يمرّر الخطوات الروتينية تلقائياً دون مقاطعة، مع بقاء قواعد المنع الصريحة فعّالة دائماً.",
-      directionLabel: "أسئلة الاتجاه",
+      directionTitle: "أسئلة الاتجاه · Direction questions",
       directionSub: "يسألك افتراضياً قبل القرارات المعمارية الكبرى؛ ويمكنك التبديل إلى auto للاستقلالية الكاملة.",
     },
     vqa: {
@@ -764,11 +781,13 @@ export const DIAGRAMS_COPY: Record<Locale, DiagramsCopy> = {
     },
     eras: {
       aria: "تطور هندسة الأوامر والسياق والأهداف",
+      p1Title: "هندسة الأوامر",
       p1Sub: "صياغة أوامر منفردة متكررة",
       p1Muted: "يفقد المسار في المهام الطويلة",
+      p2Title: "هندسة السياق",
       p2Sub: "تجهيز الوثائق والأدوات والذاكرة",
       p2Muted: "قد يتوقف مبكراً أو يجيز عمله ذاتياً",
-      p3Title: "هندسة الأهداف Goal Engineering",
+      p3Title: "هندسة الأهداف",
       p3Sub: "إنجاز متكامل تقوده نتائج قابلة للتحقق",
       p3Ice: "توضيح ← بناء ← تحقق ← استئناف",
     },
@@ -819,15 +838,15 @@ export const DIAGRAMS_COPY: Record<Locale, DiagramsCopy> = {
       aria: "Deux rôles principaux UltraBuild et UltraPlan et 5 spécialistes",
       buildSub: "Par défaut · construire et vérifier",
       planSub: "Planification seule · zéro édition",
-      r1Title: "Librarian",
-      r1Sub: "Docs & OSS",
-      r2Title: "Architect",
+      r1Title: "Recherche",
+      r1Sub: "Docs & sources",
+      r2Title: "Architecture",
       r2Sub: "Design & diagnostic",
-      r3Title: "Implementer",
+      r3Title: "Implémentation",
       r3Sub: "Code ciblé",
-      r4Title: "Reviewer",
+      r4Title: "Revue",
       r4Sub: "Audit critique",
-      r5Title: "Visual QA",
+      r5Title: "QA visuelle",
       r5Sub: "Vrai Chromium",
     },
     longRun: {
@@ -847,9 +866,10 @@ export const DIAGRAMS_COPY: Record<Locale, DiagramsCopy> = {
     },
     controls: {
       aria: "Interrupteurs UltraCode synchronisés sur Terminal, Desktop et Web",
-      approvalsLabel: "Approbations",
+      surfacesMeta: "Terminal · Bureau · Web",
+      approvalsTitle: "Approbations · Command approvals",
       approvalsSub: "Autorise automatiquement les actions courantes ; vos règles de refus explicites restent toujours actives.",
-      directionLabel: "Direction",
+      directionTitle: "Direction · Direction questions",
       directionSub: "Demande votre avis avant tout choix structurant ; passez en auto à tout moment pour l’autonomie complète.",
     },
     vqa: {
@@ -865,12 +885,14 @@ export const DIAGRAMS_COPY: Record<Locale, DiagramsCopy> = {
       loopNote: "Tout défaut visuel renvoie automatiquement à l’étape 02 avant validation",
     },
     eras: {
-      aria: "Évolution Prompt, Context et Goal Engineering",
+      aria: "Évolution de l’ingénierie de prompt, de contexte et d’objectifs",
+      p1Title: "Ingénierie de prompt",
       p1Sub: "Ajuster des prompts isolés",
       p1Muted: "Décroche sur les tâches longues",
+      p2Title: "Ingénierie de contexte",
       p2Sub: "Fournir docs, outils et mémoire",
       p2Muted: "S’arrête encore trop tôt sans audit",
-      p3Title: "Goal Engineering",
+      p3Title: "Ingénierie d’objectifs",
       p3Sub: "Piloté de bout en bout par un résultat vérifiable",
       p3Ice: "Clarifier → Construire → Vérifier → Reprendre",
     },
@@ -921,15 +943,15 @@ export const DIAGRAMS_COPY: Record<Locale, DiagramsCopy> = {
       aria: "Основные роли UltraBuild и UltraPlan и 5 фоновых экспертов",
       buildSub: "По умолчанию · сборка и проверка",
       planSub: "Только план · без правки кода",
-      r1Title: "Librarian",
+      r1Title: "Исследование",
       r1Sub: "Документы и OSS",
-      r2Title: "Architect",
-      r2Sub: "Архитектура",
-      r3Title: "Implementer",
-      r3Sub: "Реализация",
-      r4Title: "Reviewer",
-      r4Sub: "Строгое ревью",
-      r5Title: "Visual QA",
+      r2Title: "Архитектура",
+      r2Sub: "Проектирование",
+      r3Title: "Реализация",
+      r3Sub: "Точечный код",
+      r4Title: "Код-ревью",
+      r4Sub: "Строгий аудит",
+      r5Title: "Визуальный QA",
       r5Sub: "Браузер Chromium",
     },
     longRun: {
@@ -949,9 +971,10 @@ export const DIAGRAMS_COPY: Record<Locale, DiagramsCopy> = {
     },
     controls: {
       aria: "Синхронизируемые переключатели UltraCode",
-      approvalsLabel: "Одобрение команд",
+      surfacesMeta: "Терминал · Десктоп · Веб",
+      approvalsTitle: "Одобрение команд · Command approvals",
       approvalsSub: "Автоматически пропускает рутинные шаги без лишних пауз; явные запреты всегда соблюдаются.",
-      directionLabel: "Вопросы по курсу",
+      directionTitle: "Вопросы по курсу · Direction questions",
       directionSub: "По умолчанию уточняет важные архитектурные развилки; переключите в auto для полной автономии.",
     },
     vqa: {
@@ -967,12 +990,14 @@ export const DIAGRAMS_COPY: Record<Locale, DiagramsCopy> = {
       loopNote: "Любой дефект интерфейса автоматически возвращает проверку к шагу 02",
     },
     eras: {
-      aria: "Эволюция Prompt, Context и Goal Engineering",
+      aria: "Эволюция инженерии промптов, контекста и целей",
+      p1Title: "Инженерия промптов",
       p1Sub: "Подбор одиночных промптов",
       p1Muted: "Сбивается на длинных задачах",
+      p2Title: "Инженерия контекста",
       p2Sub: "Подготовка документации и памяти",
       p2Muted: "Всё ещё спешит сдать сырой код",
-      p3Title: "Goal Engineering",
+      p3Title: "Инженерия целей",
       p3Sub: "Сквозная работа ради проверяемого итога",
       p3Ice: "Уточнение → Сборка → Проверка → Продолжение",
     },
@@ -1023,15 +1048,15 @@ export const DIAGRAMS_COPY: Record<Locale, DiagramsCopy> = {
       aria: "Roles principales UltraBuild y UltraPlan más 5 especialistas",
       buildSub: "Por defecto · construir y verificar",
       planSub: "Solo planificación · sin editar código",
-      r1Title: "Librarian",
+      r1Title: "Investigación",
       r1Sub: "Docs y OSS",
-      r2Title: "Architect",
-      r2Sub: "Diseño y depuración",
-      r3Title: "Implementer",
+      r2Title: "Arquitectura",
+      r2Sub: "Diseño y análisis",
+      r3Title: "Implementación",
       r3Sub: "Código acotado",
-      r4Title: "Reviewer",
+      r4Title: "Revisión",
       r4Sub: "Auditoría crítica",
-      r5Title: "Visual QA",
+      r5Title: "QA visual",
       r5Sub: "Chromium real",
     },
     longRun: {
@@ -1051,9 +1076,10 @@ export const DIAGRAMS_COPY: Record<Locale, DiagramsCopy> = {
     },
     controls: {
       aria: "Interruptores sincronizados de UltraCode en Terminal, Escritorio y Web",
-      approvalsLabel: "Aprobaciones",
+      surfacesMeta: "Terminal · Escritorio · Web",
+      approvalsTitle: "Aprobaciones · Command approvals",
       approvalsSub: "Aprueba pasos rutinarios automáticamente sin interrupciones; las reglas de bloqueo explícitas siempre se respetan.",
-      directionLabel: "Dirección",
+      directionTitle: "Dirección · Direction questions",
       directionSub: "Pregunta por defecto ante decisiones importantes de diseño; cambia a auto cuando quieras autonomía total.",
     },
     vqa: {
@@ -1069,12 +1095,14 @@ export const DIAGRAMS_COPY: Record<Locale, DiagramsCopy> = {
       loopNote: "Cualquier defecto visual o de interacción regresa al paso 02 antes de entregar",
     },
     eras: {
-      aria: "Evolución de Prompt, Context y Goal Engineering",
+      aria: "Evolución de ingeniería de prompts, contexto y objetivos",
+      p1Title: "Ingeniería de prompts",
       p1Sub: "Ajustar prompts aislados",
       p1Muted: "Pierde el rumbo en tareas largas",
+      p2Title: "Ingeniería de contexto",
       p2Sub: "Preparar docs, herramientas y memoria",
       p2Muted: "Aún se detiene pronto o se autoaprueba",
-      p3Title: "Goal Engineering",
+      p3Title: "Ingeniería de objetivos",
       p3Sub: "Impulsado de principio a fin por resultados verificables",
       p3Ice: "Aclarar → Construir → Verificar → Reanudar",
     },

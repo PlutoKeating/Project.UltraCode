@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 340" fill="none" direction="ltr" role="img" aria-label="UltraCode v1.0.0 — حدّد الهدف. واستلم عملاً مُتحقَّقاً منه.">
+  <defs>
+    <radialGradient id="iceHorizon" cx="32%" cy="62%" r="46%">
+      <stop offset="0%" stop-color="#BAE6FD" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="amberHorizon" cx="72%" cy="62%" r="42%">
+      <stop offset="0%" stop-color="#E5A03D" stop-opacity="0.13"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="topRim" x1="8%" y1="0%" x2="92%" y2="0%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0"/>
+      <stop offset="28%" stop-color="#BAE6FD" stop-opacity="0.45"/>
+      <stop offset="50%" stop-color="#FFFFFF" stop-opacity="0.82"/>
+      <stop offset="72%" stop-color="#E5A03D" stop-opacity="0.42"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="340" rx="14" fill="#000000"/>
+  <rect width="1200" height="340" rx="14" fill="url(#iceHorizon)"/>
+  <rect width="1200" height="340" rx="14" fill="url(#amberHorizon)"/>
+  <rect x="0.5" y="0.5" width="1199" height="339" rx="13.5" stroke="#FFFFFF" stroke-opacity="0.12"/>
+  <line x1="96" y1="1" x2="1104" y2="1" stroke="url(#topRim)" stroke-width="1"/>
+
+  <line x1="0" y1="74.5" x2="1200" y2="74.5" stroke="#FFFFFF" stroke-opacity="0.08"/>
+  <line x1="0" y1="266.5" x2="1200" y2="266.5" stroke="#FFFFFF" stroke-opacity="0.08"/>
+  <path d="M76 70.5V78.5 M72 74.5H80 M1124 70.5V78.5 M1120 74.5H1128 M76 262.5V270.5 M72 266.5H80 M1124 262.5V270.5 M1120 266.5H1128" stroke="#FFFFFF" stroke-opacity="0.28"/>
+
+  <g transform="translate(80, 24)">
+    <g transform="scale(0.09)">
+      <path d="M60 120H180V240H60V120Z" fill="#4B4B4B"/>
+      <path d="M60 60H180V120H60V60Z" fill="#2A2A2A"/>
+      <path d="M0 0H60V240H180V60H240V300H0V0Z" fill="#EEEEEE"/>
+      <path d="M180 0H240V42H180V0Z" fill="#E5A03D"/>
+    </g>
+    <text x="34" y="20" fill="#FFFFFF" font-family="ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', 'Ubuntu Sans', 'Noto Sans Arabic', 'Geeza Pro', 'SF Arabic', 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans CJK SC', 'Noto Sans CJK TC', 'Microsoft YaHei', sans-serif" font-size="19" font-weight="600">UltraCode</text>
+    <rect x="144" y="4" width="56" height="21" rx="4" fill="#111111" stroke="#FFFFFF" stroke-opacity="0.18"/>
+    <text x="172" y="18.5" text-anchor="middle" fill="#BAE6FD" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'DejaVu Sans Mono', 'Noto Sans Arabic', 'PingFang SC', 'Noto Sans CJK SC', 'Noto Sans CJK TC', monospace" font-size="11.5" font-weight="500">v1.0.0</text>
+  </g>
+  <text x="1120" y="44" text-anchor="end" fill="#9A9A9A" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'DejaVu Sans Mono', 'Noto Sans Arabic', 'PingFang SC', 'Noto Sans CJK SC', 'Noto Sans CJK TC', monospace" font-size="13">ultracode.plutokeating.beer/ar</text>
+
+  <text x="600" y="148" text-anchor="middle" fill="#FFFFFF" font-family="ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', 'Ubuntu Sans', 'Noto Sans Arabic', 'Geeza Pro', 'SF Arabic', 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans CJK SC', 'Noto Sans CJK TC', 'Microsoft YaHei', sans-serif" font-size="38" font-weight="600">‫حدّد الهدف. واستلم عملاً مُتحقَّقاً منه.‬</text>
+  <text x="600" y="192" text-anchor="middle" fill="#B5B5B5" font-family="ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', 'Ubuntu Sans', 'Noto Sans Arabic', 'Geeza Pro', 'SF Arabic', 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans CJK SC', 'Noto Sans CJK TC', 'Microsoft YaHei', sans-serif" font-size="16.5">‫هندسة أهداف متكاملة لمنصة OpenCode V2 الرسمية على macOS وLinux وWindows‬</text>
+  <text x="600" y="228" text-anchor="middle" fill="#8A8A8A" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'DejaVu Sans Mono', 'Noto Sans Arabic', 'PingFang SC', 'Noto Sans CJK SC', 'Noto Sans CJK TC', monospace" font-size="13">ultracode   ·   ultracode desktop   ·   ultracode pair</text>
+
+  <circle cx="84" cy="303" r="3.5" fill="#BAE6FD"/>
+  <text x="98" y="307.5" fill="#D4D4D4" font-family="ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', 'Ubuntu Sans', 'Noto Sans Arabic', 'Geeza Pro', 'SF Arabic', 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans CJK SC', 'Noto Sans CJK TC', 'Microsoft YaHei', sans-serif" font-size="12.5">‫الطرفية · سطح المكتب · الويب · الهاتف‬</text>
+  <text x="600" y="307.5" text-anchor="middle" fill="#8A8A8A" font-family="ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', 'Ubuntu Sans', 'Noto Sans Arabic', 'Geeza Pro', 'SF Arabic', 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans CJK SC', 'Noto Sans CJK TC', 'Microsoft YaHei', sans-serif" font-size="12.5">‫محايد للنماذج والمزوّدين · دون تعديل الثنائيات‬</text>
+  <text x="1120" y="307.5" text-anchor="end" fill="#E5A03D" font-family="ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', 'Ubuntu Sans', 'Noto Sans Arabic', 'Geeza Pro', 'SF Arabic', 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans CJK SC', 'Noto Sans CJK TC', 'Microsoft YaHei', sans-serif" font-size="12.5">‫طُوِّر وبُنِيَ بمساعدة UltraCode v0.3.0‬</text>
+</svg>

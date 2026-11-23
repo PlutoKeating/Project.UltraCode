@@ -1,20 +1,20 @@
 <div align="center">
 
 <a href="https://ultracode.plutokeating.beer/ru/">
-  <img src="./docs/assets/hero-banner.svg" alt="UltraCode v1.0.0 — Опишите цель. Получите проверенный результат." width="100%" />
+  <img src="./docs/assets/ru/hero-banner.svg" alt="UltraCode v1.0.0 — Опишите цель. Получите проверенный результат." width="100%" />
 </a>
 
 <br />
 
-[![Release](https://img.shields.io/badge/Release-v1.0.0-ffffff?style=flat-square&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/releases/latest)
-[![Website](https://img.shields.io/badge/Website-ultracode.plutokeating.beer-bae6fd?style=flat-square&labelColor=0a0a0a)](https://ultracode.plutokeating.beer/ru/)
-[![Platforms](https://img.shields.io/badge/Platform-macOS%20%7C%20Linux%20%7C%20Windows-d4d4d4?style=flat-square&labelColor=0a0a0a)](https://ultracode.plutokeating.beer/ru/docs/getting-started/)
-[![Provenance](https://img.shields.io/badge/Built%20with-UltraCode%20v0.3.0-e5a03d?style=flat-square&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/releases/tag/v0.3.0)
-[![CI](https://img.shields.io/github/actions/workflow/status/PlutoKeating/Project.UltraCode/ci.yml?branch=main&style=flat-square&label=CI&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/actions/workflows/ci.yml)
+[![Релиз](https://img.shields.io/badge/%D0%A0%D0%B5%D0%BB%D0%B8%D0%B7-v1.0.0-ffffff?style=flat-square&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/releases/latest)
+[![Сайт](https://img.shields.io/badge/%D0%A1%D0%B0%D0%B9%D1%82-ultracode.plutokeating.beer-bae6fd?style=flat-square&labelColor=0a0a0a)](https://ultracode.plutokeating.beer/ru/)
+[![Платформы](https://img.shields.io/badge/%D0%9F%D0%BB%D0%B0%D1%82%D1%84%D0%BE%D1%80%D0%BC%D1%8B-macOS%20%7C%20Linux%20%7C%20Windows-d4d4d4?style=flat-square&labelColor=0a0a0a)](https://ultracode.plutokeating.beer/ru/docs/getting-started/)
+[![Собрано на](https://img.shields.io/badge/%D0%A1%D0%BE%D0%B1%D1%80%D0%B0%D0%BD%D0%BE%20%D0%BD%D0%B0-UltraCode%20v0.3.0-e5a03d?style=flat-square&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/releases/tag/v0.3.0)
+[![Сборка](https://img.shields.io/github/actions/workflow/status/PlutoKeating/Project.UltraCode/ci.yml?branch=main&style=flat-square&label=%D0%A1%D0%B1%D0%BE%D1%80%D0%BA%D0%B0&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/actions/workflows/ci.yml)
 
 [English](README.md) · [简体中文](README_ZH.md) · [العربية](README_AR.md) · [Français](README_FR.md) · **Русский** · [Español](README_ES.md)
 
-[Официальный сайт](https://ultracode.plutokeating.beer/ru/) • [Быстрый старт за 1 минуту](https://ultracode.plutokeating.beer/ru/docs/getting-started/) • [Архитектура](docs/ARCHITECTURE.md) • [Справочник CLI](docs/API.md)
+[Официальный сайт](https://ultracode.plutokeating.beer/ru/) • [Быстрый старт за 1 минуту](https://ultracode.plutokeating.beer/ru/docs/getting-started/) • [Роли и процесс](https://ultracode.plutokeating.beer/ru/docs/roles-and-workflow/) • [Справочник CLI](https://ultracode.plutokeating.beer/ru/docs/controls-and-maintenance/)
 
 </div>
 
@@ -28,7 +28,7 @@
 ## Обзор
 
 <div align="center">
-  <img src="./docs/assets/workflow-comparison.svg" alt="Сравнение обычного ИИ-чата и процесса UltraCode" width="100%" />
+  <img src="./docs/assets/ru/workflow-comparison.svg" alt="Сравнение обычного ИИ-чата и процесса UltraCode" width="100%" />
 </div>
 
 ### Ключевые возможности
@@ -40,7 +40,7 @@
 - **Бережная интеграция и чистое удаление**: не изменяет официальные бинарные файлы OpenCode, не читает ваши API-ключи, сохраняет комментарии JSONC и пользовательские навыки.
 
 <div align="center">
-  <img src="./docs/assets/roles-topology.svg" alt="Основные роли UltraBuild и UltraPlan и 5 фоновых экспертов" width="100%" />
+  <img src="./docs/assets/ru/roles-topology.svg" alt="Основные роли UltraBuild и UltraPlan и 5 фоновых экспертов" width="100%" />
 </div>
 
 ## Быстрый старт
@@ -122,5 +122,5 @@ bun run --cwd website build
 ## Документация
 
 - **Официальный сайт и руководства** ([English](https://ultracode.plutokeating.beer) · [简体中文](https://ultracode.plutokeating.beer/zh/) · [العربية](https://ultracode.plutokeating.beer/ar/) · [Français](https://ultracode.plutokeating.beer/fr/) · [Русский](https://ultracode.plutokeating.beer/ru/) · [Español](https://ultracode.plutokeating.beer/es/))
-- [Архитектура](docs/ARCHITECTURE.md) · [Справочник API и CLI](docs/API.md) · [Быстрый старт](docs/QUICK_START.md) · [Деплой в Cloudflare](docs/CLOUDFLARE.md)
+- [Быстрый старт](https://ultracode.plutokeating.beer/ru/docs/getting-started/) · [Инженерия целей](https://ultracode.plutokeating.beer/ru/docs/goal-engineering/) · [Роли и эксперты](https://ultracode.plutokeating.beer/ru/docs/roles-and-workflow/) · [Управление и CLI](https://ultracode.plutokeating.beer/ru/docs/controls-and-maintenance/) · [FAQ](https://ultracode.plutokeating.beer/ru/docs/faq/)
 - Индекс для ИИ-агентов: [`llms.txt`](https://ultracode.plutokeating.beer/llms.txt) · [`llms-full.txt`](https://ultracode.plutokeating.beer/llms-full.txt)

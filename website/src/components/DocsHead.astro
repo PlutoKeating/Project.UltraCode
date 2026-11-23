@@ -1,23 +1,22 @@
 ---
 import StarlightHead from "@astrojs/starlight/components/Head.astro";
 import type { StarlightRouteData } from "@astrojs/starlight/route-data";
-import { FAQ_SCHEMA_ITEMS, LOCALE_META, type Locale } from "../i18n/ui";
+import { FAQ_SCHEMA_ITEMS, LANDING_COPY, LOCALE_META, type Locale } from "../i18n/ui";
 
 const siteOrigin = Astro.site?.origin ?? "https://ultracode.plutokeating.beer";
 const pathname = Astro.url.pathname.endsWith("/") ? Astro.url.pathname : `${Astro.url.pathname}/`;
 const canonicalUrl = new URL(pathname, siteOrigin).href;
-const ogImageUrl = new URL("/og-card.png", siteOrigin).href;
 
 const seg = pathname.split("/").filter(Boolean)[0];
 const localeKey: Locale =
   seg === "zh" || seg === "ar" || seg === "fr" || seg === "ru" || seg === "es" ? seg : "en";
 const localeMeta = LOCALE_META[localeKey];
+const landingCopy = LANDING_COPY[localeKey];
+const ogImageUrl = new URL(localeMeta.ogImagePath, siteOrigin).href;
 
 const route = (Astro.locals as { starlightRoute?: StarlightRouteData }).starlightRoute;
-const pageTitle = route?.entry?.data?.title ?? "UltraCode Documentation";
-const pageDesc =
-  route?.entry?.data?.description ??
-  "Official documentation for UltraCode v1.0.0 on OpenCode V2.";
+const pageTitle = route?.entry?.data?.title ?? landingCopy.metaTitle;
+const pageDesc = route?.entry?.data?.description ?? landingCopy.metaDescription;
 
 const isFaq = pathname.endsWith("/docs/faq/");
 
@@ -96,7 +95,7 @@ const jsonLd = JSON.stringify({
 <meta property="og:image" content={ogImageUrl} />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:image:alt" content="UltraCode v1.0.0 — End-to-End Goal Engineering for OpenCode" />
+<meta property="og:image:alt" content={landingCopy.metaTitle} />
 <meta name="twitter:image" content={ogImageUrl} />
 <link rel="alternate" type="text/plain" href="/llms.txt" title="UltraCode LLM Documentation Index" />
 <script type="application/ld+json" set:html={jsonLd} />

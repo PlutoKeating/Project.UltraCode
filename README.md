@@ -1,7 +1,7 @@
 <div align="center">
 
 <a href="https://ultracode.plutokeating.beer">
-  <img src="./docs/assets/hero-banner.svg" alt="UltraCode v1.0.0 — State the Goal. Ship Verified Work." width="100%" />
+  <img src="./docs/assets/en/hero-banner.svg" alt="UltraCode v1.0.0 — State the Goal. Ship Verified Work." width="100%" />
 </a>
 
 <br />
@@ -28,7 +28,7 @@ Instead of guessing early or drifting halfway through multi-step tasks, UltraCod
 ## Overview
 
 <div align="center">
-  <img src="./docs/assets/workflow-comparison.svg" alt="Standard AI Chat vs UltraCode Workflow" width="100%" />
+  <img src="./docs/assets/en/workflow-comparison.svg" alt="Standard AI Chat vs UltraCode Workflow" width="100%" />
 </div>
 
 ### Key Capabilities
@@ -40,7 +40,7 @@ Instead of guessing early or drifting halfway through multi-step tasks, UltraCod
 - **Strictly Additive & Reversible**: Never patches official OpenCode binaries, never reads or transmits your API keys, preserves existing JSONC comments and custom skills, and uninstalls cleanly.
 
 <div align="center">
-  <img src="./docs/assets/roles-topology.svg" alt="UltraBuild and UltraPlan primary roles plus 5 background specialists" width="100%" />
+  <img src="./docs/assets/en/roles-topology.svg" alt="UltraBuild and UltraPlan primary roles plus 5 background specialists" width="100%" />
 </div>
 
 ## Getting Started
