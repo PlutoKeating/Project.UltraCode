@@ -85,7 +85,7 @@ describe("cross-platform paths and fs", () => {
 
   test("updateSelf downloads via fetch, verifies sha256, and replaces binary without uc symlink", async () => {
     const dir = await mkdtemp(join(tmpdir(), "uc-rel-"));
-    const payload = new TextEncoder().encode("ultracode-0.3.0-bin");
+    const payload = new TextEncoder().encode("ultracode-1.0.0-bin");
     const hash = sha256(payload);
     const server = createServer((req, res) => {
       if (req.url?.endsWith(".sha256")) {
@@ -104,7 +104,7 @@ describe("cross-platform paths and fs", () => {
       const p = resolvePaths({ HOME: dir, USERPROFILE: dir, LOCALAPPDATA: dir });
       const tag = await updateSelf(p);
       expect(tag).toBeTruthy();
-      expect(await readFile(p.binary, "utf8")).toBe("ultracode-0.3.0-bin");
+      expect(await readFile(p.binary, "utf8")).toBe("ultracode-1.0.0-bin");
     } finally {
       if (prevBase === undefined) delete process.env.ULTRACODE_RELEASE_BASE_URL;
       else process.env.ULTRACODE_RELEASE_BASE_URL = prevBase;

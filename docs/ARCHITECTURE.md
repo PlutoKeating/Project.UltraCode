@@ -30,7 +30,7 @@ UltraCode 在 `<config>/ultracode/conversation/` 安装单一多触点插件包�
   - 注册 `permission.evaluate`（`permissions` 为 `auto` 时放行 `ask`，显式 `deny` 始终生效）、`ultracode_model`、`ultracode_checkpoint`、`session.prompt`、`session.context` 与 `experimental.idle` 续跑钩子。
 - **TUI 入口（`tui.tsx`，ID `ultracode-conversation-ui`）**：
   - 在命令面板（`UltraCode` 分组）注册双开关，调用 `UltraCodeRpc`（带本地回退），并在 `home.footer.status` 提供克制的 `UltraCode` 状态标识。
-- **GUI 入口（`gui-experimental.cjs`，由 `plugin-gui/` 通过 Vite + `@opencode/plugin/gui/vite` 预编译为单文件 CJS 并内嵌至二进制）**：
+- **GUI 入口（`gui-experimental.cjs`，由 `packages/plugin-gui/` 通过 Vite + `@opencode/plugin/gui/vite` 预编译为单文件 CJS 并内嵌至二进制）**：
   - 在 OpenCode Desktop 界面提供输入框上方的 **UltraCode** `ComposerPill`（两行一键切换）、独立的 **Settings → UltraCode** 页面（`SettingsLayout` + 双 `Switch`）以及命令面板动作，支持中英双语（`en` / `zh`）。
 
 模式状态原子持久化至 `$ULTRACODE_HOME/permissions.mode` 与 `$ULTRACODE_HOME/direction.mode`（Linux/macOS 默认 `~/.local/share/ultracode`，Windows 默认 `%LOCALAPPDATA%\ultracode`）。
@@ -58,6 +58,6 @@ UltraCode 在 `<config>/ultracode/conversation/` 安装单一多触点插件包�
 
 ## 6. 网站与 6 平台构建发布
 
-`website/` 使用 Astro Starlight 构建中英双语站点，`sync-content.mjs` 将根 `install.sh` 与 `install.ps1` 同步至 `website/public/`，由 Cloudflare Workers Static Assets 发布至 `https://ultracode.plutokeating.beer/`。
+`website/` 使用 Astro Starlight 构建覆盖联合国 6 种官方语言（默认根路径 `/` 为英文 `en`，以及 `/zh/`、`/ar/` RTL、`/fr/`、`/ru/`、`/es/`）的多语言官网与文档站点，`sync-content.mjs` 将 `scripts/install.sh` 与 `scripts/install.ps1` 同步至 `website/public/` 并自动构建 `/llms.txt` 与 `/llms-full.txt`，由 Cloudflare Workers Static Assets 发布至 `https://ultracode.plutokeating.beer/`。
 
-`installer/scripts/build.ts --release` 先构建 `plugin-gui`，再由单个 Linux Runner 交叉编译 6 个目标（`linux-x64`、`linux-arm64`、`darwin-x64`、`darwin-arm64`、`windows-x64.exe`、`windows-arm64.exe`），生成 `.sha256` 与 GitHub Artifact Attestations 并发布 Release。
+`packages/installer/scripts/build.ts --release` 先构建 `packages/plugin-gui`，再由单个 Linux Runner 交叉编译 6 个目标（`linux-x64`、`linux-arm64`、`darwin-x64`、`darwin-arm64`、`windows-x64.exe`、`windows-arm64.exe`），生成 `.sha256` 与 GitHub Artifact Attestations 并发布 Release。

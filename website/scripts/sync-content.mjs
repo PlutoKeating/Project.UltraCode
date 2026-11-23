@@ -30,5 +30,5 @@ for (const english of [false, true]) {
 }
 
 await mkdir(join(root, "public"), { recursive: true });
-await cp(join(root, "../install.sh"), join(root, "public/install.sh"));
-await cp(join(root, "../install.ps1"), join(root, "public/install.ps1"));
+await cp(join(root, "../scripts/install.sh"), join(root, "public/install.sh"));
+await cp(join(root, "../scripts/install.ps1"), join(root, "public/install.ps1"));

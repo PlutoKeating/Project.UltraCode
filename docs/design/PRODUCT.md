@@ -30,11 +30,11 @@ Success for the website means a first-time visitor on macOS, Linux, or Windows u
 - Launched via `ultracode` (Terminal), `ultracode desktop` (Desktop app), or `ultracode pair` (Browser & Mobile).
 - Live switches for Command approvals (default auto) and Direction questions (default manual) synced via RPC across OpenCode Desktop (`UltraCode` composer pill + `Settings > UltraCode`), TUI Command Palette, and Web/Mobile (`/approvals` and `/direction`).
 - Maintained with `ultracode upgrade`, `ultracode sync`, `ultracode doctor`, `ultracode uninstall --yes`.
-- Website & docs live in `website/` (Astro + Starlight), bilingual Chinese (`/`) and English (`/en/`), deployed to Cloudflare Workers Static Assets at `https://ultracode.plutokeating.beer`.
+- Website & docs live in `website/` (Astro + Starlight), covering all 6 UN official languages with English default (`/`) plus `/zh/`, `/ar/` (RTL), `/fr/`, `/ru/`, and `/es/`, deployed to Cloudflare Workers Static Assets at `https://ultracode.plutokeating.beer`.
 
 ## Capabilities and Constraints
 
-- Confirmed v0.3.0 capabilities:
+- Confirmed v1.0.0 capabilities:
   - Unified `ultracode` CLI with full `opencode` passthrough, zero-prerequisite OpenCode V2 auto-install/upgrade, `ultracode desktop` launcher, and cross-platform TS-native `ultracode ralph run`.
   - Native 6-target standalone builds (`linux`/`darwin`/`windows` × `x64`/`arm64`) plus minimalist `install.sh` and `install.ps1`.
   - Multi-surface `ultracode-conversation` plugin package: Server RPC (`UltraCodeRpc`) + `/approvals` & `/direction` commands for Web/Mobile, TUI Command Palette + quiet footer status, and OpenCode Desktop GUI (`ComposerPill`, `SettingsPage`, `Command`, `en`/`zh`).
@@ -47,13 +47,13 @@ Success for the website means a first-time visitor on macOS, Linux, or Windows u
 ## Brand Commitments
 
 - Name: **UltraCode** (command: `ultracode`).
-- Visual direction: **Precision Cinema Monochrome** (`DESIGN.md`) — pitch-black `#000000` canvas, 1px architectural hairlines, Sora + JetBrains Mono, pure white primary actions, and restrained Ice-White (`#BAE6FD`) + Tungsten Amber (`#E5A03D`) optical accents.
-- Bilingual parity: Chinese (zh-CN, root `/`) and English (`/en/`).
+- Visual direction: **Precision Cinema Monochrome** (`docs/design/DESIGN.md`) — pitch-black `#000000` canvas, 1px architectural hairlines, Sora + JetBrains Mono, pure white primary actions, and restrained Ice-White (`#BAE6FD`) + Tungsten Amber (`#E5A03D`) optical accents.
+- Multilingual parity: 6 UN official languages — English (root `/`), Simplified Chinese (`/zh/`), Arabic (`/ar/`, RTL), French (`/fr/`), Russian (`/ru/`), and Spanish (`/es/`).
 
 ## Evidence on Hand
 
 - Live install URLs: `https://ultracode.plutokeating.beer/install.sh` and `https://ultracode.plutokeating.beer/install.ps1`.
-- Latest public release: `v0.3.0` (`https://github.com/PlutoKeating/Project.UltraCode`).
+- Latest public release: `v1.0.0` (`https://github.com/PlutoKeating/Project.UltraCode`), built with UltraCode `v0.3.0`.
 - Absences (must not fabricate): No customer logos, paid tiers, third-party testimonials, or synthetic speed/accuracy benchmark numbers.
 
 ## Product Principles

@@ -70,4 +70,4 @@ Release 资产命名（6 平台，均附 `.sha256`）：
 
 ## 版本基线
 
-UltraCode `v0.3.0`、OpenCode `v2.3.2+`、Superpowers `v7.0.2`、Ralph `v1.3.1` 固定 commit、Playwright MCP `0.0.86`。
+UltraCode `v1.0.0`、OpenCode `v2.3.2+`、Superpowers `v7.0.2`、Ralph `v1.3.1` 固定 commit、Playwright MCP `0.0.86`。

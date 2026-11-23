@@ -11,7 +11,7 @@ import type { Paths } from "./paths";
 import { components } from "./components";
 import { browserReady, runtimeEntries, installRuntime } from "./runtime";
 
-export const VERSION = process.env.ULTRACODE_RELEASE_VERSION || "0.3.0";
+export const VERSION = process.env.ULTRACODE_RELEASE_VERSION || "1.0.0";
 
 export interface ApplyReport {
   added: string[];

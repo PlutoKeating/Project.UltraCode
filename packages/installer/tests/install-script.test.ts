@@ -10,10 +10,10 @@ import { run } from "../src/opencode";
 describe.skipIf(process.platform === "win32")("install.sh minimalist zero-prereq flow", () => {
   test("handles opencode upgrade fallback, installs ultracode without uc, updates PATH idempotently, and renders minimal output", async () => {
     const dir = await mkdtemp(join(tmpdir(), "uc-install-sh-"));
-    const scriptPath = fileURLToPath(new URL("../../install.sh", import.meta.url));
+    const scriptPath = fileURLToPath(new URL("../../../scripts/install.sh", import.meta.url));
     const mockUltracode = `#!/bin/sh
 case "$1" in
-  version) printf 'v0.3.0\\n';;
+  version) printf 'v1.0.0\\n';;
   apply) printf 'noisy apply log line\\n';;
   doctor) printf 'noisy doctor log line\\n';;
 esac
@@ -68,7 +68,7 @@ exit 0
 
       const first = await run("bash", [scriptPath], { env });
       expect(first.code).toBe(0);
-      expect(first.stdout).toContain("UltraCode 0.3.0");
+      expect(first.stdout).toContain("UltraCode 1.0.0");
       expect(first.stdout).toContain("✓ Ready");
       expect(first.stdout).toContain("ultracode");
       expect(first.stdout).toContain("ultracode desktop");
@@ -91,8 +91,8 @@ exit 0
 
   test("auto-installs OpenCode when missing", async () => {
     const dir = await mkdtemp(join(tmpdir(), "uc-install-sh-fresh-"));
-    const scriptPath = fileURLToPath(new URL("../../install.sh", import.meta.url));
-    const mockUltracode = "#!/bin/sh\nif [ \"$1\" = \"version\" ]; then printf '0.3.0\\n'; fi\nexit 0\n";
+    const scriptPath = fileURLToPath(new URL("../../../scripts/install.sh", import.meta.url));
+    const mockUltracode = "#!/bin/sh\nif [ \"$1\" = \"version\" ]; then printf '1.0.0\\n'; fi\nexit 0\n";
     const hash = sha256(mockUltracode);
     const server = createServer((req, res) => {
       if (req.url?.endsWith(".sha256")) {

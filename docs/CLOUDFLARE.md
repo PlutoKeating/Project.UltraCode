@@ -22,7 +22,7 @@
 
 ## 原理
 
-Astro Starlight 生成静态 `dist`，Workers Static Assets 直接发布，无需 Worker 脚本。`website/scripts/sync-content.mjs` 还会把根 `install.sh` 与 `install.ps1` 复制为网站的 `/install.sh` 与 `/install.ps1`。
+Astro Starlight 生成静态 `dist`，Workers Static Assets 直接发布，无需 Worker 脚本。`website/scripts/sync-content.mjs` 还会把 `scripts/install.sh` 与 `scripts/install.ps1` 复制为网站的 `/install.sh` 与 `/install.ps1`，并从真实文档生成 `/llms.txt` 与 `/llms-full.txt`。
 
 ## 域名
 

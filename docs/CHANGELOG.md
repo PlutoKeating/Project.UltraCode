@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.0.0 - 2026-11-23
+
+首个正式版（Built with UltraCode v0.3.0）：
+
+- **正式版 v1.0.0 与仓库架构收敛**：核心运行时包统一收敛至 `packages/`（`packages/installer`、`packages/plugin-gui`、`packages/config`），安装脚本归入 `scripts/`，设计规范与历史记录归入 `docs/`，根目录结构清晰直观。
+- **联合国 6 大官方语言全面覆盖**：仓库根目录提供英（`README.md`）、中（`README_ZH.md`）、阿（`README_AR.md`）、法（`README_FR.md`）、俄（`README_RU.md`）、西（`README_ES.md`）6 语文档；生产官网 `https://ultracode.plutokeating.beer` 切换默认根路径 `/` 为国际通用英文，并完整覆盖 `/zh/`、`/ar/`（原生 RTL 右向排版）、`/fr/`、`/ru/`、`/es/` 首页与全部上手文档。
+- **全套 SEO / AEO / GEO 搜索与生成式引擎优化**：补齐自引用 `canonical`、6 语言双向 `hreflang` + `x-default`、OpenGraph / Twitter 分享大图卡片、Schema.org `JSON-LD` 结构化实体图谱（`SoftwareApplication` / `WebSite` / `Organization` / `TechArticle` / `BreadcrumbList` / `FAQPage`）、放行主流 AI 检索爬虫的 `robots.txt`，以及构建期自动同步生成的 `/llms.txt` 与 `/llms-full.txt`。
+
 ## v0.3.0 - 2026-11-23
 
 统一为单一命令 `ultracode` 的全平台、全触点版本：
