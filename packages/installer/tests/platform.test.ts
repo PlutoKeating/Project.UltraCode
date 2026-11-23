@@ -7,7 +7,7 @@ import { resolvePaths } from "../src/paths";
 import { backup, replaceBinary, sha256 } from "../src/fs";
 import { components } from "../src/components";
 import { managedConfig } from "../src/managed";
-import { ensureOpenCode, findOpenCode } from "../src/opencode";
+import { assertSupportedOpenCode, ensureOpenCode, findOpenCode } from "../src/opencode";
 import { updateSelf } from "../src/release";
 
 async function makeFakeOpenCode(dir: string, versionOutput: string, upgradeExitCode: number): Promise<string> {
@@ -123,6 +123,117 @@ describe("cross-platform paths and fs", () => {
     } finally {
       if (prevSkip === undefined) delete process.env.ULTRACODE_SKIP_RUNTIME;
       else process.env.ULTRACODE_SKIP_RUNTIME = prevSkip;
+    }
+  });
+
+  test("assertSupportedOpenCode accepts >=2.3.2 <3.0.0 silently without console.warn", () => {
+    const warns: unknown[][] = [];
+    const originalWarn = console.warn;
+    console.warn = (...args: unknown[]) => {
+      warns.push(args);
+    };
+    try {
+      expect(() => assertSupportedOpenCode("2.3.2")).not.toThrow();
+      expect(() => assertSupportedOpenCode("2.4.0")).not.toThrow();
+      expect(() => assertSupportedOpenCode("2.9.1")).not.toThrow();
+      expect(warns.length).toBe(0);
+    } finally {
+      console.warn = originalWarn;
+    }
+  });
+
+  test("assertSupportedOpenCode rejects <2.3.2 and >=3.0.0 with distinct contract errors", () => {
+    expect(() => assertSupportedOpenCode("1.9.9")).toThrow(/2\.3\.2 or newer/i);
+    expect(() => assertSupportedOpenCode("2.3.1")).toThrow(/2\.3\.2 or newer/i);
+    expect(() => assertSupportedOpenCode("3.0.0")).toThrow(/major contract.*V3/i);
+  });
+
+  test("components retries /api/plugin when builtin-only response races async plugin loading and deduplicates superpowers", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "uc-comp-retry-"));
+    const prevSkip = process.env.ULTRACODE_SKIP_RUNTIME;
+    delete process.env.ULTRACODE_SKIP_RUNTIME;
+    try {
+      const binDir = join(dir, "bin");
+      await mkdir(binDir, { recursive: true });
+      const countFile = join(dir, "plugin-api-calls.txt");
+      const customSuperpowers = join(dir, "custom-superpowers");
+      const jsonPath = customSuperpowers.replace(/\\/g, "\\\\");
+      const attempt1 = JSON.stringify({
+        data: [{ id: "opencode.agent", source: { type: "builtin" }, state: { status: "active" } }],
+      });
+      const attempt2 = JSON.stringify({
+        data: [
+          { id: "opencode.agent", source: { type: "builtin" }, state: { status: "active" } },
+          { id: "superpowers", source: { type: "local", path: customSuperpowers }, state: { status: "active" } },
+        ],
+      });
+
+      let fakeBin: string;
+      if (process.platform === "win32") {
+        fakeBin = join(binDir, "opencode.cmd");
+        await writeFile(
+          fakeBin,
+          [
+            "@echo off",
+            'if "%*"=="--version" (',
+            "  echo opencode v2.4.0",
+            "  exit /b 0",
+            ")",
+            'if "%*"=="api get /api/plugin" (',
+            `  if not exist "${countFile}" (`,
+            `    echo 1>"${countFile}"`,
+            `    echo {"data":[{"id":"opencode.agent","source":{"type":"builtin"},"state":{"status":"active"}}]}`,
+            "    exit /b 0",
+            "  )",
+            `  echo 2>"${countFile}"`,
+            `  echo {"data":[{"id":"opencode.agent","source":{"type":"builtin"},"state":{"status":"active"}},{"id":"superpowers","source":{"type":"local","path":"${jsonPath}"},"state":{"status":"active"}}]}`,
+            "  exit /b 0",
+            ")",
+            "exit /b 1",
+          ].join("\r\n"),
+        );
+      } else {
+        fakeBin = join(binDir, "opencode");
+        await writeFile(
+          fakeBin,
+          `#!/bin/sh
+if [ "$*" = "--version" ]; then
+  printf 'opencode v2.4.0\\n'
+  exit 0
+fi
+if [ "$*" = "api get /api/plugin" ]; then
+  if [ ! -f '${countFile}' ]; then
+    printf '1' > '${countFile}'
+    printf '%s\\n' '${attempt1}'
+    exit 0
+  fi
+  printf '2' > '${countFile}'
+  printf '%s\\n' '${attempt2}'
+  exit 0
+fi
+exit 1
+`,
+          { mode: 0o755 },
+        );
+      }
+
+      const p = resolvePaths({
+        HOME: dir,
+        USERPROFILE: dir,
+        LOCALAPPDATA: dir,
+        ULTRACODE_OPENCODE_BIN: fakeBin,
+      });
+      const res = await components(p, { plugins: [customSuperpowers] });
+      expect((await readFile(countFile, "utf8")).trim()).toBe("2");
+      expect(res.managed.plugins).toEqual([join(p.config, "ultracode", "conversation")]);
+
+      await rm(countFile, { force: true });
+      await components(p, {});
+      expect((await readFile(countFile, "utf8")).trim()).toBe("1");
+    } finally {
+      if (prevSkip === undefined) delete process.env.ULTRACODE_SKIP_RUNTIME;
+      else process.env.ULTRACODE_SKIP_RUNTIME = prevSkip;
+      await rm(dir, { recursive: true, force: true });
     }
   });
 });

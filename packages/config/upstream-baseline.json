@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "updatedAt": "2026-11-23",
+  "opencode": {
+    "repo": "anomalyco/opencode",
+    "minSupported": "2.3.2",
+    "verifiedRelease": "2.4.0",
+    "pluginSdkPackage": "@opencode/plugin",
+    "pluginSdkVersion": "2.4.0"
+  },
+  "superpowers": {
+    "repo": "obra/superpowers",
+    "tag": "v7.0.2",
+    "tarballUrl": "https://codeload.github.com/obra/superpowers/tar.gz/refs/tags/v7.0.2",
+    "sha256": "a0bd5d862537ae2caa9a7b5546b7e597eeabda1b9ca8aa67abbbc967c9f2005e"
+  },
+  "playwrightMcp": {
+    "npmPackage": "@playwright/mcp",
+    "version": "0.0.86"
+  },
+  "ralph": {
+    "repo": "Th0rgal/open-ralph-wiggum",
+    "branch": "main",
+    "versionLabel": "1.3.1",
+    "commit": "53c87ded9fc329b452298f361145d17bf52cac09",
+    "tarballUrl": "https://codeload.github.com/Th0rgal/open-ralph-wiggum/tar.gz/53c87ded9fc329b452298f361145d17bf52cac09",
+    "sha256": "c7c77bd1ff288f157ed79711a3ac0d1982cbb7c5bd70d017a8308c6c45a3cc20"
+  }
+}

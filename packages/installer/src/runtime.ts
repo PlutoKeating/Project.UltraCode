@@ -1,12 +1,49 @@
 import { mkdir, readdir, rm, writeFile } from "node:fs/promises";
 import { delimiter, dirname, isAbsolute, join } from "node:path";
+import baseline from "../../config/upstream-baseline.json";
 import { atomicWrite, exists, sha256 } from "./fs";
 import { findOpenCode, run } from "./opencode";
 import type { Paths } from "./paths";
 
-const PLAYWRIGHT_VERSION = "0.0.86";
-const RALPH_COMMIT = "53c87ded9fc329b452298f361145d17bf52cac09";
-const RUNTIME_LOCK = JSON.stringify({ playwright: PLAYWRIGHT_VERSION, ralph: RALPH_COMMIT, superpowers: "v7.0.2" });
+export interface UpstreamBaseline {
+  schema: 1;
+  updatedAt: string;
+  opencode: {
+    repo: string;
+    minSupported: string;
+    verifiedRelease: string;
+    pluginSdkPackage: string;
+    pluginSdkVersion: string;
+  };
+  superpowers: {
+    repo: string;
+    tag: string;
+    tarballUrl: string;
+    sha256: string;
+  };
+  playwrightMcp: {
+    npmPackage: string;
+    version: string;
+  };
+  ralph: {
+    repo: string;
+    branch: string;
+    versionLabel: string;
+    commit: string;
+    tarballUrl: string;
+    sha256: string;
+  };
+}
+
+export const upstreamBaseline = baseline as UpstreamBaseline;
+export const PLAYWRIGHT_VERSION = upstreamBaseline.playwrightMcp.version;
+export const RALPH_COMMIT = upstreamBaseline.ralph.commit;
+export const SUPERPOWERS_TAG = upstreamBaseline.superpowers.tag;
+const RUNTIME_LOCK = JSON.stringify({
+  playwright: PLAYWRIGHT_VERSION,
+  ralph: RALPH_COMMIT,
+  superpowers: SUPERPOWERS_TAG,
+});
 
 async function downloadVerified(url: string, expectedHash: string, target: string): Promise<void> {
   if (await exists(target)) {
@@ -39,16 +76,16 @@ async function installVendored(paths: Paths): Promise<void> {
   const vendor = join(paths.runtime, "vendor");
   const downloads = join(paths.home, "downloads");
   await mkdir(downloads, { recursive: true });
-  const superArchive = join(downloads, "superpowers-v7.0.2.tgz");
+  const superArchive = join(downloads, `superpowers-${SUPERPOWERS_TAG}.tgz`);
   const ralphArchive = join(downloads, `ralph-${RALPH_COMMIT}.tgz`);
   await downloadVerified(
-    "https://codeload.github.com/obra/superpowers/tar.gz/refs/tags/v7.0.2",
-    "a0bd5d862537ae2caa9a7b5546b7e597eeabda1b9ca8aa67abbbc967c9f2005e",
+    upstreamBaseline.superpowers.tarballUrl,
+    upstreamBaseline.superpowers.sha256,
     superArchive,
   );
   await downloadVerified(
-    `https://codeload.github.com/Th0rgal/open-ralph-wiggum/tar.gz/${RALPH_COMMIT}`,
-    "c7c77bd1ff288f157ed79711a3ac0d1982cbb7c5bd70d017a8308c6c45a3cc20",
+    upstreamBaseline.ralph.tarballUrl,
+    upstreamBaseline.ralph.sha256,
     ralphArchive,
   );
   await extractTar(superArchive, join(paths.runtime, "superpowers"));
@@ -84,7 +121,7 @@ export async function installRuntime(paths: Paths): Promise<void> {
         {
           private: true,
           dependencies: {
-            "@playwright/mcp": PLAYWRIGHT_VERSION,
+            [upstreamBaseline.playwrightMcp.npmPackage]: PLAYWRIGHT_VERSION,
             "@th0rgal/ralph-wiggum": "file:./vendor/ralph",
           },
         },
@@ -98,7 +135,7 @@ export async function installRuntime(paths: Paths): Promise<void> {
 
   const browserMarker = join(paths.browsers, ".ultracode-ready");
   if (process.env.ULTRACODE_SKIP_BROWSER !== "1" && !(await browserReady(paths))) {
-    await runBun(["x", `@playwright/mcp@${PLAYWRIGHT_VERSION}`, "install-browser", "chrome-for-testing"], {
+    await runBun(["x", `${upstreamBaseline.playwrightMcp.npmPackage}@${PLAYWRIGHT_VERSION}`, "install-browser", "chrome-for-testing"], {
       cwd: paths.runtime,
       env: { PLAYWRIGHT_BROWSERS_PATH: paths.browsers },
       inherit: false,

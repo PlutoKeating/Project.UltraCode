@@ -1,10 +1,13 @@
 import { readFile } from "node:fs/promises";
 import { basename, isAbsolute, join, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
+import baseline from "../../config/upstream-baseline.json";
 import { findOpenCode, run } from "./opencode";
 import { managedConfig } from "./managed";
 import type { JsonValue } from "./config";
 import type { Paths } from "./paths";
+
+export const PLAYWRIGHT_MCP_SPEC = `${baseline.playwrightMcp.npmPackage}@${baseline.playwrightMcp.version}`;
 
 function object(value: JsonValue | undefined): Record<string, JsonValue> {
   return value && typeof value === "object" && !Array.isArray(value) ? value : {};
@@ -53,21 +56,49 @@ export async function components(paths: Paths, config: JsonValue) {
   const registered = new Map<string, string>();
   if (process.env.ULTRACODE_SKIP_RUNTIME !== "1") {
     const opencode = (await findOpenCode(paths)) ?? paths.opencodeBinary;
-    const result = await run(opencode, ["api", "get", "/api/plugin"]).catch(() => ({ code: 1, stdout: "", stderr: "" }));
-    if (result.code === 0) {
-      try {
-        for (const plugin of JSON.parse(result.stdout).data) {
-          const spec = plugin.source?.target ?? plugin.source?.path;
-          if (typeof spec === "string") registered.set(spec, plugin.id);
+    const hasConfiguredPlugins = Array.isArray(plugins) && plugins.length > 0;
+    const maxAttempts = hasConfiguredPlugins ? 4 : 1;
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+      const result = await run(opencode, ["api", "get", "/api/plugin"]).catch(() => ({ code: 1, stdout: "", stderr: "" }));
+      let parsed = false;
+      let hasNonBuiltin = false;
+      if (result.code === 0) {
+        try {
+          const data = JSON.parse(result.stdout).data;
+          if (Array.isArray(data)) {
+            parsed = true;
+            registered.clear();
+            for (const plugin of data) {
+              const spec = plugin?.source?.target ?? plugin?.source?.path;
+              if (typeof spec === "string") registered.set(spec, plugin.id);
+            }
+            hasNonBuiltin = data.some((p) => p?.source?.type && p.source.type !== "builtin");
+          }
+        } catch {
+          /* An initializing host can return no registry. Doctor verifies after sync. */
         }
-      } catch {
-        /* An initializing host can return no registry. Doctor verifies after sync. */
       }
+      if (!hasConfiguredPlugins || !parsed || hasNonBuiltin || attempt === maxAttempts) break;
+      await new Promise((resolveDelay) => setTimeout(resolveDelay, 120));
     }
   }
   for (const choice of choices) {
     const spec = typeof choice.entry === "string" ? choice.entry : object(choice.entry).package;
-    if (typeof spec === "string") choice.id = registered.get(spec) ?? choice.id;
+    if (typeof spec !== "string") continue;
+    let matched = registered.get(spec);
+    if (!matched && isLocalSpec(spec)) {
+      const resolvedChoice = resolveLocalSpec(paths.config, spec);
+      if (resolvedChoice) {
+        for (const [regSpec, regId] of registered) {
+          const resolvedReg = isLocalSpec(regSpec) ? resolveLocalSpec(paths.config, regSpec) : null;
+          if (resolvedReg && samePath(resolvedChoice, resolvedReg)) {
+            matched = regId;
+            break;
+          }
+        }
+      }
+    }
+    choice.id = matched ?? choice.id;
   }
   const pluginsPrefix = resolve(join(paths.config, "plugins")) + sep;
   const normalizedPrefix = process.platform === "win32" ? pluginsPrefix.toLowerCase() : pluginsPrefix;
@@ -94,7 +125,7 @@ export async function components(paths: Paths, config: JsonValue) {
     if (!["bunx", "npx"].includes(exe)) continue;
     const args = cmd.slice(1);
     if (args[0] === "-y") args.shift();
-    if (JSON.stringify(args) !== JSON.stringify(["@playwright/mcp@0.0.86", "--browser", "chromium", "--headless", "--isolated", "--output-dir", ".opencode/ultracode/qa"])) continue;
+    if (JSON.stringify(args) !== JSON.stringify([PLAYWRIGHT_MCP_SPEC, "--browser", "chromium", "--headless", "--isolated", "--output-dir", ".opencode/ultracode/qa"])) continue;
     browser = name;
     delete managed.mcp;
     managed.permissions = (managed.permissions as JsonValue[]).filter((rule) => object(rule).action !== "ultracode_playwright_*");

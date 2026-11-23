@@ -1,6 +1,7 @@
 import { spawn } from "node:child_process";
 import { mkdir, readdir, rm } from "node:fs/promises";
 import { delimiter, dirname, isAbsolute, join } from "node:path";
+import baseline from "../../config/upstream-baseline.json";
 import { atomicWrite, exists, replaceBinary } from "./fs";
 import type { Paths } from "./paths";
 
@@ -54,11 +55,25 @@ export async function opencodeVersion(binary: string): Promise<string> {
 
 export function assertSupportedOpenCode(version: string): void {
   const [major, minor, patch] = version.split(".").map(Number);
-  if (major !== 2 || (minor ?? 0) < 3 || (minor === 3 && (patch ?? 0) < 2)) {
-    throw new Error(`OpenCode ${version} is unsupported; install a recent V2 release (2.3.2 or newer).`);
+  const [minMajor = 2, minMinor = 3, minPatch = 2] = baseline.opencode.minSupported.split(".").map(Number);
+  if (
+    major === undefined ||
+    minor === undefined ||
+    patch === undefined ||
+    !Number.isFinite(major) ||
+    !Number.isFinite(minor) ||
+    !Number.isFinite(patch) ||
+    major < minMajor ||
+    (major === minMajor && (minor < minMinor || (minor === minMinor && patch < minPatch)))
+  ) {
+    throw new Error(
+      `OpenCode ${version} is unsupported; install OpenCode V${minMajor} (${baseline.opencode.minSupported} or newer).`,
+    );
   }
-  if ((minor ?? 0) > 3) {
-    console.warn(`OpenCode ${version} is newer than the tested 2.3.x matrix; running structural checks only.`);
+  if (major > minMajor) {
+    throw new Error(
+      `OpenCode ${version} targets a new major contract (V${major}); run 'ultracode upgrade' for a compatible UltraCode release.`,
+    );
   }
 }
 
