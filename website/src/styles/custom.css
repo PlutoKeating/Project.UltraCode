@@ -35,6 +35,7 @@
   --sl-color-text-invert: #000000;
 
   /* Expressive Code pure neutral black */
+  --ec-codeFontFml: var(--uc-font-mono);
   --ec-codeBg: #0a0a0a;
   --ec-frm-edBg: #0a0a0a;
   --ec-frm-trmBg: #0a0a0a;

@@ -94,9 +94,9 @@ Project.UltraCode/
 │   ├── installer/      # Unified ultracode CLI, JSONC union merger & 6-target standalone builder
 │   ├── plugin-gui/     # OpenCode Desktop GUI plugin (ComposerPill & SettingsPage)
 │   └── config/         # Embedded OpenCode roles, Server/TUI/RPC conversation plugin & Ralph templates
-├── scripts/            # Zero-prerequisite install scripts (install.sh & install.ps1)
+├── scripts/            # Zero-prerequisite installers (install.sh, install.ps1) & 6-locale brand asset generator
 ├── website/            # Astro + Starlight 6-language website & docs (ultracode.plutokeating.beer)
-└── docs/               # Architecture, CLI API, Quick Start, Cloudflare deployment & SVG assets
+└── docs/               # Architecture, CLI API, Quick Start, Cloudflare guide & 6-locale SVG/OG assets
 ```
 
 ## Local Verification

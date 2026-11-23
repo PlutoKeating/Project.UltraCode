@@ -1,11 +1,12 @@
 ---
-import { DIAGRAMS_COPY, type Locale } from "../../i18n/ui";
+import { DIAGRAMS_COPY, svgBidi, type Locale } from "../../i18n/ui";
 
 interface Props {
   lang?: Locale;
 }
 const { lang = "en" } = Astro.props;
 const t = DIAGRAMS_COPY[lang].comparison;
+const metaFont = lang === "ar" ? "var(--uc-font-sans)" : "var(--uc-font-mono)";
 ---
 
 <svg viewBox="0 0 760 288" fill="none" xmlns="http://www.w3.org/2000/svg" class="uc-svg-diagram" role="img" aria-label={t.aria}>
@@ -27,12 +28,11 @@ const t = DIAGRAMS_COPY[lang].comparison;
   <line x1="570.5" y1="0" x2="570.5" y2="288" stroke="rgba(255,255,255,0.045)"/>
   <path d="M186.5 142.5H194.5 M190.5 138.5V146.5 M376.5 142.5H384.5 M380.5 138.5V146.5 M566.5 142.5H574.5 M570.5 138.5V146.5" stroke="rgba(255,255,255,0.28)" stroke-width="1"/>
 
-  <!-- Top Track: Standard AI Chat -->
-  <text x="16" y="34" fill="#B5B5B5" font-family="Sora, PingFang SC, sans-serif" font-size="15.5" font-weight="500">
-    {t.topTitle}
+  <text x="16" y="34" fill="#B5B5B5" font-family="var(--uc-font-sans)" font-size="15.5" font-weight="500">
+    {svgBidi(lang, t.topTitle)}
   </text>
-  <text x="744" y="34" text-anchor="end" fill="#B5B5B5" font-family="JetBrains Mono, PingFang SC, sans-serif" font-size="12">
-    {t.topMeta}
+  <text x="744" y="34" text-anchor="end" fill="#B5B5B5" font-family={metaFont} font-size="12">
+    {svgBidi(lang, t.topMeta)}
   </text>
 
   <path d="M 24 92 C 140 60, 250 62, 360 82 C 470 102, 560 110, 736 100" stroke="#737373" stroke-width="1.6" stroke-dasharray="4 5"/>
@@ -41,17 +41,16 @@ const t = DIAGRAMS_COPY[lang].comparison;
   <circle cx="468" cy="96" r="4.5" fill="#E5A03D"/>
   <path d="M 730 94 L 742 106 M 742 94 L 730 106" stroke="#E5A03D" stroke-width="1.8"/>
 
-  <text x="20" y="126" fill="#A3A3A3" font-family="Sora, PingFang SC, sans-serif" font-size="13.5">{t.t1}</text>
-  <text x="256" y="126" text-anchor="middle" fill="#A3A3A3" font-family="Sora, PingFang SC, sans-serif" font-size="13.5">{t.t2}</text>
-  <text x="468" y="126" text-anchor="middle" fill="#E5A03D" font-family="Sora, PingFang SC, sans-serif" font-size="13.5">{t.t3}</text>
-  <text x="744" y="126" text-anchor="end" fill="#B5B5B5" font-family="Sora, PingFang SC, sans-serif" font-size="13.5">{t.t4}</text>
+  <text x="20" y="126" fill="#A3A3A3" font-family="var(--uc-font-sans)" font-size="13.5">{svgBidi(lang, t.t1)}</text>
+  <text x="256" y="126" text-anchor="middle" fill="#A3A3A3" font-family="var(--uc-font-sans)" font-size="13.5">{svgBidi(lang, t.t2)}</text>
+  <text x="468" y="126" text-anchor="middle" fill="#E5A03D" font-family="var(--uc-font-sans)" font-size="13.5">{svgBidi(lang, t.t3)}</text>
+  <text x="744" y="126" text-anchor="end" fill="#B5B5B5" font-family="var(--uc-font-sans)" font-size="13.5">{svgBidi(lang, t.t4)}</text>
 
-  <!-- Bottom Track: UltraCode Workflow -->
-  <text x="16" y="178" fill="#FFFFFF" font-family="Sora, PingFang SC, sans-serif" font-size="16" font-weight="500">
-    {t.botTitle}
+  <text x="16" y="178" fill="#FFFFFF" font-family="var(--uc-font-sans)" font-size="16" font-weight="500">
+    {svgBidi(lang, t.botTitle)}
   </text>
-  <text x="744" y="178" text-anchor="end" fill="#E5E5E5" font-family="JetBrains Mono, PingFang SC, sans-serif" font-size="12">
-    {t.botMeta}
+  <text x="744" y="178" text-anchor="end" fill="#E5E5E5" font-family={metaFont} font-size="12">
+    {svgBidi(lang, t.botMeta)}
   </text>
 
   <path d="M 24 234 L 256 224 L 468 214 L 736 202" stroke="#BAE6FD" stroke-opacity="0.45" stroke-width="4" filter="url(#iceGlow)"/>
@@ -63,10 +62,10 @@ const t = DIAGRAMS_COPY[lang].comparison;
   <circle cx="736" cy="202" r="6" fill="#FFFFFF"/>
   <circle cx="736" cy="202" r="11" stroke="rgba(186,230,253,0.45)" stroke-width="1"/>
 
-  <text x="20" y="270" fill="#E5E5E5" font-family="Sora, PingFang SC, sans-serif" font-size="13.5">{t.b1}</text>
-  <text x="256" y="270" text-anchor="middle" fill="#E5E5E5" font-family="Sora, PingFang SC, sans-serif" font-size="13.5">{t.b2}</text>
-  <text x="468" y="270" text-anchor="middle" fill="#E5E5E5" font-family="Sora, PingFang SC, sans-serif" font-size="13.5">{t.b3}</text>
-  <text x="744" y="270" text-anchor="end" fill="#FFFFFF" font-family="Sora, PingFang SC, sans-serif" font-size="13.5" font-weight="500">{t.b4}</text>
+  <text x="20" y="270" fill="#E5E5E5" font-family="var(--uc-font-sans)" font-size="13.5">{svgBidi(lang, t.b1)}</text>
+  <text x="256" y="270" text-anchor="middle" fill="#E5E5E5" font-family="var(--uc-font-sans)" font-size="13.5">{svgBidi(lang, t.b2)}</text>
+  <text x="468" y="270" text-anchor="middle" fill="#E5E5E5" font-family="var(--uc-font-sans)" font-size="13.5">{svgBidi(lang, t.b3)}</text>
+  <text x="744" y="270" text-anchor="end" fill="#FFFFFF" font-family="var(--uc-font-sans)" font-size="13.5" font-weight="500">{svgBidi(lang, t.b4)}</text>
 </svg>
 
 <style>

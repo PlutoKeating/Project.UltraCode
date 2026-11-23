@@ -38,7 +38,7 @@
 ## القدرات الرئيسية
 
 - **أمر واحد دون متطلبات مسبقة**: يعمل الأمر الوحيد `ultracode` بتوافق كامل مع جميع معاملات وأوامر `opencode` الفرعية؛ كما يتكفّل المثبّت والأمر `ultracode upgrade` بتثبيت أو تحديث OpenCode V2 الرسمي (`v2.3.2+`) تلقائياً.
-- **مزامنة فورية عبر جميع الواجهات**: حزمة الإضافة `ultracode-conversation` توحّد الحالة لحظياً عبر الطرفية وتطبيق OpenCode Desktop (`ComposerPill` وصفحة `Settings → UltraCode`) والويب والهاتف (`/approvals` و`/direction`).
+- **مزامنة فورية عبر جميع الواجهات**: حزمة الإضافة `ultracode-conversation` توحّد الحالة لحظياً عبر الطرفية وتطبيق OpenCode Desktop (كبسولة التحكم السريعة وصفحة `Settings → UltraCode`) والويب والهاتف (`/approvals` و`/direction`).
 - **دوران رئيسيان وخمسة خبراء في الخلفية**: بدّل في أي وقت عبر `Shift+Tab` بين `UltraBuild` (للتنفيذ المتكامل) و`UltraPlan` (للتخطيط للقراءة فقط)، بدعم تلقائي من `librarian` و`architect` و`implementer` و`reviewer` و`visual-evaluator`.
 - **استمرارية المهام الطويلة والاستئناف السلس**: ينتقل بين المراحل تلقائياً، ويستجيب فوراً لأي رسالة جديدة، ويستأنف التقدّم بعد إعادة التشغيل مع مشغّل `ultracode ralph run` الأصيل.
 - **إضافي بالكامل وقابل للإزالة النظيفة**: لا يعدّل الملفات التنفيذية الرسمية لـ OpenCode، ولا يقرأ مفاتيح API الخاصة بك، ويحافظ على إعداداتك ومهاراتك الحالية.
@@ -87,7 +87,7 @@ ultracode pair      # إنشاء رابط ورمز QR لربط المتصفح أ
 <div dir="rtl">
 
 - **تبديل الدور الرئيسي**: اضغط `Shift+Tab` للتبديل بين `UltraBuild` (الافتراضي) و`UltraPlan` (تخطيط للقراءة فقط).
-- **مفاتيح التحكم الفورية**: بدّل **Command approvals** (`auto` افتراضياً) و**Direction questions** (`manual` افتراضياً) عبر كبسولة `UltraCode` في سطح المكتب، أو `Settings → UltraCode`، أو لوحة أوامر الطرفية، أو عبر `/approvals` و`/direction` على الويب والهاتف.
+- **مفاتيح التحكم الفورية**: بدّل **موافقات الأوامر** (`auto` افتراضياً) و**أسئلة الاتجاه** (`manual` افتراضياً) عبر كبسولة `UltraCode` في سطح المكتب، أو `Settings → UltraCode`، أو لوحة أوامر الطرفية، أو عبر `/approvals` و`/direction` على الويب والهاتف.
 
 ## مرجع الأوامر
 
@@ -99,7 +99,7 @@ ultracode pair      # إنشاء رابط ورمز QR لربط المتصفح أ
 | `ultracode upgrade` | تحديث OpenCode V2 الرسمي وUltraCode معاً ومزامنة الإعدادات |
 | `ultracode sync` | مزامنة الإعدادات والإضافة والأدوار وبيئة التشغيل بأمان |
 | `ultracode doctor` | فحص سريع للإصدار والإضافات والأدوار دون أي استدعاء للنماذج |
-| `ultracode ralph run <goal>` | تشغيل دورات Ralph المعزولة داخل linked Git worktree |
+| `ultracode ralph run <goal>` | تشغيل دورات Ralph المعزولة داخل شجرة عمل Git مرتبطة |
 | `ultracode uninstall --yes` | إزالة UltraCode بنظافة مع الحفاظ على إعداداتك ونسخك الاحتياطية |
 
 ## هيكلية المستودع
@@ -110,11 +110,11 @@ ultracode pair      # إنشاء رابط ورمز QR لربط المتصفح أ
 Project.UltraCode/
 ├── packages/
 │   ├── installer/      # واجهة ultracode الموحّدة ودمج JSONC وبناء 6 منصات مستقلة
-│   ├── plugin-gui/     # إضافة واجهة OpenCode Desktop الرسومية (ComposerPill وSettingsPage)
+│   ├── plugin-gui/     # إضافة واجهة OpenCode Desktop الرسومية (كبسولة التحكم وصفحة الإعدادات)
 │   └── config/         # أدوار OpenCode المدمجة وإضافة المزامنة Server/TUI/RPC وقوالب Ralph
-├── scripts/            # سكربتات التثبيت الفوري دون متطلبات مسبقة (install.sh وinstall.ps1)
+├── scripts/            # سكربتات التثبيت الفوري (install.sh وinstall.ps1) ومولّد الرسوميات لست لغات
 ├── website/            # الموقع الرسمي والوثائق بست لغات عبر Astro + Starlight
-└── docs/               # الوثائق المعمارية ومرجع الواجهات والنشر على Cloudflare ورسوميات SVG
+└── docs/               # الوثائق المعمارية ومرجع الواجهات والنشر على Cloudflare ورسوميات SVG السداسية
 ```
 
 <div dir="rtl">

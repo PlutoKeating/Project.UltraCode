@@ -34,7 +34,7 @@ En lugar de adivinar antes de tiempo o perder el rumbo a mitad de una tarea comp
 ### Capacidades clave
 
 - **Un solo comando, cero requisitos previos**: el único comando `ultracode` es totalmente compatible con todas las banderas y subcomandos de `opencode`. El instalador y `ultracode upgrade` detectan, instalan o actualizan automáticamente OpenCode V2 oficial (`v2.3.2+`).
-- **Sincronización en vivo en cada superficie**: el paquete integrado `ultracode-conversation` sincroniza el estado en tiempo real entre Server RPC, la paleta de comandos TUI, OpenCode Desktop (`ComposerPill` y `Settings → UltraCode`) y Web/Móvil (`/approvals` y `/direction`).
+- **Sincronización en vivo en cada superficie**: el paquete integrado `ultracode-conversation` sincroniza el estado en tiempo real entre Server RPC, la paleta de comandos TUI, OpenCode Desktop (cápsula rápida sobre el editor y página `Settings → UltraCode`) y Web/Móvil (`/approvals` y `/direction`).
 - **Dos roles principales + cinco especialistas**: cambia en cualquier momento con `Shift+Tab` entre `UltraBuild` (entrega de extremo a extremo) y `UltraPlan` (planificación de solo lectura), respaldados automáticamente por `librarian`, `architect`, `implementer`, `reviewer` y `visual-evaluator`.
 - **Continuidad de tareas largas y reanudación limpia**: avanza hitos automáticamente, cede el control al instante cuando envías un nuevo mensaje y retoma el progreso tras reiniciar; incluye el ejecutor multiplataforma `ultracode ralph run`.
 - **Estrictamente aditivo y reversible**: nunca modifica los binarios oficiales de OpenCode, nunca lee ni transmite tus claves API, conserva comentarios JSONC y skills personalizados, y se desinstala limpiamente.
@@ -71,7 +71,7 @@ ultracode pair      # Genera enlace y código QR para acceso desde navegador o m
 ```
 
 - **Cambio de rol**: pulsa `Shift+Tab` para alternar entre `UltraBuild` (por defecto) y `UltraPlan` (solo lectura).
-- **Interruptores en tiempo real**: alterna **Command approvals** (`auto` por defecto) y **Direction questions** (`manual` por defecto) desde la cápsula `UltraCode` en Desktop, `Settings → UltraCode`, la paleta TUI o `/approvals` y `/direction` en Web y Móvil.
+- **Interruptores en tiempo real**: alterna **la aprobación de comandos** (`auto` por defecto) y **las preguntas de dirección** (`manual` por defecto) desde la cápsula `UltraCode` en Desktop, `Settings → UltraCode`, la paleta TUI o `/approvals` y `/direction` en Web y Móvil.
 
 ## Referencia CLI
 
@@ -83,7 +83,7 @@ ultracode pair      # Genera enlace y código QR para acceso desde navegador o m
 | `ultracode upgrade` | Actualiza conjuntamente OpenCode V2 oficial y UltraCode y sincroniza ajustes |
 | `ultracode sync` | Sincroniza de forma idempotente configuración, plugin, roles y runtime |
 | `ultracode doctor` | Verifica versión, plugin, roles y MCP sin realizar llamadas a modelos |
-| `ultracode ralph run <goal>` | Ejecuta iteraciones aisladas de Ralph en un linked Git worktree |
+| `ultracode ralph run <goal>` | Ejecuta iteraciones aisladas de Ralph en un árbol de trabajo Git vinculado |
 | `ultracode uninstall --yes` | Elimina UltraCode limpiamente conservando tus configuraciones y respaldos |
 
 ## Estructura del repositorio
@@ -92,11 +92,11 @@ ultracode pair      # Genera enlace y código QR para acceso desde navegador o m
 Project.UltraCode/
 ├── packages/
 │   ├── installer/      # CLI unificado ultracode, fusión JSONC y compilador autónomo para 6 plataformas
-│   ├── plugin-gui/     # Plugin gráfico de OpenCode Desktop (ComposerPill y SettingsPage)
+│   ├── plugin-gui/     # Plugin gráfico de OpenCode Desktop (cápsula rápida y página de ajustes)
 │   └── config/         # Roles integrados de OpenCode, plugin Server/TUI/RPC y plantillas Ralph
-├── scripts/            # Scripts de instalación sin requisitos previos (install.sh e install.ps1)
+├── scripts/            # Scripts de instalación (install.sh, install.ps1) y generador SVG/OG en 6 idiomas
 ├── website/            # Sitio oficial y documentación Astro + Starlight en 6 idiomas
-└── docs/               # Arquitectura, API, inicio rápido, despliegue en Cloudflare y recursos SVG
+└── docs/               # Arquitectura, API, inicio rápido, despliegue en Cloudflare y recursos SVG en 6 idiomas
 ```
 
 ## Verificación local

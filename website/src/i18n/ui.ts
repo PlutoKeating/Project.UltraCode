@@ -90,9 +90,14 @@ export const LOCALE_META: Record<Locale, LocaleMeta> = {
   },
 };
 
+export function svgBidi(lang: Locale, text: string): string {
+  return lang === "ar" ? `\u202B${text}\u202C` : text;
+}
+
 export interface LandingCopy {
   metaTitle: string;
   metaDescription: string;
+  llmsLinkTitle: string;
   navAria: string;
   navDocs: string;
   langMenuAria: string;
@@ -128,6 +133,7 @@ export const LANDING_COPY: Record<Locale, LandingCopy> = {
     metaTitle: "UltraCode — Reliable End-to-End Delivery for OpenCode",
     metaDescription:
       "UltraCode v1.0.0 brings upfront clarification, specialist subagents, real-browser visual checks, and durable handoffs to official OpenCode V2 across macOS, Linux, and Windows — Terminal, Desktop, Web, and Mobile.",
+    llmsLinkTitle: "UltraCode LLM Documentation Index",
     navAria: "Main navigation",
     navDocs: "Docs",
     langMenuAria: "Select language",
@@ -169,6 +175,7 @@ export const LANDING_COPY: Record<Locale, LandingCopy> = {
     metaTitle: "UltraCode — 让 OpenCode 稳妥完成复杂工程交付",
     metaDescription:
       "UltraCode v1.0.0 基于官方 OpenCode V2 构建，提供前置需求确认、后台角色协作、真实浏览器界面巡检与长程断点续跑，原生支持 macOS、Linux 与 Windows 及终端、桌面端、网页与手机端。",
+    llmsLinkTitle: "UltraCode 大模型与智能体文档索引",
     navAria: "主导航",
     navDocs: "文档",
     langMenuAria: "选择语言",
@@ -209,6 +216,7 @@ export const LANDING_COPY: Record<Locale, LandingCopy> = {
     metaTitle: "UltraCode — إنجاز هندسي متكامل وموثوق لمنصة OpenCode",
     metaDescription:
       "يضيف UltraCode v1.0.0 توضيح المتطلبات المسبق، والوكلاء المتخصصين في الخلفية، والفحص البصري في متصفح حقيقي، واستئناف المهام الطويلة إلى OpenCode V2 الرسمي على macOS وLinux وWindows.",
+    llmsLinkTitle: "فهرس وثائق UltraCode للنماذج اللغوية",
     navAria: "التنقل الرئيسي",
     navDocs: "الوثائق",
     langMenuAria: "اختر اللغة",
@@ -249,6 +257,7 @@ export const LANDING_COPY: Record<Locale, LandingCopy> = {
     metaTitle: "UltraCode — Livraison de bout en bout fiable pour OpenCode",
     metaDescription:
       "UltraCode v1.0.0 enrichit OpenCode V2 officiel avec clarification initiale, sous-agents spécialisés, vérification visuelle sur navigateur réel et reprise durable sur macOS, Linux et Windows.",
+    llmsLinkTitle: "Index de documentation UltraCode pour LLM",
     navAria: "Navigation principale",
     navDocs: "Docs",
     langMenuAria: "Choisir la langue",
@@ -278,7 +287,7 @@ export const LANDING_COPY: Record<Locale, LandingCopy> = {
       "Enchaîne les jalons automatiquement, vous redonne la main dès que vous intervenez et reprend proprement après redémarrage.",
     sec6Title: "Contrôle synchronisé sur Terminal, Desktop et Mobile",
     sec6Sub:
-      "Basculez Command approvals et Direction questions depuis la capsule Desktop, la palette TUI ou /approvals et /direction sur Web et Mobile.",
+      "Basculez l’approbation des commandes et les questions d’orientation depuis la capsule Desktop, la palette TUI ou /approvals et /direction sur Web et Mobile.",
     closeTitle: "Une commande pour installer. Gardez vos propres modèles.",
     closeTrust:
       "Installe OpenCode V2 officiel automatiquement · Binaire officiel intact · Clés API jamais lues · Désinstallation propre",
@@ -290,6 +299,7 @@ export const LANDING_COPY: Record<Locale, LandingCopy> = {
     metaTitle: "UltraCode — Надёжная сквозная разработка на базе OpenCode",
     metaDescription:
       "UltraCode v1.0.0 дополняет официальный OpenCode V2 уточнением требований, профильными субагентами, визуальной проверкой в реальном браузере и сохранением прогресса на macOS, Linux и Windows.",
+    llmsLinkTitle: "Индекс документации UltraCode для LLM",
     navAria: "Основная навигация",
     navDocs: "Документация",
     langMenuAria: "Выбрать язык",
@@ -319,7 +329,7 @@ export const LANDING_COPY: Record<Locale, LandingCopy> = {
       "Автоматически проходит этапы, мгновенно реагирует на ваши правки и продолжает работу после перезапуска.",
     sec6Title: "Синхронное управление в терминале, на десктопе и с телефона",
     sec6Sub:
-      "Переключайте Command approvals и Direction questions через капсулу в Desktop, палитру команд TUI или /approvals и /direction в браузере и на телефоне.",
+      "Переключайте одобрение команд и вопросы по направлению через капсулу в Desktop, палитру команд TUI или /approvals и /direction в браузере и на телефоне.",
     closeTitle: "Установка одной командой. Ваши модели остаются с вами.",
     closeTrust:
       "Автоустановка OpenCode V2 · Без патчей бинарников · Без доступа к API-ключам · Чистое удаление",
@@ -331,6 +341,7 @@ export const LANDING_COPY: Record<Locale, LandingCopy> = {
     metaTitle: "UltraCode — Entrega confiable de principio a fin para OpenCode",
     metaDescription:
       "UltraCode v1.0.0 aporta aclaración previa, subagentes especializados, verificación visual en navegador real y continuidad de sesiones a OpenCode V2 oficial en macOS, Linux y Windows.",
+    llmsLinkTitle: "Índice de documentación de UltraCode para LLM",
     navAria: "Navegación principal",
     navDocs: "Docs",
     langMenuAria: "Seleccionar idioma",
@@ -360,7 +371,7 @@ export const LANDING_COPY: Record<Locale, LandingCopy> = {
       "Avanza por hitos automáticamente, cede el control al instante cuando intervienes y retoma el progreso tras reiniciar.",
     sec6Title: "Control sincronizado en Terminal, Escritorio y Móvil",
     sec6Sub:
-      "Alterna Command approvals y Direction questions desde la cápsula de Escritorio, la paleta TUI o /approvals y /direction en Web y Móvil.",
+      "Alterna la aprobación de comandos y las preguntas de dirección desde la cápsula de Escritorio, la paleta TUI o /approvals y /direction en Web y Móvil.",
     closeTitle: "Instala en una línea. Conserva tus propios modelos.",
     closeTrust:
       "Prepara OpenCode V2 oficial automáticamente · Sin tocar binarios ni claves API · Desinstalación limpia",
@@ -657,9 +668,9 @@ export const DIAGRAMS_COPY: Record<Locale, DiagramsCopy> = {
     controls: {
       aria: "UltraCode 跨端同步双开关",
       surfacesMeta: "终端 · 桌面端 · 网页端",
-      approvalsTitle: "命令审批 · Command approvals",
+      approvalsTitle: "命令审批",
       approvalsSub: "默认自动放行常规步骤，减少频繁打断；你显式禁止的危险操作始终拦截。",
-      directionTitle: "方向确认 · Direction questions",
+      directionTitle: "方向确认",
       directionSub: "默认遇到重大产品或架构分岔先询问你；想全程放手推进时可随时切为 auto。",
     },
     vqa: {
@@ -762,9 +773,9 @@ export const DIAGRAMS_COPY: Record<Locale, DiagramsCopy> = {
     controls: {
       aria: "مفاتيح UltraCode المتزامنة عبر الطرفية وسطح المكتب والويب",
       surfacesMeta: "الطرفية · سطح المكتب · الويب",
-      approvalsTitle: "موافقات الأوامر · Command approvals",
+      approvalsTitle: "موافقات الأوامر",
       approvalsSub: "يمرّر الخطوات الروتينية تلقائياً دون مقاطعة، مع بقاء قواعد المنع الصريحة فعّالة دائماً.",
-      directionTitle: "أسئلة الاتجاه · Direction questions",
+      directionTitle: "أسئلة الاتجاه",
       directionSub: "يسألك افتراضياً قبل القرارات المعمارية الكبرى؛ ويمكنك التبديل إلى auto للاستقلالية الكاملة.",
     },
     vqa: {
@@ -867,9 +878,9 @@ export const DIAGRAMS_COPY: Record<Locale, DiagramsCopy> = {
     controls: {
       aria: "Interrupteurs UltraCode synchronisés sur Terminal, Desktop et Web",
       surfacesMeta: "Terminal · Bureau · Web",
-      approvalsTitle: "Approbations · Command approvals",
+      approvalsTitle: "Approbation des commandes",
       approvalsSub: "Autorise automatiquement les actions courantes ; vos règles de refus explicites restent toujours actives.",
-      directionTitle: "Direction · Direction questions",
+      directionTitle: "Questions d’orientation",
       directionSub: "Demande votre avis avant tout choix structurant ; passez en auto à tout moment pour l’autonomie complète.",
     },
     vqa: {
@@ -972,9 +983,9 @@ export const DIAGRAMS_COPY: Record<Locale, DiagramsCopy> = {
     controls: {
       aria: "Синхронизируемые переключатели UltraCode",
       surfacesMeta: "Терминал · Десктоп · Веб",
-      approvalsTitle: "Одобрение команд · Command approvals",
+      approvalsTitle: "Одобрение команд",
       approvalsSub: "Автоматически пропускает рутинные шаги без лишних пауз; явные запреты всегда соблюдаются.",
-      directionTitle: "Вопросы по курсу · Direction questions",
+      directionTitle: "Вопросы по направлению",
       directionSub: "По умолчанию уточняет важные архитектурные развилки; переключите в auto для полной автономии.",
     },
     vqa: {
@@ -1077,9 +1088,9 @@ export const DIAGRAMS_COPY: Record<Locale, DiagramsCopy> = {
     controls: {
       aria: "Interruptores sincronizados de UltraCode en Terminal, Escritorio y Web",
       surfacesMeta: "Terminal · Escritorio · Web",
-      approvalsTitle: "Aprobaciones · Command approvals",
+      approvalsTitle: "Aprobación de comandos",
       approvalsSub: "Aprueba pasos rutinarios automáticamente sin interrupciones; las reglas de bloqueo explícitas siempre se respetan.",
-      directionTitle: "Dirección · Direction questions",
+      directionTitle: "Preguntas de dirección",
       directionSub: "Pregunta por defecto ante decisiones importantes de diseño; cambia a auto cuando quieras autonomía total.",
     },
     vqa: {

@@ -1,5 +1,6 @@
 import { execFileSync } from "node:child_process";
-import { cp, mkdir, writeFile } from "node:fs/promises";
+import { cp, mkdir, readdir, stat, writeFile } from "node:fs/promises";
+import { homedir, tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { DIAGRAMS_COPY, LOCALES, LOCALE_META, type Locale } from "../website/src/i18n/ui";
@@ -21,10 +22,49 @@ function bidi(lang: Locale, s: string): string {
   return lang === "ar" ? `\u202B${escaped}\u202C` : escaped;
 }
 
+async function resolveChromeBinary(): Promise<string> {
+  if (process.env.CHROME_BIN) return process.env.CHROME_BIN;
+  for (const cmd of ["google-chrome", "google-chrome-stable", "chromium", "chromium-browser"]) {
+    try {
+      const found = execFileSync("which", [cmd], { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim();
+      if (found) return found;
+    } catch {
+      // Try next candidate
+    }
+  }
+  const cacheDirs = [
+    join(homedir(), ".cache/ms-playwright"),
+    join(homedir(), "Library/Caches/ms-playwright"),
+  ];
+  for (const base of cacheDirs) {
+    try {
+      const entries = (await readdir(base)).filter((d) => d.startsWith("chromium-")).sort().reverse();
+      for (const entry of entries) {
+        for (const rel of [
+          "chrome-linux64/chrome",
+          "chrome-linux/chrome",
+          "chrome-mac/Chromium.app/Contents/MacOS/Chromium",
+        ]) {
+          const candidate = join(base, entry, rel);
+          try {
+            const st = await stat(candidate);
+            if (st.isFile()) return candidate;
+          } catch {
+            // Continue searching
+          }
+        }
+      }
+    } catch {
+      // Cache dir absent
+    }
+  }
+  throw new Error("Could not locate a headless Chromium binary. Set CHROME_BIN=/path/to/chrome.");
+}
+
 const SANS_STACK =
   "ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', 'Ubuntu Sans', 'Noto Sans Arabic', 'Geeza Pro', 'SF Arabic', 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans CJK SC', 'Noto Sans CJK TC', 'Microsoft YaHei', sans-serif";
 const MONO_STACK =
-  "ui-monospace, SFMono-Regular, Menlo, Consolas, 'DejaVu Sans Mono', 'Noto Sans Arabic', 'PingFang SC', 'Noto Sans CJK SC', 'Noto Sans CJK TC', monospace";
+  "'JetBrains Mono', SFMono-Regular, Menlo, Consolas, 'Noto Sans Arabic', 'Geeza Pro', 'SF Arabic', 'PingFang SC', 'Noto Sans CJK SC', 'Noto Sans CJK TC', 'DejaVu Sans Mono', ui-monospace, monospace";
 
 const BANNER_COPY: Record<
   Locale,
@@ -159,6 +199,7 @@ function renderHeroBannerSvg(lang: Locale): string {
 
 function renderWorkflowSvg(lang: Locale): string {
   const t = DIAGRAMS_COPY[lang].comparison;
+  const metaFont = lang === "ar" ? SANS_STACK : MONO_STACK;
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 328" fill="none" direction="ltr" role="img" aria-label="${esc(t.aria)}">
   <rect width="840" height="328" rx="12" fill="#050505"/>
   <rect x="0.5" y="0.5" width="839" height="327" rx="11.5" stroke="#FFFFFF" stroke-opacity="0.12"/>
@@ -173,7 +214,7 @@ function renderWorkflowSvg(lang: Locale): string {
     <path d="M186.5 142.5H194.5 M190.5 138.5V146.5 M376.5 142.5H384.5 M380.5 138.5V146.5 M566.5 142.5H574.5 M570.5 138.5V146.5" stroke="#FFFFFF" stroke-opacity="0.28" stroke-width="1"/>
 
     <text x="16" y="34" fill="#B5B5B5" font-family="${SANS_STACK}" font-size="15.5" font-weight="600">${bidi(lang, t.topTitle)}</text>
-    <text x="744" y="34" text-anchor="end" fill="#9A9A9A" font-family="${MONO_STACK}" font-size="12">${bidi(lang, t.topMeta)}</text>
+    <text x="744" y="34" text-anchor="end" fill="#9A9A9A" font-family="${metaFont}" font-size="12.5">${bidi(lang, t.topMeta)}</text>
 
     <polyline points="24,92 140,66 256,68 362,84 468,96 602,106 736,100" stroke="#787878" stroke-width="1.8" stroke-dasharray="5,5" fill="none"/>
     <circle cx="24" cy="92" r="4.5" fill="#8A8A8A"/>
@@ -188,7 +229,7 @@ function renderWorkflowSvg(lang: Locale): string {
     <text x="744" y="126" text-anchor="end" fill="#B5B5B5" font-family="${SANS_STACK}" font-size="13.5">${bidi(lang, t.t4)}</text>
 
     <text x="16" y="178" fill="#FFFFFF" font-family="${SANS_STACK}" font-size="16" font-weight="600">${bidi(lang, t.botTitle)}</text>
-    <text x="744" y="178" text-anchor="end" fill="#E5E5E5" font-family="${MONO_STACK}" font-size="12">${bidi(lang, t.botMeta)}</text>
+    <text x="744" y="178" text-anchor="end" fill="#E5E5E5" font-family="${metaFont}" font-size="12.5">${bidi(lang, t.botMeta)}</text>
 
     <line x1="24" y1="234" x2="736" y2="202" stroke="#BAE6FD" stroke-opacity="0.32" stroke-width="5"/>
     <line x1="24" y1="234" x2="736" y2="202" stroke="#FFFFFF" stroke-width="2"/>
@@ -374,6 +415,7 @@ function renderOgHtml(lang: Locale): string {
   .built {
     font-size: 15px;
     color: #e5a03d;
+    unicode-bidi: isolate;
   }
 </style>
 </head>
@@ -397,11 +439,11 @@ function renderOgHtml(lang: Locale): string {
     <div class="center">
       <h1>${esc(b.ogTitleLines[0])}<br/>${esc(b.ogTitleLines[1])}</h1>
       <p class="sub">${esc(b.sub)}</p>
-      <p class="surfaces">macOS · Linux · Windows &nbsp;|&nbsp; ${esc(b.surfaces)}</p>
+      <p class="surfaces" dir="ltr">macOS · Linux · Windows &nbsp;|&nbsp; <span dir="${meta.dir}">${esc(b.surfaces)}</span></p>
     </div>
     <div class="botbar">
       <span class="cmd">curl -fsSL https://ultracode.plutokeating.beer/install.sh | bash</span>
-      <span class="built">${esc(b.built)}</span>
+      <span class="built" dir="${meta.dir}">${esc(b.built)}</span>
     </div>
   </div>
 </body>
@@ -418,17 +460,16 @@ for (const lang of LOCALES) {
   await writeFile(join(dir, "roles-topology.svg"), renderRolesSvg(lang), "utf8");
 }
 
-// Keep root docs/assets/*.svg synced with English default
 for (const name of ["hero-banner.svg", "workflow-comparison.svg", "roles-topology.svg"]) {
   await cp(join(assetsRoot, "en", name), join(assetsRoot, name));
 }
 
-// Render 6 localized 1200x630 OpenGraph PNGs via headless Chromium
-const chromeBin = "/home/pluto/.cache/ms-playwright/chromium-1228/chrome-linux64/chrome";
-await mkdir("/tmp/opencode/og-gen", { recursive: true });
+const chromeBin = await resolveChromeBinary();
+const tempOgDir = join(tmpdir(), "ultracode-og-gen");
+await mkdir(tempOgDir, { recursive: true });
 
 for (const lang of LOCALES) {
-  const htmlFile = `/tmp/opencode/og-gen/og-${lang}.html`;
+  const htmlFile = join(tempOgDir, `og-${lang}.html`);
   await writeFile(htmlFile, renderOgHtml(lang), "utf8");
   const outName = lang === "en" ? "og-card.png" : `og-card-${lang}.png`;
   const outPath = join(publicRoot, outName);

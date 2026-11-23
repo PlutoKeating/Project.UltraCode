@@ -1,5 +1,5 @@
 ---
-import { DIAGRAMS_COPY, type Locale } from "../../i18n/ui";
+import { DIAGRAMS_COPY, svgBidi, type Locale } from "../../i18n/ui";
 
 interface Props {
   lang?: Locale;
@@ -16,32 +16,32 @@ const t = DIAGRAMS_COPY[lang].longRun;
   <line x1="36" y1="74" x2="484" y2="74" stroke="#FFFFFF" stroke-width="2"/>
 
   <circle cx="36" cy="74" r="5.5" fill="#000000" stroke="#FFFFFF" stroke-width="2"/>
-  <text x="36" y="42" fill="#FFFFFF" font-family="Sora, PingFang SC, sans-serif" font-size="14.5" font-weight="500">{t.n1Title}</text>
-  <text x="36" y="110" fill="#B5B5B5" font-family="Sora, PingFang SC, sans-serif" font-size="12.5">{t.n1Sub}</text>
+  <text x="36" y="42" fill="#FFFFFF" font-family="var(--uc-font-sans)" font-size="14.5" font-weight="500">{svgBidi(lang, t.n1Title)}</text>
+  <text x="36" y="110" fill="#B5B5B5" font-family="var(--uc-font-sans)" font-size="12.5">{svgBidi(lang, t.n1Sub)}</text>
 
   <circle cx="258" cy="74" r="5.5" fill="#000000" stroke="#FFFFFF" stroke-width="2"/>
-  <text x="258" y="42" text-anchor="middle" fill="#FFFFFF" font-family="Sora, PingFang SC, sans-serif" font-size="14.5" font-weight="500">{t.n2Title}</text>
-  <text x="258" y="110" text-anchor="middle" fill="#B5B5B5" font-family="Sora, PingFang SC, sans-serif" font-size="12.5">{t.n2Sub}</text>
+  <text x="258" y="42" text-anchor="middle" fill="#FFFFFF" font-family="var(--uc-font-sans)" font-size="14.5" font-weight="500">{svgBidi(lang, t.n2Title)}</text>
+  <text x="258" y="110" text-anchor="middle" fill="#B5B5B5" font-family="var(--uc-font-sans)" font-size="12.5">{svgBidi(lang, t.n2Sub)}</text>
 
   <circle cx="484" cy="74" r="5.5" fill="#E5A03D"/>
-  <text x="484" y="42" text-anchor="middle" fill="#E5A03D" font-family="Sora, PingFang SC, sans-serif" font-size="14.5" font-weight="500">{t.n3Title}</text>
-  <text x="484" y="110" text-anchor="middle" fill="#C4C4C4" font-family="Sora, PingFang SC, sans-serif" font-size="12.5">{t.n3Sub}</text>
+  <text x="484" y="42" text-anchor="middle" fill="#E5A03D" font-family="var(--uc-font-sans)" font-size="14.5" font-weight="500">{svgBidi(lang, t.n3Title)}</text>
+  <text x="484" y="110" text-anchor="middle" fill="#C4C4C4" font-family="var(--uc-font-sans)" font-size="12.5">{svgBidi(lang, t.n3Sub)}</text>
 
   <circle cx="728" cy="74" r="6" fill="#BAE6FD"/>
-  <text x="728" y="42" text-anchor="end" fill="#BAE6FD" font-family="Sora, PingFang SC, sans-serif" font-size="14.5" font-weight="500">{t.n4Title}</text>
-  <text x="728" y="110" text-anchor="end" fill="#C4C4C4" font-family="Sora, PingFang SC, sans-serif" font-size="12.5">{t.n4Sub}</text>
+  <text x="728" y="42" text-anchor="end" fill="#BAE6FD" font-family="var(--uc-font-sans)" font-size="14.5" font-weight="500">{svgBidi(lang, t.n4Title)}</text>
+  <text x="728" y="110" text-anchor="end" fill="#C4C4C4" font-family="var(--uc-font-sans)" font-size="12.5">{svgBidi(lang, t.n4Sub)}</text>
 
   <line x1="0" y1="142.5" x2="760" y2="142.5" stroke="rgba(255,255,255,0.08)"/>
   <line x1="380.5" y1="143" x2="380.5" y2="219" stroke="rgba(255,255,255,0.08)"/>
 
   <circle cx="14" cy="180" r="3.5" fill="#E5A03D"/>
-  <text x="28" y="185" font-family="Sora, PingFang SC, sans-serif" font-size="12.5" fill="#D4D4D4">
-    <tspan fill="#FFFFFF" font-weight="500">{t.steerBold}</tspan>{" "}{t.steerSub}
+  <text x="28" y="185" font-family="var(--uc-font-sans)" font-size="12.5" fill="#D4D4D4">
+    <tspan fill="#FFFFFF" font-weight="500">{svgBidi(lang, t.steerBold)}</tspan>{" "}{svgBidi(lang, t.steerSub)}
   </text>
 
   <circle cx="398" cy="180" r="3.5" fill="#BAE6FD"/>
-  <text x="412" y="185" font-family="Sora, PingFang SC, sans-serif" font-size="12.5" fill="#D4D4D4">
-    <tspan fill="#FFFFFF" font-weight="500">{t.resumeBold}</tspan>{" "}{t.resumeSub}
+  <text x="412" y="185" font-family="var(--uc-font-sans)" font-size="12.5" fill="#D4D4D4">
+    <tspan fill="#FFFFFF" font-weight="500">{svgBidi(lang, t.resumeBold)}</tspan>{" "}{svgBidi(lang, t.resumeSub)}
   </text>
 </svg>
 

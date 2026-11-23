@@ -69,7 +69,7 @@ ultracode pair      # 生成配对链接与二维码，接入浏览器或手机�
 ```
 
 - **切换主角色**：默认进入 `UltraBuild`；按 `Shift+Tab` 切换至纯只读规划角色 `UltraPlan`。
-- **实时切换双开关**：通过 OpenCode Desktop 输入框上方 **UltraCode** 胶囊、`Settings → UltraCode`、TUI 命令面板，或在网页/手机端输入 `/approvals`、`/direction`，实时切换 **Command approvals**（默认 `auto`）与 **Direction questions**（默认 `manual`）。
+- **实时切换双开关**：通过 OpenCode Desktop 输入框上方 **UltraCode** 胶囊、`Settings → UltraCode`、TUI 命令面板，或在网页/手机端输入 `/approvals`、`/direction`，实时切换 **命令审批**（默认 `auto`）与 **方向确认**（默认 `manual`）。
 
 ## 常用命令参考
 
@@ -81,7 +81,7 @@ ultracode pair      # 生成配对链接与二维码，接入浏览器或手机�
 | `ultracode upgrade` | 一键更新官方 OpenCode V2 与 UltraCode 并自动同步配置 |
 | `ultracode sync` | 幂等同步配置、多触点插件、角色与受管运行时 |
 | `ultracode doctor` | 零模型调用快速检查版本、插件、角色与 MCP 状态 |
-| `ultracode ralph run <goal>` | 在专用 linked Git worktree 中运行跨会话隔离的 Ralph 循环 |
+| `ultracode ralph run <goal>` | 在专用关联 Git 工作树中运行跨会话隔离的 Ralph 循环 |
 | `ultracode uninstall --yes` | 干净移除 UltraCode 受管文件与二进制（保留个人配置与备份） |
 
 ## 项目目录架构
@@ -90,11 +90,11 @@ ultracode pair      # 生成配对链接与二维码，接入浏览器或手机�
 Project.UltraCode/
 ├── packages/
 │   ├── installer/      # 统一 ultracode CLI、JSONC 无损合并器与 6 平台交叉构建脚本
-│   ├── plugin-gui/     # OpenCode Desktop 桌面端插件源码（ComposerPill 与独立设置页）
+│   ├── plugin-gui/     # OpenCode Desktop 桌面端插件源码（顶部快捷胶囊与独立设置页）
 │   └── config/         # 内嵌 OpenCode 角色、Server/TUI/RPC 多端同步插件与 Ralph 模板
-├── scripts/            # 零前置一键安装脚本（install.sh 与 install.ps1）
+├── scripts/            # 零前置安装脚本（install.sh、install.ps1）与 6 语矢量/分享图生成器
 ├── website/            # Astro + Starlight 6 国语言官网与文档站点（ultracode.plutokeating.beer）
-└── docs/               # 架构设计、命令接口、快速开始、Cloudflare 部署指南与共享 SVG 资产
+└── docs/               # 架构设计、命令接口、快速开始、Cloudflare 部署指南与 6 语 SVG 资产
 ```
 
 ## 本地开发与验证

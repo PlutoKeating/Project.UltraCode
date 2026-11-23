@@ -34,7 +34,7 @@ Au lieu de deviner trop tôt ou de perdre le contexte à mi-parcours, UltraCode 
 ### Capacités clés
 
 - **Une seule commande, zéro prérequis** : la commande unique `ultracode` transmet intégralement tous les arguments et sous-commandes d’`opencode`. L’installateur et `ultracode upgrade` détectent, installent ou mettent à jour automatiquement OpenCode V2 officiel (`v2.3.2+`).
-- **Synchronisation en direct sur toutes les interfaces** : le plugin embarqué `ultracode-conversation` synchronise l’état entre Server RPC, la palette TUI, OpenCode Desktop (`ComposerPill` & `Settings → UltraCode`) et Web/Mobile (`/approvals` et `/direction`).
+- **Synchronisation en direct sur toutes les interfaces** : le plugin embarqué `ultracode-conversation` synchronise l’état entre Server RPC, la palette TUI, OpenCode Desktop (capsule rapide & page `Settings → UltraCode`) et Web/Mobile (`/approvals` et `/direction`).
 - **Deux rôles principaux + cinq spécialistes** : basculez à tout moment via `Shift+Tab` entre `UltraBuild` (livraison complète) et `UltraPlan` (planification en lecture seule), épaulés automatiquement par `librarian`, `architect`, `implementer`, `reviewer` et `visual-evaluator`.
 - **Continuité des tâches longues & reprise nette** : enchaîne les jalons automatiquement, vous redonne immédiatement la main dès qu’un message est envoyé et reprend après redémarrage ; inclut le lanceur multiplateforme `ultracode ralph run`.
 - **Strictement additif & réversible** : ne modifie jamais les binaires officiels d’OpenCode, ne lit aucune clé API, préserve vos commentaires JSONC et skills existants, et se désinstalle proprement.
@@ -71,7 +71,7 @@ ultracode pair      # Générer un lien et un QR code pour navigateur ou mobile
 ```
 
 - **Changement de rôle** : appuyez sur `Shift+Tab` pour passer entre `UltraBuild` (par défaut) et `UltraPlan` (planification seule).
-- **Interrupteurs temps réel** : basculez **Command approvals** (`auto` par défaut) et **Direction questions** (`manual` par défaut) depuis la capsule `UltraCode` sur Desktop, `Settings → UltraCode`, la palette TUI ou `/approvals` et `/direction` sur Web et Mobile.
+- **Interrupteurs temps réel** : basculez **l’approbation des commandes** (`auto` par défaut) et **les questions d’orientation** (`manual` par défaut) depuis la capsule `UltraCode` sur Desktop, `Settings → UltraCode`, la palette TUI ou `/approvals` et `/direction` sur Web et Mobile.
 
 ## Référence CLI
 
@@ -83,7 +83,7 @@ ultracode pair      # Générer un lien et un QR code pour navigateur ou mobile
 | `ultracode upgrade` | Met à jour OpenCode V2 officiel et UltraCode puis synchronise la configuration |
 | `ultracode sync` | Synchronise de manière idempotente la configuration, le plugin et les rôles |
 | `ultracode doctor` | Vérifie l’installation sans effectuer le moindre appel à un modèle IA |
-| `ultracode ralph run <goal>` | Exécute la boucle Ralph en sessions isolées dans un linked Git worktree |
+| `ultracode ralph run <goal>` | Exécute la boucle Ralph en sessions isolées dans un arbre de travail Git lié |
 | `ultracode uninstall --yes` | Supprime proprement UltraCode tout en conservant vos réglages et sauvegardes |
 
 ## Architecture du dépôt
@@ -92,11 +92,11 @@ ultracode pair      # Générer un lien et un QR code pour navigateur ou mobile
 Project.UltraCode/
 ├── packages/
 │   ├── installer/      # CLI unifiée ultracode, fusion JSONC & compilation autonome 6 plateformes
-│   ├── plugin-gui/     # Plugin graphique OpenCode Desktop (ComposerPill & SettingsPage)
+│   ├── plugin-gui/     # Plugin graphique OpenCode Desktop (capsule rapide & page de réglages)
 │   └── config/         # Rôles OpenCode embarqués, plugin Server/TUI/RPC & modèles Ralph
-├── scripts/            # Scripts d’installation sans prérequis (install.sh & install.ps1)
+├── scripts/            # Scripts d’installation (install.sh, install.ps1) & générateur SVG/OG 6 langues
 ├── website/            # Site officiel & documentation Astro + Starlight en 6 langues
-└── docs/               # Architecture, référence API, démarrage rapide, déploiement Cloudflare & SVG
+└── docs/               # Architecture, référence API, démarrage rapide, déploiement Cloudflare & SVG 6 langues
 ```
 
 ## Vérification locale

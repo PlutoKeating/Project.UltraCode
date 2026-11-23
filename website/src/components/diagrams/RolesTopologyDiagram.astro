@@ -1,5 +1,5 @@
 ---
-import { DIAGRAMS_COPY, type Locale } from "../../i18n/ui";
+import { DIAGRAMS_COPY, svgBidi, type Locale } from "../../i18n/ui";
 
 interface Props {
   lang?: Locale;
@@ -12,21 +12,19 @@ const t = DIAGRAMS_COPY[lang].roles;
   <line x1="0" y1="0.5" x2="760" y2="0.5" stroke="rgba(255,255,255,0.08)"/>
   <line x1="0" y1="279.5" x2="760" y2="279.5" stroke="rgba(255,255,255,0.08)"/>
 
-  <!-- Primary roles -->
   <line x1="24" y1="24" x2="318" y2="24" stroke="#BAE6FD" stroke-width="1.8"/>
   <rect x="24" y="24" width="294" height="78" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.14)"/>
-  <text x="44" y="55" fill="#FFFFFF" font-family="JetBrains Mono, monospace" font-size="16.5" font-weight="500">UltraBuild</text>
-  <text x="44" y="83" fill="#C4C4C4" font-family="Sora, PingFang SC, sans-serif" font-size="13.5">{t.buildSub}</text>
+  <text x="44" y="55" fill="#FFFFFF" font-family="var(--uc-font-mono)" font-size="16.5" font-weight="500">UltraBuild</text>
+  <text x="44" y="83" fill="#C4C4C4" font-family="var(--uc-font-sans)" font-size="13.5">{svgBidi(lang, t.buildSub)}</text>
 
   <line x1="318" y1="63" x2="442" y2="63" stroke="rgba(255,255,255,0.24)" stroke-dasharray="4 4"/>
   <rect x="334" y="47" width="92" height="32" fill="#000000" stroke="rgba(255,255,255,0.22)"/>
-  <text x="380" y="68" text-anchor="middle" fill="#FFFFFF" font-family="JetBrains Mono, monospace" font-size="13">Shift+Tab</text>
+  <text x="380" y="68" text-anchor="middle" fill="#FFFFFF" font-family="var(--uc-font-mono)" font-size="13">Shift+Tab</text>
 
   <rect x="442" y="24" width="294" height="78" fill="transparent" stroke="rgba(255,255,255,0.12)"/>
-  <text x="462" y="55" fill="#E5E5E5" font-family="JetBrains Mono, monospace" font-size="16.5" font-weight="500">UltraPlan</text>
-  <text x="462" y="83" fill="#B0B0B0" font-family="Sora, PingFang SC, sans-serif" font-size="13.5">{t.planSub}</text>
+  <text x="462" y="55" fill="#E5E5E5" font-family="var(--uc-font-mono)" font-size="16.5" font-weight="500">UltraPlan</text>
+  <text x="462" y="83" fill="#B0B0B0" font-family="var(--uc-font-sans)" font-size="13.5">{svgBidi(lang, t.planSub)}</text>
 
-  <!-- Bus trunk & 5 branches -->
   <line x1="171" y1="102" x2="171" y2="146" stroke="rgba(255,255,255,0.36)" stroke-width="1.4"/>
   <line x1="76" y1="146" x2="684" y2="146" stroke="rgba(255,255,255,0.18)" stroke-width="1.4"/>
   <line x1="76" y1="146" x2="76" y2="178" stroke="rgba(255,255,255,0.22)"/>
@@ -41,21 +39,21 @@ const t = DIAGRAMS_COPY[lang].roles;
   <circle cx="532" cy="178" r="4" fill="#E5A03D"/>
   <circle cx="684" cy="178" r="4.5" fill="#BAE6FD"/>
 
-  <g font-family="Sora, PingFang SC, sans-serif" text-anchor="middle">
-    <text x="76" y="216" fill="#FFFFFF" font-size="15.5" font-weight="500">{t.r1Title}</text>
-    <text x="76" y="244" fill="#B5B5B5" font-size="13">{t.r1Sub}</text>
+  <g font-family="var(--uc-font-sans)" text-anchor="middle">
+    <text x="76" y="216" fill="#FFFFFF" font-size="15.5" font-weight="500">{svgBidi(lang, t.r1Title)}</text>
+    <text x="76" y="244" fill="#B5B5B5" font-size="13">{svgBidi(lang, t.r1Sub)}</text>
 
-    <text x="228" y="216" fill="#FFFFFF" font-size="15.5" font-weight="500">{t.r2Title}</text>
-    <text x="228" y="244" fill="#B5B5B5" font-size="13">{t.r2Sub}</text>
+    <text x="228" y="216" fill="#FFFFFF" font-size="15.5" font-weight="500">{svgBidi(lang, t.r2Title)}</text>
+    <text x="228" y="244" fill="#B5B5B5" font-size="13">{svgBidi(lang, t.r2Sub)}</text>
 
-    <text x="380" y="216" fill="#FFFFFF" font-size="15.5" font-weight="500">{t.r3Title}</text>
-    <text x="380" y="244" fill="#C4C4C4" font-size="13">{t.r3Sub}</text>
+    <text x="380" y="216" fill="#FFFFFF" font-size="15.5" font-weight="500">{svgBidi(lang, t.r3Title)}</text>
+    <text x="380" y="244" fill="#C4C4C4" font-size="13">{svgBidi(lang, t.r3Sub)}</text>
 
-    <text x="532" y="216" fill="#FFFFFF" font-size="15.5" font-weight="500">{t.r4Title}</text>
-    <text x="532" y="244" fill="#E5A03D" font-size="13">{t.r4Sub}</text>
+    <text x="532" y="216" fill="#FFFFFF" font-size="15.5" font-weight="500">{svgBidi(lang, t.r4Title)}</text>
+    <text x="532" y="244" fill="#E5A03D" font-size="13">{svgBidi(lang, t.r4Sub)}</text>
 
-    <text x="684" y="216" fill="#BAE6FD" font-size="15.5" font-weight="500">{t.r5Title}</text>
-    <text x="684" y="244" fill="#E0E0E0" font-size="13">{t.r5Sub}</text>
+    <text x="684" y="216" fill="#BAE6FD" font-size="15.5" font-weight="500">{svgBidi(lang, t.r5Title)}</text>
+    <text x="684" y="244" fill="#E0E0E0" font-size="13">{svgBidi(lang, t.r5Sub)}</text>
   </g>
 </svg>
 
