@@ -1,0 +1,134 @@
+name: Upstream Canary
+
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: upstream-canary
+  cancel-in-progress: false
+
+jobs:
+  canary:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository (read-only, zero git credentials persisted)
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.3.14"
+
+      - name: Install workspace dependencies
+        run: |
+          bun install --cwd packages/plugin-gui --frozen-lockfile
+          bun install --cwd packages/installer --frozen-lockfile
+
+      - name: Install latest official OpenCode V2
+        run: |
+          curl -fsSL https://opencode.ai/v2/install | bash
+          echo "$HOME/.opencode/bin" >> "$GITHUB_PATH"
+          "$HOME/.opencode/bin/opencode" --version
+
+      - name: Run deterministic upstream probe and clean-room live host canary
+        id: probe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set +e
+          bun run scripts/check-upstreams.ts \
+            --verify-live \
+            --out-json canary.json \
+            --out-md canary-report.md
+          code=$?
+          set -e
+          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+
+      - name: Upload canary diagnostics artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: upstream-canary-report
+          path: |
+            canary.json
+            canary-report.md
+
+      - name: Reconcile single deduplicated upstream-sync Issue
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ ! -f canary.json ] || [ ! -f canary-report.md ]; then
+            echo "Canary output files missing; skipping issue reconciliation." >&2
+            exit 1
+          fi
+
+          gh label create upstream-sync \
+            --color E5A03D \
+            --description "Automated upstream compatibility & version tracking" \
+            --force
+
+          eval "$(bun -e '
+            import { readFileSync } from "node:fs";
+            const r = JSON.parse(readFileSync("canary.json", "utf8"));
+            const canaryOk = r.canary ? Boolean(r.canary.ok) : true;
+            const actionable = Boolean(r.hasUpdates || r.hasErrors || !canaryOk);
+            const updatedIds = (r.items || []).filter((i) => i.status === "update-available").map((i) => `${i.id}@${i.latestVersion}`).join(", ");
+            let title = "Upstream Stewardship: ";
+            if (!canaryOk) title += `live opencode v${r.canary?.opencodeVersion || "latest"} canary failed`;
+            else if (r.hasErrors) title += "upstream probe encountered API errors";
+            else if (updatedIds) title += `updates available (${updatedIds})`;
+            else title += "aligned";
+            console.log(`ACTIONABLE=${actionable ? "1" : "0"}`);
+            console.log(`CANARY_OK=${canaryOk ? "1" : "0"}`);
+            console.log(`HAS_ERRORS=${r.hasErrors ? "1" : "0"}`);
+            console.log(`FINGERPRINT=${JSON.stringify(String(r.fingerprint || ""))}`);
+            console.log(`ISSUE_TITLE=${JSON.stringify(title)}`);
+          ')"
+
+          OPEN_JSON="$(gh issue list --state open --label upstream-sync --limit 1 --json number,body)"
+          EXISTING_NUMBER="$(OPEN_JSON="$OPEN_JSON" bun -e '
+            const arr = JSON.parse(process.env.OPEN_JSON || "[]");
+            process.stdout.write(arr[0]?.number ? String(arr[0].number) : "");
+          ')"
+          EXISTING_FP="$(OPEN_JSON="$OPEN_JSON" bun -e '
+            const arr = JSON.parse(process.env.OPEN_JSON || "[]");
+            const body = String(arr[0]?.body || "");
+            const m = body.match(/ultracode-upstream-fingerprint:\s*([a-f0-9]+)/i);
+            process.stdout.write(m?.[1] || "");
+          ')"
+
+          if [ "$ACTIONABLE" = "1" ]; then
+            if [ -z "$EXISTING_NUMBER" ]; then
+              gh issue create \
+                --title "$ISSUE_TITLE" \
+                --label "upstream-sync" \
+                --body-file canary-report.md
+            else
+              gh issue edit "$EXISTING_NUMBER" \
+                --title "$ISSUE_TITLE" \
+                --body-file canary-report.md
+              if [ "$EXISTING_FP" != "$FINGERPRINT" ] || [ "$CANARY_OK" != "1" ]; then
+                gh issue comment "$EXISTING_NUMBER" \
+                  --body "Updated upstream canary report (fingerprint: \`$FINGERPRINT\`, live host canary: \`$( [ "$CANARY_OK" = "1" ] && echo PASS || echo FAIL )\`)."
+              fi
+            fi
+          else
+            if [ -n "$EXISTING_NUMBER" ]; then
+              gh issue comment "$EXISTING_NUMBER" \
+                --body "All 4 monitored upstreams match \`packages/config/upstream-baseline.json\` and the clean-room live \`opencode\` canary passed. Closing automatically."
+              gh issue close "$EXISTING_NUMBER"
+            fi
+          fi
+
+          if [ "$CANARY_OK" != "1" ] || [ "$HAS_ERRORS" = "1" ]; then
+            exit 1
+          fi
