@@ -1,34 +1,34 @@
 ---
-title: 跨端开关、升级与卸载
-description: 在终端、桌面端与网页/移动端实时切换自治开关，并用统一命令管理升级、同步、体检与卸载。
+title: Live Controls, Upgrades & Uninstall
+description: Toggle autonomy across Terminal, Desktop, and Mobile/Web in real time, and manage everything from one ultracode command.
 ---
 
-import TuiControlsDiagram from "../../../components/diagrams/TuiControlsDiagram.astro";
+import TuiControlsDiagram from "@diagrams/TuiControlsDiagram.astro";
 
-UltraCode 的日常控制统一融入终端、桌面应用和手机/网页端，状态实时同步，无需手改任何配置文件。
+Day-to-day control stays synchronized across Terminal, Desktop, and Web/Mobile in real time with zero manual config editing.
 
-## 在任意端随时切换双开关
+## Toggle Switches on Any Surface
 
-- **桌面端（OpenCode Desktop）**：点击输入框上方的 **UltraCode** 胶囊即可一键切换；也可在 **Settings → UltraCode** 中打开开关页。
-- **终端（TUI）**：打开命令面板搜索 **UltraCode** 即可切换。
-- **网页端 / 移动端（`ultracode pair`）**：在输入框直接输入 `/approvals` 或 `/direction`（菜单会实时显示当前 `auto` / `manual` 状态，回车秒切，零模型调用）。
+- **Desktop App (OpenCode Desktop)**: Click the **UltraCode** pill above the composer for one-click toggles, or open **Settings → UltraCode**.
+- **Terminal (TUI)**: Open the Command Palette and search **UltraCode**.
+- **Web & Mobile (`ultracode pair`)**: Type `/approvals` or `/direction` in the composer (shows the live `auto` / `manual` state and toggles immediately with zero AI model calls).
 
 <figure class="uc-doc-figure">
-  <TuiControlsDiagram lang="zh" />
-  <figcaption>终端、桌面端与网页/移动端共享同一套实时同步的命令审批与方向询问开关。</figcaption>
+  <TuiControlsDiagram lang="en" />
+  <figcaption>Live-synced Command approvals and Direction questions across Terminal, Desktop, and Web.</figcaption>
 </figure>
 
-- **Command approvals（命令自动执行）**：默认开启（`auto`），自动放行常规操作减少打断；显式禁止的危险规则始终生效。
-- **Direction questions（关键方向确认）**：默认开启（`manual`），遇到重大产品或架构分岔时先弹出选择题等你拍板。
+- **Command approvals**: Set to `auto` by default so routine steps run smoothly without constant prompts, while explicit deny rules always remain enforced.
+- **Direction questions**: Set to `manual` by default so UltraCode asks with structured choice cards whenever a material product or architectural decision needs your input.
 
-## 常用命令速查
+## Unified Command Reference
 
-| 命令 | 作用 |
+| Command | What It Does |
 | --- | --- |
-| `ultracode` | 启动终端界面（所有 OpenCode 参数与子命令直接互通） |
-| `ultracode desktop` | 打开官方桌面客户端；若未安装则自动下载官方安装包 |
-| `ultracode pair` | 生成连接链接与二维码，接入浏览器或手机客户端 |
-| `ultracode upgrade` | 一键更新官方 OpenCode 与 UltraCode 并同步配置 |
-| `ultracode sync` | 重新对齐配置与运行时状态 |
-| `ultracode doctor` | 零模型调用快速健康体检 |
-| `ultracode uninstall --yes` | 干净卸载 UltraCode，完整保留你的个人配置与备份 |
+| `ultracode` | Open the terminal UI (all OpenCode flags & subcommands work directly) |
+| `ultracode desktop` | Launch OpenCode Desktop, or download the official installer if missing |
+| `ultracode pair` | Generate a pairing link & QR code for browser or mobile access |
+| `ultracode upgrade` | Update official OpenCode and UltraCode together, then sync |
+| `ultracode sync` | Re-sync configuration and managed runtime |
+| `ultracode doctor` | Fast setup health check with zero AI model calls |
+| `ultracode uninstall --yes` | Cleanly remove UltraCode while preserving your own configs and backups |

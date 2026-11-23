@@ -1,0 +1,25 @@
+---
+title: 长任务推进与断点恢复
+description: 多阶段任务自动衔接推进，发消息随时插话调整方向；重启终端或隔天回来一句话继续。
+---
+
+import LongRunningDiagram from "@diagrams/LongRunningDiagram.astro";
+
+复杂功能往往无法在一轮回复内做完。UltraCode 支持按阶段持续推进，既不会写出一半草率停下，也不会用大量中间日志刷屏。
+
+<figure class="uc-doc-figure">
+  <LongRunningDiagram lang="zh" />
+  <figcaption>阶段完成后自动衔接下一步，进度写入仓库，随时可插话转向或跨会话恢复。</figcaption>
+</figure>
+
+## 长任务中的实际使用体验
+
+- **自动衔接下一阶段**：每完成一个阶段自动进入下一步，对话中只汇报关键进展、阻塞问题与验证结果。
+- **随时插话立即接管**：在任意时刻发送新消息，都会立即调整方向或暂停当前推进，节奏始终由你掌控。
+- **重启或隔天无缝恢复**：关闭终端或桌面端后重新回来，只需打开 `ultracode` 发送一句：
+
+```text
+读取交接并继续
+```
+
+UltraCode 会从仓库记录中恢复已完成进度、验证证据与下一步计划，平稳接续剩余工作。

@@ -1,31 +1,33 @@
 ---
+import { DIAGRAMS_COPY, type Locale } from "../../i18n/ui";
+
 interface Props {
-  lang?: "zh" | "en";
+  lang?: Locale;
 }
-const { lang = "zh" } = Astro.props;
-const zh = lang === "zh";
+const { lang = "en" } = Astro.props;
+const t = DIAGRAMS_COPY[lang].minimal;
 ---
 
-<div class="uc-grid-4" role="group" aria-label={zh ? "1 分钟最小上手体验 4 步导轨" : "4-step minimal onboarding rail"}>
+<div class="uc-grid-4" role="group" aria-label={t.aria}>
   <div class="uc-step">
     <span class="uc-num">01</span>
-    <h3>{zh ? "一句话说出目标" : "State Your Goal"}</h3>
-    <p>{zh ? "任意空目录运行 ultracode，直接说出想要的结果。" : "Run ultracode anywhere and describe the outcome."}</p>
+    <h3>{t.s1Title}</h3>
+    <p>{t.s1Sub}</p>
   </div>
   <div class="uc-step">
     <span class="uc-num is-amber">02</span>
-    <h3>{zh ? "收到一次性选择题" : "Answer Choice Cards"}</h3>
-    <p>{zh ? "先调研，把关键分歧一次问齐，每题自带推荐项。" : "Researches first and batches key trade-offs once."}</p>
+    <h3>{t.s2Title}</h3>
+    <p>{t.s2Sub}</p>
   </div>
   <div class="uc-step">
     <span class="uc-num">03</span>
-    <h3>{zh ? "后台专家分工实现" : "Experts Build It"}</h3>
-    <p>{zh ? "主控拆解里程碑，后台并行编码并触发独立评审。" : "Orchestrator delegates build and skeptical audit."}</p>
+    <h3>{t.s3Title}</h3>
+    <p>{t.s3Sub}</p>
   </div>
   <div class="uc-step is-accent">
     <span class="uc-num is-ice">04</span>
-    <h3>{zh ? "真机浏览器目视交付" : "Real-Browser QA"}</h3>
-    <p>{zh ? "亲自打开真实浏览器截屏，修完排版错位再汇报完工。" : "Opens real Chromium and fixes layout before finish."}</p>
+    <h3>{t.s4Title}</h3>
+    <p>{t.s4Sub}</p>
   </div>
 </div>
 
@@ -35,16 +37,16 @@ const zh = lang === "zh";
     grid-template-columns: repeat(4, minmax(0, 1fr));
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    text-align: left;
+    text-align: start;
   }
 
   .uc-step {
     padding: 1.5rem 1.25rem;
-    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    border-inline-end: 1px solid rgba(255, 255, 255, 0.08);
   }
 
   .uc-step:last-child {
-    border-right: none;
+    border-inline-end: none;
   }
 
   .uc-step.is-accent {
@@ -89,7 +91,7 @@ const zh = lang === "zh";
     }
 
     .uc-step:nth-child(2n) {
-      border-right: none;
+      border-inline-end: none;
     }
 
     .uc-step:nth-child(-n + 2) {
@@ -103,7 +105,7 @@ const zh = lang === "zh";
     }
 
     .uc-step {
-      border-right: none;
+      border-inline-end: none;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
 

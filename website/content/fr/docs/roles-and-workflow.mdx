@@ -1,0 +1,32 @@
+---
+title: "Rôles principaux et experts en arrière-plan"
+description: "Deux rôles principaux simples en façade (UltraBuild et UltraPlan) soutenus automatiquement par cinq spécialistes."
+---
+
+import RolesTopologyDiagram from "@diagrams/RolesTopologyDiagram.astro";
+
+UltraCode masque la complexité multi-agents derrière une interface épurée. Vous n’interagissez jamais qu’avec **2 rôles principaux**, tandis que 5 experts en arrière-plan interviennent automatiquement au bon moment.
+
+<figure class="uc-doc-figure">
+  <RolesTopologyDiagram lang="fr" />
+  <figcaption>Deux rôles principaux clairs au premier plan, cinq spécialistes collaborant automatiquement en coulisses.</figcaption>
+</figure>
+
+## Choisir entre les deux rôles principaux
+
+Appuyez sur `Shift+Tab` à tout moment dans OpenCode pour basculer de l’un à l’autre :
+
+| Rôle principal | Par défaut | Fonctionnement | Idéal pour |
+| --- | --- | --- | --- |
+| **`UltraBuild`** | Par défaut | Clarifie les objectifs, découpe les jalons, coordonne les spécialistes et livre un résultat fonctionnel | Développement quotidien, correction de bugs et livraison de bout en bout |
+| **`UltraPlan`** | `Shift+Tab` | Planification strictement en lecture seule — ne modifie jamais votre code | Explorer des pistes, arbitrer des compromis et concevoir l’architecture sans risque |
+
+## Ce que font automatiquement les 5 experts en arrière-plan
+
+Vous n’avez jamais besoin de les invoquer manuellement — `UltraBuild` mobilise chacun d’eux au moment opportun :
+
+- **Recherche** : explore les conventions de votre dépôt et la documentation externe pour éviter toute supposition.
+- **Architecture** : définit les flux de données, les frontières entre modules et les compromis techniques avant d’écrire du code.
+- **Implémentation** : produit des modifications propres et bien délimitées, accompagnées des tests correspondants.
+- **Revue de code critique** : audite indépendamment le diff pour détecter les cas limites, régressions et exigences oubliées.
+- **QA visuelle sur navigateur réel** : ouvre un vrai navigateur pour parcourir l’interface et inspecter les captures d’écran desktop et mobile.

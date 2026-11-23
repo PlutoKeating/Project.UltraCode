@@ -25,8 +25,8 @@
   --uc-amber: #e5a03d;
   --uc-amber-glow: rgba(229, 160, 61, 0.18);
 
-  --uc-font-display: "Sora", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", sans-serif;
-  --uc-font-sans: "Sora", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  --uc-font-display: "Sora", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", "Geeza Pro", "SF Arabic", "Noto Sans Arabic", "Segoe UI", sans-serif;
+  --uc-font-sans: "Sora", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", "Geeza Pro", "SF Arabic", "Noto Sans Arabic", "Segoe UI", sans-serif;
   --uc-font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 

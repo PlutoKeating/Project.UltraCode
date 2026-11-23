@@ -1,0 +1,31 @@
+---
+title: 什么是目标工程（Goal Engineering）
+description: 告别繁琐的提示词技巧与手动拼凑上下文：用自然语言说清期望结果，交由系统闭环实现与验证。
+---
+
+import ThreeErasDiagram from "@diagrams/ThreeErasDiagram.astro";
+import GoalComparisonDiagram from "@diagrams/GoalComparisonDiagram.astro";
+
+面对多步骤工程任务，你不应该把精力花在反复调整单句提示词，或手动把几十个文件逐一贴进对话框里。
+
+<figure class="uc-doc-figure">
+  <ThreeErasDiagram lang="zh" />
+  <figcaption>从反复推敲单句指令，走向以可验证结果为导向的完整交付。</figcaption>
+</figure>
+
+## 为什么普通对话容易写到一半跑偏？
+
+普通 AI 对话往往在需求尚未明确时就急着改代码，长对话后遗忘前文约束，甚至改坏已有逻辑却直接汇报完成。UltraCode 将流程收敛为可验证的工程闭环：
+
+<figure class="uc-doc-figure">
+  <GoalComparisonDiagram lang="zh" />
+  <figcaption>普通 AI 对话与 UltraCode 闭环工作流的对比。</figcaption>
+</figure>
+
+## 用自然语言说清三件事即可
+
+无需背诵特殊命令或模板，只要像和同事沟通一样说明三点：
+
+- **给谁用**：目标受众是谁、运行在什么环境（桌面端、手机端、命令行或接口服务）。
+- **要做什么**：核心交互流程、偏好的视觉风格，以及明确不做的内容。
+- **怎么算完成**：你看重的验收标准（测试通过、手机端无溢出、关键边界处理稳妥）。

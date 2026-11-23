@@ -4,7 +4,13 @@
     "target": "ESNext",
     "module": "Preserve",
     "moduleResolution": "bundler",
-    "noEmit": true
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "@diagrams/*": ["src/components/diagrams/*"],
+      "@components/*": ["src/components/*"],
+      "@i18n/*": ["src/i18n/*"]
+    }
   },
   "include": ["scripts", "src"]
 }

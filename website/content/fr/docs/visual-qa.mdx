@@ -1,0 +1,20 @@
+---
+title: "QA visuelle sur navigateur réel"
+description: "Des tests unitaires au vert ne suffisent pas pour une interface. UltraCode ouvre un vrai navigateur, manipule les contrôles, inspecte les captures et corrige les défauts avant validation."
+---
+
+import VisualQaDiagram from "@diagrams/VisualQaDiagram.astro";
+
+Pour les applications et interfaces web, des tests unitaires réussis peuvent laisser passer des boutons qui se chevauchent, une mise en page mobile cassée, un contraste insuffisant ou des clics inactifs.
+
+<figure class="uc-doc-figure">
+  <VisualQaDiagram lang="fr" />
+  <figcaption>Interaction dans un vrai navigateur headless, inspection des captures desktop et mobile, et boucle automatique de correction et revérification.</figcaption>
+</figure>
+
+## Quatre vérifications visuelles avant de considérer le travail terminé
+
+1. **Exécution de l’application réelle** : démarre l’application en local et l’ouvre dans un véritable navigateur headless.
+2. **Interactions comme un vrai utilisateur** : actionne les boutons, formulaires, menus de navigation et états interactifs pour détecter les erreurs d’exécution ou de parcours.
+3. **Inspection des captures desktop et mobile** : repère les chevauchements d’éléments, textes tronqués, décalages d’alignement et problèmes de contraste selon les tailles d’écran.
+4. **Correction et nouvelle vérification** : dès qu’un défaut visuel ou interactif apparaît, UltraCode le corrige et reprend des captures fraîches avant de livrer.

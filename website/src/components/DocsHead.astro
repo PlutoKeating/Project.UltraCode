@@ -1,0 +1,103 @@
+---
+import StarlightHead from "@astrojs/starlight/components/Head.astro";
+import type { StarlightRouteData } from "@astrojs/starlight/route-data";
+import { FAQ_SCHEMA_ITEMS, LOCALE_META, type Locale } from "../i18n/ui";
+
+const siteOrigin = Astro.site?.origin ?? "https://ultracode.plutokeating.beer";
+const pathname = Astro.url.pathname.endsWith("/") ? Astro.url.pathname : `${Astro.url.pathname}/`;
+const canonicalUrl = new URL(pathname, siteOrigin).href;
+const ogImageUrl = new URL("/og-card.png", siteOrigin).href;
+
+const seg = pathname.split("/").filter(Boolean)[0];
+const localeKey: Locale =
+  seg === "zh" || seg === "ar" || seg === "fr" || seg === "ru" || seg === "es" ? seg : "en";
+const localeMeta = LOCALE_META[localeKey];
+
+const route = (Astro.locals as { starlightRoute?: StarlightRouteData }).starlightRoute;
+const pageTitle = route?.entry?.data?.title ?? "UltraCode Documentation";
+const pageDesc =
+  route?.entry?.data?.description ??
+  "Official documentation for UltraCode v1.0.0 on OpenCode V2.";
+
+const isFaq = pathname.endsWith("/docs/faq/");
+
+const graph: Record<string, unknown>[] = [
+  {
+    "@type": "Organization",
+    "@id": `${siteOrigin}/#organization`,
+    name: "UltraCode",
+    url: `${siteOrigin}/`,
+    logo: `${siteOrigin}/favicon.svg`,
+    sameAs: ["https://github.com/PlutoKeating/Project.UltraCode"],
+  },
+  {
+    "@type": "WebSite",
+    "@id": `${siteOrigin}/#website`,
+    url: `${siteOrigin}/`,
+    name: "UltraCode",
+    publisher: { "@id": `${siteOrigin}/#organization` },
+  },
+  {
+    "@type": "TechArticle",
+    "@id": `${canonicalUrl}#article`,
+    headline: pageTitle,
+    description: pageDesc,
+    url: canonicalUrl,
+    inLanguage: localeMeta.htmlLang,
+    mainEntityOfPage: canonicalUrl,
+    image: ogImageUrl,
+    author: { "@id": `${siteOrigin}/#organization` },
+    publisher: { "@id": `${siteOrigin}/#organization` },
+    isPartOf: { "@id": `${siteOrigin}/#website` },
+  },
+  {
+    "@type": "BreadcrumbList",
+    "@id": `${canonicalUrl}#breadcrumb`,
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "UltraCode",
+        item: new URL(localeMeta.homePath, siteOrigin).href,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: pageTitle,
+        item: canonicalUrl,
+      },
+    ],
+  },
+];
+
+if (isFaq) {
+  graph.push({
+    "@type": "FAQPage",
+    "@id": `${canonicalUrl}#faq`,
+    inLanguage: localeMeta.htmlLang,
+    mainEntity: FAQ_SCHEMA_ITEMS[localeKey].map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.a,
+      },
+    })),
+  });
+}
+
+const jsonLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@graph": graph,
+}).replace(/</g, "\\u003c");
+---
+
+<StarlightHead />
+<meta property="og:image" content={ogImageUrl} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="UltraCode v1.0.0 — End-to-End Goal Engineering for OpenCode" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content={ogImageUrl} />
+<link rel="alternate" type="text/plain" href="/llms.txt" title="UltraCode LLM Documentation Index" />
+<script type="application/ld+json" set:html={jsonLd} />

@@ -1,31 +1,33 @@
 ---
+import { DIAGRAMS_COPY, type Locale } from "../../i18n/ui";
+
 interface Props {
-  lang?: "zh" | "en";
+  lang?: Locale;
 }
-const { lang = "zh" } = Astro.props;
-const zh = lang === "zh";
+const { lang = "en" } = Astro.props;
+const t = DIAGRAMS_COPY[lang].controls;
 ---
 
-<div class="uc-tui-panel" role="group" aria-label={zh ? "UltraCode 跨端同步双开关" : "UltraCode live-synced switches across Terminal, Desktop, and Web"}>
-  <div class="uc-tui-search">
+<div class="uc-tui-panel" role="group" aria-label={t.aria}>
+  <div class="uc-tui-search" dir="ltr">
     <span class="uc-caret">&gt;</span>
     <span>UltraCode</span>
-    <span class="uc-surfaces-meta">{zh ? "Terminal · Desktop · Web" : "Terminal · Desktop · Web"}</span>
+    <span class="uc-surfaces-meta">Terminal · Desktop · Web</span>
   </div>
   <div class="uc-tui-grid">
     <div class="uc-tui-item">
       <div class="uc-tui-top">
-        <h3>Command approvals · {zh ? "命令审批" : "Approvals"}</h3>
-        <span class="uc-state is-ice"><i aria-hidden="true"></i>AUTO</span>
+        <h3>Command approvals · {t.approvalsLabel}</h3>
+        <span class="uc-state is-ice" dir="ltr"><i aria-hidden="true"></i>AUTO</span>
       </div>
-      <p>{zh ? "默认自动放行常规操作，减少打断；你显式禁止的危险规则始终生效。" : "Auto-approves routine actions so work flows; explicit deny rules always stay enforced."}</p>
+      <p>{t.approvalsSub}</p>
     </div>
     <div class="uc-tui-item">
       <div class="uc-tui-top">
-        <h3>Direction questions · {zh ? "方向询问" : "Direction"}</h3>
-        <span class="uc-state is-amber"><i aria-hidden="true"></i>MANUAL</span>
+        <h3>Direction questions · {t.directionLabel}</h3>
+        <span class="uc-state is-amber" dir="ltr"><i aria-hidden="true"></i>MANUAL</span>
       </div>
-      <p>{zh ? "默认遇到重大方向变化先问你再改；想完全放手推进时可随时切为 auto。" : "Asks before major direction shifts by default; switch to auto anytime for full autonomy."}</p>
+      <p>{t.directionSub}</p>
     </div>
   </div>
 </div>
@@ -34,7 +36,7 @@ const zh = lang === "zh";
   .uc-tui-panel {
     border-top: 1px solid rgba(255, 255, 255, 0.12);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    text-align: left;
+    text-align: start;
   }
 
   .uc-tui-search {
@@ -67,13 +69,15 @@ const zh = lang === "zh";
   }
 
   .uc-tui-item {
-    padding: 1.5rem 1.75rem 1.5rem 0.25rem;
-    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    padding-block: 1.5rem;
+    padding-inline: 0.25rem 1.75rem;
+    border-inline-end: 1px solid rgba(255, 255, 255, 0.08);
   }
 
   .uc-tui-item:last-child {
-    padding: 1.5rem 0.25rem 1.5rem 1.75rem;
-    border-right: none;
+    padding-block: 1.5rem;
+    padding-inline: 1.75rem 0.25rem;
+    border-inline-end: none;
   }
 
   .uc-tui-top {
@@ -139,7 +143,7 @@ const zh = lang === "zh";
     .uc-tui-item,
     .uc-tui-item:last-child {
       padding: 1.25rem 0.25rem;
-      border-right: none;
+      border-inline-end: none;
     }
 
     .uc-tui-item {

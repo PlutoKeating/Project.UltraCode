@@ -1,60 +1,58 @@
 ---
+import { DIAGRAMS_COPY, type Locale } from "../../i18n/ui";
+
 interface Props {
-  lang?: "zh" | "en";
+  lang?: Locale;
 }
-const { lang = "zh" } = Astro.props;
-const zh = lang === "zh";
+const { lang = "en" } = Astro.props;
+const t = DIAGRAMS_COPY[lang].hero;
 ---
 
 <div class="uc-stage-wrap">
   <div class="uc-specular-rim" aria-hidden="true"></div>
-  <div class="uc-stage" aria-label={zh ? "UltraCode 工作流与真机视觉验收实景示意" : "UltraCode workflow and real-browser visual QA preview"}>
+  <div class="uc-stage" aria-label={t.stageAria}>
     <div class="uc-stage-pane">
       <div class="uc-tui-prompt">
         <span class="uc-tui-chevron">&gt;</span>
-        <span>
-          {zh
-            ? "做一个个人作品集主页，克制暗色风格，桌面和手机都好看。"
-            : "Build a restrained dark portfolio page that looks sharp on desktop and mobile."}
-        </span>
+        <span>{t.prompt}</span>
       </div>
 
       <div class="uc-choice-row">
         <div class="uc-choice-item is-selected">
           <div class="uc-choice-head">
-            <span>{zh ? "纯黑光学暗场" : "Obsidian Optical"}</span>
+            <span>{t.c1Title}</span>
             <span class="uc-choice-dot"></span>
           </div>
-          <p>{zh ? "正黑底 + 冰青光刃" : "Pure black + ice blade"}</p>
+          <p>{t.c1Sub}</p>
         </div>
         <div class="uc-choice-item">
           <div class="uc-choice-head">
-            <span>{zh ? "瑞士工业网格" : "Swiss Hairline"}</span>
+            <span>{t.c2Title}</span>
             <span class="uc-choice-ring"></span>
           </div>
-          <p>{zh ? "1px 精密结构线" : "1px precision grid"}</p>
+          <p>{t.c2Sub}</p>
         </div>
         <div class="uc-choice-item">
           <div class="uc-choice-head">
-            <span>{zh ? "极简浅灰排版" : "Editorial Light"}</span>
+            <span>{t.c3Title}</span>
             <span class="uc-choice-ring"></span>
           </div>
-          <p>{zh ? "高对比纸面阅读" : "Crisp alabaster ink"}</p>
+          <p>{t.c3Sub}</p>
         </div>
       </div>
 
       <ul class="uc-milestones">
         <li>
           <span class="uc-tick" aria-hidden="true"></span>
-          <span>{zh ? "需求澄清与架构方案已锁定" : "Scope clarified & plan locked"}</span>
+          <span>{t.m1}</span>
         </li>
         <li>
           <span class="uc-tick" aria-hidden="true"></span>
-          <span>{zh ? "后台专家并行实现并完成独立评审" : "Subagents built & reviewed independently"}</span>
+          <span>{t.m2}</span>
         </li>
         <li class="is-active">
           <span class="uc-tick uc-tick-ice" aria-hidden="true"></span>
-          <span>{zh ? "真机浏览器桌面与移动端验收通过" : "Real browser desktop & mobile QA passed"}</span>
+          <span>{t.m3}</span>
         </li>
       </ul>
     </div>
@@ -64,11 +62,11 @@ const zh = lang === "zh";
     <div class="uc-stage-pane">
       <div class="uc-browser-head">
         <span class="uc-led" aria-hidden="true"></span>
-        <span>{zh ? "真机浏览器目视验收通过" : "Real-Browser Visual QA Passed"}</span>
+        <span>{t.browserHead}</span>
       </div>
 
-      <div class="uc-browser-viewport">
-        <svg viewBox="0 0 460 250" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label={zh ? "真机浏览器视觉检查示意图" : "Headless browser visual inspection diagram"}>
+      <div class="uc-browser-viewport" dir="ltr">
+        <svg viewBox="0 0 460 250" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label={t.browserAria}>
           <line x1="0" y1="0.5" x2="460" y2="0.5" stroke="rgba(255,255,255,0.08)"/>
           <line x1="92.5" y1="0" x2="92.5" y2="250" stroke="rgba(255,255,255,0.07)"/>
 
@@ -138,7 +136,7 @@ const zh = lang === "zh";
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     overflow: hidden;
-    text-align: left;
+    text-align: start;
     -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 76%, transparent 100%);
     mask-image: linear-gradient(to bottom, #000 0%, #000 76%, transparent 100%);
   }
@@ -162,8 +160,9 @@ const zh = lang === "zh";
     font-size: 0.94rem;
     line-height: 1.65;
     color: #ffffff;
-    padding: 0.35rem 0 0.35rem 0.95rem;
-    border-left: 1.5px solid rgba(255, 255, 255, 0.3);
+    padding-block: 0.35rem;
+    padding-inline-start: 0.95rem;
+    border-inline-start: 1px solid rgba(255, 255, 255, 0.3);
   }
 
   .uc-tui-chevron {
@@ -180,11 +179,11 @@ const zh = lang === "zh";
 
   .uc-choice-item {
     padding: 0.9rem 0.9rem;
-    border-right: 1px solid rgba(255, 255, 255, 0.07);
+    border-inline-end: 1px solid rgba(255, 255, 255, 0.07);
   }
 
   .uc-choice-item:last-child {
-    border-right: none;
+    border-inline-end: none;
   }
 
   .uc-choice-item.is-selected {
@@ -299,13 +298,19 @@ const zh = lang === "zh";
       height: 1px;
       width: 100%;
     }
+  }
+
+  @media (max-width: 640px) {
+    .uc-stage-pane {
+      padding: 1.45rem 1.25rem 2.25rem;
+    }
 
     .uc-choice-row {
       grid-template-columns: 1fr;
     }
 
     .uc-choice-item {
-      border-right: none;
+      border-inline-end: none;
       border-bottom: 1px solid rgba(255, 255, 255, 0.07);
     }
 

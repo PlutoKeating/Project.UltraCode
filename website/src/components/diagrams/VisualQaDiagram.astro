@@ -1,43 +1,45 @@
 ---
+import { DIAGRAMS_COPY, type Locale } from "../../i18n/ui";
+
 interface Props {
-  lang?: "zh" | "en";
+  lang?: Locale;
 }
-const { lang = "zh" } = Astro.props;
-const zh = lang === "zh";
+const { lang = "en" } = Astro.props;
+const t = DIAGRAMS_COPY[lang].vqa;
 ---
 
-<div class="uc-vqa" role="group" aria-label={zh ? "真机浏览器目视验收闭环" : "Real-browser visual QA verification loop"}>
+<div class="uc-vqa" role="group" aria-label={t.aria}>
   <div class="uc-vqa-grid">
     <div class="uc-vqa-step">
       <span class="uc-num">01</span>
-      <h3>{zh ? "启动真实页面" : "Launch Real App"}</h3>
-      <p>{zh ? "打开真实 Chromium，覆盖桌面与手机视口。" : "Opens real Chromium at desktop & mobile sizes."}</p>
+      <h3>{t.s1Title}</h3>
+      <p>{t.s1Sub}</p>
     </div>
     <div class="uc-vqa-step">
       <span class="uc-num is-ice">02</span>
-      <h3>{zh ? "实操并目视检查" : "Click & Inspect"}</h3>
-      <p>{zh ? "真实点击交互与表单，逐张检视排版与对比度。" : "Operates real controls and inspects layout & contrast."}</p>
+      <h3>{t.s2Title}</h3>
+      <p>{t.s2Sub}</p>
     </div>
     <div class="uc-vqa-step">
       <span class="uc-num is-amber">03</span>
-      <h3 class="is-amber">{zh ? "发现瑕疵即打回" : "Reject & Fix"}</h3>
-      <p>{zh ? "发现遮挡、错位或低对比度，自动退回修复后重测。" : "Flags overlap, clipping, or contrast and loops back."}</p>
+      <h3 class="is-amber">{t.s3Title}</h3>
+      <p>{t.s3Sub}</p>
     </div>
     <div class="uc-vqa-step is-accent">
       <span class="uc-num is-ice">04</span>
-      <h3 class="is-ice">{zh ? "眼见为实交付" : "Verified Ship"}</h3>
-      <p>{zh ? "杜绝“测试通过但界面崩坏”的半成品交付。" : "No more \"tests pass but UI is broken\"."}</p>
+      <h3 class="is-ice">{t.s4Title}</h3>
+      <p>{t.s4Sub}</p>
     </div>
   </div>
   <div class="uc-vqa-loop">
     <span class="uc-loop-dot" aria-hidden="true"></span>
-    <span>{zh ? "发现瑕疵自动回到第 02 步重测，独立视觉角色绝不放水" : "Defects loop back to step 02 — independent visual QA never rubber-stamps"}</span>
+    <span>{t.loopNote}</span>
   </div>
 </div>
 
 <style>
   .uc-vqa {
-    text-align: left;
+    text-align: start;
   }
 
   .uc-vqa-grid {
@@ -49,11 +51,11 @@ const zh = lang === "zh";
 
   .uc-vqa-step {
     padding: 1.5rem 1.25rem;
-    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    border-inline-end: 1px solid rgba(255, 255, 255, 0.08);
   }
 
   .uc-vqa-step:last-child {
-    border-right: none;
+    border-inline-end: none;
   }
 
   .uc-vqa-step.is-accent {
@@ -115,7 +117,7 @@ const zh = lang === "zh";
     }
 
     .uc-vqa-step:nth-child(2n) {
-      border-right: none;
+      border-inline-end: none;
     }
 
     .uc-vqa-step:nth-child(-n + 2) {
@@ -129,7 +131,7 @@ const zh = lang === "zh";
     }
 
     .uc-vqa-step {
-      border-right: none;
+      border-inline-end: none;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
 

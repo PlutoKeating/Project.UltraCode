@@ -1,12 +1,14 @@
 ---
+import { DIAGRAMS_COPY, type Locale } from "../../i18n/ui";
+
 interface Props {
-  lang?: "zh" | "en";
+  lang?: Locale;
 }
-const { lang = "zh" } = Astro.props;
-const zh = lang === "zh";
+const { lang = "en" } = Astro.props;
+const t = DIAGRAMS_COPY[lang].longRun;
 ---
 
-<svg viewBox="0 0 760 220" fill="none" xmlns="http://www.w3.org/2000/svg" class="uc-svg-diagram" role="img" aria-label={zh ? "长程任务自动推进、随时插话与重启续跑流程图" : "Long-running milestone continuation, steering, and resumption flow"}>
+<svg viewBox="0 0 760 220" fill="none" xmlns="http://www.w3.org/2000/svg" class="uc-svg-diagram" role="img" aria-label={t.aria}>
   <line x1="0" y1="0.5" x2="760" y2="0.5" stroke="rgba(255,255,255,0.08)"/>
   <line x1="0" y1="219.5" x2="760" y2="219.5" stroke="rgba(255,255,255,0.08)"/>
 
@@ -14,34 +16,34 @@ const zh = lang === "zh";
   <line x1="36" y1="74" x2="508" y2="74" stroke="#FFFFFF" stroke-width="2"/>
 
   <circle cx="44" cy="74" r="5.5" fill="#000000" stroke="#FFFFFF" stroke-width="2"/>
-  <text x="44" y="42" fill="#FFFFFF" font-family="Sora, PingFang SC, sans-serif" font-size="15.5" font-weight="500">{zh ? "里程碑 1 完成" : "Milestone 1"}</text>
-  <text x="44" y="110" fill="#B5B5B5" font-family="Sora, PingFang SC, sans-serif" font-size="13.5">{zh ? "自动记下一目标" : "Arms next step"}</text>
+  <text x="44" y="42" fill="#FFFFFF" font-family="Sora, PingFang SC, sans-serif" font-size="15" font-weight="500">{t.n1Title}</text>
+  <text x="44" y="110" fill="#B5B5B5" font-family="Sora, PingFang SC, sans-serif" font-size="13">{t.n1Sub}</text>
 
   <circle cx="276" cy="74" r="5.5" fill="#000000" stroke="#FFFFFF" stroke-width="2"/>
-  <text x="276" y="42" text-anchor="middle" fill="#FFFFFF" font-family="Sora, PingFang SC, sans-serif" font-size="15.5" font-weight="500">{zh ? "自动续跑" : "Auto-Continue"}</text>
-  <text x="276" y="110" text-anchor="middle" fill="#B5B5B5" font-family="Sora, PingFang SC, sans-serif" font-size="13.5">{zh ? "无需反复催促" : "Zero nudging"}</text>
+  <text x="276" y="42" text-anchor="middle" fill="#FFFFFF" font-family="Sora, PingFang SC, sans-serif" font-size="15" font-weight="500">{t.n2Title}</text>
+  <text x="276" y="110" text-anchor="middle" fill="#B5B5B5" font-family="Sora, PingFang SC, sans-serif" font-size="13">{t.n2Sub}</text>
 
   <circle cx="508" cy="74" r="5.5" fill="#E5A03D"/>
-  <text x="508" y="42" text-anchor="middle" fill="#E5A03D" font-family="Sora, PingFang SC, sans-serif" font-size="15.5" font-weight="500">{zh ? "交接落盘" : "Handoff Saved"}</text>
-  <text x="508" y="110" text-anchor="middle" fill="#C4C4C4" font-family="Sora, PingFang SC, sans-serif" font-size="13.5">{zh ? "进度存入仓库" : "Stored in repo"}</text>
+  <text x="508" y="42" text-anchor="middle" fill="#E5A03D" font-family="Sora, PingFang SC, sans-serif" font-size="15" font-weight="500">{t.n3Title}</text>
+  <text x="508" y="110" text-anchor="middle" fill="#C4C4C4" font-family="Sora, PingFang SC, sans-serif" font-size="13">{t.n3Sub}</text>
 
   <circle cx="716" cy="74" r="6" fill="#BAE6FD"/>
-  <text x="716" y="42" text-anchor="end" fill="#BAE6FD" font-family="Sora, PingFang SC, sans-serif" font-size="15.5" font-weight="500">{zh ? "闭环交付" : "Delivered"}</text>
-  <text x="716" y="110" text-anchor="end" fill="#C4C4C4" font-family="Sora, PingFang SC, sans-serif" font-size="13.5">{zh ? "验证通过再汇报" : "Verified done"}</text>
+  <text x="716" y="42" text-anchor="end" fill="#BAE6FD" font-family="Sora, PingFang SC, sans-serif" font-size="15" font-weight="500">{t.n4Title}</text>
+  <text x="716" y="110" text-anchor="end" fill="#C4C4C4" font-family="Sora, PingFang SC, sans-serif" font-size="13">{t.n4Sub}</text>
 
   <line x1="0" y1="142.5" x2="760" y2="142.5" stroke="rgba(255,255,255,0.08)"/>
   <line x1="380.5" y1="143" x2="380.5" y2="219" stroke="rgba(255,255,255,0.08)"/>
 
   <circle cx="14" cy="180" r="3.5" fill="#E5A03D"/>
-  <text x="28" y="185" font-family="Sora, PingFang SC, sans-serif" font-size="14">
-    <tspan fill="#FFFFFF" font-weight="500">{zh ? "随时插话叫停：" : "Steer anytime:"}</tspan>
-    <tspan dx="8" fill="#B5B5B5">{zh ? "新消息立即接管节奏" : "Overrides immediately"}</tspan>
+  <text x="28" y="185" font-family="Sora, PingFang SC, sans-serif" font-size="13.5">
+    <tspan fill="#FFFFFF" font-weight="500">{t.steerBold}</tspan>
+    <tspan dx="6" fill="#B5B5B5">{t.steerSub}</tspan>
   </text>
 
   <circle cx="398" cy="180" r="3.5" fill="#BAE6FD"/>
-  <text x="412" y="185" font-family="Sora, PingFang SC, sans-serif" font-size="14">
-    <tspan fill="#FFFFFF" font-weight="500">{zh ? "重启接力：" : "Resume:"}</tspan>
-    <tspan dx="8" fill="#B5B5B5">{zh ? "说“读取交接并继续”" : "\"read handoff & continue\""}</tspan>
+  <text x="412" y="185" font-family="Sora, PingFang SC, sans-serif" font-size="13.5">
+    <tspan fill="#FFFFFF" font-weight="500">{t.resumeBold}</tspan>
+    <tspan dx="6" fill="#B5B5B5">{t.resumeSub}</tspan>
   </text>
 </svg>
 
@@ -50,5 +52,6 @@ const zh = lang === "zh";
     width: 100%;
     height: auto;
     display: block;
+    direction: ltr;
   }
 </style>

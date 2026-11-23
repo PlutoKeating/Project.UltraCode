@@ -6,37 +6,112 @@ import MinimalDemoDiagram from "./diagrams/MinimalDemoDiagram.astro";
 import RolesTopologyDiagram from "./diagrams/RolesTopologyDiagram.astro";
 import LongRunningDiagram from "./diagrams/LongRunningDiagram.astro";
 import TuiControlsDiagram from "./diagrams/TuiControlsDiagram.astro";
+import { LANDING_COPY, LOCALES, LOCALE_META, type Locale } from "../i18n/ui";
 
 interface Props {
-  lang: "zh" | "en";
+  lang: Locale;
 }
 
 const { lang } = Astro.props;
-const zh = lang === "zh";
+const meta = LOCALE_META[lang];
+const copy = LANDING_COPY[lang];
+
+const siteOrigin = Astro.site?.origin ?? "https://ultracode.plutokeating.beer";
+const canonicalUrl = new URL(meta.homePath, siteOrigin).href;
+const ogImageUrl = new URL("/og-card.png", siteOrigin).href;
 
 const unixInstallCmd = "curl -fsSL https://ultracode.plutokeating.beer/install.sh | bash";
 const winInstallCmd = "irm https://ultracode.plutokeating.beer/install.ps1 | iex";
-const docsHref = zh ? "/docs/getting-started/" : "/en/docs/getting-started/";
-const altHref = zh ? "/en/" : "/";
-const altLabel = zh ? "EN" : "中文";
-const examplePrompt = zh
-  ? "帮我做一个个人作品集单页，克制暗色风格，桌面和手机都要好看，做完自己打开浏览器检查并修复所有排版问题。"
-  : "Build a restrained dark portfolio page that looks sharp on desktop and mobile, then open a real browser to inspect and fix any layout issues.";
+const docsHref = meta.docsStartPath;
+
+const jsonLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${siteOrigin}/#organization`,
+      name: "UltraCode",
+      url: `${siteOrigin}/`,
+      logo: `${siteOrigin}/favicon.svg`,
+      sameAs: ["https://github.com/PlutoKeating/Project.UltraCode"],
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${siteOrigin}/#website`,
+      url: `${siteOrigin}/`,
+      name: "UltraCode",
+      inLanguage: meta.htmlLang,
+      publisher: { "@id": `${siteOrigin}/#organization` },
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": `${siteOrigin}/#software`,
+      name: "UltraCode",
+      softwareVersion: "1.0.0",
+      applicationCategory: "DeveloperApplication",
+      operatingSystem: "macOS, Linux, Windows",
+      description: copy.metaDescription,
+      url: canonicalUrl,
+      image: ogImageUrl,
+      downloadUrl: "https://github.com/PlutoKeating/Project.UltraCode/releases/latest",
+      license: "https://opensource.org/licenses/MIT",
+      inLanguage: meta.htmlLang,
+      author: { "@id": `${siteOrigin}/#organization` },
+      offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "USD",
+      },
+    },
+  ],
+}).replace(/</g, "\\u003c");
 ---
 
 <!doctype html>
-<html lang={zh ? "zh-CN" : "en"} data-theme="dark">
+<html lang={meta.htmlLang} dir={meta.dir} data-theme="dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{zh ? "UltraCode — 让 OpenCode 迈入目标工程时代" : "UltraCode — Goal Engineering for OpenCode"}</title>
-    <meta
-      name="description"
-      content={zh
-        ? "继 Prompt 与 Context 之后，为官方 OpenCode 带来目标工程（Goal Engineering）：覆盖 macOS、Linux、Windows 及终端、桌面端、网页与移动端。"
-        : "Goal Engineering for official OpenCode V2 across macOS, Linux, and Windows — Terminal, Desktop App, Web, and Mobile."}
-    />
+    <title>{copy.metaTitle}</title>
+    <meta name="description" content={copy.metaDescription} />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <link rel="canonical" href={canonicalUrl} />
+    {
+      LOCALES.map((code) => (
+        <link
+          rel="alternate"
+          hreflang={LOCALE_META[code].hreflang}
+          href={new URL(LOCALE_META[code].homePath, siteOrigin).href}
+        />
+      ))
+    }
+    <link rel="alternate" hreflang="x-default" href={new URL("/", siteOrigin).href} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="UltraCode LLM Documentation Index" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="UltraCode" />
+    <meta property="og:title" content={copy.metaTitle} />
+    <meta property="og:description" content={copy.metaDescription} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={copy.metaTitle} />
+    <meta property="og:locale" content={meta.ogLocale} />
+    {
+      LOCALES.filter((code) => code !== lang).map((code) => (
+        <meta property="og:locale:alternate" content={LOCALE_META[code].ogLocale} />
+      ))
+    }
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={copy.metaTitle} />
+    <meta name="twitter:description" content={copy.metaDescription} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <script type="application/ld+json" set:html={jsonLd} />
   </head>
   <body>
     <div class="uc-optical-horizon" aria-hidden="true"></div>
@@ -44,7 +119,7 @@ const examplePrompt = zh
     <div class="uc-page">
       <header class="uc-nav">
         <div class="uc-nav-inner">
-          <a href={zh ? "/" : "/en/"} class="uc-brand" aria-label="UltraCode">
+          <a href={meta.homePath} class="uc-brand" aria-label="UltraCode" dir="ltr">
             <svg viewBox="0 0 240 300" fill="none" aria-hidden="true">
               <path d="M60 120H180V240H60V120Z" fill="#4B4B4B"/>
               <path d="M60 60H180V120H60V60Z" fill="#2A2A2A"/>
@@ -54,10 +129,33 @@ const examplePrompt = zh
             <span>UltraCode</span>
           </a>
 
-          <nav class="uc-nav-links" aria-label={zh ? "主导航" : "Main navigation"}>
-            <a href={docsHref}>{zh ? "文档" : "Docs"}</a>
-            <a href="https://github.com/PlutoKeating/Project.UltraCode" target="_blank" rel="noreferrer">GitHub</a>
-            <a href={altHref} class="uc-lang-link">{altLabel}</a>
+          <nav class="uc-nav-links" aria-label={copy.navAria}>
+            <a href={docsHref}>{copy.navDocs}</a>
+            <a href="https://github.com/PlutoKeating/Project.UltraCode" target="_blank" rel="noreferrer" dir="ltr">GitHub</a>
+            <details class="uc-lang-menu">
+              <summary class="uc-lang-link" aria-label={copy.langMenuAria}>
+                <span>{meta.shortLabel}</span>
+                <svg viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                  <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </summary>
+              <div class="uc-lang-popover" role="menu">
+                {
+                  LOCALES.map((code) => (
+                    <a
+                      href={LOCALE_META[code].homePath}
+                      role="menuitem"
+                      aria-current={code === lang ? "page" : undefined}
+                      class:list={["uc-lang-option", { "is-current": code === lang }]}
+                      dir={LOCALE_META[code].dir}
+                    >
+                      <span>{LOCALE_META[code].nativeLabel}</span>
+                      <span class="uc-lang-code" dir="ltr">{LOCALE_META[code].shortLabel}</span>
+                    </a>
+                  ))
+                }
+              </div>
+            </details>
           </nav>
         </div>
       </header>
@@ -66,15 +164,11 @@ const examplePrompt = zh
         <!-- Hero: Pure Pitch-Black Architecture + Fixed Anamorphic Optical Horizon -->
         <section class="uc-hero" data-lit>
           <div class="uc-container uc-hero-inner">
-            <h1>{zh ? "一句目标，交付到底" : "One Goal. Delivered End-to-End."}</h1>
-            <p class="uc-hero-sub">
-              {zh
-                ? "面向 macOS、Linux 与 Windows 的一体化目标工程，无缝覆盖终端、桌面端、网页与移动端。"
-                : "Goal Engineering across macOS, Linux, and Windows — Terminal, Desktop, Web, and Mobile."}
-            </p>
+            <h1>{copy.heroTitle}</h1>
+            <p class="uc-hero-sub">{copy.heroSub}</p>
 
             <div class="uc-install-stack" data-install-widget data-unix={unixInstallCmd} data-win={winInstallCmd}>
-              <div class="uc-os-tabs" role="tablist" aria-label={zh ? "选择操作系统" : "Select operating system"}>
+              <div class="uc-os-tabs" role="tablist" aria-label={copy.osTabsAria} dir="ltr">
                 <button type="button" role="tab" aria-selected="true" class="uc-os-tab is-active" data-os="unix">
                   macOS / Linux
                 </button>
@@ -84,34 +178,36 @@ const examplePrompt = zh
               </div>
 
               <div class="uc-install-row">
-                <div class="uc-install-bar">
+                <div class="uc-install-bar" dir="ltr">
                   <code class="uc-install-code" data-install-code>{unixInstallCmd}</code>
                   <button
                     type="button"
                     class="uc-btn-white"
                     data-copy={unixInstallCmd}
                     data-install-copy
-                    data-copied-label={zh ? "已复制" : "Copied"}
-                    data-default-label={zh ? "复制安装" : "Copy install"}
+                    data-copied-label={copy.copied}
+                    data-default-label={copy.copyInstall}
                   >
-                    {zh ? "复制安装" : "Copy install"}
+                    {copy.copyInstall}
                   </button>
                 </div>
                 <a href={docsHref} class="uc-quickstart-link">
-                  <span>{zh ? "快速开始" : "Quick start"}</span>
-                  <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <span>{copy.quickStart}</span>
+                  <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" class="uc-dir-arrow">
                     <path d="M3.5 8H12.5M9 4.5L12.5 8L9 11.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
                 </a>
               </div>
 
-              <div class="uc-surfaces-line" aria-label={zh ? "启动入口" : "Entry commands"}>
+              <div class="uc-surfaces-line" aria-label={copy.surfacesAria} dir="ltr">
                 <code>ultracode</code>
                 <span aria-hidden="true">·</span>
                 <code>ultracode desktop</code>
                 <span aria-hidden="true">·</span>
                 <code>ultracode pair</code>
               </div>
+
+              <p class="uc-provenance-line">{copy.builtWithCredit}</p>
             </div>
 
             <div class="uc-hero-stage">
@@ -124,12 +220,8 @@ const examplePrompt = zh
         <section class="uc-section" data-lit>
           <div class="uc-container">
             <div class="uc-section-head">
-              <h2>{zh ? "为什么装完立刻觉得更可靠了" : "Why Delivery Feels Immediately Stronger"}</h2>
-              <p>
-                {zh
-                  ? "普通对话边猜边写、越聊越偏；UltraCode 用可验证的目标闭环替代盲目试错。"
-                  : "Ordinary chat guesses and drifts; UltraCode replaces trial-and-error with a verified goal loop."}
-              </p>
+              <h2>{copy.sec2Title}</h2>
+              <p>{copy.sec2Sub}</p>
             </div>
             <div class="uc-open-canvas">
               <GoalComparisonDiagram lang={lang} />
@@ -141,12 +233,8 @@ const examplePrompt = zh
         <section class="uc-section" data-lit>
           <div class="uc-container">
             <div class="uc-section-head">
-              <h2>{zh ? "装完立刻试：1 分钟最小上手体验" : "Try It Immediately: 1-Minute Demo"}</h2>
-              <p>
-                {zh
-                  ? "在任意空目录运行 ultracode（或打开 ultracode desktop），直接发送这一句话。"
-                  : "Run ultracode (or open ultracode desktop) in any empty folder and send this single sentence."}
-              </p>
+              <h2>{copy.sec3Title}</h2>
+              <p>{copy.sec3Sub}</p>
             </div>
 
             <div class="uc-open-canvas">
@@ -155,17 +243,17 @@ const examplePrompt = zh
 
             <div class="uc-prompt-rail">
               <div class="uc-prompt-text">
-                <span class="uc-prompt-mark">&gt;</span>
-                <span>{examplePrompt}</span>
+                <span class="uc-prompt-mark" dir="ltr">&gt;</span>
+                <span>{copy.examplePrompt}</span>
               </div>
               <button
                 type="button"
                 class="uc-btn-ghost"
-                data-copy={examplePrompt}
-                data-copied-label={zh ? "已复制" : "Copied"}
-                data-default-label={zh ? "复制示例" : "Copy prompt"}
+                data-copy={copy.examplePrompt}
+                data-copied-label={copy.copied}
+                data-default-label={copy.copyPrompt}
               >
-                {zh ? "复制示例" : "Copy prompt"}
+                {copy.copyPrompt}
               </button>
             </div>
           </div>
@@ -175,12 +263,8 @@ const examplePrompt = zh
         <section class="uc-section" data-lit>
           <div class="uc-container">
             <div class="uc-section-head">
-              <h2>{zh ? "双主角色与 5 位后台专家" : "Two Primary Roles. Five Background Experts."}</h2>
-              <p>
-                {zh
-                  ? "日常直接和 UltraBuild 对话即可；想先推演方案、绝不误改代码时，按 Shift+Tab 切到 UltraPlan。"
-                  : "Talk naturally to UltraBuild for end-to-end delivery, or press Shift+Tab for read-only UltraPlan."}
-              </p>
+              <h2>{copy.sec4Title}</h2>
+              <p>{copy.sec4Sub}</p>
             </div>
             <div class="uc-open-canvas">
               <RolesTopologyDiagram lang={lang} />
@@ -192,12 +276,8 @@ const examplePrompt = zh
         <section class="uc-section" data-lit>
           <div class="uc-container">
             <div class="uc-section-head">
-              <h2>{zh ? "长程任务不掉链子，重启也能接着做" : "Built for Multi-Hour Goals & Clean Resumption"}</h2>
-              <p>
-                {zh
-                  ? "自动推进下一里程碑，随时响应插话与叫停；换天回来一句“读取交接并继续”即可无缝接力。"
-                  : "Advances milestones automatically, yields when you steer, and resumes cleanly after restarts."}
-              </p>
+              <h2>{copy.sec5Title}</h2>
+              <p>{copy.sec5Sub}</p>
             </div>
             <div class="uc-open-canvas">
               <LongRunningDiagram lang={lang} />
@@ -209,12 +289,8 @@ const examplePrompt = zh
         <section class="uc-section" data-lit>
           <div class="uc-container">
             <div class="uc-section-head">
-              <h2>{zh ? "终端、桌面与手机实时同步掌控" : "Live Control Across Terminal, Desktop & Mobile"}</h2>
-              <p>
-                {zh
-                  ? "桌面端通过输入框上方 UltraCode 胶囊与设置页切换，终端通过命令面板，网页与手机端直接输入 /approvals 或 /direction，状态实时同步。"
-                  : "Toggle Command approvals and Direction questions via the Desktop composer pill & Settings, the TUI Command Palette, or /approvals & /direction on Web and Mobile."}
-              </p>
+              <h2>{copy.sec6Title}</h2>
+              <p>{copy.sec6Sub}</p>
             </div>
             <div class="uc-open-canvas">
               <TuiControlsDiagram lang={lang} />
@@ -225,15 +301,11 @@ const examplePrompt = zh
         <!-- Section 7: Quiet Monumental Close -->
         <section class="uc-close" data-lit>
           <div class="uc-container uc-close-inner">
-            <h2>{zh ? "一条命令装好，继续用你自己的模型" : "Install in One Line. Keep Your Models."}</h2>
-            <p class="uc-close-trust">
-              {zh
-                ? "自动就绪 OpenCode V2 · 不改官方二进制 · 不碰 API 密钥 · 随时可无痕卸载"
-                : "Auto-sets up official OpenCode V2 · Never touches API keys · Preserves your config · Clean uninstall"}
-            </p>
+            <h2>{copy.closeTitle}</h2>
+            <p class="uc-close-trust">{copy.closeTrust}</p>
 
             <div class="uc-install-stack" data-install-widget data-unix={unixInstallCmd} data-win={winInstallCmd}>
-              <div class="uc-os-tabs" role="tablist" aria-label={zh ? "选择操作系统" : "Select operating system"}>
+              <div class="uc-os-tabs" role="tablist" aria-label={copy.osTabsAria} dir="ltr">
                 <button type="button" role="tab" aria-selected="true" class="uc-os-tab is-active" data-os="unix">
                   macOS / Linux
                 </button>
@@ -243,22 +315,22 @@ const examplePrompt = zh
               </div>
 
               <div class="uc-install-row">
-                <div class="uc-install-bar">
+                <div class="uc-install-bar" dir="ltr">
                   <code class="uc-install-code" data-install-code>{unixInstallCmd}</code>
                   <button
                     type="button"
                     class="uc-btn-white"
                     data-copy={unixInstallCmd}
                     data-install-copy
-                    data-copied-label={zh ? "已复制" : "Copied"}
-                    data-default-label={zh ? "复制安装" : "Copy install"}
+                    data-copied-label={copy.copied}
+                    data-default-label={copy.copyInstall}
                   >
-                    {zh ? "复制安装" : "Copy install"}
+                    {copy.copyInstall}
                   </button>
                 </div>
                 <a href={docsHref} class="uc-btn-outline">
-                  <span>{zh ? "进入 1 分钟快速开始" : "Open 1-Minute Quick Start"}</span>
-                  <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <span>{copy.openQuickStart}</span>
+                  <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" class="uc-dir-arrow">
                     <path d="M3.5 8H12.5M9 4.5L12.5 8L9 11.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
                 </a>
@@ -270,11 +342,24 @@ const examplePrompt = zh
 
       <footer class="uc-footer">
         <div class="uc-container uc-footer-inner">
-          <span>UltraCode · MIT License</span>
+          <span>{copy.footerLicense}</span>
           <div class="uc-footer-links">
-            <a href={docsHref}>{zh ? "文档教程" : "Documentation"}</a>
-            <a href="https://github.com/PlutoKeating/Project.UltraCode" target="_blank" rel="noreferrer">GitHub</a>
-            <a href={altHref}>{zh ? "English" : "简体中文"}</a>
+            <a href={docsHref}>{copy.footerDocs}</a>
+            <a href="https://github.com/PlutoKeating/Project.UltraCode" target="_blank" rel="noreferrer" dir="ltr">GitHub</a>
+            <div class="uc-footer-langs" aria-label={copy.langMenuAria}>
+              {
+                LOCALES.map((code) => (
+                  <a
+                    href={LOCALE_META[code].homePath}
+                    aria-current={code === lang ? "page" : undefined}
+                    class:list={[{ "is-current": code === lang }]}
+                    dir={LOCALE_META[code].dir}
+                  >
+                    {LOCALE_META[code].nativeLabel}
+                  </a>
+                ))
+              }
+            </div>
           </div>
         </div>
       </footer>
@@ -326,6 +411,12 @@ const examplePrompt = zh
           } catch {
             // Clipboard unavailable
           }
+        });
+      });
+
+      document.addEventListener("click", (e) => {
+        document.querySelectorAll<HTMLDetailsElement>("details.uc-lang-menu[open]").forEach((menu) => {
+          if (!menu.contains(e.target as Node)) menu.removeAttribute("open");
         });
       });
 
@@ -479,26 +570,95 @@ const examplePrompt = zh
     color: var(--uc-ink-secondary);
   }
 
-  .uc-nav-links a {
+  .uc-nav-links > a {
     transition: color 150ms ease;
   }
 
-  .uc-nav-links a:hover {
+  .uc-nav-links > a:hover {
     color: #ffffff;
   }
 
+  .uc-lang-menu {
+    position: relative;
+  }
+
+  .uc-lang-menu summary {
+    list-style: none;
+  }
+
+  .uc-lang-menu summary::-webkit-details-marker {
+    display: none;
+  }
+
   .uc-lang-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    cursor: pointer;
+    user-select: none;
     font-family: var(--uc-font-mono);
     font-size: 0.78rem;
     padding: 0.25rem 0.6rem;
     border-radius: 4px;
     border: 1px solid rgba(255, 255, 255, 0.14);
     color: #d4d4d4;
+    transition: border-color 150ms ease, color 150ms ease;
   }
 
-  .uc-lang-link:hover {
+  .uc-lang-link svg {
+    width: 11px;
+    height: 11px;
+    opacity: 0.72;
+  }
+
+  .uc-lang-link:hover,
+  .uc-lang-menu[open] .uc-lang-link {
     border-color: rgba(255, 255, 255, 0.38);
     color: #ffffff;
+  }
+
+  .uc-lang-popover {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    inset-inline-end: 0;
+    min-width: 158px;
+    padding: 0.3rem;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: #070707;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.72);
+    display: flex;
+    flex-direction: column;
+    gap: 0.12rem;
+    z-index: 50;
+  }
+
+  .uc-lang-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+    padding: 0.42rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.82rem;
+    color: #b5b5b5;
+    transition: background 120ms ease, color 120ms ease;
+  }
+
+  .uc-lang-option:hover {
+    background: rgba(255, 255, 255, 0.06);
+    color: #ffffff;
+  }
+
+  .uc-lang-option.is-current {
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+  }
+
+  .uc-lang-code {
+    font-family: var(--uc-font-mono);
+    font-size: 0.7rem;
+    color: #737373;
   }
 
   /* Hero */
@@ -538,6 +698,13 @@ const examplePrompt = zh
     line-height: 1.12;
     color: #ffffff;
     text-wrap: balance;
+  }
+
+  :global(html[lang="ar"]) .uc-hero h1,
+  :global(html[lang="ar"]) .uc-section-head h2,
+  :global(html[lang="ar"]) .uc-close h2 {
+    letter-spacing: 0;
+    line-height: 1.28;
   }
 
   .uc-hero-sub {
@@ -641,6 +808,13 @@ const examplePrompt = zh
     color: #b5b5b5;
   }
 
+  .uc-provenance-line {
+    margin: 0.15rem 0 0;
+    font-family: var(--uc-font-mono);
+    font-size: 0.75rem;
+    color: var(--uc-ink-secondary);
+  }
+
   /* Flagship pure white primary action button */
   .uc-btn-white {
     flex-shrink: 0;
@@ -713,6 +887,10 @@ const examplePrompt = zh
   .uc-btn-outline svg {
     width: 15px;
     height: 15px;
+  }
+
+  :global(html[dir="rtl"]) .uc-dir-arrow {
+    transform: scaleX(-1);
   }
 
   .uc-hero-stage {
@@ -848,7 +1026,7 @@ const examplePrompt = zh
     border-top: 1px solid var(--uc-hairline);
     padding: 2.25rem 0;
     font-size: 0.84rem;
-    color: var(--uc-ink-muted);
+    color: var(--uc-ink-secondary);
   }
 
   .uc-footer-inner {
@@ -861,12 +1039,25 @@ const examplePrompt = zh
 
   .uc-footer-links {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    gap: 1.75rem;
+    gap: 1.5rem;
   }
 
   .uc-footer-links a:hover {
     color: #ffffff;
+  }
+
+  .uc-footer-langs {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.85rem;
+  }
+
+  .uc-footer-langs a.is-current {
+    color: #ffffff;
+    font-weight: 500;
   }
 
   @media (max-width: 720px) {

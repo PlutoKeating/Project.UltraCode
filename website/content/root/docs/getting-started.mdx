@@ -1,51 +1,51 @@
 ---
-title: 1 分钟安装与首次惊艳体验
-description: 一条命令在 macOS、Linux 或 Windows 上自动就绪 OpenCode 与 UltraCode，用一句话亲眼体验目标工程。
+title: 1-Minute Install & Quick Start
+description: Install UltraCode v1.0.0 in one command on macOS, Linux, or Windows — official OpenCode V2 is set up automatically if needed.
 ---
 
-import MinimalDemoDiagram from "../../../components/diagrams/MinimalDemoDiagram.astro";
+import MinimalDemoDiagram from "@diagrams/MinimalDemoDiagram.astro";
 
-无需预先折腾环境——如果机器上尚未安装官方 **OpenCode V2**，安装脚本会自动完成安装或升级。
+No prerequisites required — if official **OpenCode V2** is not installed yet, the installer sets it up or updates it automatically.
 
-## 第一步：一条命令安装
+## Step 1: One-Line Install
 
-**macOS / Linux**：
+**macOS / Linux**:
 
 ```bash
 curl -fsSL https://ultracode.plutokeating.beer/install.sh | bash
 ```
 
-**Windows（PowerShell）**：
+**Windows (PowerShell)**:
 
 ```powershell
 irm https://ultracode.plutokeating.beer/install.ps1 | iex
 ```
 
-装好后你只需记住一个命令 `ultracode`：
+Once installed, everything runs through a single command — `ultracode`:
 
 ```bash
-ultracode           # 在当前目录启动终端界面
-ultracode desktop   # 打开或自动安装官方桌面客户端
-ultracode pair      # 生成二维码与链接，连接手机或网页端
+ultracode           # Open the terminal interface
+ultracode desktop   # Open or install the official Desktop app
+ultracode pair      # Pair your browser or mobile phone via link / QR
 ```
 
-## 第二步：用一句话感受差别
+## Step 2: Try a Real Goal
 
-在任意空目录运行 `ultracode`（或打开桌面端），发送下面这句话：
+Open an empty folder, run `ultracode` (or open Desktop), and send this single sentence:
 
-> 请帮我做一个面向独立咖啡馆的极简预约页，支持选择日期、时段和人数，提交后展示预约确认卡片。桌面端和手机端都要排版自然、无重叠。
+> Build a clean reservation page for an indie coffee shop where guests pick a date, time slot, and party size, then see a confirmation card. Make sure both desktop and mobile layouts look clean with zero overlap.
 
 <figure class="uc-doc-figure">
-  <MinimalDemoDiagram lang="zh" />
+  <MinimalDemoDiagram lang="en" />
 </figure>
 
-你很快会注意到与普通 AI 对话完全不同的体验：
+What happens differently compared to standard AI chat:
 
-1. **先问关键选择题**：不再凭空乱猜，而是把风格与边界问题整理成清晰选项，一次确认。
-2. **后台自动分工推进**：规划、写代码、独立复核同步协作，界面只汇报关键里程碑。
-3. **真机浏览器目视验收**：自动拉起真实浏览器点击交互、检查桌面端与手机端截屏，修完错位才交付。
+1. **Clarifies upfront with choice cards**: Instead of guessing early, UltraCode groups key style and scope decisions into quick options.
+2. **Plans, builds, and reviews in the background**: Specialist roles coordinate behind the scenes while your session stays focused on milestones.
+3. **Checks the real UI in Chromium**: It clicks through controls, inspects desktop and mobile views, and fixes layout defects before finishing.
 
-## 下一步
+## Next Steps
 
-- [什么是目标工程（Goal Engineering）](/docs/goal-engineering) — 1 分钟看懂为什么不再需要背提示词技巧。
-- [双主角色与后台专家团队](/docs/roles-and-workflow) — 了解 `UltraBuild` 与 `UltraPlan` 如何切换。
+- [What Is Goal Engineering](/docs/goal-engineering/) — how outcome-driven workflows keep complex work aligned.
+- [Primary Roles & Background Specialists](/docs/roles-and-workflow/) — when to use `UltraBuild` vs `UltraPlan`.

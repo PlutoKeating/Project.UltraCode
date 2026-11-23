@@ -1,12 +1,14 @@
 ---
+import { DIAGRAMS_COPY, type Locale } from "../../i18n/ui";
+
 interface Props {
-  lang?: "zh" | "en";
+  lang?: Locale;
 }
-const { lang = "zh" } = Astro.props;
-const zh = lang === "zh";
+const { lang = "en" } = Astro.props;
+const t = DIAGRAMS_COPY[lang].comparison;
 ---
 
-<svg viewBox="0 0 760 288" fill="none" xmlns="http://www.w3.org/2000/svg" class="uc-svg-diagram" role="img" aria-label={zh ? "普通对话与 UltraCode 目标工程对比示意图" : "Ordinary chat vs UltraCode Goal Engineering diagram"}>
+<svg viewBox="0 0 760 288" fill="none" xmlns="http://www.w3.org/2000/svg" class="uc-svg-diagram" role="img" aria-label={t.aria}>
   <defs>
     <filter id="iceGlow" x="-15%" y="-40%" width="130%" height="180%">
       <feGaussianBlur stdDeviation="3.5" result="blur"/>
@@ -25,13 +27,12 @@ const zh = lang === "zh";
   <line x1="570.5" y1="0" x2="570.5" y2="288" stroke="rgba(255,255,255,0.045)"/>
   <path d="M186.5 142.5H194.5 M190.5 138.5V146.5 M376.5 142.5H384.5 M380.5 138.5V146.5 M566.5 142.5H574.5 M570.5 138.5V146.5" stroke="rgba(255,255,255,0.28)" stroke-width="1"/>
 
-  <!-- Top Track: Ordinary Chat -->
+  <!-- Top Track: Standard AI Chat -->
   <text x="16" y="34" fill="#B5B5B5" font-family="Sora, PingFang SC, sans-serif" font-size="15.5" font-weight="500">
-    {zh ? "普通 AI 对话" : "Ordinary AI Chat"}
+    {t.topTitle}
   </text>
-  <circle cx={zh ? "532" : "474"} cy="29" r="3" fill="#E5A03D"/>
   <text x="744" y="34" text-anchor="end" fill="#B5B5B5" font-family="JetBrains Mono, PingFang SC, sans-serif" font-size="13">
-    {zh ? "猜需求 · 忘上下文 · 口头完工" : "Guesses · Drifts · Self-certified"}
+    {t.topMeta}
   </text>
 
   <path d="M 24 92 C 140 60, 250 62, 360 82 C 470 102, 560 110, 736 100" stroke="#737373" stroke-width="1.6" stroke-dasharray="4 5"/>
@@ -40,18 +41,17 @@ const zh = lang === "zh";
   <circle cx="468" cy="96" r="4.5" fill="#E5A03D"/>
   <path d="M 730 94 L 742 106 M 742 94 L 730 106" stroke="#E5A03D" stroke-width="1.8"/>
 
-  <text x="20" y="126" fill="#A3A3A3" font-family="Sora, PingFang SC, sans-serif" font-size="13.5">{zh ? "直接盲写" : "Starts guessing"}</text>
-  <text x="256" y="126" text-anchor="middle" fill="#A3A3A3" font-family="Sora, PingFang SC, sans-serif" font-size="13.5">{zh ? "长对话跑偏" : "Drifts mid-task"}</text>
-  <text x="468" y="126" text-anchor="middle" fill="#E5A03D" font-family="Sora, PingFang SC, sans-serif" font-size="13.5">{zh ? "改坏旧逻辑" : "Silent regression"}</text>
-  <text x="744" y="126" text-anchor="end" fill="#B5B5B5" font-family="Sora, PingFang SC, sans-serif" font-size="13.5">{zh ? "半成品收尾" : "Stops early"}</text>
+  <text x="20" y="126" fill="#A3A3A3" font-family="Sora, PingFang SC, sans-serif" font-size="13.5">{t.t1}</text>
+  <text x="256" y="126" text-anchor="middle" fill="#A3A3A3" font-family="Sora, PingFang SC, sans-serif" font-size="13.5">{t.t2}</text>
+  <text x="468" y="126" text-anchor="middle" fill="#E5A03D" font-family="Sora, PingFang SC, sans-serif" font-size="13.5">{t.t3}</text>
+  <text x="744" y="126" text-anchor="end" fill="#B5B5B5" font-family="Sora, PingFang SC, sans-serif" font-size="13.5">{t.t4}</text>
 
-  <!-- Bottom Track: UltraCode Goal Engineering -->
+  <!-- Bottom Track: UltraCode Workflow -->
   <text x="16" y="178" fill="#FFFFFF" font-family="Sora, PingFang SC, sans-serif" font-size="16" font-weight="500">
-    {zh ? "UltraCode 目标工程" : "UltraCode Goal Engineering"}
+    {t.botTitle}
   </text>
-  <circle cx={zh ? "532" : "512"} cy="173" r="3" fill="#BAE6FD"/>
   <text x="744" y="178" text-anchor="end" fill="#E5E5E5" font-family="JetBrains Mono, PingFang SC, sans-serif" font-size="13">
-    {zh ? "先对齐 · 独立验收 · 持久交付" : "Aligned · Verified · Durable"}
+    {t.botMeta}
   </text>
 
   <path d="M 24 234 L 256 224 L 468 214 L 736 202" stroke="#BAE6FD" stroke-opacity="0.45" stroke-width="4" filter="url(#iceGlow)"/>
@@ -63,10 +63,10 @@ const zh = lang === "zh";
   <circle cx="736" cy="202" r="6" fill="#FFFFFF"/>
   <circle cx="736" cy="202" r="11" stroke="rgba(186,230,253,0.45)" stroke-width="1"/>
 
-  <text x="20" y="270" fill="#E5E5E5" font-family="Sora, PingFang SC, sans-serif" font-size="13.5">{zh ? "01 先调研出选择题" : "01 Research & clarify"}</text>
-  <text x="256" y="270" text-anchor="middle" fill="#E5E5E5" font-family="Sora, PingFang SC, sans-serif" font-size="13.5">{zh ? "02 锁定方案再动工" : "02 Lock plan first"}</text>
-  <text x="468" y="270" text-anchor="middle" fill="#E5E5E5" font-family="Sora, PingFang SC, sans-serif" font-size="13.5">{zh ? "03 多角色隔离协作" : "03 Subagent execution"}</text>
-  <text x="744" y="270" text-anchor="end" fill="#FFFFFF" font-family="Sora, PingFang SC, sans-serif" font-size="13.5" font-weight="500">{zh ? "04 真机浏览器验收" : "04 Real-browser QA"}</text>
+  <text x="20" y="270" fill="#E5E5E5" font-family="Sora, PingFang SC, sans-serif" font-size="13.5">{t.b1}</text>
+  <text x="256" y="270" text-anchor="middle" fill="#E5E5E5" font-family="Sora, PingFang SC, sans-serif" font-size="13.5">{t.b2}</text>
+  <text x="468" y="270" text-anchor="middle" fill="#E5E5E5" font-family="Sora, PingFang SC, sans-serif" font-size="13.5">{t.b3}</text>
+  <text x="744" y="270" text-anchor="end" fill="#FFFFFF" font-family="Sora, PingFang SC, sans-serif" font-size="13.5" font-weight="500">{t.b4}</text>
 </svg>
 
 <style>
@@ -74,5 +74,6 @@ const zh = lang === "zh";
     width: 100%;
     height: auto;
     display: block;
+    direction: ltr;
   }
 </style>

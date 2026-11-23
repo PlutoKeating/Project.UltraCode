@@ -1,0 +1,51 @@
+---
+title: "Instalación en 1 minuto y primera prueba"
+description: "Instala UltraCode con un solo comando en macOS, Linux o Windows — OpenCode V2 se configura automáticamente si es necesario."
+---
+
+import MinimalDemoDiagram from "@diagrams/MinimalDemoDiagram.astro";
+
+Sin requisitos previos: si la versión oficial de **OpenCode V2** aún no está instalada, el instalador la configura o actualiza automáticamente.
+
+## Paso 1: Instalación en una línea
+
+**macOS / Linux**:
+
+```bash
+curl -fsSL https://ultracode.plutokeating.beer/install.sh | bash
+```
+
+**Windows (PowerShell)**:
+
+```powershell
+irm https://ultracode.plutokeating.beer/install.ps1 | iex
+```
+
+Una vez instalado, solo necesitas un único comando para todo — `ultracode`:
+
+```bash
+ultracode           # Abrir la interfaz de terminal
+ultracode desktop   # Abrir o instalar la aplicación oficial OpenCode Desktop
+ultracode pair      # Vincular tu navegador o teléfono móvil mediante enlace / QR
+```
+
+## Paso 2: Comprueba la diferencia
+
+Abre una carpeta vacía, ejecuta `ultracode` (o abre `OpenCode Desktop`) y envía esta única frase:
+
+> Crea una página minimalista de reservas para una cafetería independiente donde los clientes elijan fecha, franja horaria y número de personas, y al final vean una tarjeta de confirmación. Asegúrate de que el diseño en escritorio y móvil quede limpio y sin solapamientos.
+
+<figure class="uc-doc-figure">
+  <MinimalDemoDiagram lang="es" />
+</figure>
+
+Observa la diferencia frente a un chat de IA convencional:
+
+1. **Aclara desde el inicio con tarjetas de opciones**: en lugar de adivinar a ciegas, UltraCode agrupa las preguntas clave de estilo y alcance en opciones rápidas.
+2. **Planifica, construye y revisa en segundo plano**: los roles especializados se coordinan entre bastidores mientras tu sesión se mantiene centrada en los hitos.
+3. **Abre un navegador Chromium real para revisar su propia interfaz**: interactúa con los controles, inspecciona capturas en escritorio y móvil y corrige fallos de diseño antes de terminar.
+
+## Siguientes pasos
+
+- [Qué es la Ingeniería de Objetivos](/es/docs/goal-engineering/) — por qué ya no necesitas trucos para afinar prompts.
+- [Roles principales y expertos en segundo plano](/es/docs/roles-and-workflow/) — cuándo usar `UltraBuild` frente a `UltraPlan`.

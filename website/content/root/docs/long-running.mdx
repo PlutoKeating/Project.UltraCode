@@ -1,25 +1,25 @@
 ---
-title: 长程任务与断点续跑
-description: 大任务自动按里程碑推进，随时插话纠偏；隔天或重启终端后一句话无缝续跑。
+title: Long-Running Work & Resumption
+description: Advance multi-step milestones automatically, steer at any moment, and resume cleanly after a restart.
 ---
 
-import LongRunningDiagram from "../../../components/diagrams/LongRunningDiagram.astro";
+import LongRunningDiagram from "@diagrams/LongRunningDiagram.astro";
 
-面对需要几十步甚至跨天完成的复杂项目，UltraCode 不会一口气吐出半成品就停下，也不会用成百上千行噪音刷屏。
+Larger engineering tasks rarely finish in a single turn. UltraCode keeps multi-milestone work moving steadily without flooding your conversation or stopping halfway.
 
 <figure class="uc-doc-figure">
-  <LongRunningDiagram lang="zh" />
-  <figcaption>按里程碑自动续进，关键节点留存交接，随时可插话转向或跨会话恢复。</figcaption>
+  <LongRunningDiagram lang="en" />
+  <figcaption>Automatic milestone progression with saved handoffs — steer live or resume across sessions.</figcaption>
 </figure>
 
-## 你在长程任务中的真实体验
+## How Long-Running Work Works in Practice
 
-- **自动稳步推进**：每个里程碑完成后自动进入下一阶段，聊天界面只保留里程碑进展、阻塞点与验收结论。
-- **随时插话即刻生效**：你在任意时刻发出的新消息都会立即改变方向或暂停执行，控制权始终在你手里。
-- **重启或隔天无缝续跑**：哪怕关掉终端或桌面端、换了一天，重新打开 `ultracode` 只需说一句：
+- **Steady, focused progress**: UltraCode advances from one milestone to the next automatically while keeping routine messages concise — reporting milestones, blockers, and verified outcomes.
+- **Instant steering at any time**: Sending any new message immediately redirects or pauses execution, keeping you in control.
+- **Clean resumption across sessions**: Close your terminal or desktop app and come back later — simply run `ultracode` and say:
 
 ```text
-读取交接并继续
+Read the handoff and continue
 ```
 
-UltraCode 会自动找回上次的进度、已完成的验收与下一步计划，接着把剩下的事情做完。
+UltraCode restores the saved progress, verified evidence, and next planned step directly from your repository.

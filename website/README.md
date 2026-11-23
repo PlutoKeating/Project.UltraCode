@@ -1,8 +1,8 @@
 # UltraCode Website
 
-Astro Starlight 中英双语 Stable/Next 教程，部署到 Cloudflare Workers Static Assets。
+Astro + Starlight official website and 6-language documentation (`en` default at `/`, plus `zh`, `ar` RTL, `fr`, `ru`, `es`), deployed to Cloudflare Workers Static Assets at `https://ultracode.plutokeating.beer`.
 
-## 开发
+## Development
 
 ```bash
 bun install
@@ -11,8 +11,8 @@ bun run check
 bun run build
 ```
 
-内容真源：`content/root`（中文）与 `content/en`（英文）。`scripts/sync-content.mjs` 生成 Stable/Next 路由并复制根安装脚本；生成的 `src/content/docs` 不提交。
+Content source of truth lives in `content/{root,zh,ar,fr,ru,es}/docs/*.mdx`. `scripts/sync-content.mjs` syncs all 6 locales into `src/content/docs/`, copies `../scripts/install.sh` and `../scripts/install.ps1` into `public/`, and generates `/llms.txt` and `/llms-full.txt` automatically.
 
-## Cloudflare
+## Cloudflare Workers Static Assets
 
-Root `website`，Install `bun install --frozen-lockfile`，Build `bun run build`，Output `dist`，Deploy `bunx wrangler deploy`。详见根目录 `docs/CLOUDFLARE.md`。
+Root directory `website`, Install `bun install --frozen-lockfile`, Build `bun run build`, Output `dist`, Deploy `bunx wrangler deploy`. See `../docs/CLOUDFLARE.md`.

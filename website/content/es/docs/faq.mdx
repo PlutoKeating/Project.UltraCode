@@ -1,0 +1,33 @@
+---
+title: "Preguntas frecuentes y garantía no invasiva"
+description: "Respuestas directas sobre instalación multiplataforma, seguridad, soporte de modelos, conservación de configuraciones y actualizaciones."
+---
+
+import TuiControlsDiagram from "@diagrams/TuiControlsDiagram.astro";
+
+UltraCode se construye sobre una garantía **estrictamente aditiva, reversible y no invasiva** en macOS, Linux y Windows — en Terminal, Escritorio, Web y Móvil.
+
+<figure class="uc-doc-figure">
+  <TuiControlsDiagram lang="es" />
+  <figcaption>Convive limpiamente dentro de OpenCode oficial — ajusta su comportamiento cuando quieras o desinstálalo sin dejar rastro.</figcaption>
+</figure>
+
+## 1. ¿Modifica OpenCode oficial o lee mis claves de API?
+
+**No.** UltraCode es estrictamente aditivo y neutral frente a proveedores y modelos. Nunca parchea el CLI oficial ni la aplicación OpenCode Desktop, y jamás lee, almacena ni transmite tus claves de API.
+
+## 2. ¿Necesito instalar OpenCode antes de instalar UltraCode?
+
+**No.** En macOS, Linux y Windows, tanto el instalador como `ultracode upgrade` detectan automáticamente OpenCode V2 oficial — instalándolo desde el canal oficial si falta o manteniéndolo actualizado si ya está presente.
+
+## 3. ¿Qué modelos de IA admite?
+
+**Cualquier modelo y proveedor que ya utilices en OpenCode.** UltraCode no te ata a ningún proveedor de modelos.
+
+## 4. ¿Sobrescribirá mi configuración actual o mis skills de OpenCode?
+
+**No.** La instalación y la sincronización se combinan limpiamente respetando tus propios ajustes y skills. Ejecutar `ultracode uninstall --yes` elimina únicamente lo que UltraCode añadió.
+
+## 5. ¿Cómo actualizo el sistema o compruebo su estado?
+
+Ejecuta `ultracode upgrade` para actualizar OpenCode oficial y UltraCode juntos en un solo paso, o ejecuta `ultracode doctor` en cualquier momento para una verificación rápida con **cero llamadas a modelos de IA**.

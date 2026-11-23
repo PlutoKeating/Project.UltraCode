@@ -1,0 +1,34 @@
+---
+title: 跨端开关、升级与卸载
+description: 在终端、桌面端与网页/手机端实时同步切换控制开关，并用单一命令完成升级、同步、检查与卸载。
+---
+
+import TuiControlsDiagram from "@diagrams/TuiControlsDiagram.astro";
+
+UltraCode 的日常控制集成在终端、桌面客户端和网页/手机端之中，多端状态实时同步，无需手动编辑配置文件。
+
+## 在任意端实时切换双开关
+
+- **桌面端（OpenCode Desktop）**：点击输入框上方的 **UltraCode** 胶囊即可一键切换，或进入 **Settings → UltraCode** 设置页。
+- **终端（TUI）**：打开命令面板搜索 **UltraCode** 即可切换。
+- **网页端 / 手机端（`ultracode pair`）**：在输入框输入 `/approvals` 或 `/direction`（实时显示当前 `auto` / `manual` 状态，回车立即切换，零模型调用）。
+
+<figure class="uc-doc-figure">
+  <TuiControlsDiagram lang="zh" />
+  <figcaption>终端、桌面端与网页/手机端共享实时同步的命令审批与方向确认开关。</figcaption>
+</figure>
+
+- **Command approvals（命令审批）**：默认设为 `auto`，自动放行常规开发步骤减少打断；你显式禁止的危险操作始终生效。
+- **Direction questions（方向确认）**：默认设为 `manual`，遇到重要产品或架构取舍时先展示选择题由你决定。
+
+## 常用命令一览
+
+| 命令 | 作用 |
+| --- | --- |
+| `ultracode` | 启动终端界面（所有 OpenCode 参数与子命令直接可用） |
+| `ultracode desktop` | 启动官方桌面客户端；未安装时自动下载官方安装包 |
+| `ultracode pair` | 生成配对链接与二维码，连接浏览器或手机端 |
+| `ultracode upgrade` | 一键更新官方 OpenCode 与 UltraCode 并同步配置 |
+| `ultracode sync` | 重新同步配置与受管运行时 |
+| `ultracode doctor` | 零模型调用快速健康检查 |
+| `ultracode uninstall --yes` | 干净卸载 UltraCode，完整保留你的个人配置与备份 |

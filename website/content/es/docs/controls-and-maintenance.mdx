@@ -1,0 +1,34 @@
+---
+title: "Controles en vivo, actualización y desinstalación"
+description: "Alterna la autonomía entre Terminal, Escritorio y Móvil/Web en tiempo real, y gestiona todo desde un único comando ultracode."
+---
+
+import TuiControlsDiagram from "@diagrams/TuiControlsDiagram.astro";
+
+El control diario permanece integrado entre Terminal, Escritorio y Web/Móvil — sincronizado en tiempo real sin necesidad de editar archivos de configuración manualmente.
+
+## Interruptores en cualquier superficie
+
+- **Aplicación de escritorio (OpenCode Desktop)**: haz clic en la píldora **UltraCode** encima del cuadro de mensaje para cambiar con un toque, o abre **Settings → UltraCode**.
+- **Terminal (TUI)**: abre la paleta de comandos y busca **UltraCode**.
+- **Web y móvil (`ultracode pair`)**: escribe `/approvals` o `/direction` en el cuadro de mensaje (el menú `/` muestra el estado `auto` / `manual` en vivo y lo alterna al instante sin llamadas a modelos de IA).
+
+<figure class="uc-doc-figure">
+  <TuiControlsDiagram lang="es" />
+  <figcaption>Sincronización en vivo de Command approvals y Direction questions entre Terminal, Escritorio y Web.</figcaption>
+</figure>
+
+- **Command approvals**: activado (`auto`) por defecto para que los pasos rutinarios se ejecuten sin confirmaciones constantes, mientras las reglas explícitas de denegación siguen siempre vigentes.
+- **Direction questions**: activado (`manual`) por defecto para que UltraCode consulte mediante tarjetas de opciones cada vez que una decisión importante de producto o arquitectura requiera tu criterio.
+
+## Referencia unificada de comandos
+
+| Comando | Qué hace |
+| --- | --- |
+| `ultracode` | Abre la interfaz de terminal (todos los flags y subcomandos de OpenCode funcionan directamente) |
+| `ultracode desktop` | Inicia OpenCode Desktop o descarga el instalador oficial si no está presente |
+| `ultracode pair` | Muestra un enlace de vinculación y un código QR para acceso desde navegador o móvil |
+| `ultracode upgrade` | Actualiza conjuntamente OpenCode oficial y UltraCode, y después sincroniza |
+| `ultracode sync` | Realinea la configuración y el entorno de ejecución gestionado |
+| `ultracode doctor` | Comprobación rápida de estado con cero llamadas a modelos de IA |
+| `ultracode uninstall --yes` | Desinstala UltraCode limpiamente conservando tus propias configuraciones y copias de seguridad |

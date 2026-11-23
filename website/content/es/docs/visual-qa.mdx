@@ -1,0 +1,20 @@
+---
+title: "QA visual en navegador real"
+description: "Pasar las pruebas unitarias no basta para la interfaz. UltraCode abre un navegador real, interactúa con controles, revisa capturas y corrige defectos antes de entregar."
+---
+
+import VisualQaDiagram from "@diagrams/VisualQaDiagram.astro";
+
+En aplicaciones web e interfaces, unas pruebas unitarias en verde aún pueden ocultar botones superpuestos, diseños móviles rotos, texto con bajo contraste o manejadores de clic sin respuesta.
+
+<figure class="uc-doc-figure">
+  <VisualQaDiagram lang="es" />
+  <figcaption>Interacción en navegador headless real, revisión de capturas en escritorio y móvil, y ciclos automáticos de corrección y reverificación.</figcaption>
+</figure>
+
+## Cuatro comprobaciones visuales antes de dar el trabajo por terminado
+
+1. **Ejecuta tu aplicación real**: inicia la aplicación local y la abre en un navegador headless real.
+2. **Interactúa como un usuario real**: ejercita botones, formularios, navegación y estados interactivos para detectar errores de flujo o en tiempo de ejecución.
+3. **Inspecciona capturas de escritorio y móvil**: busca elementos superpuestos, textos recortados, desajustes de alineación y problemas de contraste en distintos tamaños de pantalla.
+4. **Corrige y vuelve a verificar**: cada vez que aparece un defecto visual o de interacción, UltraCode lo corrige y toma nuevas capturas antes de entregar.

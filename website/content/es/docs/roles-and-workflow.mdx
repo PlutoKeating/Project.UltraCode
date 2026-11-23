@@ -1,0 +1,32 @@
+---
+title: "Roles principales y expertos en segundo plano"
+description: "Dos roles principales sencillos en primer plano (UltraBuild y UltraPlan) respaldados por cinco especialistas automáticos."
+---
+
+import RolesTopologyDiagram from "@diagrams/RolesTopologyDiagram.astro";
+
+UltraCode oculta la complejidad multiagente detrás de una entrada clara y limpia. Solo interactúas con **2 roles principales**, mientras que 5 expertos en segundo plano intervienen automáticamente cuando hace falta.
+
+<figure class="uc-doc-figure">
+  <RolesTopologyDiagram lang="es" />
+  <figcaption>Dos roles principales claros al frente y cinco especialistas colaborando automáticamente en segundo plano.</figcaption>
+</figure>
+
+## Cómo elegir entre los dos roles principales
+
+Pulsa `Shift+Tab` dentro de OpenCode en cualquier momento para cambiar de rol:
+
+| Rol principal | Modo | Qué hace | Ideal para |
+| --- | --- | --- | --- |
+| **`UltraBuild`** | Por defecto | Aclara objetivos, planifica hitos, coordina especialistas y entrega resultados funcionales | Desarrollo diario, corrección de errores y entregas de principio a fin |
+| **`UltraPlan`** | `Shift+Tab` | Planificación estrictamente de solo lectura — nunca modifica tu código | Explorar ideas iniciales, compromisos técnicos y arquitectura sin riesgo |
+
+## Qué hacen automáticamente los 5 expertos en segundo plano
+
+Nunca tienes que invocarlos manualmente — `UltraBuild` incorpora a cada uno en el momento oportuno:
+
+- **Investigación**: explora las convenciones de tu proyecto y la documentación externa para no construir sobre suposiciones.
+- **Arquitectura**: traza el flujo de datos, los límites entre módulos y los compromisos técnicos antes de escribir código.
+- **Implementación**: escribe cambios limpios y bien acotados junto con sus pruebas correspondientes.
+- **Revisión escéptica de código**: audita el diff de forma independiente en busca de casos límite, regresiones y requisitos omitidos.
+- **QA visual en navegador real**: abre un navegador real para recorrer los flujos e inspeccionar capturas de escritorio y móvil.

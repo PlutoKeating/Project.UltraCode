@@ -1,0 +1,32 @@
+---
+title: 双主角色与后台协作专家
+description: 前台提供 UltraBuild 与 UltraPlan 两个清晰入口，后台由 5 位专业角色按需自动配合。
+---
+
+import RolesTopologyDiagram from "@diagrams/RolesTopologyDiagram.astro";
+
+UltraCode 将多角色调度隐藏在清爽的前台之下。日常使用你只需面对 **2 个主角色**，其余 5 位专业角色会在需要时自动介入。
+
+<figure class="uc-doc-figure">
+  <RolesTopologyDiagram lang="zh" />
+  <figcaption>前台双主角色一键切换，后台五位专家自动完成调研、分析、实现、复核与界面测试。</figcaption>
+</figure>
+
+## 两个主角色如何选择？
+
+在 OpenCode 中按 `Shift+Tab` 即可随时切换：
+
+| 主角色 | 默认状态 | 核心职责 | 适用场景 |
+| --- | --- | --- | --- |
+| **`UltraBuild`** | 默认主角色 | 确认需求、拆解阶段任务、协调后台角色并完成验证交付 | 日常开发、问题修复与端到端实现 |
+| **`UltraPlan`** | `Shift+Tab` 切换 | 纯只读方案规划，绝不修改任何代码文件 | 需求尚在构思阶段，先推演架构与取舍 |
+
+## 后台 5 位专家分别负责什么？
+
+无需手动点名调用，`UltraBuild` 会在合适节点自动委派：
+
+- **资料调研（Librarian）**：查阅项目现有约定、官方文档与开源实现，避免凭猜测编码。
+- **架构分析（Architect）**：梳理模块边界、数据流向与疑难问题根因。
+- **编码实现（Implementer）**：在明确范围内完成代码修改与本地测试验证。
+- **代码复核（Reviewer）**：独立审查变更差异，排查回归风险、遗漏需求与安全隐患。
+- **界面验收（Visual Evaluator）**：启动真实浏览器操作页面并检查桌面端与移动端渲染效果。

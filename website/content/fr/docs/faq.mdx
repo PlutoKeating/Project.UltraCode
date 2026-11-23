@@ -1,0 +1,33 @@
+---
+title: "FAQ et garantie non intrusive"
+description: "Réponses directes sur l’installation multiplateforme, la sécurité, les modèles pris en charge, la préservation de vos réglages et les mises à jour."
+---
+
+import TuiControlsDiagram from "@diagrams/TuiControlsDiagram.astro";
+
+UltraCode repose sur un engagement **strictement additif, réversible et non intrusif** sur macOS, Linux et Windows — dans le Terminal, sur Desktop, sur le Web et sur Mobile.
+
+<figure class="uc-doc-figure">
+  <TuiControlsDiagram lang="fr" />
+  <figcaption>S’intègre proprement dans l’environnement officiel OpenCode — ajustez son comportement à tout moment ou désinstallez-le sans laisser de trace.</figcaption>
+</figure>
+
+## 1. Modifie-t-il la version officielle d’OpenCode ou lit-il mes clés API ?
+
+**Non.** UltraCode est strictement additif et indépendant des fournisseurs comme des modèles. Il ne modifie jamais le binaire CLI officiel d’OpenCode ni `OpenCode Desktop`, et ne lit, ne stocke ni ne transmet jamais vos clés API.
+
+## 2. Dois-je installer OpenCode avant d’installer UltraCode ?
+
+**Non.** Sur macOS, Linux et Windows, l’installateur ainsi que `ultracode upgrade` détectent automatiquement la version officielle d’`OpenCode V2` : elle est installée depuis le canal officiel si elle manque, ou maintenue à jour si elle est déjà présente.
+
+## 3. Quels modèles d’IA sont pris en charge ?
+
+**Tous les modèles et fournisseurs que vous utilisez déjà dans OpenCode.** UltraCode ne vous enferme chez aucun fournisseur de modèles.
+
+## 4. Va-t-il écraser ma configuration ou mes skills OpenCode existants ?
+
+**Non.** L’installation et la synchronisation fusionnent proprement les réglages tout en conservant vos paramètres personnels et vos skills. Exécuter `ultracode uninstall --yes` retire uniquement ce qu’UltraCode a ajouté.
+
+## 5. Comment mettre à jour ou vérifier l’état de l’installation ?
+
+Exécutez `ultracode upgrade` pour mettre à jour OpenCode officiel et UltraCode en une seule étape, ou lancez `ultracode doctor` à tout moment pour effectuer un contrôle rapide **sans aucun appel à un modèle IA**.

@@ -1,0 +1,33 @@
+---
+title: 常见问题与无侵入保障
+description: 关于跨平台安装、API 密钥安全、模型兼容性、原有配置保护与日常升级的说明。
+---
+
+import TuiControlsDiagram from "@diagrams/TuiControlsDiagram.astro";
+
+UltraCode 坚持**纯增量、可逆、无侵入**的设计原则：完整运行在官方 OpenCode 体系之上，支持 macOS、Linux 与 Windows，覆盖终端、桌面端、网页与手机端。
+
+<figure class="uc-doc-figure">
+  <TuiControlsDiagram lang="zh" />
+  <figcaption>运行在官方 OpenCode 原生体系之内，随时可切换行为模式或干净卸载。</figcaption>
+</figure>
+
+## 1. UltraCode 会修改官方 OpenCode 程序或读取我的 API Key 吗？
+
+**不会。** UltraCode 采用纯增量扩展接入官方 OpenCode，不修改官方终端或桌面客户端二进制，也不读取、存储或上传你的 API Key 与账号凭据。
+
+## 2. 安装前需要先手动安装 OpenCode 吗？
+
+**不需要。** 在 macOS、Linux 与 Windows 上，安装脚本与 `ultracode upgrade` 都会自动检测官方 OpenCode V2：缺失时自动从官方渠道安装，已存在时自动保持可用版本。
+
+## 3. UltraCode 支持哪些 AI 模型？
+
+**你原本在 OpenCode 中使用什么模型和服务商，安装后就继续使用什么模型。** UltraCode 完全保持模型与服务商中立，不绑定任何特定厂商。
+
+## 4. 安装会覆盖我原有的 OpenCode 配置和自定义技能吗？
+
+**不会。** 安装与同步保留你原有的个性化配置、注释与自定义技能，仅做无损合并；执行 `ultracode uninstall --yes` 仅移除 UltraCode 新增且未改动的受管文件。
+
+## 5. 日常如何升级或检查环境状态？
+
+运行 `ultracode upgrade` 即可一键更新官方 OpenCode 与 UltraCode；随时可运行 `ultracode doctor` 进行几秒钟的快速健康检查（**全程零模型调用**）。
