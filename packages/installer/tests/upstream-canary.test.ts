@@ -276,6 +276,68 @@ describe("upstream probe & canary (scripts/check-upstreams.ts)", () => {
       expect(item.error).toMatch(/403|500/);
     }
   });
+
+  test("probeUpstreams reports status: error when opencode releases list contains only V1 tags", async () => {
+    const baseline = JSON.parse(await readFile(baselinePath, "utf8")) as UpstreamBaseline;
+    const baseUrl = await startMockServer((req, res) => {
+      const url = decodeURIComponent(req.url || "/");
+      if (url.startsWith("/gh/repos/anomalyco/opencode/releases")) {
+        return sendJson(res, 200, [
+          {
+            tag_name: "v1.19.6",
+            draft: false,
+            prerelease: false,
+            html_url: "https://github.com/anomalyco/opencode/releases/tag/v1.19.6",
+          },
+          {
+            tag_name: "v1.19.5",
+            draft: false,
+            prerelease: false,
+            html_url: "https://github.com/anomalyco/opencode/releases/tag/v1.19.5",
+          },
+        ]);
+      }
+      if (url === "/npm/@opencode/plugin/latest") {
+        return sendJson(res, 200, {
+          name: "@opencode/plugin",
+          version: baseline.opencode.pluginSdkVersion,
+        });
+      }
+      if (url.startsWith("/gh/repos/obra/superpowers/releases/latest")) {
+        return sendJson(res, 200, {
+          tag_name: baseline.superpowers.tag,
+          html_url: `https://github.com/obra/superpowers/releases/tag/${baseline.superpowers.tag}`,
+        });
+      }
+      if (url === "/npm/@playwright/mcp/latest") {
+        return sendJson(res, 200, {
+          name: "@playwright/mcp",
+          version: baseline.playwrightMcp.version,
+        });
+      }
+      if (url === `/gh/repos/Th0rgal/open-ralph-wiggum/commits/${baseline.ralph.branch}`) {
+        return sendJson(res, 200, {
+          sha: baseline.ralph.commit,
+          html_url: `https://github.com/Th0rgal/open-ralph-wiggum/commit/${baseline.ralph.commit}`,
+          commit: { message: "chore: release 1.3.1" },
+        });
+      }
+      sendJson(res, 404, { message: `Unhandled mock route: ${url}` });
+    });
+
+    const report = await probeUpstreams(baseline, {
+      apiBaseUrls: {
+        githubApi: `${baseUrl}/gh`,
+        npmRegistry: `${baseUrl}/npm`,
+        codeload: `${baseUrl}/codeload`,
+      },
+    });
+
+    expect(report.hasErrors).toBe(true);
+    const oc = report.items.find((i) => i.id === "opencode");
+    expect(oc?.status).toBe("error");
+    expect(oc?.error).toContain("No stable V2+ release tag found");
+  });
 });
 
 describe("upstream-stewardship skill & canary workflow hygiene", () => {
@@ -327,6 +389,9 @@ describe("upstream-stewardship skill & canary workflow hygiene", () => {
     expect(workflow).toContain("upstream-sync");
     expect(workflow).not.toMatch(/\bgit\s+push\b/);
     expect(workflow).not.toMatch(/\bgit\s+commit\b/);
+    expect(workflow).not.toContain("eval ");
+    expect(workflow).not.toMatch(/\beval\s*["'$]/);
+    expect(workflow).not.toMatch(/ANTHROPIC_API_KEY|OPENAI_API_KEY|GEMINI_API_KEY|OPENROUTER_API_KEY/);
   });
 });
 

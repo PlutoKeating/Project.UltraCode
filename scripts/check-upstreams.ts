@@ -221,7 +221,7 @@ export async function probeUpstreams(
   };
 
   const probeOpenCode = async (): Promise<UpstreamItemReport> => {
-    const releasesUrl = `${githubApi}/repos/${baseline.opencode.repo}/releases?per_page=20`;
+    const releasesUrl = `${githubApi}/repos/${baseline.opencode.repo}/releases?per_page=50`;
     const sdkLatestUrl = `${npmRegistry}/${baseline.opencode.pluginSdkPackage}/latest`;
     const [relRes, sdkRes] = await Promise.all([
       fetchJson<GitHubReleasePayload[] | GitHubReleasePayload>(releasesUrl, ghHeaders),
@@ -252,7 +252,7 @@ export async function probeUpstreams(
       )
       .sort((a, b) => compareSemver(b.semver, a.semver));
 
-    const chosen = v2Plus[0]?.release ?? stable[0];
+    const chosen = v2Plus[0]?.release;
     if (!chosen?.tag_name) {
       return {
         id: "opencode",
