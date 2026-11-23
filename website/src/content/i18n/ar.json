@@ -1,3 +1,4 @@
 {
-  "headingLinks.accessibleLabel": "قسم بعنوان «{{title}}»"
+  "heading.anchorLabel": "قسم بعنوان «{{title}}»",
+  "fileTree.directory": "مجلد"
 }
