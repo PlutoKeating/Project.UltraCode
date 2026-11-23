@@ -1,5 +1,5 @@
 import { createSignal, onCleanup } from "solid-js";
-import { Command, ComposerPill, createKeyed, Plugin, SettingsPage } from "@opencode/plugin/gui";
+import { Command, ComposerPill, type ComposerPillRow, createKeyed, Plugin, SettingsPage } from "@opencode/plugin/gui";
 import { UltraCodeRpc } from "../../config/opencode/conversation/rpc.js";
 
 type ModeValue = "auto" | "manual";
@@ -7,13 +7,23 @@ type ModeKey = "permissions" | "direction";
 interface UltraCodeState {
   permissions: ModeValue;
   direction: ModeValue;
+  checkpoints: Record<string, string>;
 }
 
 function normalizeState(raw: unknown): UltraCodeState {
   const obj = raw && typeof raw === "object" ? (raw as Record<string, unknown>) : {};
+  const checkpoints: Record<string, string> = {};
+  if (obj.checkpoints && typeof obj.checkpoints === "object") {
+    for (const [key, value] of Object.entries(obj.checkpoints as Record<string, unknown>)) {
+      if (typeof value === "string" && value.trim()) {
+        checkpoints[key] = value.trim();
+      }
+    }
+  }
   return {
     permissions: obj.permissions === "manual" ? "manual" : "auto",
     direction: obj.direction === "auto" ? "auto" : "manual",
+    checkpoints,
   };
 }
 
@@ -22,6 +32,8 @@ export default Plugin.define({
     en: {
       "pill.permissions": "Auto-approve",
       "pill.direction": "Ask on direction",
+      "pill.checkpoint": "Next milestone",
+      "pill.clear": "Clear",
       "settings.permissions": "Command approvals",
       "settings.direction": "Direction questions",
       "command.permissions": "Toggle Command approvals",
@@ -33,6 +45,8 @@ export default Plugin.define({
     zh: {
       "pill.permissions": "自动执行",
       "pill.direction": "关键点确认",
+      "pill.checkpoint": "下一里程碑",
+      "pill.clear": "清除",
       "settings.permissions": "命令自动执行",
       "settings.direction": "关键方向确认",
       "command.permissions": "切换命令自动执行",
@@ -44,6 +58,8 @@ export default Plugin.define({
     ar: {
       "pill.permissions": "موافقة تلقائية",
       "pill.direction": "تأكيد الاتجاه",
+      "pill.checkpoint": "المرحلة التالية",
+      "pill.clear": "مسح",
       "settings.permissions": "موافقات الأوامر",
       "settings.direction": "أسئلة الاتجاه",
       "command.permissions": "تبديل موافقات الأوامر",
@@ -55,6 +71,8 @@ export default Plugin.define({
     fr: {
       "pill.permissions": "Approbation auto",
       "pill.direction": "Confirmer les choix",
+      "pill.checkpoint": "Prochaine étape",
+      "pill.clear": "Effacer",
       "settings.permissions": "Approbation des commandes",
       "settings.direction": "Questions d’orientation",
       "command.permissions": "Basculer l’approbation des commandes",
@@ -66,6 +84,8 @@ export default Plugin.define({
     ru: {
       "pill.permissions": "Автоодобрение",
       "pill.direction": "Уточнять курс",
+      "pill.checkpoint": "Следующий этап",
+      "pill.clear": "Очистить",
       "settings.permissions": "Одобрение команд",
       "settings.direction": "Вопросы по направлению",
       "command.permissions": "Переключить одобрение команд",
@@ -77,6 +97,8 @@ export default Plugin.define({
     es: {
       "pill.permissions": "Autoaprobar",
       "pill.direction": "Consultar dirección",
+      "pill.checkpoint": "Siguiente hito",
+      "pill.clear": "Limpiar",
       "settings.permissions": "Aprobación de comandos",
       "settings.direction": "Preguntas de dirección",
       "command.permissions": "Alternar aprobación de comandos",
@@ -90,6 +112,7 @@ export default Plugin.define({
     const [state, setState] = createSignal<UltraCodeState>({
       permissions: "auto",
       direction: "manual",
+      checkpoints: {},
     });
 
     createKeyed(
@@ -138,30 +161,48 @@ export default Plugin.define({
       return normalized;
     };
 
+    const clearSessionCheckpoint = async (sessionID: string) => {
+      const next = await ctx.client.rpc(UltraCodeRpc).clearCheckpoint({ sessionID });
+      const normalized = normalizeState(next);
+      setState(normalized);
+      return normalized;
+    };
+
     const handleError = () => {
       ctx.toast.show({ variant: "error", title: ctx.t("error.sync") });
     };
 
     ctx.add(ComposerPill, {
       id: "status",
-      show: () => {
+      show: (input) => {
         const current = state();
+        const sessionID = input?.session?.id;
+        const milestone = sessionID ? current.checkpoints[sessionID] : undefined;
+        const rows: ComposerPillRow[] = [
+          {
+            id: "permissions",
+            label: ctx.t("pill.permissions"),
+            detail: current.permissions === "auto" ? ctx.t("state.on") : ctx.t("state.off"),
+            run: () => void flipMode("permissions").catch(handleError),
+          },
+          {
+            id: "direction",
+            label: ctx.t("pill.direction"),
+            detail: current.direction === "manual" ? ctx.t("state.on") : ctx.t("state.off"),
+            run: () => void flipMode("direction").catch(handleError),
+          },
+        ];
+        if (sessionID && milestone) {
+          rows.push({
+            id: "checkpoint",
+            label: `${ctx.t("pill.checkpoint")}: ${milestone.length > 36 ? milestone.slice(0, 35) + "…" : milestone}`,
+            detail: ctx.t("pill.clear"),
+            run: () => void clearSessionCheckpoint(sessionID).catch(handleError),
+          });
+        }
         return {
           label: "UltraCode",
-          rows: [
-            {
-              id: "permissions",
-              label: ctx.t("pill.permissions"),
-              detail: current.permissions === "auto" ? ctx.t("state.on") : ctx.t("state.off"),
-              run: () => void flipMode("permissions").catch(handleError),
-            },
-            {
-              id: "direction",
-              label: ctx.t("pill.direction"),
-              detail: current.direction === "manual" ? ctx.t("state.on") : ctx.t("state.off"),
-              run: () => void flipMode("direction").catch(handleError),
-            },
-          ],
+          rows,
         };
       },
     });

@@ -6,6 +6,10 @@ const stateSchema = {
     permissions: { type: "string", enum: ["auto", "manual"] },
     direction: { type: "string", enum: ["auto", "manual"] },
     version: { type: "string" },
+    checkpoints: {
+      type: "object",
+      additionalProperties: { type: "string" },
+    },
   },
   required: ["permissions", "direction", "version"],
   additionalProperties: false,
@@ -41,6 +45,17 @@ export const UltraCodeRpc = Rpc.define({
           key: { type: "string", enum: ["permissions", "direction"] },
         },
         required: ["key"],
+        additionalProperties: false,
+      },
+      output: stateSchema,
+    },
+    clearCheckpoint: {
+      input: {
+        type: "object",
+        properties: {
+          sessionID: { type: "string", minLength: 1 },
+        },
+        required: ["sessionID"],
         additionalProperties: false,
       },
       output: stateSchema,

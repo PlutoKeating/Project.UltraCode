@@ -67,6 +67,10 @@ describe("declarative upstream baseline", () => {
     expect(opencodeSrc).toContain("upstream-baseline.json");
     expect(opencodeSrc).not.toContain("2.3.2");
 
+    const pluginGuiPkgPath = join(installerRoot, "..", "plugin-gui", "package.json");
+    const pluginGuiPkg = JSON.parse(await readFile(pluginGuiPkgPath, "utf8"));
+    expect(pluginGuiPkg.devDependencies["@opencode/plugin"]).toBe(baseline.opencode.pluginSdkVersion);
+
     const prevSkip = process.env.ULTRACODE_SKIP_RUNTIME;
     process.env.ULTRACODE_SKIP_RUNTIME = "1";
     try {
