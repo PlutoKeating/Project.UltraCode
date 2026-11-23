@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 300" fill="none" role="img" aria-label="UltraCode Monolith">
+  <rect x="0" y="0" width="240" height="300" rx="28" fill="#050505"/>
+  <g transform="translate(36, 30) scale(0.7)">
+    <path d="M60 120H180V240H60V120Z" fill="#4B4B4B"/>
+    <path d="M60 60H180V120H60V60Z" fill="#2A2A2A"/>
+    <path d="M0 0H60V240H180V60H240V300H0V0Z" fill="#EEEEEE"/>
+    <path d="M180 0H240V42H180V0Z" fill="#E5A03D"/>
+  </g>
+</svg>

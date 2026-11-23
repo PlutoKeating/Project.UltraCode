@@ -1,80 +1,126 @@
-# UltraCode
+<div align="center">
 
-UltraCode 是面向官方 OpenCode V2 的 Provider/Model 中立增强层，聚焦 **Goal Engineering（目标工程）**——让用户通过自然语言定义受众、目标与验收标准，把长程规划、实现、独立评审与视觉自检交由 Agent 体系持续推进，原生覆盖 **macOS、Linux 与 Windows**，以及 **终端（TUI）、桌面端（Desktop）、网页端（Web）与移动端（Mobile）**。
+<a href="https://ultracode.plutokeating.beer">
+  <img src="./docs/assets/hero-banner.svg" alt="UltraCode v1.0.0 — State the Goal. Ship Verified Work." width="100%" />
+</a>
 
-核心能力（v0.3.0）：
+<br />
 
-- **单一命令与零前置安装**：唯一命令 `ultracode` 与 `opencode` 参数/子命令完全互通；安装脚本与 `ultracode upgrade` 自动检测并安装/升级官方 OpenCode V2。
-- **全平台与全触点统一体验**：内嵌多触点 `ultracode-conversation` 插件包（Server RPC 与 `/approvals`、`/direction` 斜杠开关 + TUI 状态与命令面板 + OpenCode Desktop `ComposerPill` 与 `Settings` 页面），配合 `ultracode desktop` 与 `ultracode pair`。
-- **双主角色与后台子代理**：`UltraBuild`（默认，总协调与执行）与 `UltraPlan`（规划，`Shift+Tab` 切换），配合 5 个独立后台子代理（`architect`、`implementer`、`librarian`、`reviewer`、`visual-evaluator`）。
-- **对话驱动里程碑续跑与交接**：在原对话内自主推进里程碑，长任务清单、进度与交接落盘在仓库内，服务重启后可自然语言接续；内置跨平台 TypeScript 原生 `ultracode ralph run`。
-- **非侵入最大并集合并**：不修改 OpenCode 官方终端或桌面二进制，不读取或配置 Provider 凭据，不在安装验收中调用真实模型。
+[![Release](https://img.shields.io/badge/Release-v1.0.0-ffffff?style=flat-square&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/releases/latest)
+[![Website](https://img.shields.io/badge/Website-ultracode.plutokeating.beer-bae6fd?style=flat-square&labelColor=0a0a0a)](https://ultracode.plutokeating.beer)
+[![Platforms](https://img.shields.io/badge/Platform-macOS%20%7C%20Linux%20%7C%20Windows-d4d4d4?style=flat-square&labelColor=0a0a0a)](https://ultracode.plutokeating.beer/docs/getting-started/)
+[![Provenance](https://img.shields.io/badge/Built%20with-UltraCode%20v0.3.0-e5a03d?style=flat-square&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/releases/tag/v0.3.0)
+[![CI](https://img.shields.io/github/actions/workflow/status/PlutoKeating/Project.UltraCode/ci.yml?branch=main&style=flat-square&label=CI&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/actions/workflows/ci.yml)
 
-## 一条命令安装
+**English** · [简体中文](README_ZH.md) · [العربية](README_AR.md) · [Français](README_FR.md) · [Русский](README_RU.md) · [Español](README_ES.md)
 
-无需预装任何环境（若尚未安装官方 OpenCode V2，安装脚本会自动完成安装或升级）：
+[Official Website](https://ultracode.plutokeating.beer) • [1-Minute Quick Start](https://ultracode.plutokeating.beer/docs/getting-started/) • [Architecture](docs/ARCHITECTURE.md) • [CLI Reference](docs/API.md)
 
-**macOS / Linux**：
+</div>
+
+**UltraCode (`v1.0.0`)** is a non-invasive, provider- and model-neutral **Goal Engineering** layer built on official **OpenCode V2** across **macOS, Linux, and Windows** — spanning **Terminal (TUI), Desktop App, Web, and Mobile**.
+
+Instead of guessing early or drifting halfway through multi-step tasks, UltraCode clarifies open requirements upfront with structured choice cards, delegates work across specialized background agents, inspects rendered UI in a real Chromium browser, and saves durable handoffs inside your repository.
+
+> [!NOTE]
+> **Self-hosted engineering provenance:** UltraCode `v1.0.0` — including its multi-surface runtime, 6-language documentation site, and release pipeline — was developed and built with **UltraCode `v0.3.0`**.
+
+## Overview
+
+<div align="center">
+  <img src="./docs/assets/workflow-comparison.svg" alt="Standard AI Chat vs UltraCode Workflow" width="100%" />
+</div>
+
+### Key Capabilities
+
+- **One Command, Zero Prerequisites**: A single `ultracode` CLI with full `opencode` flag and subcommand passthrough. Both the installer and `ultracode upgrade` automatically detect, install, or update official OpenCode V2 (`v2.3.2+`).
+- **Every Surface Synchronized**: Embedded `ultracode-conversation` plugin syncing live state across Server RPC, TUI Command Palette, OpenCode Desktop (`ComposerPill` & `Settings → UltraCode`), and Web/Mobile (`/approvals` and `/direction`).
+- **Two Primary Roles + Five Specialists**: Switch anytime with `Shift+Tab` between `UltraBuild` (end-to-end delivery) and `UltraPlan` (strictly read-only planning), backed automatically by `librarian`, `architect`, `implementer`, `reviewer`, and `visual-evaluator`.
+- **Long-Running Continuation & Handoffs**: Advances milestones automatically, yields immediately when you send a new message, and resumes across restarts from repository handoff files; includes a cross-platform TypeScript `ultracode ralph run` runner.
+- **Strictly Additive & Reversible**: Never patches official OpenCode binaries, never reads or transmits your API keys, preserves existing JSONC comments and custom skills, and uninstalls cleanly.
+
+<div align="center">
+  <img src="./docs/assets/roles-topology.svg" alt="UltraBuild and UltraPlan primary roles plus 5 background specialists" width="100%" />
+</div>
+
+## Getting Started
+
+### 1. One-Line Install
+
+**macOS / Linux**:
 
 ```bash
 curl -fsSL https://ultracode.plutokeating.beer/install.sh | bash
 ```
 
-**Windows（PowerShell）**：
+**Windows (PowerShell)**:
 
 ```powershell
 irm https://ultracode.plutokeating.beer/install.ps1 | iex
 ```
 
-## 开始使用
+> [!TIP]
+> You do not need to pre-install Node.js, Bun, or OpenCode. If official OpenCode V2 is missing, the installer sets it up automatically from the official release channel.
+
+### 2. Launch on Any Surface
 
 ```bash
-ultracode           # 在当前目录启动终端界面（兼容所有 opencode 参数与子命令）
-ultracode desktop   # 启动官方桌面客户端，未安装时自动下载官方安装包
-ultracode pair      # 生成一次性链接与二维码，连接浏览器或手机端
+ultracode           # Open the terminal interface in the current directory
+ultracode desktop   # Launch OpenCode Desktop (or download the official installer if missing)
+ultracode pair      # Generate a pairing link & QR code for browser or mobile access
 ```
 
-- **主角色切换**：默认进入 `UltraBuild`（总协调与执行）；按 `Shift+Tab` 切换至 `UltraPlan`（只读规划）。
-- **跨端实时开关**：在 OpenCode Desktop 点击输入框上方的 **UltraCode** 胶囊（或打开 **Settings → UltraCode**），在 TUI 命令面板搜索 **UltraCode**，或在网页/手机端输入 `/approvals`、`/direction`，即可实时切换 **Command approvals**（默认 `auto`）与 **Direction questions**（默认 `manual`）。
+- **Role Toggle**: Press `Shift+Tab` to switch between `UltraBuild` (default) and `UltraPlan` (read-only planning).
+- **Live Autonomy Switches**: Toggle **Command approvals** (`auto` by default) and **Direction questions** (`manual` by default) from the OpenCode Desktop `UltraCode` composer pill, `Settings → UltraCode`, the TUI Command Palette, or `/approvals` and `/direction` on Web and Mobile.
 
-## 常用维护命令
+## CLI Reference
 
-```bash
-ultracode upgrade          # 更新官方 OpenCode 与 UltraCode 并同步配置
-ultracode sync             # 幂等同步配置与受管运行时
-ultracode doctor           # 零模型调用健康检查
-ultracode ralph run ...    # 在 linked worktree 中运行跨平台 Ralph 循环
-ultracode uninstall --yes  # 干净卸载 UltraCode（保留用户配置与备份）
+| Command | Description |
+| --- | --- |
+| `ultracode [args...]` | Launch OpenCode with full flag, path, and subcommand passthrough |
+| `ultracode desktop` | Open official OpenCode Desktop or download the platform installer |
+| `ultracode pair [--remote]` | Pair a browser or mobile client via link and QR code |
+| `ultracode upgrade` | Update official OpenCode V2 and UltraCode together, then sync |
+| `ultracode sync` | Idempotently sync configuration, plugin, roles, and managed runtime |
+| `ultracode doctor` | Verify OpenCode version, plugin state, roles, and MCP health (zero model calls) |
+| `ultracode ralph run <goal>` | Run isolated fresh-session Ralph iterations inside a linked Git worktree |
+| `ultracode uninstall --yes` | Remove UltraCode cleanly while preserving user configs and backups |
+
+## Repository Structure
+
+```text
+Project.UltraCode/
+├── packages/
+│   ├── installer/      # Unified ultracode CLI, JSONC union merger & 6-target standalone builder
+│   ├── plugin-gui/     # OpenCode Desktop GUI plugin (ComposerPill & SettingsPage)
+│   └── config/         # Embedded OpenCode roles, Server/TUI/RPC conversation plugin & Ralph templates
+├── scripts/            # Zero-prerequisite install scripts (install.sh & install.ps1)
+├── website/            # Astro + Starlight 6-language website & docs (ultracode.plutokeating.beer)
+└── docs/               # Architecture, CLI API, Quick Start, Cloudflare deployment & SVG assets
 ```
 
-## 开发验证
+## Local Verification
 
 ```bash
-bun install --cwd plugin-gui
-bun run --cwd plugin-gui check
-bun run --cwd plugin-gui build
+bun install --cwd packages/plugin-gui
+bun run --cwd packages/plugin-gui check
+bun run --cwd packages/plugin-gui build
 
-bun install --cwd installer
-bun test --cwd installer
-bun run --cwd installer check
-bun run --cwd installer build
+bun install --cwd packages/installer
+bun test --cwd packages/installer
+bun run --cwd packages/installer check
+bun run --cwd packages/installer build
 
 bun install --cwd website
 bun run --cwd website check
 bun run --cwd website build
 ```
 
-测试使用临时目录与隔离桩程序，禁止在测试中加入真实模型调用或用户凭据。
+> [!IMPORTANT]
+> Automated tests run entirely against isolated temporary directories and local stubs — never invoking live AI models or reading personal credentials.
 
-## 发布
+## Documentation
 
-为稳定 tag 手动触发 Release 工作流，单 Linux runner 交叉构建 6 个平台目标（`linux`/`darwin`/`windows` × `x64`/`arm64`）、版本冒烟、SHA-256、GitHub Artifact Attestations 与 Release 上传。项目采用 [MIT License](LICENSE)。
-
-## 文档
-
-- [架构](docs/ARCHITECTURE.md)
-- [命令接口](docs/API.md)
-- [快速开始](docs/QUICK_START.md)
-- [Cloudflare 部署](docs/CLOUDFLARE.md)
-- [社区调研](docs/RESEARCH.md)
-- [历史实施与验收](docs/IMPLEMENTATION_PLAN.md)
+- **Official Website & Guides** ([English](https://ultracode.plutokeating.beer) · [简体中文](https://ultracode.plutokeating.beer/zh/) · [العربية](https://ultracode.plutokeating.beer/ar/) · [Français](https://ultracode.plutokeating.beer/fr/) · [Русский](https://ultracode.plutokeating.beer/ru/) · [Español](https://ultracode.plutokeating.beer/es/))
+- [Architecture Overview](docs/ARCHITECTURE.md) · [CLI & Plugin API](docs/API.md) · [Quick Start](docs/QUICK_START.md) · [Cloudflare Deployment](docs/CLOUDFLARE.md)
+- Machine-readable index for AI agents: [`llms.txt`](https://ultracode.plutokeating.beer/llms.txt) · [`llms-full.txt`](https://ultracode.plutokeating.beer/llms-full.txt)
