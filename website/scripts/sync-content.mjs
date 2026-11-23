@@ -82,7 +82,7 @@ for (const slug of DOC_ORDER) {
 
 const llmsIndex = `# UltraCode
 
-> UltraCode (v1.0.0) is a provider- and model-neutral Goal Engineering layer built on official OpenCode V2 across macOS, Linux, and Windows (Terminal, Desktop App, Web, and Mobile). Built and shipped with UltraCode v0.3.0.
+> UltraCode (v1.1.0) is a provider- and model-neutral Goal Engineering layer built on official OpenCode V2 across macOS, Linux, and Windows (Terminal, Desktop App, Web, and Mobile). Built and shipped with UltraCode v1.0.0.
 
 UltraCode installs in one command (setting up official OpenCode V2 automatically if missing), keeps your existing models and API keys untouched, clarifies requirements upfront with structured choice cards, orchestrates two primary roles (\`UltraBuild\` and \`UltraPlan\`) plus five background specialists (\`librarian\`, \`architect\`, \`implementer\`, \`reviewer\`, \`visual-evaluator\`), inspects real UI in Chromium across desktop and mobile viewports, and persists long-running milestone handoffs in the repository.
 
@@ -109,17 +109,17 @@ ${docEntries.map((d) => `- [${d.title}](${d.url}): ${d.description}`).join("\n")
 ## Repository & Releases
 
 - [GitHub Repository](https://github.com/PlutoKeating/Project.UltraCode): MIT-licensed source code (\`packages/installer\`, \`packages/plugin-gui\`, \`packages/config\`, \`website\`, \`scripts\`, \`docs\`).
-- [Latest Release (v1.0.0)](https://github.com/PlutoKeating/Project.UltraCode/releases/latest): Standalone binaries for \`linux-x64\`, \`linux-arm64\`, \`darwin-x64\`, \`darwin-arm64\`, \`windows-x64.exe\`, and \`windows-arm64.exe\` with SHA-256 checksums.
+- [Latest Release (v1.1.0)](https://github.com/PlutoKeating/Project.UltraCode/releases/latest): Standalone binaries for \`linux-x64\`, \`linux-arm64\`, \`darwin-x64\`, \`darwin-arm64\`, \`windows-x64.exe\`, and \`windows-arm64.exe\` with SHA-256 checksums.
 `;
 
-const llmsFull = `# UltraCode v1.0.0 — Full Documentation Reference
+const llmsFull = `# UltraCode v1.1.0 — Full Documentation Reference
 
 > Source: ${siteUrl}
 > Repository: https://github.com/PlutoKeating/Project.UltraCode
 > License: MIT
-> Provenance: Built and shipped with UltraCode v0.3.0
+> Provenance: Built and shipped with UltraCode v1.0.0
 
-UltraCode is a non-invasive, provider- and model-neutral enhancement layer for official OpenCode V2 (\`v2.3.2+\`) across macOS, Linux, and Windows, spanning Terminal (TUI), OpenCode Desktop, Web, and Mobile.
+UltraCode is a non-invasive, provider- and model-neutral enhancement layer for official OpenCode V2 (\`v2.3.2+\`, verified on \`v2.4+\`) across macOS, Linux, and Windows, spanning Terminal (TUI), OpenCode Desktop, Web, and Mobile.
 
 ---
 

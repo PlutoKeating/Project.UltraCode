@@ -1,15 +1,15 @@
 <div align="center">
 
 <a href="https://ultracode.plutokeating.beer/fr/">
-  <img src="./docs/assets/fr/hero-banner.svg" alt="UltraCode v1.0.0 — Exprimez l’objectif. Livrez du concret vérifié." width="100%" />
+  <img src="./docs/assets/fr/hero-banner.svg" alt="UltraCode v1.1.0 — Exprimez l’objectif. Livrez du concret vérifié." width="100%" />
 </a>
 
 <br />
 
-[![Version](https://img.shields.io/badge/Version-v1.0.0-ffffff?style=flat-square&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/releases/latest)
+[![Version](https://img.shields.io/badge/Version-v1.1.0-ffffff?style=flat-square&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/releases/latest)
 [![Site web](https://img.shields.io/badge/Site%20web-ultracode.plutokeating.beer-bae6fd?style=flat-square&labelColor=0a0a0a)](https://ultracode.plutokeating.beer/fr/)
 [![Plateformes](https://img.shields.io/badge/Plateformes-macOS%20%7C%20Linux%20%7C%20Windows-d4d4d4?style=flat-square&labelColor=0a0a0a)](https://ultracode.plutokeating.beer/fr/docs/getting-started/)
-[![Construit avec](https://img.shields.io/badge/Construit%20avec-UltraCode%20v0.3.0-e5a03d?style=flat-square&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/releases/tag/v0.3.0)
+[![Construit avec](https://img.shields.io/badge/Construit%20avec-UltraCode%20v1.0.0-e5a03d?style=flat-square&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/releases/tag/v1.0.0)
 [![CI](https://img.shields.io/github/actions/workflow/status/PlutoKeating/Project.UltraCode/ci.yml?branch=main&style=flat-square&label=Int%C3%A9gration&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/actions/workflows/ci.yml)
 
 [English](README.md) · [简体中文](README_ZH.md) · [العربية](README_AR.md) · **Français** · [Русский](README_RU.md) · [Español](README_ES.md)
@@ -18,12 +18,12 @@
 
 </div>
 
-**UltraCode (`v1.0.0`)** est une couche d’enrichissement non invasive, neutre vis-à-vis des modèles et des fournisseurs, construite sur **OpenCode V2** officiel pour **macOS, Linux et Windows** — couvrant **Terminal (TUI), application Desktop, Web et Mobile**.
+**UltraCode (`v1.1.0`)** est une couche d’enrichissement non invasive, neutre vis-à-vis des modèles et des fournisseurs, construite sur **OpenCode V2** officiel pour **macOS, Linux et Windows** — couvrant **Terminal (TUI), application Desktop, Web et Mobile**.
 
 Au lieu de deviner trop tôt ou de perdre le contexte à mi-parcours, UltraCode clarifie les choix structurants dès le départ sous forme d’options claires, coordonne des spécialistes en arrière-plan, vérifie le rendu dans un vrai navigateur Chromium et sauvegarde des rapports de passation durables dans votre dépôt.
 
 > [!NOTE]
-> **Provenance d’ingénierie auto-hébergée :** UltraCode `v1.0.0` — y compris son runtime multi-surface, son site en 6 langues et sa chaîne de publication — a été développé et construit à l’aide d’**UltraCode `v0.3.0`**.
+> **Provenance d’ingénierie auto-hébergée :** UltraCode `v1.1.0` — y compris son alignement OpenCode `v2.4+`, ses jalons persistants et sa veille amont automatisée — a été développé et construit à l’aide d’**UltraCode `v1.0.0`**.
 
 ## Vue d’ensemble
 
@@ -33,8 +33,8 @@ Au lieu de deviner trop tôt ou de perdre le contexte à mi-parcours, UltraCode 
 
 ### Capacités clés
 
-- **Une seule commande, zéro prérequis** : la commande unique `ultracode` transmet intégralement tous les arguments et sous-commandes d’`opencode`. L’installateur et `ultracode upgrade` détectent, installent ou mettent à jour automatiquement OpenCode V2 officiel (`v2.3.2+`).
-- **Synchronisation en direct sur toutes les interfaces** : le plugin embarqué `ultracode-conversation` synchronise l’état entre Server RPC, la palette TUI, OpenCode Desktop (capsule rapide & page `Settings → UltraCode`) et Web/Mobile (`/approvals` et `/direction`).
+- **Une seule commande, zéro prérequis** : la commande unique `ultracode` transmet intégralement tous les arguments et sous-commandes d’`opencode`. L’installateur et `ultracode upgrade` détectent, installent ou mettent à jour automatiquement OpenCode V2 officiel (`v2.3.2+`, vérifié sur `v2.4+`).
+- **Synchronisation en direct sur toutes les interfaces** : le plugin embarqué `ultracode-conversation` synchronise l’état entre Server RPC, la palette TUI, OpenCode Desktop (capsule rapide avec effacement d’étape en un clic & page `Settings → UltraCode`) et Web/Mobile (`/approvals` et `/direction`).
 - **Deux rôles principaux + cinq spécialistes** : basculez à tout moment via `Shift+Tab` entre `UltraBuild` (livraison complète) et `UltraPlan` (planification en lecture seule), épaulés automatiquement par `librarian`, `architect`, `implementer`, `reviewer` et `visual-evaluator`.
 - **Continuité des tâches longues & reprise nette** : enchaîne les jalons automatiquement, vous redonne immédiatement la main dès qu’un message est envoyé et reprend après redémarrage ; inclut le lanceur multiplateforme `ultracode ralph run`.
 - **Strictement additif & réversible** : ne modifie jamais les binaires officiels d’OpenCode, ne lit aucune clé API, préserve vos commentaires JSONC et skills existants, et se désinstalle proprement.

@@ -1,7 +1,7 @@
 # OpenCode v2.4+ Alignment, Checkpoint Hardening, and Upstream Stewardship Design
 
 - **Date**: 2026-11-23
-- **Status**: Draft (Pending Builder Check & Maintainer Approval)
+- **Status**: Approved & Implemented
 - **Target Version**: UltraCode `v1.1.0` (local feature branch `feature/opencode-v24-upstream-stewardship`)
 
 ---
@@ -15,7 +15,7 @@ Following the release of UltraCode `v1.0.0`, official OpenCode shipped `v2.4.0` 
 1. **Immediate `v2.4.0+` Alignment & "Keep Core, Upgrade Rough Edges, Borrow Official Strengths"**:
    - UltraCode `v1.0.0` prints a misleading hardcoded warning (`minor > 3`: *"newer than the tested 2.3.x matrix; running structural checks only"*), pins `@opencode/plugin@2.3.2` in `packages/plugin-gui`, performs a single non-retried `/api/plugin` read in `components.ts` that can race `v2.4.0` async plugin startup, and stores `ultracode_checkpoint` in a volatile in-memory `Map` without stall limits, Desktop pill visibility, or mutual-exclusion awareness of OpenCode's `/goal`.
    - At the same time, source-level comparison against `anomalyco/opencode@v2.4.0` proved that UltraCode's isolated headless `@playwright/mcp` (`visual-evaluator`), `ultracode ralph run` (cross-session Context Reset in linked worktrees), and natural-chat `ultracode_checkpoint` (clarify upfront via `question`, then continue across milestones with tool-wielding `reviewer`/`visual-evaluator`) are **more complete** for our target engineering bar than replacing them wholesale with Desktop-only `opencode.browser` or `/goal`'s zero-tool `judge.txt` + `"do not stop to ask"` `kickoff.txt`.
-   - Meanwhile, local installation on the maintainer's machine is still on `v0.3.0` and needs to be upgraded to the newly built binary and verified clean against live `opencode v2.4.0`.
+   - Meanwhile, the newly built `ultracode` `v1.1.0` standalone binary needs end-to-end clean-room verification (`version`, `sync`, `doctor`, and `check-upstreams.ts --verify-live`) in isolated sandbox directories against live `opencode v2.4.0` without mutating the maintainer's real host paths.
 
 2. **Permanent, Zero-Path-Hardcoding Upstream Stewardship**:
    - Because UltraCode is a non-invasive layer coupled to OpenCode's CLI, Server/TUI/GUI/RPC plugin contracts, permissions, and three vendored/pinned runtime dependencies (`obra/superpowers`, `@playwright/mcp`, `Th0rgal/open-ralph-wiggum`), traditional Dependabot bumps and hardcoded line-number scripts both rot quickly.
@@ -44,8 +44,8 @@ Following the release of UltraCode `v1.0.0`, official OpenCode shipped `v2.4.0` 
    - Zero-path-hardcoding methodology Skill (`.opencode/skills/upstream-stewardship/SKILL.md` + `references/completeness-rubric.md`) encoding how a Coding Agent dynamically discovers coupling surfaces, evaluates upstream features against the Claude Code / Anthropic GAN bar, applies surgical updates, and runs clean-room live-host verification.
    - Zero-token probe & live-host canary CLI script (`scripts/check-upstreams.ts`) + GitHub Actions workflow (`.github/workflows/upstream-canary.yml`) that runs without model API keys, tests against the real latest official `opencode` binary in an isolated sandbox, and creates/updates a single deduplicated GitHub Issue with full delta & diagnostic patch/evidence report (never pushing branches or commits).
    - Ready-to-use OpenCode `v2.4.0` `/automation` zero-token Code Mode recipe for local recurring upstream checks that steer a local session to invoke `upstream-stewardship` only when an upstream change is detected.
-5. **Local Machine Sync & Full Verification**:
-   - Build the updated `ultracode` standalone binary, update the local machine installation (`~/.local/bin/ultracode`) from `v0.3.0` to `v1.1.0`, run `ultracode sync` and `ultracode doctor` against live `opencode v2.4.0` with zero warnings or errors, and keep all documentation (root 6-language READMEs, `docs/`, and `website/` where applicable) synchronized.
+5. **Clean-Room Live Verification & Full Repo Sync**:
+   - Build the updated `ultracode` `v1.1.0` standalone binary, run `ultracode version`, `ultracode sync`, and `ultracode doctor` inside an isolated sandbox (`HOME` / `OPENCODE_CONFIG_DIR` / `ULTRACODE_HOME` / `ULTRACODE_BIN_DIR`) against live `opencode v2.4.0` with zero warnings or errors (keeping the maintainer's real host installation untouched), and keep all documentation (root 6-language READMEs, `docs/`, and `website/` where applicable) synchronized.
 
 ### Non-Goals
 - Running paid/keyed LLM inference inside GitHub Actions CI (explicitly rejected by maintainer in favor of zero-cost cloud canary + local LLM execution).

@@ -24,14 +24,15 @@ UltraCode 解决两类问题：长程工程中的目标漂移、上下文腐烂�
 
 UltraCode 在 `<config>/ultracode/conversation/` 安装单一多触点插件包（`package.json` 导出 `.`、`./tui`、`./gui-experimental`、`./rpc`）：
 
-- **RPC 契约（`rpc.js`）**：基于 `@opencode/plugin/rpc` 定义零运行时依赖的 `UltraCodeRpc`（方法 `getState`、`setMode`、`toggleMode`，事件 `changed`）。
+- **RPC 契约（`rpc.js`）**：基于 `@opencode/plugin/rpc` 定义零运行时依赖的 `UltraCodeRpc`（方法 `getState`、`setMode`、`toggleMode`、`clearCheckpoint`，事件 `changed`，状态包含 `permissions`、`direction`、`version` 与当前进程活动会话的 `checkpoints` 映射）。
 - **Server 入口（`server.js`，ID `ultracode-conversation`）**：
-  - 注册 `UltraCodeRpc` 与 `/approvals`、`/direction` 服务端命令，修改模式时广播 `changed` 事件并刷新命令描述，使 TUI、Desktop 与远程 Web/Mobile 会话实时同步。
+  - 注册 `UltraCodeRpc` 与 `/approvals`、`/direction` 服务端命令，修改模式或里程碑变化时广播 `changed` 事件并刷新命令描述，使 TUI、Desktop 与远程 Web/Mobile 会话实时同步。
   - 注册 `permission.evaluate`（`permissions` 为 `auto` 时放行 `ask`，显式 `deny` 始终生效）、`ultracode_model`、`ultracode_checkpoint`、`session.prompt`、`session.context` 与 `experimental.idle` 续跑钩子。
+  - `ultracode_checkpoint` 采用 `ctx.storage` 持久化存储，具备进程启动围栏（`BOOT_ID` fencing，防止异常重启后静默误触发旧任务）、单轮授权上限与停滞熔断保护（`MAX_CHECKPOINT_ROUNDS = 25`、`MAX_CHECKPOINT_STALLS = 3`），并在同一会话启用官方 `opencode.goal`（`/goal`）时自动避让以杜绝双重续跑提示。
 - **TUI 入口（`tui.tsx`，ID `ultracode-conversation-ui`）**：
   - 在命令面板（`UltraCode` 分组）注册双开关，调用 `UltraCodeRpc`（带本地回退），并在 `home.footer.status` 提供克制的 `UltraCode` 状态标识。
-- **GUI 入口（`gui-experimental.cjs`，由 `packages/plugin-gui/` 通过 Vite + `@opencode/plugin/gui/vite` 预编译为单文件 CJS 并内嵌至二进制）**：
-  - 在 OpenCode Desktop 界面提供输入框上方的 **UltraCode** `ComposerPill`（两行一键切换）、独立的 **Settings → UltraCode** 页面（`SettingsLayout` + 双 `Switch`）以及命令面板动作，支持联合国 6 种官方语言（`en` / `zh` / `ar` / `fr` / `ru` / `es`）。
+- **GUI 入口（`gui-experimental.cjs`，由 `packages/plugin-gui/` 基于 `@opencode/plugin@2.4.0` 与 Vite 预编译为单文件 CJS 并内嵌至二进制）**：
+  - 在 OpenCode Desktop 界面提供输入框上方的 **UltraCode** `ComposerPill`（两行一键切换开关，且当当前会话存在待执行里程碑时动态展示第 3 行里程碑摘要与一键清除动作）、独立的 **Settings → UltraCode** 页面（`SettingsLayout` + 双 `Switch`）以及命令面板动作，支持联合国 6 种官方语言（`en` / `zh` / `ar` / `fr` / `ru` / `es`）。
 
 模式状态原子持久化至 `$ULTRACODE_HOME/permissions.mode` 与 `$ULTRACODE_HOME/direction.mode`（Linux/macOS 默认 `~/.local/share/ultracode`，Windows 默认 `%LOCALAPPDATA%\ultracode`）。
 
@@ -48,7 +49,7 @@ UltraCode 在 `<config>/ultracode/conversation/` 安装单一多触点插件包�
   最大并集 JSONC / 清单     零前置安装升级 / 桌面启动   Bun fetch / 浏览器 / TS Ralph
 ```
 
-- **零前置 OpenCode 管理（`opencode.ts`、`install.sh`、`install.ps1`）**：自动查找官方 `opencode`；缺失时通过官方渠道安装（Linux/macOS 官方安装脚本，Windows 官方独立 zip 包写入 `%LOCALAPPDATA%\opencode\bin` 并加入用户 `PATH`）；存在时静默尝试 `opencode upgrade`，若离线或包管理器接管导致升级返回非零但现有版本满足 `>= 2.3.2`，自动平稳保留继续执行。
+- **零前置 OpenCode 管理与动态契约校验（`opencode.ts`、`components.ts`、`packages/config/upstream-baseline.json`、`install.sh`、`install.ps1`）**：自动查找官方 `opencode`；缺失时通过官方渠道安装（Linux/macOS 官方安装脚本，Windows 官方独立 zip 包写入 `%LOCALAPPDATA%\opencode\bin` 并加入用户 `PATH`）；存在时静默尝试 `opencode upgrade`，若离线或包管理器接管导致升级返回非零但现有版本满足 V2 契约底线（`>= 2.3.2` 且 `< 3.0.0`，已验证 `v2.4.0+`），无警告平稳保留并由运行期 `apply` / `doctor` 实机契约检查兜底；`components.ts` 在读取 `/api/plugin` 时提供有界轮询重试以兼容 OpenCode `v2.4+` 后台异步插件加载。
 - **Windows 原生一等公民（`paths.ts`、`fs.ts`、`release.ts`、`ralph.ts`）**：所有网络下载使用 Bun 原生 `fetch()` + SHA-256 校验；Windows 下通过重命名运行中 `.exe` 为 `.old` 实现无锁自更新与卸载清理；`ultracode ralph run` 使用纯 TypeScript 实现 linked worktree 守卫与模板初始化，不依赖 bash；托管 Playwright MCP 使用内部命令 `[paths.binary, "_mcp"]`，避免遮蔽 `ultracode mcp <subcommand>` 透传。
 
 ## 5. 最大并集合并与精确卸载
@@ -61,3 +62,10 @@ UltraCode 在 `<config>/ultracode/conversation/` 安装单一多触点插件包�
 `website/` 使用 Astro Starlight 构建覆盖联合国 6 种官方语言（默认根路径 `/` 为英文 `en`，以及 `/zh/`、`/ar/` RTL、`/fr/`、`/ru/`、`/es/`）的多语言官网与文档站点，`sync-content.mjs` 将 `scripts/install.sh` 与 `scripts/install.ps1` 同步至 `website/public/` 并自动构建 `/llms.txt` 与 `/llms-full.txt`；`scripts/generate-brand-assets.ts` 基于统一多语言文案生成 `docs/assets/{en,zh,ar,fr,ru,es}/` 下的 18 张本地化独立 SVG 图表与 `website/public/og-card*.png` 社交分享卡片，整体由 Cloudflare Workers Static Assets 发布至 `https://ultracode.plutokeating.beer/`。
 
 `packages/installer/scripts/build.ts --release` 先构建 `packages/plugin-gui`，再由单个 Linux Runner 交叉编译 6 个目标（`linux-x64`、`linux-arm64`、`darwin-x64`、`darwin-arm64`、`windows-x64.exe`、`windows-arm64.exe`），生成 `.sha256` 与 GitHub Artifact Attestations 并发布 Release。
+
+## 7. 上游看护体系（Upstream Stewardship）
+
+`packages/config/upstream-baseline.json` 集中声明 4 个耦合上游（`anomalyco/opencode` 含 `@opencode/plugin` SDK、`obra/superpowers`、`@playwright/mcp`、`Th0rgal/open-ralph-wiggum`）的受支持底线、已验证版本与归档校验和：
+
+- **方法论技能（`.opencode/skills/upstream-stewardship/`）**：不硬编码脆弱源码行号，指导本地 Coding Agent 动态扫描耦合面、按五维工程完整性量表评估上游新特性，并在隔离沙箱内完成真实验证。
+- **确定性探针与金丝雀巡检（`scripts/check-upstreams.ts` + `.github/workflows/upstream-canary.yml`）**：无需任何模型 API 密钥，自动比对上游最新 Release / SDK 导出面并在隔离 `HOME` 下针对真实 `opencode` 二进制运行 GUI 编译与 `apply` + `doctor` 实机契约验证，通过单一 `upstream-sync` Issue 闭环跟踪状态。

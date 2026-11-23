@@ -4,7 +4,7 @@ import { Rpc } from "@opencode/plugin/rpc"
 import { getAll, mode, set, toggle } from "./settings.js"
 import { UltraCodeRpc } from "./rpc.js"
 
-const VERSION = "1.0.0"
+const VERSION = "1.1.0"
 const BOOT_ID = (globalThis.__ultracodeBootID ??= randomUUID())
 const CHECKPOINT_PREFIX = "checkpoint:"
 export const MAX_CHECKPOINT_ROUNDS = 25

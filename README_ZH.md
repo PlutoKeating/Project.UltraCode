@@ -1,15 +1,15 @@
 <div align="center">
 
 <a href="https://ultracode.plutokeating.beer/zh/">
-  <img src="./docs/assets/zh/hero-banner.svg" alt="UltraCode v1.0.0 — 说清目标，稳妥交付" width="100%" />
+  <img src="./docs/assets/zh/hero-banner.svg" alt="UltraCode v1.1.0 — 说清目标，稳妥交付" width="100%" />
 </a>
 
 <br />
 
-[![正式版](https://img.shields.io/badge/%E6%AD%A3%E5%BC%8F%E7%89%88-v1.0.0-ffffff?style=flat-square&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/releases/latest)
+[![正式版](https://img.shields.io/badge/%E6%AD%A3%E5%BC%8F%E7%89%88-v1.1.0-ffffff?style=flat-square&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/releases/latest)
 [![官方网站](https://img.shields.io/badge/%E5%AE%98%E6%96%B9%E7%BD%91%E7%AB%99-ultracode.plutokeating.beer-bae6fd?style=flat-square&labelColor=0a0a0a)](https://ultracode.plutokeating.beer/zh/)
 [![支持平台](https://img.shields.io/badge/%E6%94%AF%E6%8C%81%E5%B9%B3%E5%8F%B0-macOS%20%7C%20Linux%20%7C%20Windows-d4d4d4?style=flat-square&labelColor=0a0a0a)](https://ultracode.plutokeating.beer/zh/docs/getting-started/)
-[![辅助构建](https://img.shields.io/badge/%E8%BE%85%E5%8A%A9%E6%9E%84%E5%BB%BA-UltraCode%20v0.3.0-e5a03d?style=flat-square&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/releases/tag/v0.3.0)
+[![辅助构建](https://img.shields.io/badge/%E8%BE%85%E5%8A%A9%E6%9E%84%E5%BB%BA-UltraCode%20v1.0.0-e5a03d?style=flat-square&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/releases/tag/v1.0.0)
 [![持续集成](https://img.shields.io/github/actions/workflow/status/PlutoKeating/Project.UltraCode/ci.yml?branch=main&style=flat-square&label=%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/actions/workflows/ci.yml)
 
 [English](README.md) · **简体中文** · [العربية](README_AR.md) · [Français](README_FR.md) · [Русский](README_RU.md) · [Español](README_ES.md)
@@ -18,10 +18,10 @@
 
 </div>
 
-**UltraCode（`v1.0.0`）** 是面向官方 **OpenCode V2** 的模型与服务商中立增强层，聚焦 **Goal Engineering（目标工程）**——让你用自然语言说清受众、核心行为与验收标准，把前置调研确认、多角色分工实现、独立代码复核与真实浏览器页面检查串联为稳定闭环，原生支持 **macOS、Linux 与 Windows**，打通 **终端（TUI）、桌面端（Desktop）、网页端（Web）与手机端（Mobile）**。
+**UltraCode（`v1.1.0`）** 是面向官方 **OpenCode V2** 的模型与服务商中立增强层，聚焦 **Goal Engineering（目标工程）**——让你用自然语言说清受众、核心行为与验收标准，把前置调研确认、多角色分工实现、独立代码复核与真实浏览器页面检查串联为稳定闭环，原生支持 **macOS、Linux 与 Windows**，打通 **终端（TUI）、桌面端（Desktop）、网页端（Web）与手机端（Mobile）**。
 
 > [!NOTE]
-> **自举开发与构建说明**：UltraCode `v1.0.0` 正式版（涵盖多触点运行时、6 国语言官网文档与构建发布链路）均使用 **UltraCode `v0.3.0`** 辅助开发与构建完成。
+> **自举开发与构建说明**：UltraCode `v1.1.0` 正式版（涵盖 OpenCode `v2.4+` 全面对齐、持久化里程碑续跑与上游看护金丝雀体系）均使用 **UltraCode `v1.0.0`** 辅助开发与构建完成。
 
 ## 核心概览
 
@@ -31,10 +31,10 @@
 
 ### 核心特性
 
-- **单一命令与零前置安装**：唯一命令 `ultracode` 与官方 `opencode` 参数和子命令完全互通；安装脚本与 `ultracode upgrade` 会自动检测并安装或更新官方 OpenCode V2（`v2.3.2+`）。
-- **全端实时同步体验**：内嵌 `ultracode-conversation` 多触点插件包，打通 Server RPC、TUI 命令面板、OpenCode Desktop（输入框上方 `UltraCode` 胶囊与 `Settings → UltraCode` 设置页）及网页/手机端（`/approvals` 与 `/direction`）。
+- **单一命令与零前置安装**：唯一命令 `ultracode` 与官方 `opencode` 参数和子命令完全互通；安装脚本与 `ultracode upgrade` 会自动检测并安装或更新官方 OpenCode V2（`v2.3.2+`，已验证兼容 `v2.4+`）。
+- **全端实时同步体验**：内嵌 `ultracode-conversation` 多触点插件包，打通 Server RPC、TUI 命令面板、OpenCode Desktop（输入框上方 `UltraCode` 胶囊支持双开关与待执行里程碑一键清除，及 `Settings → UltraCode` 设置页）及网页/手机端（`/approvals` 与 `/direction`）。
 - **双主角色与五位后台专家**：按 `Shift+Tab` 在默认总控 `UltraBuild` 与只读规划 `UltraPlan` 之间随时切换，后台自动按需调度 `librarian`、`architect`、`implementer`、`reviewer` 与 `visual-evaluator`。
-- **长任务持续推进与断点恢复**：在当前会话内自动衔接阶段目标，发新消息随时插话转向；进度与交接记录保存在仓库内，重启后可自然语言接续，并内置跨平台 TypeScript 原生 `ultracode ralph run`。
+- **长任务持续推进与断点恢复**：在当前会话内持久化衔接阶段目标（具备停滞熔断保护并与官方 `/goal` 自动协同共存），发新消息随时插话转向；进度与交接记录保存在仓库内，重启后可自然语言接续，并内置跨平台 TypeScript 原生 `ultracode ralph run`。
 - **纯增量且随时可逆**：不修改官方 OpenCode 二进制程序，不读取或上传任何 API 密钥，完整保留原有 JSONC 注释、快捷键与自定义技能，支持一键干净卸载。
 
 <div align="center">

@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.1.0 - 2026-11-24
+
+面向 OpenCode `v2.4.0+` 的全面对齐、持久化里程碑加固与上游看护体系版本（Built with UltraCode v1.0.0 / Verified on OpenCode v2.4.0）：
+
+- **OpenCode `v2.4.0+` 全面对齐与异步插件就绪重试**：新增单一声明式上游基线 `packages/config/upstream-baseline.json`；`packages/plugin-gui` 升级至 `@opencode/plugin@2.4.0`；移除 `opencode.ts` 中针对 `minor > 3` 的误导性静态警告，改为基于 V2 契约底线（`>= 2.3.2` 且 `< 3.0.0`）加运行期实机契约校验；`components.ts` 针对 OpenCode `v2.4+` 后台异步加载插件机制新增有界轮询重试，消除冷启动去重竞态。
+- **持久化 `ultracode_checkpoint`、官方 `/goal` 共存与桌面胶囊清除控制**：会话里程碑升级为 `ctx.storage` 持久化存储，新增进程启动围栏（`BOOT_ID` fencing）、单轮用户授权最多 25 次自动续跑与连续 3 次重复里程碑停滞熔断保护，并在检测到同一会话激活官方 `opencode.goal`（`/goal`）时自动让出续跑控制权；`UltraCodeRpc` 新增 `clearCheckpoint` 与活动里程碑映射，OpenCode Desktop 输入框上方的 `UltraCode` 胶囊在会话存在待执行里程碑时动态展示第 3 行摘要与一键清除按钮（完整覆盖联合国 6 种官方语言）。
+- **零路径硬编码上游看护体系（Upstream Stewardship）**：新增 `.opencode/skills/upstream-stewardship/` 方法论技能与五维完整性门控量表，配套零 Token 确定性上游探针与隔离实机金丝雀脚本 `scripts/check-upstreams.ts`（`--verify-live`）及 `.github/workflows/upstream-canary.yml` 每日巡检工作流，通过单一去重 GitHub Issue 自动跟踪上游变更与兼容性状态（零代码写入权限、零模型调用）。
+
 ## v1.0.0 - 2026-11-23
 
 首个正式版（Built with UltraCode v0.3.0）：

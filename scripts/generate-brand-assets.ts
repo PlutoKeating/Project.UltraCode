@@ -86,7 +86,7 @@ const BANNER_COPY: Record<
     sub: "End-to-end Goal Engineering for official OpenCode V2 across macOS, Linux & Windows",
     surfaces: "Terminal · Desktop · Web · Mobile",
     neutral: "Provider & Model Neutral · Zero Binary Patching",
-    built: "Built with UltraCode v0.3.0",
+    built: "Built with UltraCode v1.0.0",
     domain: "ultracode.plutokeating.beer",
   },
   zh: {
@@ -96,7 +96,7 @@ const BANNER_COPY: Record<
     sub: "基于官方 OpenCode V2 构建 · 原生支持 macOS、Linux 与 Windows",
     surfaces: "终端 · 桌面端 · 网页 · 手机端",
     neutral: "模型与服务商中立 · 零二进制修改",
-    built: "使用 UltraCode v0.3.0 辅助开发与构建",
+    built: "使用 UltraCode v1.0.0 辅助开发与构建",
     domain: "ultracode.plutokeating.beer/zh",
   },
   ar: {
@@ -106,7 +106,7 @@ const BANNER_COPY: Record<
     sub: "هندسة أهداف متكاملة لمنصة OpenCode V2 الرسمية على macOS وLinux وWindows",
     surfaces: "الطرفية · سطح المكتب · الويب · الهاتف",
     neutral: "محايد للنماذج والمزوّدين · دون تعديل الثنائيات",
-    built: "طُوِّر وبُنِيَ بمساعدة UltraCode v0.3.0",
+    built: "طُوِّر وبُنِيَ بمساعدة UltraCode v1.0.0",
     domain: "ultracode.plutokeating.beer/ar",
   },
   fr: {
@@ -116,7 +116,7 @@ const BANNER_COPY: Record<
     sub: "Ingénierie d’objectifs de bout en bout pour OpenCode V2 sur macOS, Linux et Windows",
     surfaces: "Terminal · Bureau · Web · Mobile",
     neutral: "Neutre modèles & fournisseurs · Zéro patch binaire",
-    built: "Conçu et construit avec UltraCode v0.3.0",
+    built: "Conçu et construit avec UltraCode v1.0.0",
     domain: "ultracode.plutokeating.beer/fr",
   },
   ru: {
@@ -126,7 +126,7 @@ const BANNER_COPY: Record<
     sub: "Сквозная инженерия целей на базе официального OpenCode V2 для macOS, Linux и Windows",
     surfaces: "Терминал · Десктоп · Веб · Телефон",
     neutral: "Независимость от моделей · Без патчей бинарников",
-    built: "Разработано и собрано на UltraCode v0.3.0",
+    built: "Разработано и собрано на UltraCode v1.0.0",
     domain: "ultracode.plutokeating.beer/ru",
   },
   es: {
@@ -136,14 +136,14 @@ const BANNER_COPY: Record<
     sub: "Ingeniería de objetivos de principio a fin para OpenCode V2 en macOS, Linux y Windows",
     surfaces: "Terminal · Escritorio · Web · Móvil",
     neutral: "Neutral en modelos y proveedores · Sin tocar binarios",
-    built: "Desarrollado y construido con UltraCode v0.3.0",
+    built: "Desarrollado y construido con UltraCode v1.0.0",
     domain: "ultracode.plutokeating.beer/es",
   },
 };
 
 function renderHeroBannerSvg(lang: Locale): string {
   const b = BANNER_COPY[lang];
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 340" fill="none" direction="ltr" role="img" aria-label="UltraCode v1.0.0 — ${esc(b.title)}">
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 340" fill="none" direction="ltr" role="img" aria-label="UltraCode v1.1.0 — ${esc(b.title)}">
   <defs>
     <radialGradient id="iceHorizon" cx="32%" cy="62%" r="46%">
       <stop offset="0%" stop-color="#BAE6FD" stop-opacity="0.16"/>
@@ -181,7 +181,7 @@ function renderHeroBannerSvg(lang: Locale): string {
     </g>
     <text x="34" y="20" fill="#FFFFFF" font-family="${SANS_STACK}" font-size="19" font-weight="600">UltraCode</text>
     <rect x="144" y="4" width="56" height="21" rx="4" fill="#111111" stroke="#FFFFFF" stroke-opacity="0.18"/>
-    <text x="172" y="18.5" text-anchor="middle" fill="#BAE6FD" font-family="${MONO_STACK}" font-size="11.5" font-weight="500">v1.0.0</text>
+    <text x="172" y="18.5" text-anchor="middle" fill="#BAE6FD" font-family="${MONO_STACK}" font-size="11.5" font-weight="500">v1.1.0</text>
   </g>
   <text x="1120" y="44" text-anchor="end" fill="#9A9A9A" font-family="${MONO_STACK}" font-size="13">${esc(b.domain)}</text>
 
@@ -307,7 +307,7 @@ function renderRolesSvg(lang: Locale): string {
 `;
 }
 
-function renderOgHtml(lang: Locale): string {
+function renderOgHtml(lang: Locale, width = 1200, height = 630): string {
   const b = BANNER_COPY[lang];
   const meta = LOCALE_META[lang];
   const headlineSize = lang === "ru" || lang === "fr" || lang === "es" ? "48px" : "54px";
@@ -318,8 +318,8 @@ function renderOgHtml(lang: Locale): string {
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body {
-    width: 1200px;
-    height: 630px;
+    width: ${width}px;
+    height: ${height}px;
     overflow: hidden;
     background: #000000;
     color: #ffffff;
@@ -328,8 +328,8 @@ function renderOgHtml(lang: Locale): string {
   }
   .canvas {
     position: relative;
-    width: 1200px;
-    height: 630px;
+    width: ${width}px;
+    height: ${height}px;
     background:
       radial-gradient(46% 28% at 32% 62%, rgba(186, 230, 253, 0.16), transparent 72%),
       radial-gradient(42% 26% at 72% 62%, rgba(229, 160, 61, 0.14), transparent 74%),
@@ -432,7 +432,7 @@ function renderOgHtml(lang: Locale): string {
           <path d="M180 0H240V42H180V0Z" fill="#E5A03D"/>
         </svg>
         <span class="brand-name">UltraCode</span>
-        <span class="ver">v1.0.0</span>
+        <span class="ver">v1.1.0</span>
       </div>
       <span class="domain">${esc(b.domain)}</span>
     </div>
@@ -488,4 +488,20 @@ for (const lang of LOCALES) {
   );
 }
 
-console.log("Generated 18 localized SVGs and 6 localized OpenGraph PNG cards.");
+const socialHtmlFile = join(tempOgDir, "social-preview.html");
+await writeFile(socialHtmlFile, renderOgHtml("en", 1280, 640), "utf8");
+execFileSync(
+  chromeBin,
+  [
+    "--headless=new",
+    "--no-sandbox",
+    "--disable-gpu",
+    "--hide-scrollbars",
+    "--window-size=1280,640",
+    `--screenshot=${join(assetsRoot, "social-preview.png")}`,
+    `file://${socialHtmlFile}`,
+  ],
+  { stdio: "pipe" },
+);
+
+console.log("Generated 18 localized SVGs, 6 localized OpenGraph PNG cards, and social-preview.png.");

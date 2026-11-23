@@ -1,6 +1,6 @@
 # 社区调研与选型依据
 
-> **历史背景说明**：本文档第 1–9 节记录了 **v0.1.0 之前**围绕个人 Vertex Gemini 4 与 REA 环境的早期选型调研与实测证据。当前公开正式版 UltraCode（v1.0.0）严格保持 **Provider/Model 中立**，不绑定任何特定云厂商、模型或私有 MCP；现行架构请参阅 [架构](ARCHITECTURE.md)。
+> **历史背景说明**：本文档第 1–9 节记录了 **v0.1.0 之前**围绕个人 Vertex Gemini 4 与 REA 环境的早期选型调研与实测证据。当前公开正式版 UltraCode（v1.1.0）严格保持 **Provider/Model 中立**，不绑定任何特定云厂商、模型或私有 MCP；现行架构请参阅 [架构](ARCHITECTURE.md)。
 
 ## 1. 范围与方法
 

@@ -9,12 +9,12 @@
 - `ralph.ts`：跨平台 TypeScript 原生 `ultracode ralph run`（linked Git worktree 守卫、模板初始化与退出码契约）。
 - `install.ts`：备份、原子写入、schema v2 清单、本地修改保护，以及 `apply` / `doctor` / `uninstall` 主流程。
 - `config.ts`：基于 `jsonc-parser` 保留注释的最大并集合并与精确退役删除。
-- `components.ts`：跨平台识别插件身份、权限与等价无头隔离 Playwright MCP 复用。
+- `components.ts`：基于 `packages/config/upstream-baseline.json` 跨平台识别插件身份、针对 OpenCode `v2.4+` 后台异步加载插件提供有界 `/api/plugin` 轮询重试、合并权限并复用等价无头隔离 Playwright MCP。
 - `managed.ts`：生成受管配置基线（`default_agent: "UltraBuild"`、权限、压缩、`[paths.binary, "_mcp"]` 与插件路径）。
 - `manifest.ts`：读写 schema v2 安装清单。
-- `runtime.ts`：使用 Bun 原生 `fetch()` + SHA-256 下载固定版本 Superpowers / Ralph 归档，通过内嵌 Bun 子进程管理 Playwright 与无头浏览器。
+- `runtime.ts`：读取 `packages/config/upstream-baseline.json` 中的固定归档 URL、SHA-256 与 Playwright MCP 版本，使用 Bun 原生 `fetch()` 下载 Superpowers / Ralph 归档，并通过内嵌 Bun 子进程管理 Playwright 与无头浏览器。
 - `release.ts`：6 平台资产解析、Bun `fetch()` 下载、SHA-256 校验与 Windows 无锁二进制自更新。
-- `opencode.ts`：跨平台查找官方 `opencode`、零前置自动安装/静默升级回退、版本校验与 CLI 透传。
+- `opencode.ts`：跨平台查找官方 `opencode`、零前置自动安装/静默升级回退、基于 `upstream-baseline.json` 的 V2 契约底线校验（`>= 2.3.2` 且 `< 3.0.0`，对 `v2.4+` 零误报警告）与 CLI 透传。
 - `assets.ts`：将主/子角色、多触点对话插件（`package.json`、`rpc.js`、`server.js`、`settings.js`、`tui.tsx`、`gui-experimental.cjs`）及 Ralph 模板内嵌进单一二进制。
 - `paths.ts`：解析 Linux/macOS XDG 与 Windows `LOCALAPPDATA` 原生路径。
 - `fs.ts`：跨平台原子写入、SHA-256、安全文件名备份与 Windows `.old` 重命名替换原语。

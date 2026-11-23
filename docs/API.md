@@ -29,12 +29,12 @@
 
 | 接口 / 控制项 | 触点 | 说明 |
 | --- | --- | --- |
-| `ultracode_checkpoint` | Server 会话工具 | 登记下一里程碑（`{ next: string }`）；空字符串或新用户输入清除调度。 |
+| `ultracode_checkpoint` | Server 会话工具 | 登记下一里程碑（`{ next: string }`），使用 `ctx.storage` 持久化并带 `BOOT_ID` 进程围栏、25 轮上限与连续 3 次停滞熔断；传入空字符串、发送新用户消息或同一会话启用官方 `/goal`（`opencode.goal`）时自动清除/避让。 |
 | `ultracode_model` | Server 会话工具 | 列出可用模型 ID，或在用户明确指定/授权模型池内切换会话模型。 |
-| `UltraCodeRpc` (`getState` / `setMode` / `toggleMode` / `changed`) | Server ↔ TUI / Desktop | 跨进程实时状态读写与事件同步契约（`getState` 返回 `{ permissions, direction, version }`）。 |
+| `UltraCodeRpc` (`getState` / `setMode` / `toggleMode` / `clearCheckpoint` / `changed`) | Server ↔ TUI / Desktop | 跨进程实时状态读写、会话里程碑清除与事件同步契约（`getState` 返回 `{ permissions, direction, version, checkpoints }`）。 |
 | `/approvals` / `/direction` | Web / Mobile / TUI / Desktop | 服务端注册命令（实时展示当前模式，支持无参翻转或传入 `auto` / `manual`，零模型调用）。 |
-| `ComposerPill` (`UltraCode`) | OpenCode Desktop | 输入框上方胶囊菜单，两行一键切换 **Auto-approve** 与 **Ask on direction**。 |
-| `SettingsPage` (`UltraCode`) | OpenCode Desktop | **Settings → UltraCode** 独立设置页，提供两项原生开关。 |
+| `ComposerPill` (`UltraCode`) | OpenCode Desktop | 输入框上方胶囊菜单，两行一键切换 **Auto-approve** 与 **Ask on direction**；当前会话存在待执行里程碑时动态展示第 3 行摘要与一键清除按钮（6 国语言）。 |
+| `SettingsPage` (`UltraCode`) | OpenCode Desktop | **Settings → UltraCode** 独立设置页，提供两项原生开关（6 国语言）。 |
 | `ultracode.toggle-permissions` / `ultracode.toggle-direction` | TUI & Desktop/Web 命令面板 | 切换 **Command approvals**（默认 `auto`）与 **Direction questions**（默认 `manual`）。 |
 
 模式状态文件（原子写入）：
@@ -68,6 +68,14 @@ Release 资产命名（6 平台，均附 `.sha256`）：
 
 安装脚本由教程网站同步托管于 `/install.sh` 与 `/install.ps1`。
 
+## 上游探测与实机金丝雀脚本（维护者 / CI）
+
+```bash
+bun run scripts/check-upstreams.ts [--json | --markdown] [--fail-on-outdated] [--verify-live]
+```
+
+读取 `packages/config/upstream-baseline.json`，零模型调用检查 OpenCode（含 `@opencode/plugin` 导出面）、Superpowers、Playwright MCP 与 Ralph 上游更新；传入 `--verify-live` 时在隔离临时 `HOME` 沙箱中执行 GUI SDK 兼容性构建与真实 `opencode` 宿主的 `apply` + `doctor` 契约验证。
+
 ## 版本基线
 
-UltraCode `v1.0.0`、OpenCode `v2.3.2+`、Superpowers `v7.0.2`、Ralph `v1.3.1` 固定 commit、Playwright MCP `0.0.86`。
+UltraCode `v1.1.0`、OpenCode `v2.3.2+`（已验证基线 `v2.4.0`，`@opencode/plugin@2.4.0`）、Superpowers `v7.0.2`、Ralph `v1.3.1` 固定 commit、Playwright MCP `0.0.86`（统一维护于 `packages/config/upstream-baseline.json`）。

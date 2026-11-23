@@ -34,10 +34,10 @@ Success for the website means a first-time visitor on macOS, Linux, or Windows u
 
 ## Capabilities and Constraints
 
-- Confirmed v1.0.0 capabilities:
-  - Unified `ultracode` CLI with full `opencode` passthrough, zero-prerequisite OpenCode V2 auto-install/upgrade, `ultracode desktop` launcher, and cross-platform TS-native `ultracode ralph run`.
+- Confirmed v1.1.0 capabilities:
+  - Unified `ultracode` CLI with full `opencode` passthrough, zero-prerequisite OpenCode V2 (`v2.3.2+`, verified on `v2.4+`) auto-install/upgrade, `ultracode desktop` launcher, and cross-platform TS-native `ultracode ralph run`.
   - Native 6-target standalone builds (`linux`/`darwin`/`windows` × `x64`/`arm64`) plus minimalist `install.sh` and `install.ps1`.
-  - Multi-surface `ultracode-conversation` plugin package: Server RPC (`UltraCodeRpc`) + `/approvals` & `/direction` commands for Web/Mobile, TUI Command Palette + quiet footer status, and OpenCode Desktop GUI (`ComposerPill`, `SettingsPage`, `Command`, `en`/`zh`).
+  - Multi-surface `ultracode-conversation` plugin package: durable session milestone continuation with circuit breakers and official `/goal` coexistence, Server RPC (`UltraCodeRpc` including `clearCheckpoint`) + `/approvals` & `/direction` commands for Web/Mobile, TUI Command Palette + quiet footer status, and 6-language OpenCode Desktop GUI (`ComposerPill` with contextual next-milestone clear action, `SettingsPage`, `Command`).
   - Primary roles `UltraBuild` and `UltraPlan` (`Shift+Tab`), plus 5 specialized background subagents (Architect, Implementer, Librarian, Reviewer, Visual Evaluator).
 - Constraints:
   - Provider/model neutral; never claims specific model partnerships or benchmarks.
@@ -53,7 +53,7 @@ Success for the website means a first-time visitor on macOS, Linux, or Windows u
 ## Evidence on Hand
 
 - Live install URLs: `https://ultracode.plutokeating.beer/install.sh` and `https://ultracode.plutokeating.beer/install.ps1`.
-- Latest public release: `v1.0.0` (`https://github.com/PlutoKeating/Project.UltraCode`), built with UltraCode `v0.3.0`.
+- Latest public release: `v1.1.0` (`https://github.com/PlutoKeating/Project.UltraCode`), built with UltraCode `v1.0.0`.
 - Absences (must not fabricate): No customer logos, paid tiers, third-party testimonials, or synthetic speed/accuracy benchmark numbers.
 
 ## Product Principles

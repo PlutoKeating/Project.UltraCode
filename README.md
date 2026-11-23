@@ -1,15 +1,15 @@
 <div align="center">
 
 <a href="https://ultracode.plutokeating.beer">
-  <img src="./docs/assets/en/hero-banner.svg" alt="UltraCode v1.0.0 — State the Goal. Ship Verified Work." width="100%" />
+  <img src="./docs/assets/en/hero-banner.svg" alt="UltraCode v1.1.0 — State the Goal. Ship Verified Work." width="100%" />
 </a>
 
 <br />
 
-[![Release](https://img.shields.io/badge/Release-v1.0.0-ffffff?style=flat-square&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/releases/latest)
+[![Release](https://img.shields.io/badge/Release-v1.1.0-ffffff?style=flat-square&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/releases/latest)
 [![Website](https://img.shields.io/badge/Website-ultracode.plutokeating.beer-bae6fd?style=flat-square&labelColor=0a0a0a)](https://ultracode.plutokeating.beer)
 [![Platforms](https://img.shields.io/badge/Platform-macOS%20%7C%20Linux%20%7C%20Windows-d4d4d4?style=flat-square&labelColor=0a0a0a)](https://ultracode.plutokeating.beer/docs/getting-started/)
-[![Provenance](https://img.shields.io/badge/Built%20with-UltraCode%20v0.3.0-e5a03d?style=flat-square&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/releases/tag/v0.3.0)
+[![Provenance](https://img.shields.io/badge/Built%20with-UltraCode%20v1.0.0-e5a03d?style=flat-square&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/releases/tag/v1.0.0)
 [![CI](https://img.shields.io/github/actions/workflow/status/PlutoKeating/Project.UltraCode/ci.yml?branch=main&style=flat-square&label=CI&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/actions/workflows/ci.yml)
 
 **English** · [简体中文](README_ZH.md) · [العربية](README_AR.md) · [Français](README_FR.md) · [Русский](README_RU.md) · [Español](README_ES.md)
@@ -18,12 +18,12 @@
 
 </div>
 
-**UltraCode (`v1.0.0`)** is a non-invasive, provider- and model-neutral **Goal Engineering** layer built on official **OpenCode V2** across **macOS, Linux, and Windows** — spanning **Terminal (TUI), Desktop App, Web, and Mobile**.
+**UltraCode (`v1.1.0`)** is a non-invasive, provider- and model-neutral **Goal Engineering** layer built on official **OpenCode V2** across **macOS, Linux, and Windows** — spanning **Terminal (TUI), Desktop App, Web, and Mobile**.
 
 Instead of guessing early or drifting halfway through multi-step tasks, UltraCode clarifies open requirements upfront with structured choice cards, delegates work across specialized background agents, inspects rendered UI in a real Chromium browser, and saves durable handoffs inside your repository.
 
 > [!NOTE]
-> **Self-hosted engineering provenance:** UltraCode `v1.0.0` — including its multi-surface runtime, 6-language documentation site, and release pipeline — was developed and built with **UltraCode `v0.3.0`**.
+> **Self-hosted engineering provenance:** UltraCode `v1.1.0` — including its OpenCode `v2.4+` runtime alignment, durable milestone checkpoints, and upstream stewardship canary — was developed and built with **UltraCode `v1.0.0`**.
 
 ## Overview
 
@@ -33,10 +33,10 @@ Instead of guessing early or drifting halfway through multi-step tasks, UltraCod
 
 ### Key Capabilities
 
-- **One Command, Zero Prerequisites**: A single `ultracode` CLI with full `opencode` flag and subcommand passthrough. Both the installer and `ultracode upgrade` automatically detect, install, or update official OpenCode V2 (`v2.3.2+`).
-- **Every Surface Synchronized**: Embedded `ultracode-conversation` plugin syncing live state across Server RPC, TUI Command Palette, OpenCode Desktop (`ComposerPill` & `Settings → UltraCode`), and Web/Mobile (`/approvals` and `/direction`).
+- **One Command, Zero Prerequisites**: A single `ultracode` CLI with full `opencode` flag and subcommand passthrough. Both the installer and `ultracode upgrade` automatically detect, install, or update official OpenCode V2 (`v2.3.2+`, verified on `v2.4+`).
+- **Every Surface Synchronized**: Embedded `ultracode-conversation` plugin syncing live state across Server RPC, TUI Command Palette, OpenCode Desktop (`ComposerPill` with one-click milestone clear & `Settings → UltraCode`), and Web/Mobile (`/approvals` and `/direction`).
 - **Two Primary Roles + Five Specialists**: Switch anytime with `Shift+Tab` between `UltraBuild` (end-to-end delivery) and `UltraPlan` (strictly read-only planning), backed automatically by `librarian`, `architect`, `implementer`, `reviewer`, and `visual-evaluator`.
-- **Long-Running Continuation & Handoffs**: Advances milestones automatically, yields immediately when you send a new message, and resumes across restarts from repository handoff files; includes a cross-platform TypeScript `ultracode ralph run` runner.
+- **Long-Running Continuation & Handoffs**: Advances durable session milestones automatically with stall circuit breakers and official `/goal` coexistence, yields immediately when you send a new message, and resumes across restarts from repository handoff files; includes a cross-platform TypeScript `ultracode ralph run` runner.
 - **Strictly Additive & Reversible**: Never patches official OpenCode binaries, never reads or transmits your API keys, preserves existing JSONC comments and custom skills, and uninstalls cleanly.
 
 <div align="center">

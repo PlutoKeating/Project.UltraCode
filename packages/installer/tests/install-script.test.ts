@@ -14,7 +14,7 @@ describe.skipIf(process.platform === "win32")("install.sh minimalist zero-prereq
     const scriptPath = fileURLToPath(new URL("../../../scripts/install.sh", import.meta.url));
     const mockUltracode = `#!/bin/sh
 case "$1" in
-  version) printf 'v1.0.0\\n';;
+  version) printf 'v1.1.0\\n';;
   apply) printf 'noisy apply log line\\n';;
   doctor) printf 'noisy doctor log line\\n';;
 esac
@@ -69,7 +69,7 @@ exit 0
 
       const first = await run("bash", [scriptPath], { env });
       expect(first.code).toBe(0);
-      expect(first.stdout).toContain("UltraCode 1.0.0");
+      expect(first.stdout).toContain("UltraCode 1.1.0");
       expect(first.stdout).toContain("✓ Ready");
       expect(first.stdout).toContain("ultracode");
       expect(first.stdout).toContain("ultracode desktop");
@@ -93,7 +93,7 @@ exit 0
   test("auto-installs OpenCode when missing", async () => {
     const dir = await mkdtemp(join(tmpdir(), "uc-install-sh-fresh-"));
     const scriptPath = fileURLToPath(new URL("../../../scripts/install.sh", import.meta.url));
-    const mockUltracode = "#!/bin/sh\nif [ \"$1\" = \"version\" ]; then printf '1.0.0\\n'; fi\nexit 0\n";
+    const mockUltracode = "#!/bin/sh\nif [ \"$1\" = \"version\" ]; then printf '1.1.0\\n'; fi\nexit 0\n";
     const hash = sha256(mockUltracode);
     const server = createServer((req, res) => {
       if (req.url?.endsWith(".sha256")) {
@@ -139,7 +139,7 @@ exit 0
     const scriptContent = await readFile(scriptPath, "utf8");
     const mockUltracode = `#!/bin/sh
 case "$1" in
-  version) printf 'v1.0.0\\n';;
+  version) printf 'v1.1.0\\n';;
   apply) printf 'apply ok\\n';;
   doctor) printf 'doctor ok\\n';;
 esac
@@ -213,7 +213,7 @@ exit 0
       expect(res.code).toBe(0);
       expect(requestedBinary).toBe(true);
       expect(await exists(join(home, ".local", "bin", "ultracode"))).toBe(true);
-      expect(res.stdout).toContain("UltraCode 1.0.0");
+      expect(res.stdout).toContain("UltraCode 1.1.0");
       expect(res.stdout).toContain("✓ Ready");
     } finally {
       await new Promise<void>((resolve) => server.close(() => resolve()));

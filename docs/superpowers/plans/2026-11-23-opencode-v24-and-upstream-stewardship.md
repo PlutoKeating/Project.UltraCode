@@ -208,7 +208,7 @@ git commit -m "feat(stewardship): add methodology skill, upstream probe, and liv
 
 **Interfaces:**
 - Consumes: Tasks 1–3 deliverables (`upstream-baseline.json`, hardened `ultracode-conversation`, `scripts/check-upstreams.ts`)
-- Produces: Synchronized `1.1.0` standalone binary, updated 6-language docs/SVGs/website build, and verified local `~/.local/bin/ultracode` `1.1.0` running cleanly on `opencode v2.4.0`.
+- Produces: Synchronized `1.1.0` standalone binary, updated 6-language docs/SVGs/website build, and clean-room verified `ultracode` `1.1.0` running cleanly in an isolated sandbox against live `opencode v2.4.0` (without touching the host's real installed paths).
 
 - [ ] **Step 1: Update version constants to `1.1.0` across packages, tests, and brand asset generator**
 
@@ -221,7 +221,7 @@ git commit -m "feat(stewardship): add methodology skill, upstream probe, and liv
 2. Update root `README.md`, `README_ZH.md`, `README_AR.md`, `README_FR.md`, `README_RU.md`, `README_ES.md` (`v1.1.0`, self-hosted provenance `Built with UltraCode v1.0.0`, OpenCode `v2.4.0` compatibility).
 3. Update `website/scripts/sync-content.mjs`, `website/src/i18n/ui.ts`, `website/src/components/LandingPage.astro`, and the 6-locale `getting-started.mdx` / `controls-and-maintenance.mdx` version strings (keeping user-facing pages free of internal filenames/JSONC plumbing).
 
-- [ ] **Step 3: Build standalone binary, upgrade local machine installation (`~/.local/bin/ultracode`), and verify end-to-end**
+- [ ] **Step 3: Build standalone binary and verify end-to-end in an isolated sandbox (without touching real host paths)**
 
 Run:
 ```bash
@@ -233,12 +233,10 @@ bun run --cwd packages/installer build
 bun run --cwd website check
 bun run --cwd website build
 bun run scripts/check-upstreams.ts --verify-live
-install -m 0755 packages/installer/dist/ultracode-current ~/.local/bin/ultracode
-~/.local/bin/ultracode version
-~/.local/bin/ultracode sync
-~/.local/bin/ultracode doctor
+# Plus isolated temporary HOME / XDG_* / OPENCODE_CONFIG_DIR / ULTRACODE_HOME / ULTRACODE_BIN_DIR verification of:
+#   ultracode version && ultracode sync && ultracode doctor
 ```
-Expected: All tests/checks/builds PASS, `ultracode version` prints `1.1.0`, and `ultracode sync` + `ultracode doctor` complete against live `opencode v2.4.0` with **`✓ Ready`** and **zero stderr warnings**.
+Expected: All tests/checks/builds PASS, `ultracode version` prints `1.1.0`, and isolated `ultracode sync` + `ultracode doctor` complete against live `opencode v2.4.0` with **`✓ Ready`** and **zero stderr warnings** while leaving the host's real `~/.local/bin/ultracode` and `~/.config/opencode` untouched.
 
 - [ ] **Step 4: Commit all Task 4 changes and verify clean `git status`**
 
