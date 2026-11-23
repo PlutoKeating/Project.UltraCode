@@ -699,7 +699,10 @@ export function formatMarkdownReport(probe: ProbeReport, canary?: LiveCanaryResu
           : item.sdk
             ? `\`${item.latestVersion}\` (SDK \`${item.sdk.latestVersion}\`)`
             : `\`${item.latestVersion}\``;
-    const ref = item.releaseUrl ? `[Release / Commit](${item.releaseUrl})` : item.error ? `\`${item.error}\`` : "—";
+    const escapedError = item.error
+      ? item.error.replace(/\|/g, "\\|").replace(/`/g, "\\`").replace(/\r?\n/g, " ")
+      : "";
+    const ref = item.releaseUrl ? `[Release / Commit](${item.releaseUrl})` : escapedError || "—";
     lines.push(`| ${item.name} | \`${item.status}\` | ${baseLabel} | ${latestLabel} | ${ref} |`);
   }
 

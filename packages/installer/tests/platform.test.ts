@@ -135,6 +135,8 @@ describe("cross-platform paths and fs", () => {
     try {
       expect(() => assertSupportedOpenCode("2.3.2")).not.toThrow();
       expect(() => assertSupportedOpenCode("2.4.0")).not.toThrow();
+      expect(() => assertSupportedOpenCode("v2.4.0")).not.toThrow();
+      expect(() => assertSupportedOpenCode("2.4.0-rc.1")).not.toThrow();
       expect(() => assertSupportedOpenCode("2.9.1")).not.toThrow();
       expect(warns.length).toBe(0);
     } finally {
@@ -230,6 +232,56 @@ exit 1
       await rm(countFile, { force: true });
       await components(p, {});
       expect((await readFile(countFile, "utf8")).trim()).toBe("1");
+
+      // Verify 4-attempt ceiling when configured plugins exist and /api/plugin stays builtin-only
+      const ceilingLog = join(dir, "ceiling-calls.log");
+      let ceilingBin: string;
+      if (process.platform === "win32") {
+        ceilingBin = join(binDir, "opencode-ceiling.cmd");
+        await writeFile(
+          ceilingBin,
+          [
+            "@echo off",
+            'if "%*"=="--version" (',
+            "  echo opencode v2.4.0",
+            "  exit /b 0",
+            ")",
+            'if "%*"=="api get /api/plugin" (',
+            `  echo x>>"${ceilingLog}"`,
+            `  echo {"data":[{"id":"opencode.agent","source":{"type":"builtin"},"state":{"status":"active"}}]}`,
+            "  exit /b 0",
+            ")",
+            "exit /b 1",
+          ].join("\r\n"),
+        );
+      } else {
+        ceilingBin = join(binDir, "opencode-ceiling");
+        await writeFile(
+          ceilingBin,
+          `#!/bin/sh
+if [ "$*" = "--version" ]; then
+  printf 'opencode v2.4.0\\n'
+  exit 0
+fi
+if [ "$*" = "api get /api/plugin" ]; then
+  printf 'x\\n' >> '${ceilingLog}'
+  printf '%s\\n' '${attempt1}'
+  exit 0
+fi
+exit 1
+`,
+          { mode: 0o755 },
+        );
+      }
+      const pCeiling = resolvePaths({
+        HOME: dir,
+        USERPROFILE: dir,
+        LOCALAPPDATA: dir,
+        ULTRACODE_OPENCODE_BIN: ceilingBin,
+      });
+      await components(pCeiling, { plugins: ["custom-external-plugin"] });
+      const ceilingLines = (await readFile(ceilingLog, "utf8")).trim().split(/\r?\n/).filter(Boolean);
+      expect(ceilingLines).toHaveLength(4);
     } finally {
       if (prevSkip === undefined) delete process.env.ULTRACODE_SKIP_RUNTIME;
       else process.env.ULTRACODE_SKIP_RUNTIME = prevSkip;

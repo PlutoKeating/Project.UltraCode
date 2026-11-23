@@ -54,7 +54,8 @@ export async function opencodeVersion(binary: string): Promise<string> {
 }
 
 export function assertSupportedOpenCode(version: string): void {
-  const [major, minor, patch] = version.split(".").map(Number);
+  const m = version.trim().match(/^v?(\d+)\.(\d+)\.(\d+)/);
+  const [major, minor, patch] = m ? m.slice(1, 4).map(Number) : [NaN, NaN, NaN];
   const [minMajor = 2, minMinor = 3, minPatch = 2] = baseline.opencode.minSupported.split(".").map(Number);
   if (
     major === undefined ||

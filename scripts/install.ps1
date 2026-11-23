@@ -2,8 +2,11 @@
   $ErrorActionPreference = 'Stop'
   $ProgressPreference = 'SilentlyContinue'
   try {
-    [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+  } catch {}
+  try {
+    $OutputEncoding = [System.Text.UTF8Encoding]::new($false)
+    [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
   } catch {}
 
   $repo = if ($env:ULTRACODE_REPOSITORY) { $env:ULTRACODE_REPOSITORY } else { 'PlutoKeating/Project.UltraCode' }
@@ -245,7 +248,7 @@
     Remove-Item -LiteralPath $logFile -Force -ErrorAction SilentlyContinue
     $verRes = Invoke-NativeLogged $targetExe @('version')
     $installedVersion = $verRes.Output.Trim().TrimStart('v')
-    $checkMark = [char]0x2713
+    $checkMark = if ([Console]::IsOutputRedirected -and [Console]::OutputEncoding.CodePage -ne 65001) { '+' } else { [char]0x2713 }
     Write-Output ""
     Write-Output "UltraCode $installedVersion"
     Write-Output ""

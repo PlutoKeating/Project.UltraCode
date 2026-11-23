@@ -161,8 +161,15 @@ export default Plugin.define({
       return normalized;
     };
 
-    const clearSessionCheckpoint = async (sessionID: string) => {
-      const next = await ctx.client.rpc(UltraCodeRpc).clearCheckpoint({ sessionID });
+    const clearSessionCheckpoint = async (session: {
+      id: string;
+      directory?: string;
+      location?: unknown;
+      server?: { client?: typeof ctx.client };
+    }) => {
+      const loc = session.location ?? (session.directory ? { directory: session.directory } : undefined);
+      const rpcClient = (session.server?.client ?? ctx.client).rpc(UltraCodeRpc);
+      const next = await rpcClient.clearCheckpoint({ sessionID: session.id }, loc ? ({ location: loc } as any) : undefined);
       const normalized = normalizeState(next);
       setState(normalized);
       return normalized;
@@ -176,7 +183,8 @@ export default Plugin.define({
       id: "status",
       show: (input) => {
         const current = state();
-        const sessionID = input?.session?.id;
+        const session = input?.session;
+        const sessionID = session?.id;
         const milestone = sessionID ? current.checkpoints[sessionID] : undefined;
         const rows: ComposerPillRow[] = [
           {
@@ -192,12 +200,12 @@ export default Plugin.define({
             run: () => void flipMode("direction").catch(handleError),
           },
         ];
-        if (sessionID && milestone) {
+        if (session && sessionID && milestone) {
           rows.push({
             id: "checkpoint",
             label: `${ctx.t("pill.checkpoint")}: ${milestone.length > 36 ? milestone.slice(0, 35) + "…" : milestone}`,
             detail: ctx.t("pill.clear"),
-            run: () => void clearSessionCheckpoint(sessionID).catch(handleError),
+            run: () => void clearSessionCheckpoint(session).catch(handleError),
           });
         }
         return {

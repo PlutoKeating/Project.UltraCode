@@ -275,6 +275,18 @@ describe("upstream probe & canary (scripts/check-upstreams.ts)", () => {
       expect(item.status).toBe("error");
       expect(item.error).toMatch(/403|500/);
     }
+
+    const reportWithSpecialChars = {
+      ...report,
+      items: report.items.map((item, idx) =>
+        idx === 0 ? { ...item, error: "HTTP 502: bad|gateway `upstream`\r\nline two" } : item,
+      ),
+    };
+    const md = formatMarkdownReport(reportWithSpecialChars);
+    const tableRow = md.split("\n").find((line) => line.startsWith("| OpenCode"));
+    expect(tableRow).toBeDefined();
+    expect(tableRow).toContain("HTTP 502: bad\\|gateway \\`upstream\\` line two");
+    expect(tableRow).not.toContain("\r");
   });
 
   test("probeUpstreams reports status: error when opencode releases list contains only V1 tags", async () => {

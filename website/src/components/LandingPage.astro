@@ -147,9 +147,8 @@ const jsonLd = JSON.stringify({
                       role="menuitem"
                       aria-current={code === lang ? "page" : undefined}
                       class:list={["uc-lang-option", { "is-current": code === lang }]}
-                      dir={LOCALE_META[code].dir}
                     >
-                      <span>{LOCALE_META[code].nativeLabel}</span>
+                      <span class="uc-lang-native" dir={LOCALE_META[code].dir}>{LOCALE_META[code].nativeLabel}</span>
                       <span class="uc-lang-code" dir="ltr">{LOCALE_META[code].shortLabel}</span>
                     </a>
                   ))

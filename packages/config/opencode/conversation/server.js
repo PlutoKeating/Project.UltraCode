@@ -31,6 +31,7 @@ export const OpencodeGoalRpc = Rpc.define({
       },
     },
   },
+  events: {},
 })
 
 const guidance = `Help the user direct work in terms of audience, behavior, architecture and acceptance. Read project instructions. Directly handle bounded work. For ambiguous work research alternatives and batch consequential questions. A request to discuss or plan authorizes only that scope. For a clear extended delivery goal, use ultracode_checkpoint to schedule the next milestone when needed, without asking the user to activate a mode. Update or clear it as the user steers. Keep committable task, progress and handoff files in the repository for long work, using the project's convention or .ralph/. Record evidence and the next action. Delegate bounded work to fresh native subagents when useful. Keep the user's model unless their preferences, configured role mappings or allowed model pool justify another. Learn recurring preferences from feedback, with the user's ability to inspect, correct and forget them via conversation. Store only relevant working preferences in project notes. Follow repository Git rules and the user's configured author identity. Have complex changes independently reviewed; operate user-visible interfaces and visually inspect their rendered output. Keep routine messages to milestones, blockers and outcomes. If progress stalls, revise the approach or report the blocker. Continue while meaningful progress is possible. Close the checkpoint before asking the user a question, stopping, or reporting completion.`
@@ -196,13 +197,17 @@ export default {
         execute: async (input, context) => {
           const key = CHECKPOINT_PREFIX + context.sessionID
           const milestone = typeof input?.next === "string" ? input.next.trim() : ""
+          const raw = await storage.get(key)
+          const existing = raw && typeof raw === "object" && raw.bootID === BOOT_ID ? raw : null
           if (!milestone) {
-            await storage.remove(key)
+            if (existing) {
+              await storage.set(key, { ...existing, next: "", updatedAt: Date.now() })
+            } else {
+              await storage.remove(key)
+            }
             await emitChanged()
             return { content: "Continuation cleared." }
           }
-          const raw = await storage.get(key)
-          const existing = raw && typeof raw === "object" && raw.bootID === BOOT_ID ? raw : null
           const rounds = typeof existing?.rounds === "number" ? existing.rounds : 0
           const stalls =
             existing?.lastMilestone === milestone
@@ -270,13 +275,17 @@ export default {
       if (!milestone) return
       if (Array.isArray(event.background) && event.background.some((job) => job.sessionID === event.sessionID)) return
 
-      const goal =
-        typeof ctx.rpc === "function"
-          ? await ctx
-              .rpc(OpencodeGoalRpc)
-              .get({ sessionID: event.sessionID })
-              .catch(() => null)
-          : null
+      let goal = null
+      if (typeof ctx.rpc === "function") {
+        try {
+          goal = await ctx
+            .rpc(OpencodeGoalRpc)
+            .get({ sessionID: event.sessionID })
+            .catch(() => null)
+        } catch {
+          goal = null
+        }
+      }
       if (goal?.status === "active") {
         await storage.remove(key)
         await emitChanged()
