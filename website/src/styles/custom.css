@@ -205,7 +205,10 @@ h1#_top {
   margin: 1.5rem 0;
   background: #0a0a0a;
   color: #f0f0f0;
-  border-radius: 0 6px 6px 0;
+  border-start-start-radius: 0;
+  border-end-start-radius: 0;
+  border-start-end-radius: 6px;
+  border-end-end-radius: 6px;
 }
 
 /* Strip fake macOS terminal titlebar dots from code blocks */

@@ -1,6 +1,6 @@
 # Installer 架构
 
-`ultracode` 是唯一用户入口，核心实现分布在 `installer/src/` 下 16 个模块，并与 `plugin-gui/` 协同构建：
+`ultracode` 是唯一用户入口，核心实现分布在 `packages/installer/src/` 下 16 个模块，并与 `packages/plugin-gui/` 及 `packages/config/` 协同构建：
 
 - `bin.ts`：独立可执行入口（无条件调用 `dispatch`，避免 Windows 单文件编译下 `import.meta.main` 为 `false` 的运行时陷阱）。
 - `cli.ts`：统一 CLI 路由（内置 `apply/sync`、`doctor`、`upgrade/update/up`、`desktop`、`uninstall`、`ralph`、`_mcp`、`version`、`help`，其余全部透传至官方 `opencode`）。

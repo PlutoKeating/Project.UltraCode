@@ -38,4 +38,4 @@ bun run build
 bunx wrangler deploy --dry-run
 ```
 
-实际登录与部署由你执行。中英文教程见 `website/content/*/cloudflare.md`。
+实际登录与部署由你执行。6 国语言线上文档源码位于 `website/content/{root,zh,ar,fr,ru,es}/docs/`。

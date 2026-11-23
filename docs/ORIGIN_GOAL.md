@@ -1,4 +1,4 @@
-> **历史立项背景**：本文件保留了 UltraCode **v0.1.0 之前**的原始问题提出与早期调研对话记录（基于当时个人多模型 / Vertex 实验场景）。当前公开版 UltraCode（v0.2.2）已演进为完全 **Provider/Model 中立**的 Goal Engineering（目标工程）增强层；最新设计与用法请参见 [README](../README.md) 与 [架构](ARCHITECTURE.md)。
+> **历史立项背景**：本文件保留了 UltraCode **v0.1.0 之前**的原始问题提出与早期调研对话记录（基于当时个人多模型 / Vertex 实验场景）。当前公开正式版 UltraCode（v1.0.0）已演进为完全 **Provider/Model 中立**的 Goal Engineering（目标工程）增强层；最新设计与用法请参见 [README](../README.md)、[中文说明](../README_ZH.md) 与 [架构](ARCHITECTURE.md)。
 
 ## Question
 

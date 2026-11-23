@@ -86,6 +86,9 @@ ultracode pair      # إنشاء رابط ورمز QR لربط المتصفح أ
 
 <div dir="rtl">
 
+- **تبديل الدور الرئيسي**: اضغط `Shift+Tab` للتبديل بين `UltraBuild` (الافتراضي) و`UltraPlan` (تخطيط للقراءة فقط).
+- **مفاتيح التحكم الفورية**: بدّل **Command approvals** (`auto` افتراضياً) و**Direction questions** (`manual` افتراضياً) عبر كبسولة `UltraCode` في سطح المكتب، أو `Settings → UltraCode`، أو لوحة أوامر الطرفية، أو عبر `/approvals` و`/direction` على الويب والهاتف.
+
 ## مرجع الأوامر
 
 | الأمر | الوصف |
@@ -106,12 +109,12 @@ ultracode pair      # إنشاء رابط ورمز QR لربط المتصفح أ
 ```text
 Project.UltraCode/
 ├── packages/
-│   ├── installer/      # Unified ultracode CLI, JSONC union merger & 6-target standalone builder
-│   ├── plugin-gui/     # OpenCode Desktop GUI plugin (ComposerPill & SettingsPage)
-│   └── config/         # Embedded OpenCode roles, Server/TUI/RPC conversation plugin & Ralph templates
-├── scripts/            # Zero-prerequisite install scripts (install.sh & install.ps1)
-├── website/            # Astro + Starlight 6-language website & docs (ultracode.plutokeating.beer)
-└── docs/               # Architecture, CLI API, Quick Start, Cloudflare deployment & SVG assets
+│   ├── installer/      # واجهة ultracode الموحّدة ودمج JSONC وبناء 6 منصات مستقلة
+│   ├── plugin-gui/     # إضافة واجهة OpenCode Desktop الرسومية (ComposerPill وSettingsPage)
+│   └── config/         # أدوار OpenCode المدمجة وإضافة المزامنة Server/TUI/RPC وقوالب Ralph
+├── scripts/            # سكربتات التثبيت الفوري دون متطلبات مسبقة (install.sh وinstall.ps1)
+├── website/            # الموقع الرسمي والوثائق بست لغات عبر Astro + Starlight
+└── docs/               # الوثائق المعمارية ومرجع الواجهات والنشر على Cloudflare ورسوميات SVG
 ```
 
 <div dir="rtl">
@@ -135,11 +138,15 @@ bun run --cwd website check
 bun run --cwd website build
 ```
 
+> [!IMPORTANT]
+> تعمل جميع الاختبارات الآلية داخل مجلدات مؤقتة معزولة ومحاكيات محلية دون أي استدعاء لنماذج حقيقية أو قراءة بيانات اعتماد شخصية.
+
 <div dir="rtl">
 
 ## الوثائق والروابط
 
 - **الموقع الرسمي والأدلة بست لغات**: [English](https://ultracode.plutokeating.beer) · [简体中文](https://ultracode.plutokeating.beer/zh/) · [العربية](https://ultracode.plutokeating.beer/ar/) · [Français](https://ultracode.plutokeating.beer/fr/) · [Русский](https://ultracode.plutokeating.beer/ru/) · [Español](https://ultracode.plutokeating.beer/es/)
+- [البنية المعمارية](docs/ARCHITECTURE.md) · [مرجع الواجهات والأوامر](docs/API.md) · [البدء السريع](docs/QUICK_START.md) · [النشر على Cloudflare](docs/CLOUDFLARE.md)
 - فهرس مخصص لوكلاء الذكاء الاصطناعي: [`llms.txt`](https://ultracode.plutokeating.beer/llms.txt) · [`llms-full.txt`](https://ultracode.plutokeating.beer/llms-full.txt)
 
 </div>
