@@ -111,6 +111,7 @@ test("installs conversation package, rpc, settings, server, and tui entry points
   expect(pkg.exports["./gui-experimental"]).toBe("./gui-experimental.cjs");
   expect(pkg.exports["./tui"]).toMatch(/^\.\/tui\.(tsx|js)$/);
   expect(await readFile(join(plugin, "rpc.js"), "utf8")).toContain("UltraCodeRpc");
+  expect(await readFile(join(plugin, "goal-gate.js"), "utf8")).toContain("evaluateWorkspaceGate");
   const pluginGuiDir = fileURLToPath(new URL("../../plugin-gui", import.meta.url));
   const rpcCheck = execFileSync(
     process.execPath,

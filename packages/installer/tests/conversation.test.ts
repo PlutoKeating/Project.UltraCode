@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
-import { cp, mkdtemp, readFile, rm, symlink } from "node:fs/promises";
+import { cp, mkdir, mkdtemp, readFile, rm, symlink, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -596,5 +596,199 @@ describe("ultracode-conversation durable checkpoints, circuit breaker, and /goal
     } finally {
       dispose();
     }
+  });
+});
+
+describe("goal-gate deterministic workspace evidence gate and task graph", () => {
+  let workDir = "";
+
+  beforeEach(async () => {
+    workDir = await mkdtemp(join(tmpdir(), "ultracode-goal-gate-test-"));
+  });
+
+  afterEach(async () => {
+    await rm(workDir, { recursive: true, force: true });
+  });
+
+  async function importGoalGate() {
+    return import(pathToFileURL(join(conversationSrcDir, "goal-gate.js")).href);
+  }
+
+  test("mutateTaskGraph rejects marking a feature verified without executedCommand and evidenceSummary, enforces dependencies, and detects overlapping ownedFiles across in_progress features", async () => {
+    const { mutateTaskGraph } = await importGoalGate();
+
+    await mutateTaskGraph(workDir, {
+      action: "init",
+      featureID: "F-001",
+      description: "Auth login endpoint",
+      ownedFiles: ["src/auth/**"],
+    });
+    await mutateTaskGraph(workDir, {
+      action: "init",
+      featureID: "F-002",
+      description: "Auth session middleware",
+      dependencies: ["F-001"],
+      ownedFiles: ["src/auth/login.ts"],
+    });
+    await mutateTaskGraph(workDir, {
+      action: "init",
+      featureID: "F-003",
+      description: "Billing webhook",
+      ownedFiles: ["src/billing/**"],
+    });
+
+    const resBad = await mutateTaskGraph(workDir, {
+      action: "verify",
+      featureID: "F-001",
+      executedCommand: "",
+      evidenceSummary: "",
+    });
+    expect(resBad.ok).toBe(false);
+    expect(resBad.content).toContain("executedCommand");
+
+    // Dependency check: F-002 depends on unverified F-001
+    const depBlocked = await mutateTaskGraph(workDir, {
+      action: "claim",
+      featureID: "F-002",
+    });
+    expect(depBlocked.ok).toBe(false);
+    expect(depBlocked.content).toContain("F-001");
+
+    // Claim F-001 owning src/auth/**
+    const claim1 = await mutateTaskGraph(workDir, {
+      action: "claim",
+      featureID: "F-001",
+      ownedFiles: ["src/auth/**"],
+    });
+    expect(claim1.ok).toBe(true);
+
+    // Overlapping claim on src/auth/login.ts while F-001 is in_progress must fail
+    const conflict = await mutateTaskGraph(workDir, {
+      action: "claim",
+      featureID: "F-004",
+      ownedFiles: ["src/auth/login.ts"],
+    });
+    expect(conflict.ok).toBe(false);
+    expect(conflict.content).toContain("F-001");
+
+    // Disjoint claim on src/billing/** succeeds in parallel
+    const disjoint = await mutateTaskGraph(workDir, {
+      action: "claim",
+      featureID: "F-003",
+      ownedFiles: ["src/billing/**"],
+    });
+    expect(disjoint.ok).toBe(true);
+
+    // Verify F-001 with real command and evidence releases ownership and unblocks F-002
+    const verified1 = await mutateTaskGraph(workDir, {
+      action: "verify",
+      featureID: "F-001",
+      executedCommand: "bun test tests/auth.test.ts",
+      evidenceSummary: "4/4 auth tests passed",
+      reviewerVerdict: "APPROVE",
+    });
+    expect(verified1.ok).toBe(true);
+
+    const claim2AfterVerify = await mutateTaskGraph(workDir, {
+      action: "claim",
+      featureID: "F-002",
+      ownedFiles: ["src/auth/login.ts"],
+    });
+    expect(claim2AfterVerify.ok).toBe(true);
+  });
+
+  test("evaluateWorkspaceGate blocks completion when FEATURE_LIST.json has passes:false, empty evidence command, QA_REPORT.md REJECT/FAIL, or unchecked ralph-tasks.md, and passes when all clear", async () => {
+    const { evaluateWorkspaceGate, buildGoalAnchor } = await importGoalGate();
+
+    // Empty workspace passes gate cleanly
+    const emptyGate = await evaluateWorkspaceGate(workDir);
+    expect(emptyGate.ok).toBe(true);
+    expect(emptyGate.blockers).toEqual([]);
+
+    await mkdir(join(workDir, ".opencode", "ultracode"), { recursive: true });
+    await mkdir(join(workDir, ".ralph"), { recursive: true });
+
+    await writeFile(
+      join(workDir, ".opencode", "ultracode", "FEATURE_LIST.json"),
+      JSON.stringify(
+        {
+          features: [
+            { id: "F-001", description: "Feature 1", passes: false },
+            {
+              id: "F-002",
+              description: "Feature 2",
+              passes: true,
+              status: "verified",
+              evidence: { executedCommand: "", evidenceSummary: "claimed without running" },
+            },
+          ],
+        },
+        null,
+        2,
+      ),
+    );
+    await writeFile(
+      join(workDir, ".opencode", "ultracode", "QA_REPORT.md"),
+      "# Independent QA Report\n\n## Verdict\n- Result: REJECT\n\n| Criterion | PASS / FAIL / NOT_VERIFIED |\n| --- | --- |\n| Mobile layout | FAIL |\n",
+    );
+    await writeFile(join(workDir, ".ralph", "ralph-tasks.md"), "- [x] Done item\n- [ ] Pending task item\n");
+
+    const gate1 = await evaluateWorkspaceGate(workDir);
+    expect(gate1.ok).toBe(false);
+    expect(gate1.blockers.join("\n")).toContain("F-001");
+    expect(gate1.blockers.join("\n")).toContain("F-002");
+    expect(gate1.blockers.join("\n")).toContain("REJECT");
+    expect(gate1.summary.uncheckedRalphTasks).toBe(1);
+
+    // Deterministic fingerprint for identical blocker state
+    const gate1Repeat = await evaluateWorkspaceGate(workDir);
+    expect(gate1Repeat.fingerprint).toBe(gate1.fingerprint);
+
+    // Resolve all blockers (and ensure unedited QA_REPORT template phrasing does not false-positive when Result is APPROVE)
+    await writeFile(
+      join(workDir, ".opencode", "ultracode", "FEATURE_LIST.json"),
+      JSON.stringify(
+        {
+          features: [
+            {
+              id: "F-001",
+              description: "Feature 1",
+              passes: true,
+              status: "verified",
+              evidence: { executedCommand: "bun test", evidenceSummary: "all green" },
+            },
+            {
+              id: "F-002",
+              description: "Feature 2",
+              passes: true,
+              status: "verified",
+              evidence: { executedCommand: "bun run check", evidenceSummary: "0 errors" },
+            },
+          ],
+        },
+        null,
+        2,
+      ),
+    );
+    await writeFile(
+      join(workDir, ".opencode", "ultracode", "QA_REPORT.md"),
+      "# Independent QA Report\n\n## Verdict\n- Result: APPROVE\n\n| Criterion | PASS / FAIL / NOT_VERIFIED |\n| --- | --- |\n| Mobile layout | PASS |\n\nA check not actually executed must be NOT_VERIFIED. Any hard-gate failure requires REJECT.\n",
+    );
+    await writeFile(join(workDir, ".ralph", "ralph-tasks.md"), "- [x] Done item\n- [x] Pending task item\n");
+
+    const gatePass = await evaluateWorkspaceGate(workDir);
+    expect(gatePass.ok).toBe(true);
+    expect(gatePass.blockers).toEqual([]);
+    expect(gatePass.summary.passedFeatures).toBe(2);
+    expect(gatePass.summary.qaVerdict).toBe("APPROVE");
+    expect(gatePass.summary.uncheckedRalphTasks).toBe(0);
+
+    // Round- and timestamp-invariant anchor
+    const anchorA = buildGoalAnchor({ objective: "Ship Goal Engine 2.0", rounds: 1, updatedAt: 100 } as any);
+    const anchorB = buildGoalAnchor({ objective: "Ship Goal Engine 2.0", rounds: 42, updatedAt: 999999 } as any);
+    expect(anchorA).toBe(anchorB);
+    expect(anchorA).toContain("<ultracode_goal_anchor>");
+    expect(anchorA).toContain("<objective>");
+    expect(anchorA).toContain("Ship Goal Engine 2.0");
   });
 });
