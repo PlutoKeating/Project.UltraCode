@@ -34,9 +34,9 @@ Au lieu de deviner trop tôt ou de perdre le contexte à mi-parcours, UltraCode 
 ### Capacités clés
 
 - **Une seule commande, zéro prérequis** : la commande unique `ultracode` transmet intégralement tous les arguments et sous-commandes d’`opencode`. L’installateur et `ultracode upgrade` détectent, installent ou mettent à jour automatiquement OpenCode V2 officiel (`v2.3.2+`, vérifié sur `v2.4+`).
-- **Synchronisation en direct sur toutes les interfaces** : le plugin embarqué `ultracode-conversation` synchronise l’état entre Server RPC, la palette TUI, OpenCode Desktop (capsule rapide avec effacement d’étape en un clic & page `Settings → UltraCode`) et Web/Mobile (`/approvals` et `/direction`).
-- **Deux rôles principaux + cinq spécialistes** : basculez à tout moment via `Shift+Tab` entre `UltraBuild` (livraison complète) et `UltraPlan` (planification en lecture seule), épaulés automatiquement par `librarian`, `architect`, `implementer`, `reviewer` et `visual-evaluator`.
-- **Continuité des tâches longues & reprise nette** : enchaîne les jalons automatiquement, vous redonne immédiatement la main dès qu’un message est envoyé et reprend après redémarrage ; inclut le lanceur multiplateforme `ultracode ralph run`.
+- **Synchronisation en direct sur toutes les interfaces** : le plugin embarqué `ultracode-conversation` synchronise l’état entre Server RPC, la palette TUI, OpenCode Desktop (capsule rapide avec contrôles Pause / Reprendre / Effacer de l’objectif & page `Settings → UltraCode`) et Web/Mobile (`/goal`, `/review`, `/setup-models`, `/approvals` et `/direction`).
+- **Deux rôles principaux + cinq spécialistes** : basculez directement via `Shift+Tab` entre `UltraBuild` (livraison complète) et `UltraPlan` (planification en lecture seule), épaulés automatiquement par `librarian`, `architect`, `implementer`, `reviewer` et `visual-evaluator` (avec affectation optionnelle de modèles par rôle via `ultracode setup-models`).
+- **Moteur d’objectifs vérifié & reprise nette** : unifie `/goal` et les jalons continus avec portes de preuve déterministes et ancrage d’objectif après compaction, met proprement en pause en cas d’interruption ou de redémarrage, et inclut `ultracode ralph run` (`--worktree`, `--init`).
 - **Strictement additif & réversible** : ne modifie jamais les binaires officiels d’OpenCode, ne lit aucune clé API, préserve vos commentaires JSONC et skills existants, et se désinstalle proprement.
 
 <div align="center">
@@ -80,6 +80,7 @@ ultracode pair      # Générer un lien et un QR code pour navigateur ou mobile
 | `ultracode [args...]` | Lance OpenCode avec transmission intégrale des options et sous-commandes |
 | `ultracode desktop` | Ouvre OpenCode Desktop ou télécharge l’installateur officiel de la plateforme |
 | `ultracode pair [--remote]` | Associe un navigateur ou un téléphone via lien et QR code |
+| `ultracode setup-models` | Configure les préférences optionnelles de modèles par rôle |
 | `ultracode upgrade` | Met à jour OpenCode V2 officiel et UltraCode puis synchronise la configuration |
 | `ultracode sync` | Synchronise de manière idempotente la configuration, le plugin et les rôles |
 | `ultracode doctor` | Vérifie l’installation sans effectuer le moindre appel à un modèle IA |

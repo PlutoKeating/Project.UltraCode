@@ -437,6 +437,58 @@ describe("live host canary in isolated temp HOME", () => {
     expect(res.checks.some((c) => c.name === "ultracode-doctor" && c.ok)).toBe(true);
   });
 
+  test("runLiveHostCanary verifies /goal, /review, /setup-models commands and hidden build/plan agents via ultracode-overlap-contract", async () => {
+    const stubDir = await mkdtemp(join(tmpdir(), "ultracode-canary-overlap-"));
+    tempDirsToClean.push(stubDir);
+    const stubBin = process.platform === "win32" ? join(stubDir, "opencode.cmd") : join(stubDir, "opencode");
+    const cmdJson = JSON.stringify({
+      data: [
+        { name: "goal", description: "Start, pause, resume, or clear an evidence-gated UltraCode Goal" },
+        { name: "review", description: "Dispatch independent ultracode/reviewer verification" },
+        { name: "setup-models", description: "Configure optional multi-tier role models" },
+        { name: "approvals", description: "[auto] Command approvals" },
+        { name: "direction", description: "[manual] Direction questions" },
+      ],
+    });
+    const agentJson = JSON.stringify({
+      data: [
+        { id: "build", hidden: true, mode: "primary" },
+        { id: "plan", hidden: true, mode: "primary" },
+        { id: "UltraBuild", hidden: false, mode: "primary" },
+        { id: "UltraPlan", hidden: false, mode: "primary" },
+      ],
+    });
+    if (process.platform === "win32") {
+      await writeFile(
+        stubBin,
+        `@echo off\r\nif "%*"=="--version" (\r\n  echo opencode v2.4.1\r\n  exit /b 0\r\n)\r\nif "%*"=="api get /api/command" (\r\n  echo ${cmdJson}\r\n  exit /b 0\r\n)\r\nif "%*"=="api get /api/agent" (\r\n  echo ${agentJson}\r\n  exit /b 0\r\n)\r\nexit /b 0\r\n`,
+      );
+    } else {
+      await writeFile(
+        stubBin,
+        `#!/bin/sh
+case "$*" in
+  --version) printf 'opencode v2.4.1\\n';;
+  'api get /api/command') printf '%s\\n' '${cmdJson}';;
+  'api get /api/agent') printf '%s\\n' '${agentJson}';;
+esac
+exit 0
+`,
+        { mode: 0o755 },
+      );
+    }
+
+    const res = await runLiveHostCanary({
+      opencodeBin: stubBin,
+      skipGuiNpmInstall: true,
+      skipRuntimeDownload: true,
+      verifyOverlapContract: true,
+      rebuild: false,
+    });
+    expect(res.ok).toBe(true);
+    expect(res.checks.some((c) => c.name === "ultracode-overlap-contract" && c.ok)).toBe(true);
+  });
+
   test.skipIf(!realOpencode)(
     "runLiveHostCanary({ skipGuiNpmInstall: true }) passes apply + doctor against real opencode on PATH",
     async () => {

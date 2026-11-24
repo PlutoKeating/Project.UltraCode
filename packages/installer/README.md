@@ -4,7 +4,7 @@
 
 ## 接口
 
-内置 `apply/sync`、`doctor`、`upgrade/update/up`、`desktop`、`uninstall`、`ralph`、`version`、`help` 以及内部 `_mcp`；其余所有参数与子命令直接透传至官方 `opencode`。
+内置 `apply/sync`、`doctor`、`setup-models`、`upgrade/update/up`、`desktop`、`uninstall`、`ralph`、`version`、`help` 以及内部 `_mcp`；其余所有参数与子命令直接透传至官方 `opencode`。
 
 ## 验证
 

@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased (Goal Engine 2.0, Native Overlap Takeover & Model Onboarding)
+
+- **统一 Goal Engine 2.0 与原生重叠可逆接管**：在受管配置与运行期统一接管 `/goal`（`<objective>`、`--auto`、`pause`、`resume`、`clear`、`status`）、`/review`（强制派遣独立 `ultracode/reviewer` 与 `ultracode/visual-evaluator` 子代理而非同上下文自评）及原生 `build`/`plan` 主角色隐藏（可逆停用 `-opencode.goal`、`-opencode.plan` 并注册静默 `OpencodeGoalRpc` 空桩，消除原生桌面 Goal 胶囊重叠与 `rpc.unavailable` 重试风暴，卸载时完整还原）。
+- **零 Token 工作区确定性证据门禁与压缩后目标锚定**：新增 `goal-gate.js` 与 `ultracode_task_graph` 工具，程序化校验 `.opencode/ultracode/FEATURE_LIST.json`（前置依赖、并行 `ownedFiles` 冲突检测及真实 `executedCommand` + `evidenceSummary` 证据）、`.opencode/ultracode/QA_REPORT.md` 与 `.ralph/ralph-tasks.md`，防止模型自评过早报完成；支持 `question` 提问卡挂起感知、最多 60 轮续跑、3 次无进展熔断转 `paused`、重启安全保留已暂停目标，以及对 Prompt Cache 友好的 `<ultracode_goal_anchor>` 压缩后目标重注；OpenCode Desktop `UltraCode` 胶囊与 TUI 同步支持 6 国语言一键暂停、继续与清除控制。
+- **`UltraPlan` ↔ `Ralph` 契约闭环与多档模型偏好引导**：解锁 `UltraPlan` 写入 `.opencode/ultracode/**` 与 `.ralph/**` 规划与验收工件权限，100% 保留 `UltraBuild` 联网社区调研与前置多选提问卡指令；升级 `ultracode ralph run` 默认 50 轮迭代、`--max-iterations` 去重、`--worktree <name>` 自动创建/复用关联工作树与 `--init` 脚手架；新增 `ultracode setup-models` 与 `/setup-models`（及首次根会话一次性非阻塞提示），在不改动 `agents/*.md` 哈希的前提下按已配置模型池向 `opencode.jsonc` 写入可选的分角色模型偏好。
+
 ## v1.1.1 - 2026-11-24
 
 上游基线对齐与多触点会话运行时稳定性补丁版本（Verified on OpenCode v2.4.1）：

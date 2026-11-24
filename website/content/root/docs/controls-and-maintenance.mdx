@@ -9,9 +9,9 @@ Day-to-day control stays synchronized across Terminal, Desktop, and Web/Mobile i
 
 ## Toggle Switches on Any Surface
 
-- **Desktop App (OpenCode Desktop)**: Click the **UltraCode** pill above the composer for one-click toggles (and to view or clear a queued next milestone in the active session), or open **Settings → UltraCode**.
+- **Desktop App (OpenCode Desktop)**: Click the **UltraCode** pill above the composer for one-click toggles (and to pause, resume, or clear an active Goal or milestone in the current session), or open **Settings → UltraCode**.
 - **Terminal (TUI)**: Open the Command Palette and search **UltraCode**.
-- **Web & Mobile (`ultracode pair`)**: Type `/approvals` or `/direction` in the composer (shows the live `auto` / `manual` state and toggles immediately with zero AI model calls).
+- **Web & Mobile (`ultracode pair`)**: Type `/goal`, `/review`, `/setup-models`, `/approvals`, or `/direction` directly in the composer (`auto` / `manual` switches toggle immediately with zero AI model calls).
 
 <figure class="uc-doc-figure">
   <TuiControlsDiagram lang="en" />
@@ -28,6 +28,7 @@ Day-to-day control stays synchronized across Terminal, Desktop, and Web/Mobile i
 | `ultracode` | Open the terminal UI (all OpenCode flags & subcommands work directly) |
 | `ultracode desktop` | Launch OpenCode Desktop, or download the official installer if missing |
 | `ultracode pair` | Generate a pairing link & QR code for browser or mobile access |
+| `ultracode setup-models` | Pair multiple configured models across planning, coding, research, and visual QA roles |
 | `ultracode upgrade` | Update official OpenCode and UltraCode together, then sync |
 | `ultracode sync` | Re-sync configuration and managed runtime |
 | `ultracode doctor` | Fast setup health check with zero AI model calls |

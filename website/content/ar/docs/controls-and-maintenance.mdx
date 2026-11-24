@@ -9,9 +9,9 @@ import TuiControlsDiagram from "@diagrams/TuiControlsDiagram.astro";
 
 ## مفاتيح التبديل على أي واجهة
 
-- **تطبيق سطح المكتب (`OpenCode Desktop`)**: انقر شارة **UltraCode** أعلى مربع الإدخال للتبديل بنقرة واحدة (ومعاينة المرحلة التالية المجدولة في الجلسة أو مسحها بنقرة واحدة)، أو افتح **Settings → UltraCode**.
+- **تطبيق سطح المكتب (`OpenCode Desktop`)**: انقر شارة **UltraCode** أعلى مربع الإدخال للتبديل بنقرة واحدة (وإيقاف الهدف النشط مؤقتاً أو استئنافه أو مسحه)، أو افتح **Settings → UltraCode**.
 - **الطرفية (TUI)**: افتح لوحة الأوامر (Command Palette) وابحث عن **UltraCode**.
-- **الويب والهاتف (`ultracode pair`)**: اكتب `/approvals` أو `/direction` في مربع الإدخال (تعرض قائمة `/` الحالة الحية `auto` / `manual` وتبدّلها فوراً دون أي استدعاء لنموذج الذكاء الاصطناعي).
+- **الويب والهاتف (`ultracode pair`)**: اكتب `/goal` أو `/review` أو `/setup-models` أو `/approvals` أو `/direction` في مربع الإدخال (تبدّل مفاتيح الحالة فوراً دون أي استدعاء لنموذج الذكاء الاصطناعي).
 
 <figure class="uc-doc-figure">
   <TuiControlsDiagram lang="ar" />
@@ -28,6 +28,7 @@ import TuiControlsDiagram from "@diagrams/TuiControlsDiagram.astro";
 | `ultracode` | فتح واجهة الطرفية (جميع خيارات وأوامر OpenCode الفرعية تعمل مباشرة) |
 | `ultracode desktop` | تشغيل `OpenCode Desktop`، أو تنزيل المثبّت الرسمي إن لم يكن موجوداً |
 | `ultracode pair` | عرض رابط ربط ورمز QR للوصول عبر المتصفح أو الهاتف |
+| `ultracode setup-models` | تخصيص نماذج متعددة المستويات لأدوار التخطيط والبرمجة والبحث والفحص البصري |
 | `ultracode upgrade` | تحديث OpenCode الرسمي وUltraCode معاً ثم تنفيذ المزامنة |
 | `ultracode sync` | إعادة مواءمة الإعدادات وبيئة التشغيل المُدارة |
 | `ultracode doctor` | فحص سريع لسلامة الإعداد دون أي استدعاء لنماذج الذكاء الاصطناعي |

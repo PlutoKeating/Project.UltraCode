@@ -9,9 +9,9 @@ Le contrôle au quotidien reste unifié entre le Terminal, l’application Deskt
 
 ## Basculer les réglages depuis n’importe quelle interface
 
-- **Application Desktop (`OpenCode Desktop`)** : cliquez sur la pastille **UltraCode** au-dessus de la zone de saisie pour basculer en un clic (et voir ou effacer la prochaine étape planifiée de la session), ou ouvrez **Settings → UltraCode**.
+- **Application Desktop (`OpenCode Desktop`)** : cliquez sur la pastille **UltraCode** au-dessus de la zone de saisie pour basculer en un clic (et mettre en pause, reprendre ou effacer l’objectif en cours), ou ouvrez **Settings → UltraCode**.
 - **Terminal (TUI)** : ouvrez la palette de commandes et recherchez **UltraCode**.
-- **Web et Mobile (`ultracode pair`)** : saisissez `/approvals` ou `/direction` dans la zone de message (le menu `/` affiche l’état actif `auto` / `manual` et bascule instantanément sans aucun appel au modèle IA).
+- **Web et Mobile (`ultracode pair`)** : saisissez `/goal`, `/review`, `/setup-models`, `/approvals` ou `/direction` dans la zone de message (les interrupteurs basculent instantanément sans aucun appel au modèle IA).
 
 <figure class="uc-doc-figure">
   <TuiControlsDiagram lang="fr" />
@@ -28,6 +28,7 @@ Le contrôle au quotidien reste unifié entre le Terminal, l’application Deskt
 | `ultracode` | Ouvre l’interface terminal (toutes les options et sous-commandes OpenCode fonctionnent directement) |
 | `ultracode desktop` | Lance `OpenCode Desktop`, ou télécharge l’installateur officiel s’il est absent |
 | `ultracode pair` | Affiche un lien d’association et un QR code pour l’accès navigateur ou mobile |
+| `ultracode setup-models` | Associe en option plusieurs niveaux de modèles aux rôles de planification, code, recherche et revue visuelle |
 | `ultracode upgrade` | Met à jour OpenCode officiel et UltraCode ensemble, puis synchronise l’environnement |
 | `ultracode sync` | Réaligne la configuration et l’environnement géré |
 | `ultracode doctor` | Diagnostic rapide de l’installation sans aucun appel à un modèle IA |

@@ -9,9 +9,9 @@ El control diario permanece integrado entre Terminal, Escritorio y Web/Móvil �
 
 ## Interruptores en cualquier superficie
 
-- **Aplicación de escritorio (OpenCode Desktop)**: haz clic en la píldora **UltraCode** encima del cuadro de mensaje para cambiar con un toque (y ver o limpiar con un clic el siguiente hito programado de la sesión), o abre **Settings → UltraCode**.
+- **Aplicación de escritorio (OpenCode Desktop)**: haz clic en la píldora **UltraCode** encima del cuadro de mensaje para cambiar con un toque (y pausar, reanudar o limpiar el objetivo activo de la sesión), o abre **Settings → UltraCode**.
 - **Terminal (TUI)**: abre la paleta de comandos y busca **UltraCode**.
-- **Web y móvil (`ultracode pair`)**: escribe `/approvals` o `/direction` en el cuadro de mensaje (el menú `/` muestra el estado `auto` / `manual` en vivo y lo alterna al instante sin llamadas a modelos de IA).
+- **Web y móvil (`ultracode pair`)**: escribe `/goal`, `/review`, `/setup-models`, `/approvals` o `/direction` en el cuadro de mensaje (los interruptores cambian al instante sin llamadas a modelos de IA).
 
 <figure class="uc-doc-figure">
   <TuiControlsDiagram lang="es" />
@@ -28,6 +28,7 @@ El control diario permanece integrado entre Terminal, Escritorio y Web/Móvil �
 | `ultracode` | Abre la interfaz de terminal (todos los flags y subcomandos de OpenCode funcionan directamente) |
 | `ultracode desktop` | Inicia OpenCode Desktop o descarga el instalador oficial si no está presente |
 | `ultracode pair` | Muestra un enlace de vinculación y un código QR para acceso desde navegador o móvil |
+| `ultracode setup-models` | Vincula opcionalmente distintos niveles de modelos a planificación, código, investigación y revisión visual |
 | `ultracode upgrade` | Actualiza conjuntamente OpenCode oficial y UltraCode, y después sincroniza |
 | `ultracode sync` | Realinea la configuración y el entorno de ejecución gestionado |
 | `ultracode doctor` | Comprobación rápida de estado con cero llamadas a modelos de IA |

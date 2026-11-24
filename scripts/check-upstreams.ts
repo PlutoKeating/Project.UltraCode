@@ -1,4 +1,5 @@
-import { createHash } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
+import { spawn } from "node:child_process";
 import { chmod, copyFile, cp, mkdir, mkdtemp, readFile, rm, stat, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { dirname, isAbsolute, join } from "node:path";
@@ -60,6 +61,7 @@ export interface LiveCanaryOptions {
   opencodeBin?: string;
   skipGuiNpmInstall?: boolean;
   skipRuntimeDownload?: boolean;
+  verifyOverlapContract?: boolean;
   rebuild?: boolean;
   targetPluginSdkVersion?: string;
 }
@@ -656,7 +658,116 @@ export async function runLiveHostCanary(options: LiveCanaryOptions = {}): Promis
       ok: doctorRes.code === 0,
       detail: (doctorRes.stderr || doctorRes.stdout).trim().slice(0, 300) || "Ready",
     });
+
+    const shouldVerifyOverlap = options.verifyOverlapContract ?? !options.skipRuntimeDownload;
+    if (shouldVerifyOverlap) {
+      let overlapIssues: string[] = ["Did not inspect /api/command and /api/agent"];
+      let serverUrl: string | null = null;
+      let serverPassword = "";
+      let tempServer: ReturnType<typeof spawn> | null = null;
+      try {
+        for (let attempt = 0; attempt < 12; attempt++) {
+          const reqEnv = serverUrl ? { ...isolatedEnv, OPENCODE_PASSWORD: serverPassword } : isolatedEnv;
+          const cmdArgs = serverUrl
+            ? ["api", "--server", serverUrl, "get", "/api/command"]
+            : ["api", "get", "/api/command"];
+          const agentArgs = serverUrl
+            ? ["api", "--server", serverUrl, "get", "/api/agent"]
+            : ["api", "get", "/api/agent"];
+
+          const [cmdRes, agentRes] = await Promise.all([
+            run(resolvedOpencode, cmdArgs, { cwd: hostSandbox, env: reqEnv }),
+            run(resolvedOpencode, agentArgs, { cwd: hostSandbox, env: reqEnv }),
+          ]);
+          if (cmdRes.code !== 0 || agentRes.code !== 0) {
+            const combined = `${cmdRes.stderr}\n${cmdRes.stdout}\n${agentRes.stderr}\n${agentRes.stdout}`;
+            if (!serverUrl && /already in use|Failed to start server|EADDRINUSE/i.test(combined)) {
+              serverPassword = randomUUID();
+              const child = spawn(resolvedOpencode, ["serve", "--hostname", "127.0.0.1", "--port", "0"], {
+                cwd: hostSandbox,
+                env: { ...isolatedEnv, OPENCODE_PASSWORD: serverPassword },
+                stdio: ["ignore", "pipe", "pipe"],
+                windowsHide: true,
+              });
+              child.on("error", () => {});
+              tempServer = child;
+              serverUrl = await new Promise<string | null>((resolveUrl) => {
+                let buf = "";
+                const timer = setTimeout(() => resolveUrl(null), 4000);
+                const onChunk = (chunk: Buffer) => {
+                  buf += chunk.toString();
+                  const m = buf.match(/https?:\/\/127\.0\.0\.1:\d+/);
+                  if (m) {
+                    clearTimeout(timer);
+                    resolveUrl(m[0]);
+                  }
+                };
+                child.stdout?.on("data", onChunk);
+                child.stderr?.on("data", onChunk);
+                child.on("close", () => {
+                  clearTimeout(timer);
+                  resolveUrl(null);
+                });
+              });
+              continue;
+            }
+            overlapIssues = [`API query failed: ${combined.trim().slice(0, 200)}`];
+            await new Promise((r) => setTimeout(r, 350));
+            continue;
+          }
+          try {
+            const cmdParsed = JSON.parse(cmdRes.stdout) as { data?: Array<{ name?: string }> };
+            const agentParsed = JSON.parse(agentRes.stdout) as {
+              data?: Array<{ id?: string; hidden?: boolean }>;
+            };
+            const commands = new Set((cmdParsed.data || []).map((c) => c.name));
+            const agentMap = new Map((agentParsed.data || []).map((a) => [a.id, a]));
+            const missing: string[] = [];
+            for (const requiredCmd of ["goal", "review", "setup-models", "approvals", "direction"]) {
+              if (!commands.has(requiredCmd)) missing.push(`missing /${requiredCmd}`);
+            }
+            for (const hiddenAgent of ["build", "plan"]) {
+              const entry = agentMap.get(hiddenAgent);
+              if (entry && entry.hidden !== true) missing.push(`${hiddenAgent} not hidden`);
+            }
+            for (const visibleAgent of ["UltraBuild", "UltraPlan"]) {
+              const entry = agentMap.get(visibleAgent);
+              if (!entry || entry.hidden === true) missing.push(`${visibleAgent} missing or hidden`);
+            }
+            overlapIssues = missing;
+            if (missing.length === 0) break;
+          } catch (err) {
+            overlapIssues = [`Invalid JSON from /api/command or /api/agent: ${(err as Error).message}`];
+          }
+          await new Promise((r) => setTimeout(r, 400));
+        }
+      } finally {
+        tempServer?.kill();
+      }
+      checks.push({
+        name: "ultracode-overlap-contract",
+        ok: overlapIssues.length === 0,
+        detail:
+          overlapIssues.length === 0
+            ? "/goal, /review, /setup-models active; build/plan hidden; UltraBuild/UltraPlan visible"
+            : overlapIssues.join("; "),
+      });
+    }
   } finally {
+    if (!options.skipRuntimeDownload) {
+      await run(resolvedOpencode, ["service", "stop"], {
+        cwd: hostSandbox,
+        env: {
+          ...process.env,
+          HOME: hostSandbox,
+          USERPROFILE: hostSandbox,
+          XDG_CONFIG_HOME: join(hostSandbox, ".config"),
+          XDG_DATA_HOME: join(hostSandbox, ".local", "share"),
+          XDG_STATE_HOME: join(hostSandbox, ".local", "state"),
+          LOCALAPPDATA: join(hostSandbox, "AppData", "Local"),
+        },
+      }).catch(() => {});
+    }
     await rm(hostSandbox, { recursive: true, force: true }).catch(() => {});
   }
 

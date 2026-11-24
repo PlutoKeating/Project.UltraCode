@@ -47,8 +47,8 @@ ultracode doctor
 
 > “帮我做一个本地离线可用的极简番茄钟网页，包含 25/5 分钟切换、开始/暂停/重置和桌面+移动端自适应；完成后启动本地预览，实际点击所有按钮并用真实浏览器截图做独立视觉检查，确认零控制台报错且界面无溢出后再交给我。”
 
-- 按 `Shift+Tab` 可在默认主角色 `UltraBuild`（总协调与交付）与 `UltraPlan`（纯只读规划）之间切换。
-- 在 OpenCode Desktop 点击输入框上方的 **UltraCode** 胶囊（可一键切换双开关，并在有排队里程碑时查看或一键清除下一阶段目标；或进入 **Settings → UltraCode**），在 TUI 命令面板搜索 **UltraCode**，或在网页/手机端输入 `/approvals`、`/direction`，可随时切换 **Command approvals** 与 **Direction questions**。
+- 按 `Shift+Tab` 可在默认主角色 `UltraBuild`（总协调与交付）与 `UltraPlan`（只读规划与契约生成）之间切换；长程目标可直接自然对话或运行 `/goal <目标>`，完成后运行 `/review` 触发独立审查；若配置了多档模型，可随时运行 `ultracode setup-models` 或 `/setup-models` 一键绑定分角色推荐模型。
+- 在 OpenCode Desktop 点击输入框上方的 **UltraCode** 胶囊（可一键切换双开关，并在存在活动或已暂停目标时查看进度并一键暂停、继续或清除；或进入 **Settings → UltraCode**），在 TUI 命令面板搜索 **UltraCode**，或在网页/手机端输入 `/approvals`、`/direction`、`/goal`，可随时掌控自主推进节奏。
 
 ## 5. 日常升级与卸载
 

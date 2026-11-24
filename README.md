@@ -34,9 +34,9 @@ Instead of guessing early or drifting halfway through multi-step tasks, UltraCod
 ### Key Capabilities
 
 - **One Command, Zero Prerequisites**: A single `ultracode` CLI with full `opencode` flag and subcommand passthrough. Both the installer and `ultracode upgrade` automatically detect, install, or update official OpenCode V2 (`v2.3.2+`, verified on `v2.4+`).
-- **Every Surface Synchronized**: Embedded `ultracode-conversation` plugin syncing live state across Server RPC, TUI Command Palette, OpenCode Desktop (`ComposerPill` with one-click milestone clear & `Settings → UltraCode`), and Web/Mobile (`/approvals` and `/direction`).
-- **Two Primary Roles + Five Specialists**: Switch anytime with `Shift+Tab` between `UltraBuild` (end-to-end delivery) and `UltraPlan` (strictly read-only planning), backed automatically by `librarian`, `architect`, `implementer`, `reviewer`, and `visual-evaluator`.
-- **Long-Running Continuation & Handoffs**: Advances durable session milestones automatically with stall circuit breakers and official `/goal` coexistence, yields immediately when you send a new message, and resumes across restarts from repository handoff files; includes a cross-platform TypeScript `ultracode ralph run` runner.
+- **Every Surface Synchronized**: Embedded `ultracode-conversation` plugin syncing live state across Server RPC, TUI Command Palette, OpenCode Desktop (`ComposerPill` with live Goal progress, Pause / Resume / Clear controls & `Settings → UltraCode`), and Web/Mobile (`/goal`, `/review`, `/setup-models`, `/approvals`, and `/direction`).
+- **Two Primary Roles + Five Specialists**: Cleanly replaces overlapping stock `Build`/`Plan` modes so `Shift+Tab` switches directly between `UltraBuild` (end-to-end delivery) and `UltraPlan` (read-only planning & sprint contracts), backed automatically by `librarian`, `architect`, `implementer`, `reviewer`, and `visual-evaluator` (with optional multi-tier model pairing via `ultracode setup-models` or `/setup-models`).
+- **Evidence-Gated Goal Engine & Handoffs**: Unified `/goal` and session milestones backed by deterministic workspace verification gates, compaction-safe goal anchoring, and stall circuit breakers; pauses cleanly on interrupts or restarts, and includes a cross-platform TypeScript `ultracode ralph run` runner (`--worktree`, `--init`).
 - **Strictly Additive & Reversible**: Never patches official OpenCode binaries, never reads or transmits your API keys, preserves existing JSONC comments and custom skills, and uninstalls cleanly.
 
 <div align="center">
@@ -80,10 +80,11 @@ ultracode pair      # Generate a pairing link & QR code for browser or mobile ac
 | `ultracode [args...]` | Launch OpenCode with full flag, path, and subcommand passthrough |
 | `ultracode desktop` | Open official OpenCode Desktop or download the platform installer |
 | `ultracode pair [--remote]` | Pair a browser or mobile client via link and QR code |
+| `ultracode setup-models` | Configure optional multi-tier role model preferences |
 | `ultracode upgrade` | Update official OpenCode V2 and UltraCode together, then sync |
 | `ultracode sync` | Idempotently sync configuration, plugin, roles, and managed runtime |
 | `ultracode doctor` | Verify OpenCode version, plugin state, roles, and MCP health (zero model calls) |
-| `ultracode ralph run <goal>` | Run isolated fresh-session Ralph iterations inside a linked Git worktree |
+| `ultracode ralph run <goal>` | Run isolated fresh-session Ralph iterations (`--worktree`, `--init`) |
 | `ultracode uninstall --yes` | Remove UltraCode cleanly while preserving user configs and backups |
 
 ## Repository Structure

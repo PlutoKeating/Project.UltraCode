@@ -32,9 +32,9 @@
 ### 核心特性
 
 - **单一命令与零前置安装**：唯一命令 `ultracode` 与官方 `opencode` 参数和子命令完全互通；安装脚本与 `ultracode upgrade` 会自动检测并安装或更新官方 OpenCode V2（`v2.3.2+`，已验证兼容 `v2.4+`）。
-- **全端实时同步体验**：内嵌 `ultracode-conversation` 多触点插件包，打通 Server RPC、TUI 命令面板、OpenCode Desktop（输入框上方 `UltraCode` 胶囊支持双开关与待执行里程碑一键清除，及 `Settings → UltraCode` 设置页）及网页/手机端（`/approvals` 与 `/direction`）。
-- **双主角色与五位后台专家**：按 `Shift+Tab` 在默认总控 `UltraBuild` 与只读规划 `UltraPlan` 之间随时切换，后台自动按需调度 `librarian`、`architect`、`implementer`、`reviewer` 与 `visual-evaluator`。
-- **长任务持续推进与断点恢复**：在当前会话内持久化衔接阶段目标（具备停滞熔断保护并与官方 `/goal` 自动协同共存），发新消息随时插话转向；进度与交接记录保存在仓库内，重启后可自然语言接续，并内置跨平台 TypeScript 原生 `ultracode ralph run`。
+- **全端实时同步体验**：内嵌 `ultracode-conversation` 多触点插件包，打通 Server RPC、TUI 命令面板、OpenCode Desktop（输入框上方 `UltraCode` 胶囊支持双开关与会话目标一键暂停/继续/清除，及 `Settings → UltraCode` 设置页）及网页/手机端（`/goal`、`/review`、`/setup-models`、`/approvals` 与 `/direction`）。
+- **双主角色与五位后台专家**：可逆收起重叠原生模式，按 `Shift+Tab` 直接在默认总控 `UltraBuild` 与只读规划 `UltraPlan` 之间切换，后台自动调度 `librarian`、`architect`、`implementer`、`reviewer` 与 `visual-evaluator`（支持通过 `ultracode setup-models` 或 `/setup-models` 一键配置多档角色模型偏好）。
+- **证据门禁目标引擎与断点恢复**：统一 `/goal` 与会话里程碑引擎，结合工作区确定性证据校验、上下文压缩目标锚定与停滞熔断保护，中断或重启后安全暂停并可随时恢复；同时内置支持 `--worktree` 与 `--init` 的跨平台 `ultracode ralph run`。
 - **纯增量且随时可逆**：不修改官方 OpenCode 二进制程序，不读取或上传任何 API 密钥，完整保留原有 JSONC 注释、快捷键与自定义技能，支持一键干净卸载。
 
 <div align="center">
@@ -78,10 +78,11 @@ ultracode pair      # 生成配对链接与二维码，接入浏览器或手机�
 | `ultracode [args...]` | 启动终端界面，原样透传所有官方 `opencode` 参数、路径与子命令 |
 | `ultracode desktop` | 启动已安装的官方 OpenCode Desktop，或下载当前平台官方安装包 |
 | `ultracode pair [--remote]` | 输出浏览器与手机端配对链接及二维码 |
+| `ultracode setup-models` | 按已配置模型池一键绑定或重置分角色推荐模型 |
 | `ultracode upgrade` | 一键更新官方 OpenCode V2 与 UltraCode 并自动同步配置 |
 | `ultracode sync` | 幂等同步配置、多触点插件、角色与受管运行时 |
 | `ultracode doctor` | 零模型调用快速检查版本、插件、角色与 MCP 状态 |
-| `ultracode ralph run <goal>` | 在专用关联 Git 工作树中运行跨会话隔离的 Ralph 循环 |
+| `ultracode ralph run <goal>` | 在专用关联 Git 工作树中运行跨会话隔离的 Ralph 循环（支持 `--worktree`、`--init`） |
 | `ultracode uninstall --yes` | 干净移除 UltraCode 受管文件与二进制（保留个人配置与备份） |
 
 ## 项目目录架构

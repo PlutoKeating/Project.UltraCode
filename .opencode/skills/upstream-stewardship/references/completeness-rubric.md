@@ -39,7 +39,8 @@ Host releases frequently add convenient built-in features. Convenience on a sing
 | Rubric Result | Action | Engineering Pattern |
 |---|---|---|
 | **5 / 5 `PASS`** | **Candidate to Adopt / Retire Custom Plumbing** | Classify as `ARCHITECTURAL_DECISION`; present rubric evidence to maintainer via `question` card before removing UltraCode code. |
-| **1–4 `PASS`**, but upstream has stronger internal durability or UI polish | **Fuse & Harden (Keep Core + Borrow Strengths + Coexist)** | Keep UltraCode's complete mechanism; upgrade its internals using upstream's best primitives (e.g., durable plugin storage, crash fencing, Desktop UI visibility) and add mutual-exclusion guards so both never collide. |
+| **1–4 `PASS`**, and overlaps/conflicts with a decisive UltraCode workflow | **Take Over & Hide Host Overlap Reversibly** | Disable or hide the overlapping host convenience surface cleanly (`-opencode.*` plugin suppression, null RPC stubbing, `hidden: true` on raw `build`/`plan` agents), unify the slash/UI entry point under UltraCode's evidence-gated engine, and restore stock behavior on `ultracode uninstall`. |
+| **1–4 `PASS`**, complementary surface without workflow conflict | **Fuse & Harden (Role-Scoped Coexistence)** | Keep UltraCode's complete mechanism while allowing role-scoped access where the host feature adds value without weakening verification. |
 | **Orthogonal host capability** (e.g., media generation, model listing) | **Enable Role-Scoped Access** | Keep available to primary `UltraBuild` while keeping read-only/specialist subagents (`UltraPlan`, `reviewer`, `visual-evaluator`) strictly scoped. |
 
 ---
@@ -57,19 +58,20 @@ Host releases frequently add convenient built-in features. Convenience on a sing
   5. *Clarification Compatibility:* **PASS** — orthogonal to clarification.
 - **Ruling (`Fuse / Role-Scoped Coexistence`):** Keep managed headless isolated `ultracode_playwright_*` (`@playwright/mcp`, `codemode: false`) exclusively bound to `visual-evaluator` for clean-room QA across all surfaces. Allow `UltraBuild` to use `opencode.browser` when the user asks to inspect or interact with their attached Desktop browser pane.
 
-### Precedent B: `opencode.goal` (`/goal`) vs. `ultracode_checkpoint` & `ultracode ralph run`
+### Precedent B: `opencode.goal` (`/goal`) & Stock `Build`/`Plan` vs. Unified Goal Engine 2.0 & `ultracode ralph run`
 
-- **Upstream candidate:** OpenCode `v2.4.0` redesigned `/goal` (`opencode.goal`).
+- **Upstream candidate:** OpenCode `v2.4.0+` redesigned `/goal` (`opencode.goal`), `/plan` (`opencode.plan`), stock `build`/`plan` primary modes, and inline `/review`.
 - **5-Dimension Score (`2 / 5 PASS`):**
   1. *Cross-Surface Parity:* **PASS** — server-backed state works across TUI, Desktop, and Web; however, single-session continuation still suffers Context Rot on 8-hour specs compared to cross-session Context Resets in `ultracode ralph run`.
   2. *Clean-Room Isolation:* **PASS** — uses durable plugin KV storage scoped per session and server `bootID`.
-  3. *Non-Claude Ergonomics:* **FAIL** — requires manual `/goal` slash entry rather than natural conversation continuation in `UltraBuild`.
-  4. *Independent Verification:* **FAIL** — `judge.txt` evaluates completion with **zero tools**, judging transcript text instead of running real tests or browser QA via `reviewer` / `visual-evaluator`.
-  5. *Clarification Compatibility:* **FAIL** — `kickoff.txt` instructs the model *"do not stop to ask what to do next"*, suppressing upfront `question` cards on ambiguous requirements.
-- **Ruling (`Fuse & Harden + Mutual Exclusion`):**
-  - Keep `ultracode ralph run` for outer fresh-session Context Resets in linked Git worktrees.
-  - Keep `ultracode_checkpoint` for natural-chat milestone continuation after upfront clarification and real subagent verification.
-  - **Borrow `/goal`'s best engineering traits:** store checkpoints in durable `ctx.storage` (`checkpoint:<sessionID>`), fence stale checkpoints by `bootID`, enforce `MAX_CHECKPOINT_ROUNDS` (25) and `MAX_CHECKPOINT_STALLS` (3) circuit breakers, surface active milestones with one-click cancel in the Desktop `ComposerPill` across all 6 UN locales, and query `OpencodeGoalRpc` (`opencode.goal`) in `experimental.idle` so `ultracode_checkpoint` automatically defers whenever the user explicitly activates `/goal` on that session.
+  3. *Non-Claude Ergonomics:* **FAIL** — exposes duplicate primary modes (`build`/`plan` alongside `UltraBuild`/`UltraPlan`) and duplicate Goal pills unless unified.
+  4. *Independent Verification:* **FAIL** — stock `judge.txt` evaluates completion with **zero tools**, judging transcript text instead of enforcing deterministic workspace artifact gates (`FEATURE_LIST.json`, `QA_REPORT.md`, `ralph-tasks.md`) and independent `reviewer` / `visual-evaluator` subagents.
+  5. *Clarification Compatibility:* **FAIL** — stock `kickoff.txt` instructs the model *"do not stop to ask what to do next"*, suppressing upfront `question` cards on ambiguous requirements.
+- **Ruling (`Full Takeover + Null-RPC Hiding + Deterministic Evidence Gate`):**
+  - Reversibly disable built-in `-opencode.goal` and `-opencode.plan` in managed OpenCode config and hide built-in `build` and `plan` primary agents (`hidden: true`) so `Shift+Tab` cycles cleanly between `UltraBuild` and `UltraPlan` (restored cleanly on `ultracode uninstall`).
+  - Register a silent `OpencodeGoalRpc` (`opencode.goal`) null-stub returning `null` so stock OpenCode Desktop Goal pills stay hidden without `rpc.unavailable` retry storms.
+  - Own `/goal` (`pause`, `resume`, `clear`, `--auto`, `<objective>`), `/review` (dispatching independent `ultracode/reviewer` and `ultracode/visual-evaluator` subagents), and `/setup-models` inside `ultracode-conversation`, backed by unified `goal:<sessionID>` durable storage (`MAX_GOAL_ROUNDS = 60`, 3-stall circuit breaker, `question`-aware idle gating, post-compaction `<ultracode_goal_anchor>`, zero-token workspace evidence gate, and 6-locale Pause/Resume/Clear controls in the `UltraCode` Desktop pill and TUI).
+  - Keep `ultracode ralph run` (`--worktree <name>`, `--init`, default 50 iterations) for outer fresh-session Context Resets in linked Git worktrees.
 
 ### Precedent C: `tools.automation.*` (`/automation`) vs. Custom Polling Daemons
 

@@ -9,9 +9,9 @@ UltraCode 的日常控制集成在终端、桌面客户端和网页/手机端之
 
 ## 在任意端实时切换双开关
 
-- **桌面端（OpenCode Desktop）**：点击输入框上方的 **UltraCode** 胶囊即可一键切换双开关（当当前对话已安排下一阶段目标时，也可在胶囊菜单中查看或一键清除），或进入 **Settings → UltraCode** 设置页。
-- **终端（TUI）**：打开命令面板搜索 **UltraCode** 即可切换。
-- **网页端 / 手机端（`ultracode pair`）**：在输入框输入 `/approvals` 或 `/direction`（实时显示当前 `auto` / `manual` 状态，回车立即切换，零模型调用）。
+- **桌面端（OpenCode Desktop）**：点击输入框上方的 **UltraCode** 胶囊即可一键切换双开关（当会话存在进行中或已暂停目标时，也可在胶囊中查看进度并一键暂停、继续或清除），或进入 **Settings → UltraCode** 设置页。
+- **终端（TUI）**：打开命令面板搜索 **UltraCode** 即可切换开关或控制目标。
+- **网页端 / 手机端（`ultracode pair`）**：在输入框输入 `/goal`、`/review`、`/setup-models`、`/approvals` 或 `/direction`（双开关回车立即切换，零模型调用）。
 
 <figure class="uc-doc-figure">
   <TuiControlsDiagram lang="zh" />
@@ -28,6 +28,7 @@ UltraCode 的日常控制集成在终端、桌面客户端和网页/手机端之
 | `ultracode` | 启动终端界面（所有 OpenCode 参数与子命令直接可用） |
 | `ultracode desktop` | 启动官方桌面客户端；未安装时自动下载官方安装包 |
 | `ultracode pair` | 生成配对链接与二维码，连接浏览器或手机端 |
+| `ultracode setup-models` | 为规划、编码、检索与视觉验收角色匹配可选的多档模型组合 |
 | `ultracode upgrade` | 一键更新官方 OpenCode 与 UltraCode 并同步配置 |
 | `ultracode sync` | 重新同步配置与受管运行时 |
 | `ultracode doctor` | 零模型调用快速健康检查 |
