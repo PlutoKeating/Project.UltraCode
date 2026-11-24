@@ -1,12 +1,12 @@
 <div align="center">
 
 <a href="https://ultracode.plutokeating.beer/zh/">
-  <img src="./docs/assets/zh/hero-banner.svg" alt="UltraCode v1.1.1 — 说清目标，稳妥交付" width="100%" />
+  <img src="./docs/assets/zh/hero-banner.svg" alt="UltraCode v1.2.0 — 说清目标，稳妥交付" width="100%" />
 </a>
 
 <br />
 
-[![正式版](https://img.shields.io/badge/%E6%AD%A3%E5%BC%8F%E7%89%88-v1.1.1-ffffff?style=flat-square&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/releases/latest)
+[![正式版](https://img.shields.io/badge/%E6%AD%A3%E5%BC%8F%E7%89%88-v1.2.0-ffffff?style=flat-square&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/releases/latest)
 [![官方网站](https://img.shields.io/badge/%E5%AE%98%E6%96%B9%E7%BD%91%E7%AB%99-ultracode.plutokeating.beer-bae6fd?style=flat-square&labelColor=0a0a0a)](https://ultracode.plutokeating.beer/zh/)
 [![支持平台](https://img.shields.io/badge/%E6%94%AF%E6%8C%81%E5%B9%B3%E5%8F%B0-macOS%20%7C%20Linux%20%7C%20Windows-d4d4d4?style=flat-square&labelColor=0a0a0a)](https://ultracode.plutokeating.beer/zh/docs/getting-started/)
 [![辅助构建](https://img.shields.io/badge/%E8%BE%85%E5%8A%A9%E6%9E%84%E5%BB%BA-UltraCode%20v1.0.0-e5a03d?style=flat-square&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/releases/tag/v1.0.0)
@@ -18,10 +18,10 @@
 
 </div>
 
-**UltraCode（`v1.1.1`）** 是面向官方 **OpenCode V2** 的模型与服务商中立增强层，聚焦 **Goal Engineering（目标工程）**——让你用自然语言说清受众、核心行为与验收标准，把前置调研确认、多角色分工实现、独立代码复核与真实浏览器页面检查串联为稳定闭环，原生支持 **macOS、Linux 与 Windows**，打通 **终端（TUI）、桌面端（Desktop）、网页端（Web）与手机端（Mobile）**。
+**UltraCode（`v1.2.0`）** 是面向官方 **OpenCode V2** 的模型与服务商中立增强层，聚焦 **Goal Engineering（目标工程）**——让你用自然语言说清受众、核心行为与验收标准，把前置调研确认、多角色分工实现、独立代码复核与真实浏览器页面检查串联为稳定闭环，原生支持 **macOS、Linux 与 Windows**，打通 **终端（TUI）、桌面端（Desktop）、网页端（Web）与手机端（Mobile）**。
 
 > [!NOTE]
-> **自举开发与构建说明**：UltraCode `v1.1.1` 正式版（涵盖 OpenCode `v2.4+` 全面对齐、持久化里程碑续跑与上游看护金丝雀体系）均使用 **UltraCode `v1.0.0`** 辅助开发与构建完成。
+> **自举开发与构建说明**：UltraCode `v1.2.0` 正式版（涵盖 OpenCode `v2.4+` 全面对齐、持久化里程碑续跑与上游看护金丝雀体系）均使用 **UltraCode `v1.0.0`** 辅助开发与构建完成。
 
 ## 核心概览
 

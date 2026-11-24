@@ -1,12 +1,12 @@
 <div align="center">
 
 <a href="https://ultracode.plutokeating.beer/ar/">
-  <img src="./docs/assets/ar/hero-banner.svg" alt="UltraCode v1.1.1 — حدّد الهدف واستلم عملاً مُتحقَّقاً منه" width="100%" />
+  <img src="./docs/assets/ar/hero-banner.svg" alt="UltraCode v1.2.0 — حدّد الهدف واستلم عملاً مُتحقَّقاً منه" width="100%" />
 </a>
 
 <br />
 
-[![الإصدار](https://img.shields.io/badge/%D8%A7%D9%84%D8%A5%D8%B5%D8%AF%D8%A7%D8%B1-v1.1.1-ffffff?style=flat-square&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/releases/latest)
+[![الإصدار](https://img.shields.io/badge/%D8%A7%D9%84%D8%A5%D8%B5%D8%AF%D8%A7%D8%B1-v1.2.0-ffffff?style=flat-square&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/releases/latest)
 [![الموقع الرسمي](https://img.shields.io/badge/%D8%A7%D9%84%D9%85%D9%88%D9%82%D8%B9-ultracode.plutokeating.beer-bae6fd?style=flat-square&labelColor=0a0a0a)](https://ultracode.plutokeating.beer/ar/)
 [![المنصات](https://img.shields.io/badge/%D8%A7%D9%84%D9%85%D9%86%D8%B5%D8%A7%D8%AA-macOS%20%7C%20Linux%20%7C%20Windows-d4d4d4?style=flat-square&labelColor=0a0a0a)](https://ultracode.plutokeating.beer/ar/docs/getting-started/)
 [![بُنِيَ بمساعدة](https://img.shields.io/badge/%D8%A8%D9%8F%D9%86%D9%90%D9%8A%D9%8E%20%D8%A8%D9%85%D8%B3%D8%A7%D8%B9%D8%AF%D8%A9-UltraCode%20v1.0.0-e5a03d?style=flat-square&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/releases/tag/v1.0.0)
@@ -20,14 +20,14 @@
 
 <div dir="rtl">
 
-**UltraCode (`v1.1.1`)** هو طبقة تعزيز غير تدخلية ومحايدة تجاه النماذج والمزوّدين مبنية فوق **OpenCode V2** الرسمي، تركز على **هندسة الأهداف (Goal Engineering)** عبر أنظمة **macOS وLinux وWindows**، وتغطي **الطرفية (TUI) وتطبيق سطح المكتب والويب والهاتف المحمول**.
+**UltraCode (`v1.2.0`)** هو طبقة تعزيز غير تدخلية ومحايدة تجاه النماذج والمزوّدين مبنية فوق **OpenCode V2** الرسمي، تركز على **هندسة الأهداف (Goal Engineering)** عبر أنظمة **macOS وLinux وWindows**، وتغطي **الطرفية (TUI) وتطبيق سطح المكتب والويب والهاتف المحمول**.
 
 بدلاً من التخمين المبكر أو فقدان السياق في منتصف المهام المعقدة، يوضّح UltraCode المتطلبات مسبقاً عبر بطاقات اختيار منظّمة، وينسّق العمل بين خبراء متخصصين في الخلفية، ويفحص الواجهات فعلياً داخل متصفح Chromium حقيقي، ويحفظ ملفات التسليم داخل المستودع لاستئناف العمل بسلاسة.
 
 </div>
 
 > [!NOTE]
-> **توثيق البناء الذاتي:** تم تطوير وبناء الإصدار الرسمي `UltraCode v1.1.1` (بما يشمل توافق OpenCode `v2.4+` واستمرارية المراحل ومراقبة التحديثات الآلية) بمساعدة **UltraCode `v1.0.0`**.
+> **توثيق البناء الذاتي:** تم تطوير وبناء الإصدار الرسمي `UltraCode v1.2.0` (بما يشمل توافق OpenCode `v2.4+` واستمرارية المراحل ومراقبة التحديثات الآلية) بمساعدة **UltraCode `v1.0.0`**.
 
 <div align="center">
   <img src="./docs/assets/ar/workflow-comparison.svg" alt="مقارنة بين الدردشة التقليدية وسير عمل UltraCode" width="100%" />

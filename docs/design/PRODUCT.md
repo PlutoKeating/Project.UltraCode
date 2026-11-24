@@ -34,7 +34,7 @@ Success for the website means a first-time visitor on macOS, Linux, or Windows u
 
 ## Capabilities and Constraints
 
-- Confirmed v1.1.1 capabilities:
+- Confirmed v1.2.0 capabilities:
   - Unified `ultracode` CLI with full `opencode` passthrough, zero-prerequisite OpenCode V2 (`v2.3.2+`, verified on `v2.4+`) auto-install/upgrade, `ultracode desktop` launcher, and cross-platform TS-native `ultracode ralph run`.
   - Native 6-target standalone builds (`linux`/`darwin`/`windows` × `x64`/`arm64`) plus minimalist `install.sh` and `install.ps1`.
   - Multi-surface `ultracode-conversation` plugin package: durable session milestone continuation with circuit breakers and official `/goal` coexistence, Server RPC (`UltraCodeRpc` including `clearCheckpoint`) + `/approvals` & `/direction` commands for Web/Mobile, TUI Command Palette + quiet footer status, and 6-language OpenCode Desktop GUI (`ComposerPill` with contextual next-milestone clear action, `SettingsPage`, `Command`).
@@ -53,7 +53,7 @@ Success for the website means a first-time visitor on macOS, Linux, or Windows u
 ## Evidence on Hand
 
 - Live install URLs: `https://ultracode.plutokeating.beer/install.sh` and `https://ultracode.plutokeating.beer/install.ps1`.
-- Latest public release: `v1.1.1` (`https://github.com/PlutoKeating/Project.UltraCode`), built with UltraCode `v1.0.0`.
+- Latest public release: `v1.2.0` (`https://github.com/PlutoKeating/Project.UltraCode`), built with UltraCode `v1.0.0`.
 - Absences (must not fabricate): No customer logos, paid tiers, third-party testimonials, or synthetic speed/accuracy benchmark numbers.
 
 ## Product Principles

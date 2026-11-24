@@ -132,7 +132,7 @@ export const LANDING_COPY: Record<Locale, LandingCopy> = {
   en: {
     metaTitle: "UltraCode — Reliable End-to-End Delivery for OpenCode",
     metaDescription:
-      "UltraCode v1.1.1 brings upfront clarification, specialist subagents, real-browser visual checks, and durable handoffs to official OpenCode V2 across macOS, Linux, and Windows — Terminal, Desktop, Web, and Mobile.",
+      "UltraCode v1.2.0 brings upfront clarification, specialist subagents, real-browser visual checks, and durable handoffs to official OpenCode V2 across macOS, Linux, and Windows — Terminal, Desktop, Web, and Mobile.",
     llmsLinkTitle: "UltraCode LLM Documentation Index",
     navAria: "Main navigation",
     navDocs: "Docs",
@@ -140,7 +140,7 @@ export const LANDING_COPY: Record<Locale, LandingCopy> = {
     heroTitle: "State the Goal. Ship Verified Work.",
     heroSub:
       "Built on official OpenCode across macOS, Linux, and Windows — unified across Terminal, Desktop, Web, and Mobile.",
-    builtWithCredit: "v1.1.1 · Built and shipped with UltraCode v1.0.0",
+    builtWithCredit: "v1.2.0 · Built and shipped with UltraCode v1.0.0",
     osTabsAria: "Select operating system",
     copyInstall: "Copy install",
     copied: "Copied",
@@ -168,13 +168,13 @@ export const LANDING_COPY: Record<Locale, LandingCopy> = {
     closeTrust:
       "Sets up official OpenCode V2 automatically · Never modifies binaries · Never touches API keys · Clean uninstall anytime",
     openQuickStart: "Open 1-Minute Quick Start",
-    footerLicense: "UltraCode v1.1.1 · Built with UltraCode v1.0.0 · MIT License",
+    footerLicense: "UltraCode v1.2.0 · Built with UltraCode v1.0.0 · MIT License",
     footerDocs: "Documentation",
   },
   zh: {
     metaTitle: "UltraCode — 让 OpenCode 稳妥完成复杂工程交付",
     metaDescription:
-      "UltraCode v1.1.1 基于官方 OpenCode V2 构建，提供前置需求确认、后台角色协作、真实浏览器界面巡检与长程断点续跑，原生支持 macOS、Linux 与 Windows 及终端、桌面端、网页与手机端。",
+      "UltraCode v1.2.0 基于官方 OpenCode V2 构建，提供前置需求确认、后台角色协作、真实浏览器界面巡检与长程断点续跑，原生支持 macOS、Linux 与 Windows 及终端、桌面端、网页与手机端。",
     llmsLinkTitle: "UltraCode 大模型与智能体文档索引",
     navAria: "主导航",
     navDocs: "文档",
@@ -182,7 +182,7 @@ export const LANDING_COPY: Record<Locale, LandingCopy> = {
     heroTitle: "说清目标，稳妥交付",
     heroSub:
       "基于官方 OpenCode 构建，原生支持 macOS、Linux 与 Windows，打通终端、桌面端、网页与手机端。",
-    builtWithCredit: "v1.1.1 · 使用 UltraCode v1.0.0 辅助开发与构建",
+    builtWithCredit: "v1.2.0 · 使用 UltraCode v1.0.0 辅助开发与构建",
     osTabsAria: "选择操作系统",
     copyInstall: "复制命令",
     copied: "已复制",
@@ -209,13 +209,13 @@ export const LANDING_COPY: Record<Locale, LandingCopy> = {
     closeTrust:
       "自动安装或更新官方 OpenCode V2 · 不改官方程序 · 不碰 API 密钥 · 随时可干净卸载",
     openQuickStart: "查看 1 分钟快速开始",
-    footerLicense: "UltraCode v1.1.1 · 使用 UltraCode v1.0.0 辅助开发与构建 · MIT 开源许可",
+    footerLicense: "UltraCode v1.2.0 · 使用 UltraCode v1.0.0 辅助开发与构建 · MIT 开源许可",
     footerDocs: "使用文档",
   },
   ar: {
     metaTitle: "UltraCode — إنجاز هندسي متكامل وموثوق لمنصة OpenCode",
     metaDescription:
-      "يضيف UltraCode v1.1.1 توضيح المتطلبات المسبق، والوكلاء المتخصصين في الخلفية، والفحص البصري في متصفح حقيقي، واستئناف المهام الطويلة إلى OpenCode V2 الرسمي على macOS وLinux وWindows.",
+      "يضيف UltraCode v1.2.0 توضيح المتطلبات المسبق، والوكلاء المتخصصين في الخلفية، والفحص البصري في متصفح حقيقي، واستئناف المهام الطويلة إلى OpenCode V2 الرسمي على macOS وLinux وWindows.",
     llmsLinkTitle: "فهرس وثائق UltraCode للنماذج اللغوية",
     navAria: "التنقل الرئيسي",
     navDocs: "الوثائق",
@@ -223,7 +223,7 @@ export const LANDING_COPY: Record<Locale, LandingCopy> = {
     heroTitle: "حدّد الهدف. واستلم عملاً مُتحقَّقاً منه.",
     heroSub:
       "مبني على OpenCode الرسمي لأنظمة macOS وLinux وWindows — بتجربة موحّدة عبر الطرفية وسطح المكتب والويب والهاتف.",
-    builtWithCredit: "v1.1.1 · طُوِّر وبُنِيَ بمساعدة UltraCode v1.0.0",
+    builtWithCredit: "v1.2.0 · طُوِّر وبُنِيَ بمساعدة UltraCode v1.0.0",
     osTabsAria: "اختر نظام التشغيل",
     copyInstall: "نسخ التثبيت",
     copied: "تم النسخ",
@@ -250,13 +250,13 @@ export const LANDING_COPY: Record<Locale, LandingCopy> = {
     closeTrust:
       "يهيّئ OpenCode V2 الرسمي تلقائياً · لا يعدّل الملفات التنفيذية · لا يمس مفاتيح API · إزالة نظيفة في أي وقت",
     openQuickStart: "افتح دليل البدء في دقيقة",
-    footerLicense: "UltraCode v1.1.1 · طُوِّر بمساعدة UltraCode v1.0.0 · رخصة MIT",
+    footerLicense: "UltraCode v1.2.0 · طُوِّر بمساعدة UltraCode v1.0.0 · رخصة MIT",
     footerDocs: "الوثائق",
   },
   fr: {
     metaTitle: "UltraCode — Livraison de bout en bout fiable pour OpenCode",
     metaDescription:
-      "UltraCode v1.1.1 enrichit OpenCode V2 officiel avec clarification initiale, sous-agents spécialisés, vérification visuelle sur navigateur réel et reprise durable sur macOS, Linux et Windows.",
+      "UltraCode v1.2.0 enrichit OpenCode V2 officiel avec clarification initiale, sous-agents spécialisés, vérification visuelle sur navigateur réel et reprise durable sur macOS, Linux et Windows.",
     llmsLinkTitle: "Index de documentation UltraCode pour LLM",
     navAria: "Navigation principale",
     navDocs: "Docs",
@@ -264,7 +264,7 @@ export const LANDING_COPY: Record<Locale, LandingCopy> = {
     heroTitle: "Exprimez l’objectif. Livrez du concret vérifié.",
     heroSub:
       "Construit sur OpenCode officiel pour macOS, Linux et Windows — unifié sur Terminal, Desktop, Web et Mobile.",
-    builtWithCredit: "v1.1.1 · Conçu et construit avec UltraCode v1.0.0",
+    builtWithCredit: "v1.2.0 · Conçu et construit avec UltraCode v1.0.0",
     osTabsAria: "Choisir le système d’exploitation",
     copyInstall: "Copier",
     copied: "Copié",
@@ -292,13 +292,13 @@ export const LANDING_COPY: Record<Locale, LandingCopy> = {
     closeTrust:
       "Installe OpenCode V2 officiel automatiquement · Binaire officiel intact · Clés API jamais lues · Désinstallation propre",
     openQuickStart: "Ouvrir le guide en 1 minute",
-    footerLicense: "UltraCode v1.1.1 · Construit avec UltraCode v1.0.0 · Licence MIT",
+    footerLicense: "UltraCode v1.2.0 · Construit avec UltraCode v1.0.0 · Licence MIT",
     footerDocs: "Documentation",
   },
   ru: {
     metaTitle: "UltraCode — Надёжная сквозная разработка на базе OpenCode",
     metaDescription:
-      "UltraCode v1.1.1 дополняет официальный OpenCode V2 уточнением требований, профильными субагентами, визуальной проверкой в реальном браузере и сохранением прогресса на macOS, Linux и Windows.",
+      "UltraCode v1.2.0 дополняет официальный OpenCode V2 уточнением требований, профильными субагентами, визуальной проверкой в реальном браузере и сохранением прогресса на macOS, Linux и Windows.",
     llmsLinkTitle: "Индекс документации UltraCode для LLM",
     navAria: "Основная навигация",
     navDocs: "Документация",
@@ -306,7 +306,7 @@ export const LANDING_COPY: Record<Locale, LandingCopy> = {
     heroTitle: "Опишите цель. Получите проверенный результат.",
     heroSub:
       "Построен поверх официального OpenCode для macOS, Linux и Windows — терминал, десктоп, веб и телефон.",
-    builtWithCredit: "v1.1.1 · Разработано и собрано с помощью UltraCode v1.0.0",
+    builtWithCredit: "v1.2.0 · Разработано и собрано с помощью UltraCode v1.0.0",
     osTabsAria: "Выберите операционную систему",
     copyInstall: "Копировать",
     copied: "Скопировано",
@@ -334,13 +334,13 @@ export const LANDING_COPY: Record<Locale, LandingCopy> = {
     closeTrust:
       "Автоустановка OpenCode V2 · Без патчей бинарников · Без доступа к API-ключам · Чистое удаление",
     openQuickStart: "Открыть быстрый старт",
-    footerLicense: "UltraCode v1.1.1 · Собрано с помощью UltraCode v1.0.0 · Лицензия MIT",
+    footerLicense: "UltraCode v1.2.0 · Собрано с помощью UltraCode v1.0.0 · Лицензия MIT",
     footerDocs: "Документация",
   },
   es: {
     metaTitle: "UltraCode — Entrega confiable de principio a fin para OpenCode",
     metaDescription:
-      "UltraCode v1.1.1 aporta aclaración previa, subagentes especializados, verificación visual en navegador real y continuidad de sesiones a OpenCode V2 oficial en macOS, Linux y Windows.",
+      "UltraCode v1.2.0 aporta aclaración previa, subagentes especializados, verificación visual en navegador real y continuidad de sesiones a OpenCode V2 oficial en macOS, Linux y Windows.",
     llmsLinkTitle: "Índice de documentación de UltraCode para LLM",
     navAria: "Navegación principal",
     navDocs: "Docs",
@@ -348,7 +348,7 @@ export const LANDING_COPY: Record<Locale, LandingCopy> = {
     heroTitle: "Define el objetivo. Entrega trabajo verificado.",
     heroSub:
       "Construido sobre OpenCode oficial en macOS, Linux y Windows — unificado en Terminal, Escritorio, Web y Móvil.",
-    builtWithCredit: "v1.1.1 · Desarrollado y construido con UltraCode v1.0.0",
+    builtWithCredit: "v1.2.0 · Desarrollado y construido con UltraCode v1.0.0",
     osTabsAria: "Seleccionar sistema operativo",
     copyInstall: "Copiar",
     copied: "Copiado",
@@ -376,7 +376,7 @@ export const LANDING_COPY: Record<Locale, LandingCopy> = {
     closeTrust:
       "Prepara OpenCode V2 oficial automáticamente · Sin tocar binarios ni claves API · Desinstalación limpia",
     openQuickStart: "Abrir inicio rápido en 1 minuto",
-    footerLicense: "UltraCode v1.1.1 · Construido con UltraCode v1.0.0 · Licencia MIT",
+    footerLicense: "UltraCode v1.2.0 · Construido con UltraCode v1.0.0 · Licencia MIT",
     footerDocs: "Documentación",
   },
 };

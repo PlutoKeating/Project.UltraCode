@@ -823,7 +823,7 @@ describe("ultracode-conversation durable checkpoints, circuit breaker, and /goal
     let currentServerState: any = {
       permissions: "auto",
       direction: "manual",
-      version: "1.1.1",
+      version: "1.2.0",
       checkpoints: {
         ses_long: "1234567890123456789012345678901234567890",
       } as Record<string, string>,

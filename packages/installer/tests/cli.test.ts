@@ -22,7 +22,7 @@ function makeDeps(calls: string[], out: string[]) {
     },
     updateSelf: async () => {
       calls.push("updateSelf");
-      return "v1.1.1";
+      return "v1.2.0";
     },
     sync: async () => {
       calls.push("sync");
@@ -101,7 +101,7 @@ describe("unified ultracode CLI router", () => {
     expect(code1).toBe(0);
     expect(code2).toBe(0);
     expect(calls).toEqual([]);
-    expect(out[0]).toContain("UltraCode 1.1.1");
+    expect(out[0]).toContain("UltraCode 1.2.0");
   });
 
   test("launchOrInstallDesktop downloads installer cleanly in dryRun when Desktop is not installed", async () => {
@@ -139,7 +139,7 @@ describe("unified ultracode CLI router", () => {
     const code = await dispatch(["--help"], paths, makeDeps([], out));
     expect(code).toBe(0);
     const rendered = out.join("\n");
-    expect(rendered).toContain("UltraCode 1.1.1");
+    expect(rendered).toContain("UltraCode 1.2.0");
     expect(rendered).toContain("ultracode desktop");
     expect(rendered).toContain("ultracode pair");
     expect(rendered).not.toMatch(/\buc\b/);
@@ -150,7 +150,7 @@ describe("unified ultracode CLI router", () => {
     const binSource = await readFile(binPath, "utf8");
     expect(binSource).not.toContain("import.meta.main");
     const out = execFileSync(process.execPath, ["run", binPath, "version"], { encoding: "utf8" });
-    expect(out.trim()).toBe("1.1.1");
+    expect(out.trim()).toBe("1.2.0");
   });
 
   test("runRalphWorkflow rejects non-linked worktree with exit code 2", async () => {

@@ -12,7 +12,7 @@ import { components } from "./components";
 import { hasRoleModelOverrides } from "./model-onboarding";
 import { browserReady, runtimeEntries, installRuntime } from "./runtime";
 
-export const VERSION = process.env.ULTRACODE_RELEASE_VERSION || "1.1.1";
+export const VERSION = process.env.ULTRACODE_RELEASE_VERSION || "1.2.0";
 
 export interface ApplyReport {
   added: string[];

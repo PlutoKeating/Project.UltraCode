@@ -1,12 +1,12 @@
 <div align="center">
 
 <a href="https://ultracode.plutokeating.beer/fr/">
-  <img src="./docs/assets/fr/hero-banner.svg" alt="UltraCode v1.1.1 — Exprimez l’objectif. Livrez du concret vérifié." width="100%" />
+  <img src="./docs/assets/fr/hero-banner.svg" alt="UltraCode v1.2.0 — Exprimez l’objectif. Livrez du concret vérifié." width="100%" />
 </a>
 
 <br />
 
-[![Version](https://img.shields.io/badge/Version-v1.1.1-ffffff?style=flat-square&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/releases/latest)
+[![Version](https://img.shields.io/badge/Version-v1.2.0-ffffff?style=flat-square&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/releases/latest)
 [![Site web](https://img.shields.io/badge/Site%20web-ultracode.plutokeating.beer-bae6fd?style=flat-square&labelColor=0a0a0a)](https://ultracode.plutokeating.beer/fr/)
 [![Plateformes](https://img.shields.io/badge/Plateformes-macOS%20%7C%20Linux%20%7C%20Windows-d4d4d4?style=flat-square&labelColor=0a0a0a)](https://ultracode.plutokeating.beer/fr/docs/getting-started/)
 [![Construit avec](https://img.shields.io/badge/Construit%20avec-UltraCode%20v1.0.0-e5a03d?style=flat-square&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/releases/tag/v1.0.0)
@@ -18,12 +18,12 @@
 
 </div>
 
-**UltraCode (`v1.1.1`)** est une couche d’enrichissement non invasive, neutre vis-à-vis des modèles et des fournisseurs, construite sur **OpenCode V2** officiel pour **macOS, Linux et Windows** — couvrant **Terminal (TUI), application Desktop, Web et Mobile**.
+**UltraCode (`v1.2.0`)** est une couche d’enrichissement non invasive, neutre vis-à-vis des modèles et des fournisseurs, construite sur **OpenCode V2** officiel pour **macOS, Linux et Windows** — couvrant **Terminal (TUI), application Desktop, Web et Mobile**.
 
 Au lieu de deviner trop tôt ou de perdre le contexte à mi-parcours, UltraCode clarifie les choix structurants dès le départ sous forme d’options claires, coordonne des spécialistes en arrière-plan, vérifie le rendu dans un vrai navigateur Chromium et sauvegarde des rapports de passation durables dans votre dépôt.
 
 > [!NOTE]
-> **Provenance d’ingénierie auto-hébergée :** UltraCode `v1.1.1` — y compris son alignement OpenCode `v2.4+`, ses jalons persistants et sa veille amont automatisée — a été développé et construit à l’aide d’**UltraCode `v1.0.0`**.
+> **Provenance d’ingénierie auto-hébergée :** UltraCode `v1.2.0` — y compris son alignement OpenCode `v2.4+`, ses jalons persistants et sa veille amont automatisée — a été développé et construit à l’aide d’**UltraCode `v1.0.0`**.
 
 ## Vue d’ensemble
 

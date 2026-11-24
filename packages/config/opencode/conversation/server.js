@@ -14,7 +14,7 @@ import {
   writeConfigAtomically,
 } from "./onboarding.js"
 
-const VERSION = "1.1.1"
+const VERSION = "1.2.0"
 const BOOT_ID = (globalThis.__ultracodeBootID ??= randomUUID())
 const GOAL_PREFIX = "goal:"
 const LEGACY_CHECKPOINT_PREFIX = "checkpoint:"
