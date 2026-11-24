@@ -56,7 +56,8 @@ export async function components(paths: Paths, config: JsonValue) {
   const registered = new Map<string, string>();
   if (process.env.ULTRACODE_SKIP_RUNTIME !== "1") {
     const opencode = (await findOpenCode(paths)) ?? paths.opencodeBinary;
-    const hasConfiguredPlugins = Array.isArray(plugins) && plugins.length > 0;
+    const hasConfiguredPlugins =
+      Array.isArray(plugins) && plugins.some((entry) => typeof entry !== "string" || !entry.startsWith("-"));
     const maxAttempts = hasConfiguredPlugins ? 4 : 1;
     for (let attempt = 1; attempt <= maxAttempts; attempt++) {
       const result = await run(opencode, ["api", "get", "/api/plugin"]).catch(() => ({ code: 1, stdout: "", stderr: "" }));
@@ -102,15 +103,16 @@ export async function components(paths: Paths, config: JsonValue) {
   }
   const pluginsPrefix = resolve(join(paths.config, "plugins")) + sep;
   const normalizedPrefix = process.platform === "win32" ? pluginsPrefix.toLowerCase() : pluginsPrefix;
-  managed.plugins = ours.filter((path, i) => {
-    const id = ["ultracode-conversation", "superpowers"][i];
+  managed.plugins = ours.filter((entry) => {
+    if (entry.startsWith("-")) return true;
+    const id = entry.replace(/\\/g, "/").endsWith("/ultracode/conversation") ? "ultracode-conversation" : "superpowers";
     const discovered = [...registered].some(([spec, actual]) => {
       if (actual !== id || !isLocalSpec(spec)) return false;
       const resolved = resolveLocalSpec(paths.config, spec);
       if (!resolved) return false;
       return (process.platform === "win32" ? resolved.toLowerCase() : resolved).startsWith(normalizedPrefix);
     });
-    return !discovered && !choices.some((choice) => choice.entry !== path && choice.id === id);
+    return !discovered && !choices.some((choice) => choice.entry !== entry && choice.id === id);
   });
 
   const servers = object(object(object(config).mcp).servers);

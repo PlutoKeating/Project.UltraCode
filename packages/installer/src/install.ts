@@ -242,11 +242,15 @@ export async function doctor(paths: Paths): Promise<string[]> {
               pending.push(id + ": " + (matches.map((p) => p.state.error || p.state.status).join(", ") || "missing"));
             }
           }
+          if (registry.some((p) => p.id === "opencode.goal" && p.state?.status === "active")) {
+            pending.push("opencode.goal: active (expected disabled by UltraCode)");
+          }
           const status = mcp.find((m) => m.name === browser)?.status.status;
           if (status !== "connected") pending.push(browser + ": " + (status || "missing"));
           if (
             !pending.length ||
-            registry.some((p) => p.state.status === "failed" && ["superpowers", "ultracode-conversation"].includes(p.id))
+            registry.some((p) => p.state.status === "failed" && ["superpowers", "ultracode-conversation"].includes(p.id)) ||
+            registry.some((p) => p.id === "opencode.goal" && p.state?.status === "active")
           ) {
             break;
           }

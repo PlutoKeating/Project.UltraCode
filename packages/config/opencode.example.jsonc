@@ -1,6 +1,10 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "default_agent": "UltraBuild",
+  "agents": {
+    "build": { "hidden": true },
+    "plan": { "hidden": true }
+  },
   "permissions": [
     {
       "action": "shell",
@@ -46,6 +50,8 @@
     }
   },
   "plugins": [
+    "-opencode.goal",
+    "-opencode.plan",
     "{env:HOME}/.config/opencode/ultracode/conversation",
     "{env:HOME}/.local/share/ultracode/runtime/superpowers"
   ]

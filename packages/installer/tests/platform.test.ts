@@ -41,7 +41,12 @@ describe("cross-platform paths and fs", () => {
     const p = resolvePaths({ HOME: "/tmp/u" }, "linux");
     const cfg = managedConfig(p) as any;
     expect(cfg.mcp.servers.ultracode_playwright.command).toEqual([p.binary, "_mcp"]);
-    expect(cfg.plugins).toEqual(["/tmp/u/.config/opencode/ultracode/conversation", "/tmp/u/.local/share/ultracode/runtime/superpowers"]);
+    expect(cfg.plugins).toEqual([
+      "-opencode.goal",
+      "-opencode.plan",
+      "/tmp/u/.config/opencode/ultracode/conversation",
+      "/tmp/u/.local/share/ultracode/runtime/superpowers",
+    ]);
   });
 
   test("backup extracts filename safely and replaceBinary swaps atomically", async () => {
@@ -227,7 +232,7 @@ exit 1
       });
       const res = await components(p, { plugins: [customSuperpowers] });
       expect((await readFile(countFile, "utf8")).trim()).toBe("2");
-      expect(res.managed.plugins).toEqual([join(p.config, "ultracode", "conversation")]);
+      expect(res.managed.plugins).toEqual(["-opencode.goal", "-opencode.plan", join(p.config, "ultracode", "conversation")]);
 
       await rm(countFile, { force: true });
       await components(p, {});

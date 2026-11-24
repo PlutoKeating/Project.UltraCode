@@ -164,13 +164,53 @@ test("sync preserves equivalent user plugins, permission overrides and custom MC
   await writeFile(file, JSON.stringify(initial));
   await apply(paths);
   const installed = JSON.parse(await readFile(file, "utf8"));
-  expect(installed.plugins.length).toBe(2);
+  expect(installed.plugins).toEqual([
+    initial.plugins[0],
+    "-opencode.goal",
+    "-opencode.plan",
+    join(paths.config, "ultracode", "conversation"),
+  ]);
+  expect(installed.agents).toEqual({
+    build: { hidden: true },
+    plan: { hidden: true },
+  });
   expect(installed.permissions.filter((rule: any) => rule.resource === "git push *")).toEqual(initial.permissions);
   expect(installed.mcp).toEqual(initial.mcp);
   await apply(paths);
+  expect(JSON.parse(await readFile(file, "utf8")).plugins).toEqual(installed.plugins);
   await uninstall(paths);
   expect(JSON.parse(await readFile(file, "utf8"))).toEqual(initial);
 });
+
+test("apply adds -opencode.goal, -opencode.plan, and hidden build/plan while preserving user plugins and agent models across uninstall", async () => {
+  await mkdir(paths.config, { recursive: true });
+  const userInitial = {
+    plugins: ["my-custom-plugin"],
+    agents: {
+      UltraBuild: { model: "anthropic/claude-sonnet-4-5" },
+    },
+  };
+  await writeFile(paths.opencodeConfigFile, JSON.stringify(userInitial, null, 2));
+  await apply(paths, { runtime: false });
+  const afterApply = parseJsoncSafe(await readFile(paths.opencodeConfigFile, "utf8"));
+  expect(afterApply.plugins).toContain("my-custom-plugin");
+  expect(afterApply.plugins).toContain("-opencode.goal");
+  expect(afterApply.plugins).toContain("-opencode.plan");
+  expect(afterApply.agents.build).toEqual({ hidden: true });
+  expect(afterApply.agents.plan).toEqual({ hidden: true });
+  expect(afterApply.agents.UltraBuild).toEqual({ model: "anthropic/claude-sonnet-4-5" });
+
+  await apply(paths, { runtime: false });
+  expect(parseJsoncSafe(await readFile(paths.opencodeConfigFile, "utf8"))).toEqual(afterApply);
+
+  await uninstall(paths);
+  const afterUninstall = parseJsoncSafe(await readFile(paths.opencodeConfigFile, "utf8"));
+  expect(afterUninstall).toEqual(userInitial);
+});
+
+function parseJsoncSafe(text: string): Record<string, any> {
+  return JSON.parse(text);
+}
 
 test("reuses matching browser launch settings and adapts the evaluator permissions", async () => {
   const server = {
@@ -282,6 +322,67 @@ exit 1
   try {
     const issues = await doctor(paths);
     expect(issues).toEqual([]);
+  } finally {
+    delete process.env.ULTRACODE_SKIP_BROWSER;
+  }
+});
+
+test("doctor flags unexpectedly active built-in opencode.goal plugin", async () => {
+  const { doctor } = await import("../src/install");
+  await apply(paths);
+  delete process.env.ULTRACODE_SKIP_RUNTIME;
+  process.env.ULTRACODE_SKIP_BROWSER = "1";
+  for (const rel of [
+    "node_modules/@playwright/mcp/cli.js",
+    "node_modules/@th0rgal/ralph-wiggum/bin/ralph.js",
+    "superpowers/.opencode/plugins/superpowers.js",
+  ]) {
+    const f = join(paths.runtime, rel);
+    await mkdir(join(f, ".."), { recursive: true });
+    await writeFile(f, "// stub\n");
+  }
+  const agentList = JSON.stringify([
+    { id: "UltraBuild" },
+    { id: "UltraPlan" },
+    { id: "ultracode/architect" },
+    { id: "ultracode/implementer" },
+    { id: "ultracode/librarian" },
+    { id: "ultracode/reviewer" },
+    { id: "ultracode/visual-evaluator" },
+  ]);
+  const pluginList = JSON.stringify({
+    data: [
+      { id: "superpowers", state: { status: "active" } },
+      { id: "ultracode-conversation", state: { status: "active" } },
+      { id: "opencode.goal", state: { status: "active" } },
+    ],
+  });
+  const mcpList = JSON.stringify({
+    data: [{ name: "ultracode_playwright", status: { status: "connected" } }],
+  });
+  if (process.platform === "win32") {
+    await writeFile(
+      paths.opencodeBinary,
+      `@echo off\r\nif "%*"=="--version" (\r\n  echo opencode v2.4.1\r\n  exit /b 0\r\n)\r\nif "%*"=="api get /api/plugin" (\r\n  echo ${pluginList}\r\n  exit /b 0\r\n)\r\nif "%*"=="api get /api/mcp" (\r\n  echo ${mcpList}\r\n  exit /b 0\r\n)\r\nif "%*"=="debug agents" (\r\n  echo ${agentList}\r\n  exit /b 0\r\n)\r\nexit /b 1\r\n`,
+    );
+  } else {
+    await writeFile(
+      paths.opencodeBinary,
+      `#!/bin/sh
+case "$*" in
+  --version) echo 'opencode v2.4.1'; exit 0;;
+  'api get /api/plugin') printf '%s\\n' '${pluginList}'; exit 0;;
+  'api get /api/mcp') printf '%s\\n' '${mcpList}'; exit 0;;
+  'debug agents') printf '%s\\n' '${agentList}'; exit 0;;
+esac
+exit 1
+`,
+      { mode: 0o755 },
+    );
+  }
+  try {
+    const issues = await doctor(paths);
+    expect(issues.some((issue) => issue.includes("opencode.goal"))).toBe(true);
   } finally {
     delete process.env.ULTRACODE_SKIP_BROWSER;
   }

@@ -6,6 +6,10 @@ export function managedConfig(paths: Paths): { [key: string]: JsonValue } {
   const pathJoin = paths.config.includes("\\") ? win32.join : posix.join;
   return {
     default_agent: "UltraBuild",
+    agents: {
+      build: { hidden: true },
+      plan: { hidden: true },
+    },
     permissions: [
       { action: "shell", resource: "git push *", effect: "ask" },
       { action: "shell", resource: "git reset --hard *", effect: "ask" },
@@ -28,6 +32,11 @@ export function managedConfig(paths: Paths): { [key: string]: JsonValue } {
         },
       },
     },
-    plugins: [pathJoin(paths.config, "ultracode", "conversation"), pathJoin(paths.runtime, "superpowers")],
+    plugins: [
+      "-opencode.goal",
+      "-opencode.plan",
+      pathJoin(paths.config, "ultracode", "conversation"),
+      pathJoin(paths.runtime, "superpowers"),
+    ],
   };
 }
