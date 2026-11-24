@@ -29,14 +29,34 @@ export async function run(
     });
     let stdout = "";
     let stderr = "";
+    let settled = false;
+    let exitTimer: ReturnType<typeof setTimeout> | null = null;
+    const finish = (code: number | null) => {
+      if (settled) return;
+      settled = true;
+      if (exitTimer) clearTimeout(exitTimer);
+      child.stdout?.destroy();
+      child.stderr?.destroy();
+      resolve({ code: code ?? 1, stdout, stderr });
+    };
     child.stdout?.on("data", (chunk) => {
       stdout += chunk;
     });
     child.stderr?.on("data", (chunk) => {
       stderr += chunk;
     });
-    child.on("error", reject);
-    child.on("close", (code) => resolve({ code: code ?? 1, stdout, stderr }));
+    child.on("error", (err) => {
+      if (settled) return;
+      settled = true;
+      if (exitTimer) clearTimeout(exitTimer);
+      reject(err);
+    });
+    child.on("exit", (code) => {
+      if (settled) return;
+      exitTimer = setTimeout(() => finish(code), 120);
+      exitTimer.unref?.();
+    });
+    child.on("close", (code) => finish(code));
   });
 }
 

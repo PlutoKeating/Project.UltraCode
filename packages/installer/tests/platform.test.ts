@@ -64,6 +64,19 @@ describe("cross-platform paths and fs", () => {
     }
   });
 
+  test("run() resolves promptly on child exit even if a background daemon grandchild inherits stdout/stderr pipes", async () => {
+    const { run } = await import("../src/opencode");
+    const started = Date.now();
+    const res = await run(process.execPath, [
+      "-e",
+      `import { spawn } from "node:child_process"; const bg = spawn(process.execPath, ["-e", "setTimeout(() => {}, 15000)"], { detached: true, stdio: "inherit" }); bg.unref(); process.stdout.write("fast-json-out\\n"); process.exit(0);`,
+    ]);
+    const elapsed = Date.now() - started;
+    expect(res.code).toBe(0);
+    expect(res.stdout.trim()).toBe("fast-json-out");
+    expect(elapsed).toBeLessThan(2000);
+  });
+
   test("ensureOpenCode keeps valid >=2.3.2 binary when upgrade fails", async () => {
     const dir = await mkdtemp(join(tmpdir(), "uc-oc-"));
     try {
