@@ -6,69 +6,61 @@ sidebar:
 ---
 
 import AnnotatedShot from "@tutorials/AnnotatedShot.astro";
-import TutorialStep from "@tutorials/TutorialStep.astro";
+import CommandBlock from "@tutorials/CommandBlock.astro";
 
 还没装好？先看 [手机端安装/连接方法](/zh/docs/install-mobile/)。
-
 
 这一篇解决一个很实际的问题：**活开始跑了，但人得离开电脑。**
 
 你不需要远程桌面，也不需要把笔记本抱着走。用手机浏览器就能接管同一个进度。
 
-<TutorialStep
-  step={1}
-  title="在电脑上生成一个配对链接"
-  promptLabel="在终端里输入这一句（只有这一句需要打）"
-  promptText="ultracode pair"
-  isCommand={true}
+## <span class="uc-step-no">01</span> 在电脑上生成一个配对链接
+
+把这一行链接复制下来，发到自己的手机聊天窗口里最省事。
+
+<CommandBlock
+  label="在终端里输入这一句（只有这一句需要打）"
+  command="ultracode pair"
   copyLabel="复制"
   copiedLabel="已复制"
-  expectLabel="你会看到"
-  expectText="屏幕上出现一行可以直接打开的链接，有效期只有几分钟。"
->
-  把这一行链接复制下来，发到自己的手机聊天窗口里最省事。
-</TutorialStep>
+/>
 
-<TutorialStep
-  step={2}
-  title="在手机上打开它"
-  expectLabel="你会看到"
-  expectText="手机浏览器里出现同一个项目的界面，项目名和进度都跟电脑上一致。"
->
-  手机上不需要再装任何东西。界面会自动变成适合手指点按的样子。
-  <AnnotatedShot
-    src="/tutorials/mobile-home.webp"
-    alt="手机浏览器中的项目界面"
-    width={780}
-    height={1688}
-    mobileFrame={true}
-    callouts={[
-      { id: 1, x: 4.0, y: 6.4, w: 92.0, h: 6.4, label: "手机上同样能看到项目和会话", pin: "top-left" },
-    ]}
-  />
-</TutorialStep>
+**你会看到**：屏幕上出现一行可以直接打开的链接，有效期只有几分钟。
 
-<TutorialStep
-  step={3}
-  title="它问你的问题，手机上直接点"
-  expectLabel="你会看到"
-  expectText="选择题卡片在手机上一样可以点；点完电脑那边的进度立刻跟上。"
->
-  也就是说，最适合打断的场景你都不会错过：选风格、选方案、决定要不要继续。
-</TutorialStep>
+## <span class="uc-step-no">02</span> 在手机上打开它
 
-<TutorialStep
-  step={4}
-  title="不想被打断？用两个开关切换节奏"
-  promptLabel="在手机输入框里直接发送命令"
-  promptText="/direction"
-  isCommand={true}
+手机上不需要再装任何东西。界面会自动变成适合手指点按的样子。
+
+<AnnotatedShot
+  src="/tutorials/mobile-home.webp"
+  alt="手机浏览器中的项目界面"
+  width={780}
+  height={1688}
+  mobileFrame={true}
+  callouts={[
+    { id: 1, x: 4.0, y: 6.4, w: 92.0, h: 6.4, label: "手机上同样能看到项目和会话", pin: "top-left" },
+  ]}
+/>
+
+**你会看到**：手机浏览器里出现同一个项目的界面，项目名和进度都跟电脑上一致。
+
+## <span class="uc-step-no">03</span> 它问你的问题，手机上直接点
+
+也就是说，最适合打断的场景你都不会错过：选风格、选方案、决定要不要继续。
+
+**你会看到**：选择题卡片在手机上一样可以点；点完电脑那边的进度立刻跟上。
+
+## <span class="uc-step-no">04</span> 不想被打断？用两个开关切换节奏
+
+另一个开关是 `/approvals`，控制它执行操作前是否需要你点头。两个开关在电脑和手机上始终同步。
+
+<CommandBlock
+  label="在手机输入框里直接发送命令"
+  command="/direction"
   copyLabel="复制"
   copiedLabel="已复制"
-  expectLabel="你会看到"
-  expectText="系统会显示当前的询问模式并立即切换：想让它自己拿主意就关掉询问，想每步都问你一次就打开。"
->
-  另一个开关是 `/approvals`，控制它执行操作前是否需要你点头。两个开关在电脑和手机上始终同步。
-</TutorialStep>
+/>
+
+**你会看到**：系统会显示当前的询问模式并立即切换：想让它自己拿主意就关掉询问，想每步都问你一次就打开。
 
 回到电脑时不用做任何事，进度就在那里。下一步可以看 [先定蓝图，再自动验收页面](/zh/docs/tutorial-plan-and-verify/)。

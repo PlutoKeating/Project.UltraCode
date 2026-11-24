@@ -6,63 +6,60 @@ sidebar:
 ---
 
 import AnnotatedShot from "@tutorials/AnnotatedShot.astro";
-import TutorialStep from "@tutorials/TutorialStep.astro";
+import CommandBlock from "@tutorials/CommandBlock.astro";
 
 The first two lessons covered **how to start**. This one is about **how to avoid wasted work**.
 
 Three moves: agree on the plan, build it, then make it verify itself.
 
-<TutorialStep
-  step={1}
-  title="Switch to the plan-only role first"
-  expectLabel="What you'll see"
-  expectText="The role at the bottom changes from UltraBuild to UltraPlan. In that role it only reads and writes plans; your files stay untouched."
->
-  Press `Shift + Tab` to switch. The most expensive mistake is starting to edit before the approach is settled — this step prevents exactly that.
-  <AnnotatedShot
-    src="/tutorials/terminal-plan-mode.webp"
-    alt="Terminal after switching to UltraPlan"
-    width={1400}
-    height={520}
-    callouts={[
-      { id: 1, x: 5.2, y: 68.8, w: 14.4, h: 11.2, label: "UltraPlan here means read-only planning", pin: "top-left" },
-    ]}
-  />
-</TutorialStep>
+## <span class="uc-step-no">01</span> Switch to the plan-only role first
 
-<TutorialStep
-  step={2}
-  title="Have it spell out risks and trade-offs"
-  promptLabel="Send this sentence"
-  promptText="Do not write code yet. Tell me how many steps this sign-up page needs, how each step will be verified, and where it is easy to get wrong. List the open questions for me."
+Press `Shift + Tab` to switch. The most expensive mistake is starting to edit before the approach is settled — this step prevents exactly that.
+
+<AnnotatedShot
+  src="/tutorials/terminal-plan-mode.webp"
+  alt="Terminal after switching to UltraPlan"
+  width={1400}
+  height={520}
+  callouts={[
+    { id: 1, x: 5.2, y: 68.8, w: 14.4, h: 11.2, label: "UltraPlan here means read-only planning", pin: "top-left" },
+  ]}
+/>
+
+**What you'll see:** The role at the bottom changes from UltraBuild to UltraPlan. In that role it only reads and writes plans; your files stay untouched.
+
+## <span class="uc-step-no">02</span> Have it spell out risks and trade-offs
+
+The output here is not code; it is **the standard you both agreed on**. Everything later is judged against it.
+
+<CommandBlock
+  label="Send this sentence"
+  command="Do not write code yet. Tell me how many steps this sign-up page needs, how each step will be verified, and where it is easy to get wrong. List the open questions for me."
+  mono={false}
   copyLabel="Copy"
   copiedLabel="Copied"
-  expectLabel="What you'll see"
-  expectText="A step-by-step plan with acceptance checks, plus the questions that genuinely need your decision."
->
-  The output here is not code; it is **the standard you both agreed on**. Everything later is judged against it.
-</TutorialStep>
+/>
 
-<TutorialStep
-  step={3}
-  title="Approve it, then switch back and build"
-  expectLabel="What you'll see"
-  expectText="The role returns to UltraBuild and it implements the agreed plan step by step."
->
-  Keep refining while you are not satisfied. Once you are, switching back makes it follow the plan instead of improvising.
-</TutorialStep>
+**What you'll see:** A step-by-step plan with acceptance checks, plus the questions that genuinely need your decision.
 
-<TutorialStep
-  step={4}
-  title="Let it click through the real page"
-  promptLabel="Ask for verification and an independent review"
-  promptText="When it is built, open a real browser and click through both the desktop and phone layouts: buttons work, nothing overflows, no console errors. Then have an independent reviewer check it and fix anything it finds."
+## <span class="uc-step-no">03</span> Approve it, then switch back and build
+
+Keep refining while you are not satisfied. Once you are, switching back makes it follow the plan instead of improvising.
+
+**What you'll see:** The role returns to UltraBuild and it implements the agreed plan step by step.
+
+## <span class="uc-step-no">04</span> Let it click through the real page
+
+Self-checking is where quality quietly slips, so what you want here is **someone else verifying**. That is the default way UltraCode works.
+
+<CommandBlock
+  label="Ask for verification and an independent review"
+  command="When it is built, open a real browser and click through both the desktop and phone layouts: buttons work, nothing overflows, no console errors. Then have an independent reviewer check it and fix anything it finds."
+  mono={false}
   copyLabel="Copy"
   copiedLabel="Copied"
-  expectLabel="What you'll see"
-  expectText="It actually operates the page and takes screenshots, fixing what it finds; then a separate reviewer role returns a pass or fail verdict."
->
-  Self-checking is where quality quietly slips, so what you want here is **someone else verifying**. That is the default way UltraCode works.
-</TutorialStep>
+/>
+
+**What you'll see:** It actually operates the page and takes screenshots, fixing what it finds; then a separate reviewer role returns a pass or fail verdict.
 
 The last lesson is about long tasks: [Autopilot, next-day resume, and pairing fast and deep models](/docs/tutorial-goals-and-models/).

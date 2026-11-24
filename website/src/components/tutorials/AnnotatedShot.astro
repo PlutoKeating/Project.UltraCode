@@ -29,7 +29,7 @@ const {
 } = Astro.props;
 ---
 
-<figure class:list={["uc-shot", "not-content", { "is-mobile": mobileFrame }]}>
+<figure class:list={["uc-shot", "not-content", { "is-mobile": mobileFrame }]} style={`max-width:${width}px`}>
   <div class="uc-shot-stage">
     <div class="uc-shot-canvas" dir="ltr">
       <img
@@ -80,11 +80,12 @@ const {
 
 <style>
   .uc-shot {
-    margin: 1.35rem 0 1.5rem;
+    margin: 1.8rem auto 1.5rem;
   }
 
   .uc-shot-stage {
     width: 100%;
+    margin-inline: auto;
   }
 
   .uc-shot.is-mobile .uc-shot-stage {
@@ -95,16 +96,15 @@ const {
   .uc-shot-canvas {
     position: relative;
     line-height: 0;
-    border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.11);
-    background: #070707;
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.68);
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    background: #0a0a0a;
     overflow: hidden;
   }
 
   .uc-shot.is-mobile .uc-shot-canvas {
-    border-radius: 18px;
-    border-color: rgba(255, 255, 255, 0.15);
+    border-radius: 14px;
+    border-color: rgba(255, 255, 255, 0.13);
   }
 
   .uc-shot-img {
@@ -122,15 +122,13 @@ const {
   }
 
   .uc-callout-box.is-amber {
-    border: 2px solid #e5a03d;
-    background: rgba(229, 160, 61, 0.08);
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.55);
+    border: 1.5px solid #e5a03d;
+    background: rgba(229, 160, 61, 0.06);
   }
 
   .uc-callout-box.is-ice {
-    border: 2px solid #bae6fd;
-    background: rgba(186, 230, 253, 0.08);
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.55);
+    border: 1.5px solid #bae6fd;
+    background: rgba(186, 230, 253, 0.06);
   }
 
   .uc-callout-pin {
@@ -138,16 +136,15 @@ const {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 21px;
-    height: 21px;
+    width: 19px;
+    height: 19px;
     border-radius: 999px;
     font-family: var(--uc-font-mono);
-    font-size: 0.74rem;
+    font-size: 0.68rem;
     font-weight: 600;
     line-height: 1;
     font-variant-numeric: tabular-nums;
     color: #000000;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.75);
   }
 
   .uc-callout-box.is-amber .uc-callout-pin {
@@ -159,31 +156,31 @@ const {
   }
 
   .uc-callout-box.pin-top-left .uc-callout-pin {
-    top: -11px;
-    left: -11px;
+    top: -9.5px;
+    left: -9.5px;
   }
 
   .uc-callout-box.pin-top-right .uc-callout-pin {
-    top: -11px;
-    right: -11px;
+    top: -9.5px;
+    right: -9.5px;
   }
 
   .uc-callout-box.pin-bottom-left .uc-callout-pin {
-    bottom: -11px;
-    left: -11px;
+    bottom: -9.5px;
+    left: -9.5px;
   }
 
   .uc-callout-box.pin-bottom-right .uc-callout-pin {
-    bottom: -11px;
-    right: -11px;
+    bottom: -9.5px;
+    right: -9.5px;
   }
 
   .uc-shot-legend {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.65rem 1.35rem;
+    gap: 0.5rem 1.2rem;
     list-style: none;
-    padding: 0.85rem 0.15rem 0;
+    padding: 0.7rem 0.1rem 0;
     margin: 0;
   }
 
@@ -192,9 +189,9 @@ const {
     align-items: center;
     gap: 0.5rem;
     margin: 0;
-    font-size: 0.94em;
-    line-height: 1.55;
-    color: #c8c8c8;
+    font-size: 0.84em;
+    line-height: 1.5;
+    color: #a3a3a3;
   }
 
   .uc-legend-pin {
@@ -202,11 +199,11 @@ const {
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     border-radius: 999px;
     font-family: var(--uc-font-mono);
-    font-size: 0.7rem;
+    font-size: 0.62rem;
     font-weight: 600;
     line-height: 1;
     font-variant-numeric: tabular-nums;
@@ -223,29 +220,29 @@ const {
 
   @media (max-width: 600px) {
     .uc-callout-pin {
-      width: 18px;
-      height: 18px;
-      font-size: 0.68rem;
+      width: 17px;
+      height: 17px;
+      font-size: 0.64rem;
     }
 
     .uc-callout-box.pin-top-left .uc-callout-pin {
-      top: -9px;
-      left: -9px;
+      top: -8px;
+      left: -8px;
     }
 
     .uc-callout-box.pin-top-right .uc-callout-pin {
-      top: -9px;
-      right: -9px;
+      top: -8px;
+      right: -8px;
     }
 
     .uc-callout-box.pin-bottom-left .uc-callout-pin {
-      bottom: -9px;
-      left: -9px;
+      bottom: -8px;
+      left: -8px;
     }
 
     .uc-callout-box.pin-bottom-right .uc-callout-pin {
-      bottom: -9px;
-      right: -9px;
+      bottom: -8px;
+      right: -8px;
     }
 
     .uc-shot-legend {

@@ -6,55 +6,51 @@ sidebar:
 ---
 
 import AnnotatedShot from "@tutorials/AnnotatedShot.astro";
-import TutorialStep from "@tutorials/TutorialStep.astro";
+import CommandBlock from "@tutorials/CommandBlock.astro";
 
 手机端不需要安装任何应用：**它借的是电脑上的那份工作现场。**
 
-<TutorialStep
-  step={1}
-  title="先确认电脑上的 UltraCode 已经装好"
-  promptLabel="在电脑终端里输入"
-  promptText="ultracode pair"
-  isCommand={true}
+## <span class="uc-step-no">01</span> 先确认电脑上的 UltraCode 已经装好
+
+<CommandBlock
+  label="在电脑终端里输入"
+  command="ultracode pair"
   copyLabel="复制"
   copiedLabel="已复制"
-  expectLabel="你会看到"
-  expectText="屏幕上出现一行可以直接打开的链接，几分钟内有效；过期了再运行一次就有新的。"
->
-  如果当前电脑还没装 UltraCode，先按 [终端 + 桌面安装](/zh/docs/install-desktop/) 装好，再回到这一步。
-</TutorialStep>
+/>
 
-<TutorialStep
-  step={2}
-  title="把链接发到手机并打开"
-  expectLabel="你会看到"
-  expectText="手机浏览器里出现同一套界面，顶部写着「主页」，项目名和电脑上一致。"
->
-  用微信、备忘或邮件把链接发给自己都行；扫描二维码的方式在部分终端里也会直接显示。
-  <AnnotatedShot
-    src="/tutorials/mobile-home.webp"
-    alt="手机浏览器打开后的界面"
-    width={780}
-    height={1688}
-    mobileFrame={true}
-    callouts={[
-      { id: 1, x: 4.0, y: 6.4, w: 92.0, h: 6.4, label: "手机上和电脑上看到的是同一个项目", pin: "top-left" },
-    ]}
-  />
-</TutorialStep>
+如果当前电脑还没装 UltraCode，先按 [终端 + 桌面安装](/zh/docs/install-desktop/) 装好，再回到这一步。
 
-<TutorialStep
-  step={3}
-  title="在手机上点选、打断、继续"
-  promptLabel="手机输入框里也能直接用命令"
-  promptText="/direction"
-  isCommand={true}
+**你会看到**：屏幕上出现一行可以直接打开的链接，几分钟内有效；过期了再运行一次就有新的。
+
+## <span class="uc-step-no">02</span> 把链接发到手机并打开
+
+用微信、备忘或邮件把链接发给自己都行；扫描二维码的方式在部分终端里也会直接显示。
+
+<AnnotatedShot
+  src="/tutorials/mobile-home.webp"
+  alt="手机浏览器打开后的界面"
+  width={780}
+  height={1688}
+  mobileFrame={true}
+  callouts={[
+    { id: 1, x: 4.0, y: 6.4, w: 92.0, h: 6.4, label: "手机上打开也是这套界面", pin: "top-left" },
+  ]}
+/>
+
+**你会看到**：手机浏览器里出现同一套界面，项目列表和电脑上一致。
+
+## <span class="uc-step-no">03</span> 在手机上点选、打断、继续
+
+<CommandBlock
+  label="手机输入框里也能直接用命令"
+  command="/direction"
   copyLabel="复制"
   copiedLabel="已复制"
-  expectLabel="你会看到"
-  expectText="询问模式立即切换，电脑端的显示同步变化。"
->
-  另一个开关是 `/approvals`，控制它动手前要不要先问你。两者都在电脑和手机之间实时同步。
-</TutorialStep>
+/>
+
+另一个开关是 `/approvals`，控制它动手前要不要先问你。两者都在电脑和手机之间实时同步。
+
+**你会看到**：询问模式立即切换，电脑端的显示同步变化。
 
 连好之后，从 [手机随身遥控](/zh/docs/tutorial-mobile/) 开始第一次远程接管。

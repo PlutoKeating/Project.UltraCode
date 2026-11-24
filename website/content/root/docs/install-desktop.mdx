@@ -1,67 +1,45 @@
 ---
 title: "Install: Terminal + Desktop"
-description: "What most people pick: one command installs UltraCode, then you add the official desktop window."
+description: "Recommended for most people: one command installs UltraCode, then you add the official desktop window."
 sidebar:
   label: "Terminal + desktop"
 ---
 
-import AnnotatedShot from "@tutorials/AnnotatedShot.astro";
-import InstallCommands from "@tutorials/InstallCommands.astro";
-import TutorialStep from "@tutorials/TutorialStep.astro";
+import CommandBlock from "@tutorials/CommandBlock.astro";
 
-Recommended for most people: **install UltraCode first, then add the desktop window.** The only difference between platforms is one line of command — copy the box that matches your computer.
+Recommended for most people: **install UltraCode first, then add the desktop window.** Copy the line for your computer and paste it into a terminal (PowerShell on Windows).
 
-<TutorialStep
-  step={1}
-  title="Install UltraCode"
-  expectLabel="What you'll see"
-  expectText="It updates OpenCode, installs UltraCode, finishes setup, and ends with the version plus Ready."
->
-  <InstallCommands
-    unixLabel="macOS / Linux"
-    windowsLabel="Windows"
-    unixHint="Paste it in Terminal"
-    windowsHint="Paste it in PowerShell"
-    unixCommand="curl -fsSL https://ultracode.plutokeating.beer/install.sh | bash"
-    windowsCommand="irm https://ultracode.plutokeating.beer/install.ps1 | iex"
-    copyLabel="Copy"
-    copiedLabel="Copied"
-  />
+## <span class="uc-step-no">01</span> Install UltraCode
 
-  Both boxes do the same thing: they prepare official OpenCode, the UltraCode binary, and the runtime it needs. Nothing else has to be installed first. If the current window cannot find `ultracode` afterwards, close and reopen the terminal before the next step.
-</TutorialStep>
-
-<TutorialStep
-  step={2}
-  title="Add the desktop window"
-  promptLabel="Type this in the terminal"
-  promptText="ultracode desktop"
-  isCommand={true}
+<CommandBlock
+  title="macOS / Linux"
+  command="curl -fsSL https://ultracode.plutokeating.beer/install.sh | bash"
   copyLabel="Copy"
   copiedLabel="Copied"
-  expectLabel="What you'll see"
-  expectText="The desktop app opens; the first time it downloads the official installer for your system, after that it just launches."
->
-  On the first run it downloads the official desktop installer: macOS and Windows open a system installer window you click through; Linux opens it directly. Afterwards you can also launch it from your normal app list.
-</TutorialStep>
+/>
 
-<TutorialStep
-  step={3}
-  title="On first launch, recognise these three places"
-  expectLabel="What you'll see"
-  expectText="Tabs at the top, the prompt in the middle, project selection bottom-left. Once those three make sense you can start."
->
-  The desktop window, the phone, and the browser all show the same thing, so switching surfaces never means relearning.
-  <AnnotatedShot
-    src="/tutorials/desktop-first-run.webp"
-    alt="The desktop app right after first launch"
-    width={1100}
-    height={320}
-    callouts={[
-      { id: 1, x: 8.6, y: 39.0, w: 83.0, h: 30.6, label: "The middle box is where you speak", pin: "top-left" },
-      { id: 2, x: 11.2, y: 48.4, w: 14.8, h: 6.0, tone: "ice", label: "Role and model live on the left", pin: "bottom-left" },
-    ]}
-  />
-</TutorialStep>
+<CommandBlock
+  title="Windows"
+  command="irm https://ultracode.plutokeating.beer/install.ps1 | iex"
+  copyLabel="Copy"
+  copiedLabel="Copied"
+/>
+
+Both boxes do the same thing: they prepare official OpenCode, the UltraCode binary, and the runtime it needs. Nothing else has to be installed first. If the current window cannot find `ultracode` afterwards, close and reopen the terminal before the next step.
+
+**What you'll see:** it updates OpenCode, installs UltraCode, finishes setup, and ends with the version plus Ready.
+
+## <span class="uc-step-no">02</span> Add the desktop window
+
+<CommandBlock
+  label="Type this in the terminal"
+  command="ultracode desktop"
+  copyLabel="Copy"
+  copiedLabel="Copied"
+/>
+
+On the first run it downloads the official desktop installer: macOS and Windows open a system installer window you click through; Linux opens it directly. Afterwards you can also launch it from your normal app list.
+
+**What you'll see:** the desktop app opens; the first time it downloads the official installer for your system, after that it just launches.
 
 Installed? Start with [the desktop walkthrough](/docs/tutorial-desktop/). Want the terminal only, no desktop window? See [terminal-only install](/docs/install-terminal/).

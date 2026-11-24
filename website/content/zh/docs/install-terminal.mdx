@@ -6,63 +6,58 @@ sidebar:
 ---
 
 import AnnotatedShot from "@tutorials/AnnotatedShot.astro";
-import InstallCommands from "@tutorials/InstallCommands.astro";
-import TutorialStep from "@tutorials/TutorialStep.astro";
+import CommandBlock from "@tutorials/CommandBlock.astro";
 
-如果你只想要终端界面：**装完就能在任意文件夹里直接用**，不用安装桌面窗口。两个平台只有一行命令不同。
+如果你只想要终端界面：**装完就能在任意文件夹里直接用**，不用安装桌面窗口。两个平台只有一行命令不同，复制你电脑对应的那一行，粘贴到终端里执行（Windows 用 PowerShell）。
 
-<TutorialStep
-  step={1}
-  title="用一行命令装好"
-  expectLabel="你会看到"
-  expectText="安装过程会依次更新 OpenCode、安装 UltraCode、完成设置，最后出现版本号和 Ready。"
->
-  <InstallCommands
-    unixLabel="macOS / Linux"
-    windowsLabel="Windows"
-    unixHint="在「终端」里粘贴"
-    windowsHint="在 PowerShell 里粘贴"
-    unixCommand="curl -fsSL https://ultracode.plutokeating.beer/install.sh | bash"
-    windowsCommand="irm https://ultracode.plutokeating.beer/install.ps1 | iex"
-    copyLabel="复制"
-    copiedLabel="已复制"
-  />
+## <span class="uc-step-no">01</span> 用一行命令装好
 
-  两个框做的是同一件事。装完如果当前窗口还认不出 `ultracode`，关掉重开一次终端即可。
-
-  <AnnotatedShot
-    src="/tutorials/terminal-install.webp"
-    alt="安装完成后终端里显示的就绪画面"
-    width={439}
-    height={638}
-    callouts={[
-      { id: 1, x: 4.4, y: 52.2, w: 36.4, h: 11.6, label: "看到 Ready 就表示装好了", pin: "top-left" },
-      { id: 2, x: 12.6, y: 68.4, w: 79.4, h: 28.0, tone: "ice", label: "之后常用的三条命令", pin: "bottom-left" },
-    ]}
-  />
-</TutorialStep>
-
-<TutorialStep
-  step={2}
-  title="在你要干活的文件夹里打开它"
-  promptLabel="先进入文件夹，再运行"
-  promptText="ultracode"
-  isCommand={true}
+<CommandBlock
+  title="macOS / Linux"
+  command="curl -fsSL https://ultracode.plutokeating.beer/install.sh | bash"
   copyLabel="复制"
   copiedLabel="已复制"
-  expectLabel="你会看到"
-  expectText="窗口中间出现输入框，底部显示当前文件夹的名字。"
->
-  想打开别的文件夹，就在那个文件夹里再运行一次。它不会去动这个文件夹以外的东西。
-</TutorialStep>
+/>
 
-<TutorialStep
-  step={3}
-  title="确认它认得出你的文件夹"
-  expectLabel="你会看到"
-  expectText="底部路径和你要处理的文件夹一致，右下角能看到 UltraCode 字样。"
->
-  如果路径不对，说明你在别的目录里打开的，退出重开就好。
-</TutorialStep>
+<CommandBlock
+  title="Windows"
+  command="irm https://ultracode.plutokeating.beer/install.ps1 | iex"
+  copyLabel="复制"
+  copiedLabel="已复制"
+/>
+
+两个框做的是同一件事。装完如果当前窗口还认不出 `ultracode`，关掉重开一次终端即可。
+
+<AnnotatedShot
+  src="/tutorials/terminal-install.webp"
+  alt="安装完成后终端里显示的就绪画面"
+  width={439}
+  height={638}
+  callouts={[
+    { id: 1, x: 4.4, y: 52.2, w: 36.4, h: 11.6, label: "看到 Ready 就表示装好了", pin: "top-left" },
+    { id: 2, x: 12.6, y: 68.4, w: 79.4, h: 28.0, tone: "ice", label: "之后常用的三条命令", pin: "bottom-left" },
+  ]}
+/>
+
+**你会看到**：安装过程会依次更新 OpenCode、安装 UltraCode、完成设置，最后出现版本号和 Ready。
+
+## <span class="uc-step-no">02</span> 在你要干活的文件夹里打开它
+
+<CommandBlock
+  label="先进入文件夹，再运行"
+  command="ultracode"
+  copyLabel="复制"
+  copiedLabel="已复制"
+/>
+
+想打开别的文件夹，就在那个文件夹里再运行一次。它不会去动这个文件夹以外的东西。
+
+**你会看到**：窗口中间出现输入框，底部显示当前文件夹的名字。
+
+## <span class="uc-step-no">03</span> 确认它认得出你的文件夹
+
+如果路径不对，说明你在别的目录里打开的，退出重开就好。
+
+**你会看到**：底部路径和你要处理的文件夹一致，右下角能看到 UltraCode 字样。
 
 装好之后，从 [终端模式入门](/zh/docs/tutorial-terminal/) 开始第一次整理任务。之后想要桌面窗口，随时运行 `ultracode desktop`，不用重装。

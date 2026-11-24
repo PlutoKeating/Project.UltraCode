@@ -6,63 +6,60 @@ sidebar:
 ---
 
 import AnnotatedShot from "@tutorials/AnnotatedShot.astro";
-import TutorialStep from "@tutorials/TutorialStep.astro";
+import CommandBlock from "@tutorials/CommandBlock.astro";
 
 前两篇讲的是「怎么开始」，这一篇讲**怎么少走弯路**。
 
 核心只有三个动作：先看方案、再开工、最后让它自己验收。
 
-<TutorialStep
-  step={1}
-  title="先切到「只出方案」的模式"
-  expectLabel="你会看到"
-  expectText="底部角色从 UltraBuild 变成 UltraPlan。此时它只读、只写方案，不会动你的文件。"
->
-  按 `Shift + Tab` 切换角色。方案阶段最怕的就是「还没想清楚就开始改」，这一步就是防这个。
-  <AnnotatedShot
-    src="/tutorials/terminal-plan-mode.webp"
-    alt="切换到 UltraPlan 后的终端界面"
-    width={1400}
-    height={520}
-    callouts={[
-      { id: 1, x: 5.2, y: 68.8, w: 14.4, h: 11.2, label: "这里显示 UltraPlan，说明现在是只读规划", pin: "top-left" },
-    ]}
-  />
-</TutorialStep>
+## <span class="uc-step-no">01</span> 先切到「只出方案」的模式
 
-<TutorialStep
-  step={2}
-  title="让它把风险和取舍先讲清楚"
-  promptLabel="把这句话发给它"
-  promptText="先不要写代码。告诉我这个报名页要分几步做、每一步怎么验收，以及有哪些地方容易做歪；把不确定的地方列成问题问我。"
+按 `Shift + Tab` 切换角色。方案阶段最怕的就是「还没想清楚就开始改」，这一步就是防这个。
+
+<AnnotatedShot
+  src="/tutorials/terminal-plan-mode.webp"
+  alt="切换到 UltraPlan 后的终端界面"
+  width={1400}
+  height={520}
+  callouts={[
+    { id: 1, x: 5.2, y: 68.8, w: 14.4, h: 11.2, label: "这里显示 UltraPlan，说明现在是只读规划", pin: "top-left" },
+  ]}
+/>
+
+**你会看到**：底部角色从 UltraBuild 变成 UltraPlan。此时它只读、只写方案，不会动你的文件。
+
+## <span class="uc-step-no">02</span> 让它把风险和取舍先讲清楚
+
+这一步的产出不是代码，而是**你和它对齐过的判断标准**。后面所有「做完了没有」都以这份标准为准。
+
+<CommandBlock
+  label="把这句话发给它"
+  command="先不要写代码。告诉我这个报名页要分几步做、每一步怎么验收，以及有哪些地方容易做歪；把不确定的地方列成问题问我。"
+  mono={false}
   copyLabel="复制"
   copiedLabel="已复制"
-  expectLabel="你会看到"
-  expectText="它给出一份分步骤的方案和验收办法，并把真正需要你决定的问题单独列出来。"
->
-  这一步的产出不是代码，而是**你和它对齐过的判断标准**。后面所有「做完了没有」都以这份标准为准。
-</TutorialStep>
+/>
 
-<TutorialStep
-  step={3}
-  title="确认后切回来开工"
-  expectLabel="你会看到"
-  expectText="角色回到 UltraBuild，它开始按刚才的方案一步步实现。"
->
-  方案你不满意就继续改；一旦满意，切回来它就会照着做，而不是重新自由发挥。
-</TutorialStep>
+**你会看到**：它给出一份分步骤的方案和验收办法，并把真正需要你决定的问题单独列出来。
 
-<TutorialStep
-  step={4}
-  title="做完让它自己开浏览器点一遍"
-  promptLabel="让它验收，并请独立审查"
-  promptText="做完之后请打开真实浏览器，把电脑和手机两种排布都点一遍，确认按钮能用、没有溢出、控制台没有报错；再让独立的审查角色复核一遍，有问题直接修。"
+## <span class="uc-step-no">03</span> 确认后切回来开工
+
+方案你不满意就继续改；一旦满意，切回来它就会照着做，而不是重新自由发挥。
+
+**你会看到**：角色回到 UltraBuild，它开始按刚才的方案一步步实现。
+
+## <span class="uc-step-no">04</span> 做完让它自己开浏览器点一遍
+
+「自己检查自己」很容易放水，所以这里要的是**别人来验收**。这也是 UltraCode 默认的做事方式。
+
+<CommandBlock
+  label="让它验收，并请独立审查"
+  command="做完之后请打开真实浏览器，把电脑和手机两种排布都点一遍，确认按钮能用、没有溢出、控制台没有报错；再让独立的审查角色复核一遍，有问题直接修。"
+  mono={false}
   copyLabel="复制"
   copiedLabel="已复制"
-  expectLabel="你会看到"
-  expectText="它会实际操作页面并截图，发现问题就修；随后由一个独立的审查角色给出通过或不通过的结论。"
->
-  「自己检查自己」很容易放水，所以这里要的是**别人来验收**。这也是 UltraCode 默认的做事方式。
-</TutorialStep>
+/>
+
+**你会看到**：它会实际操作页面并截图，发现问题就修；随后由一个独立的审查角色给出通过或不通过的结论。
 
 最后一篇讲怎么让它跑长任务：[大任务挂机、隔天续做与快慢模型搭配](/zh/docs/tutorial-goals-and-models/)。

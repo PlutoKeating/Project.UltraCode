@@ -1,60 +1,56 @@
 ---
 title: "Connect: Phone and Browser"
-description: "Generate one link on the computer, open it on your phone, and take over the same progress."
+description: "Generate one link on the computer; open it on your phone and take over the same progress."
 sidebar:
   label: "Phone connect"
 ---
 
 import AnnotatedShot from "@tutorials/AnnotatedShot.astro";
-import TutorialStep from "@tutorials/TutorialStep.astro";
+import CommandBlock from "@tutorials/CommandBlock.astro";
 
-Nothing needs installing on the phone: **it borrows the working session that lives on your computer.**
+Nothing needs to be installed on the phone: **it borrows the workbench on your computer.**
 
-<TutorialStep
-  step={1}
-  title="Make sure UltraCode is installed on the computer"
-  promptLabel="Type this in the computer terminal"
-  promptText="ultracode pair"
-  isCommand={true}
+## <span class="uc-step-no">01</span> Make sure UltraCode is installed on the computer
+
+<CommandBlock
+  label="Type this in the computer terminal"
+  command="ultracode pair"
   copyLabel="Copy"
   copiedLabel="Copied"
-  expectLabel="What you'll see"
-  expectText="A link you can open directly, valid for a few minutes. Run it again when it expires."
->
-  If UltraCode is not installed on this computer yet, do [the terminal + desktop install](/docs/install-desktop/) first, then come back.
-</TutorialStep>
+/>
 
-<TutorialStep
-  step={2}
-  title="Send the link to your phone and open it"
-  expectLabel="What you'll see"
-  expectText="The same interface opens in your phone browser, with the same project name as the computer."
->
-  Send it to yourself in any chat app; some terminals also show it as a scannable QR code.
-  <AnnotatedShot
-    src="/tutorials/mobile-home.webp"
-    alt="The interface after opening it on a phone"
-    width={780}
-    height={1688}
-    mobileFrame={true}
-    callouts={[
-      { id: 1, x: 4.8, y: 7.5, w: 91.4, h: 3.6, label: "The same project as on the computer", pin: "top-left" },
-    ]}
-  />
-</TutorialStep>
+If UltraCode is not installed on this computer yet, do [the terminal + desktop install](/docs/install-desktop/) first, then come back.
 
-<TutorialStep
-  step={3}
-  title="Tap, interrupt, and continue from the phone"
-  promptLabel="Commands work in the phone composer too"
-  promptText="/direction"
-  isCommand={true}
+**What you'll see:** one link appears that you can open directly. It stays valid for a few minutes only.
+
+## <span class="uc-step-no">02</span> Send the link to your phone and open it
+
+A chat app, a note, or email to yourself all work; some terminals also show a QR code you can scan.
+
+<AnnotatedShot
+  src="/tutorials/mobile-home.webp"
+  alt="The project screen inside a phone browser"
+  width={780}
+  height={1688}
+  mobileFrame={true}
+  callouts={[
+    { id: 1, x: 4.8, y: 7.5, w: 91.4, h: 3.6, label: "The same interface on your phone", pin: "top-left" },
+  ]}
+/>
+
+**What you'll see:** the same interface in your phone browser, with the same project list as the computer.
+
+## <span class="uc-step-no">03</span> Tap, interrupt, and continue on the phone
+
+<CommandBlock
+  label="Commands work in the phone composer too"
+  command="/direction"
   copyLabel="Copy"
   copiedLabel="Copied"
-  expectLabel="What you'll see"
-  expectText="The questioning mode flips instantly and the computer reflects the change."
->
-  The other switch is `/approvals`, which controls whether it asks before acting. Both stay in sync automatically.
-</TutorialStep>
+/>
+
+The other switch is `/approvals`, which controls whether it asks before running an action. Both stay in sync between computer and phone.
+
+**What you'll see:** the questioning mode switches immediately and the computer display follows.
 
 Connected? Continue with [Phone remote control](/docs/tutorial-mobile/).

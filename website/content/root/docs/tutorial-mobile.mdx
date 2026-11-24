@@ -6,69 +6,61 @@ sidebar:
 ---
 
 import AnnotatedShot from "@tutorials/AnnotatedShot.astro";
-import TutorialStep from "@tutorials/TutorialStep.astro";
+import CommandBlock from "@tutorials/CommandBlock.astro";
 
 Not installed yet? Start with [phone install guide](/docs/install-mobile/).
-
 
 This lesson solves something very practical: **the work has started, but you have to leave the desk.**
 
 You do not need remote desktop, and you do not need to carry the laptop. A phone browser can take over the same progress.
 
-<TutorialStep
-  step={1}
-  title="Create a pairing link on the computer"
-  promptLabel="Type this in the terminal — the only line you need"
-  promptText="ultracode pair"
-  isCommand={true}
+## <span class="uc-step-no">01</span> Create a pairing link on the computer
+
+Copy that link and send it to yourself in a phone chat window — the most reliable way to move it across.
+
+<CommandBlock
+  label="Type this in the terminal — the only line you need"
+  command="ultracode pair"
   copyLabel="Copy"
   copiedLabel="Copied"
-  expectLabel="What you'll see"
-  expectText="One link appears that you can open directly. It stays valid for a few minutes only."
->
-  Copy that link and send it to yourself in a phone chat window — the most reliable way to move it across.
-</TutorialStep>
+/>
 
-<TutorialStep
-  step={2}
-  title="Open it on your phone"
-  expectLabel="What you'll see"
-  expectText="The same project opens in your phone browser, with the same project name and the same progress."
->
-  Nothing needs to be installed on the phone. The interface reshapes itself for finger-sized taps.
-  <AnnotatedShot
-    src="/tutorials/mobile-home.webp"
-    alt="The project screen inside a phone browser"
-    width={780}
-    height={1688}
-    mobileFrame={true}
-    callouts={[
-      { id: 1, x: 4.8, y: 7.5, w: 91.4, h: 3.6, label: "Projects and sessions are here on the phone too", pin: "top-left" },
-    ]}
-  />
-</TutorialStep>
+**What you'll see:** One link appears that you can open directly. It stays valid for a few minutes only.
 
-<TutorialStep
-  step={3}
-  title="Answer its questions right on the phone"
-  expectLabel="What you'll see"
-  expectText="Choice cards are just as tappable on a phone, and the desktop updates as soon as you choose."
->
-  So the moments that actually need you are never missed: picking a style, choosing an approach, deciding whether to continue.
-</TutorialStep>
+## <span class="uc-step-no">02</span> Open it on your phone
 
-<TutorialStep
-  step={4}
-  title="Prefer fewer interruptions? Flip the two switches"
-  promptLabel="Send this command in the phone composer"
-  promptText="/direction"
-  isCommand={true}
+Nothing needs to be installed on the phone. The interface reshapes itself for finger-sized taps.
+
+<AnnotatedShot
+  src="/tutorials/mobile-home.webp"
+  alt="The project screen inside a phone browser"
+  width={780}
+  height={1688}
+  mobileFrame={true}
+  callouts={[
+    { id: 1, x: 4.8, y: 7.5, w: 91.4, h: 3.6, label: "Projects and sessions are here on the phone too", pin: "top-left" },
+  ]}
+/>
+
+**What you'll see:** The same project opens in your phone browser, with the same project name and the same progress.
+
+## <span class="uc-step-no">03</span> Answer its questions right on the phone
+
+So the moments that actually need you are never missed: picking a style, choosing an approach, deciding whether to continue.
+
+**What you'll see:** Choice cards are just as tappable on a phone, and the desktop updates as soon as you choose.
+
+## <span class="uc-step-no">04</span> Prefer fewer interruptions? Flip the two switches
+
+The other switch is `/approvals`, which controls whether it asks before running an action. Both stay in sync between computer and phone.
+
+<CommandBlock
+  label="Send this command in the phone composer"
+  command="/direction"
   copyLabel="Copy"
   copiedLabel="Copied"
-  expectLabel="What you'll see"
-  expectText="The current questioning mode is shown and switches immediately: let it decide on its own, or have it ask you every time."
->
-  The other switch is `/approvals`, which controls whether it asks before running an action. Both stay in sync between computer and phone.
-</TutorialStep>
+/>
+
+**What you'll see:** The current questioning mode is shown and switches immediately: let it decide on its own, or have it ask you every time.
 
 When you come back to the desk there is nothing to reconnect. Next: [Lock a blueprint, then verify the page](/docs/tutorial-plan-and-verify/).

@@ -8,13 +8,13 @@
 
 [![Release](https://img.shields.io/badge/Release-v1.2.0-ffffff?style=flat-square&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/releases/latest)
 [![Website](https://img.shields.io/badge/Website-ultracode.plutokeating.beer-bae6fd?style=flat-square&labelColor=0a0a0a)](https://ultracode.plutokeating.beer)
-[![Platforms](https://img.shields.io/badge/Platform-macOS%20%7C%20Linux%20%7C%20Windows-d4d4d4?style=flat-square&labelColor=0a0a0a)](https://ultracode.plutokeating.beer/docs/getting-started/)
+[![Platforms](https://img.shields.io/badge/Platform-macOS%20%7C%20Linux%20%7C%20Windows-d4d4d4?style=flat-square&labelColor=0a0a0a)](https://ultracode.plutokeating.beer/docs/install-desktop/)
 [![Provenance](https://img.shields.io/badge/Built%20with-UltraCode%20v1.0.0-e5a03d?style=flat-square&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/releases/tag/v1.0.0)
 [![CI](https://img.shields.io/github/actions/workflow/status/PlutoKeating/Project.UltraCode/ci.yml?branch=main&style=flat-square&label=CI&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/actions/workflows/ci.yml)
 
 **English** · [简体中文](README_ZH.md) · [العربية](README_AR.md) · [Français](README_FR.md) · [Русский](README_RU.md) · [Español](README_ES.md)
 
-[Official Website](https://ultracode.plutokeating.beer) • [1-Minute Quick Start](https://ultracode.plutokeating.beer/docs/getting-started/) • [Architecture](docs/ARCHITECTURE.md) • [CLI Reference](docs/API.md)
+[Official Website](https://ultracode.plutokeating.beer) • [Install & Start](https://ultracode.plutokeating.beer/docs/install-desktop/) • [Architecture](docs/ARCHITECTURE.md) • [CLI Reference](docs/API.md)
 
 </div>
 

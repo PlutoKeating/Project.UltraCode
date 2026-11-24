@@ -6,76 +6,73 @@ sidebar:
 ---
 
 import AnnotatedShot from "@tutorials/AnnotatedShot.astro";
-import TutorialStep from "@tutorials/TutorialStep.astro";
+import CommandBlock from "@tutorials/CommandBlock.astro";
 
 Not installed yet? Start with [terminal mode install guide](/docs/install-terminal/).
-
 
 The terminal sounds intimidating, but there is really only one thing in front of you: **a box you can type into.**
 
 In this lesson we use it to turn a messy folder of meeting notes into a clear to-do list.
 
-<TutorialStep
-  step={1}
-  title="Open it and look at the “black window” once"
-  expectLabel="What you'll see"
-  expectText="A prompt in the middle, your current folder name along the bottom, and the UltraCode label to the right. The blinking cursor is simply waiting for you to speak."
->
-  Open it inside the folder you want to work on. The lines around the edges are just frames — there is nothing you need to type as a command.
-  <AnnotatedShot
-    src="/tutorials/terminal-welcome.webp"
-    alt="Terminal view with the prompt in the middle and the UltraCode status line at the bottom"
-    width={1400}
-    height={520}
-    callouts={[
-      { id: 1, x: 5.0, y: 51.6, w: 80.0, h: 31.0, label: "Talk here, exactly like a chat app", pin: "top-left" },
-      { id: 2, x: 4.0, y: 85.2, w: 80.4, h: 10.4, tone: "ice", label: "The bottom shows the folder, UltraCode, and shortcuts", pin: "bottom-left" },
-    ]}
-  />
-</TutorialStep>
+## <span class="uc-step-no">01</span> Open it and look at the “black window” once
 
-<TutorialStep
-  step={2}
-  title="State the outcome in one sentence"
-  promptLabel="Send this sentence"
-  promptText="Turn the meeting notes in this folder into a clear action list: group by owner, say what to do and when it is due, and save it as a new file without deleting the originals."
+Open it inside the folder you want to work on. The lines around the edges are just frames — there is nothing you need to type as a command.
+
+<AnnotatedShot
+  src="/tutorials/terminal-welcome.webp"
+  alt="Terminal view with the prompt in the middle and the UltraCode status line at the bottom"
+  width={1400}
+  height={520}
+  callouts={[
+    { id: 1, x: 5.0, y: 51.6, w: 80.0, h: 31.0, label: "Talk here, exactly like a chat app", pin: "top-left" },
+    { id: 2, x: 4.0, y: 85.2, w: 80.4, h: 10.4, tone: "ice", label: "The bottom shows the folder, UltraCode, and shortcuts", pin: "bottom-left" },
+  ]}
+/>
+
+**What you'll see:** A prompt in the middle, your current folder name along the bottom, and the UltraCode label to the right. The blinking cursor is simply waiting for you to speak.
+
+## <span class="uc-step-no">02</span> State the outcome in one sentence
+
+The important half is the ending: **say which files may change and which must stay untouched.** That is what makes it safe to let it act.
+
+<CommandBlock
+  label="Send this sentence"
+  command="Turn the meeting notes in this folder into a clear action list: group by owner, say what to do and when it is due, and save it as a new file without deleting the originals."
+  mono={false}
   copyLabel="Copy"
   copiedLabel="Copied"
-  expectLabel="What you'll see"
-  expectText="It looks through the folder first, tells you how it plans to organise things, and only then starts working."
->
-  The important half is the ending: **say which files may change and which must stay untouched.** That is what makes it safe to let it act.
-</TutorialStep>
+/>
 
-<TutorialStep
-  step={3}
-  title="When you need one more action, open the slash menu"
-  expectLabel="What you'll see"
-  expectText="A list of clickable commands appears in the middle — switch model, open settings, and so on. Move with the arrow keys and press Enter."
->
-  See `ctrl+p commands` at the bottom? That is the command menu. You never have to memorise a command; open the menu and pick.
-  <AnnotatedShot
-    src="/tutorials/terminal-commands.webp"
-    alt="Terminal command menu opened with ctrl+p"
-    width={1500}
-    height={760}
-    callouts={[
-      { id: 1, x: 17.0, y: 6.4, w: 60.0, h: 85.6, label: "The clickable command menu", pin: "top-left" },
-    ]}
-  />
-</TutorialStep>
+**What you'll see:** It looks through the folder first, tells you how it plans to organise things, and only then starts working.
 
-<TutorialStep
-  step={4}
-  title="Keep talking instead of starting over"
-  promptLabel="Adjust it like this"
-  promptText="Tighten the list: only what is still open this week, sorted by the nearest due date."
+## <span class="uc-step-no">03</span> When you need one more action, open the slash menu
+
+See `ctrl+p commands` at the bottom? That is the command menu. You never have to memorise a command; open the menu and pick.
+
+<AnnotatedShot
+  src="/tutorials/terminal-commands.webp"
+  alt="Terminal command menu opened with ctrl+p"
+  width={1500}
+  height={760}
+  callouts={[
+    { id: 1, x: 17.0, y: 6.4, w: 60.0, h: 85.6, label: "The clickable command menu", pin: "top-left" },
+  ]}
+/>
+
+**What you'll see:** A list of clickable commands appears in the middle — switch model, open settings, and so on. Move with the arrow keys and press Enter.
+
+## <span class="uc-step-no">04</span> Keep talking instead of starting over
+
+Terminal mode and the desktop app are the same capability in a different window. Use whichever feels natural.
+
+<CommandBlock
+  label="Adjust it like this"
+  command="Tighten the list: only what is still open this week, sorted by the nearest due date."
+  mono={false}
   copyLabel="Copy"
   copiedLabel="Copied"
-  expectLabel="What you'll see"
-  expectText="Only this list changes; the notes it already organised are not rebuilt from scratch."
->
-  Terminal mode and the desktop app are the same capability in a different window. Use whichever feels natural.
-</TutorialStep>
+/>
+
+**What you'll see:** Only this list changes; the notes it already organised are not rebuilt from scratch.
 
 Want it to check a real interface next? Continue with [Lock a blueprint, then verify the page](/docs/tutorial-plan-and-verify/).

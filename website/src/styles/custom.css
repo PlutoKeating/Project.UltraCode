@@ -310,3 +310,13 @@ h1#_top {
   font-size: inherit;
 }
 
+/* Numbered tutorial steps — matches the section heading rhythm above. */
+.uc-step-no {
+  font-family: var(--uc-font-mono);
+  font-size: 0.6em;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--uc-amber);
+  margin-right: 0.7em;
+  vertical-align: 0.16em;
+}

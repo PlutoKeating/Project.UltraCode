@@ -6,63 +6,58 @@ sidebar:
 ---
 
 import AnnotatedShot from "@tutorials/AnnotatedShot.astro";
-import InstallCommands from "@tutorials/InstallCommands.astro";
-import TutorialStep from "@tutorials/TutorialStep.astro";
+import CommandBlock from "@tutorials/CommandBlock.astro";
 
-If all you want is the terminal interface: **install it once and use it inside any folder**, with no desktop window. The only difference between platforms is one line of command.
+If all you want is the terminal interface: **install it once and use it inside any folder**, with no desktop window. Copy the line for your computer and paste it into a terminal (PowerShell on Windows).
 
-<TutorialStep
-  step={1}
-  title="Install with one line"
-  expectLabel="What you'll see"
-  expectText="It updates OpenCode, installs UltraCode, finishes setup, and ends with the version plus Ready."
->
-  <InstallCommands
-    unixLabel="macOS / Linux"
-    windowsLabel="Windows"
-    unixHint="Paste it in Terminal"
-    windowsHint="Paste it in PowerShell"
-    unixCommand="curl -fsSL https://ultracode.plutokeating.beer/install.sh | bash"
-    windowsCommand="irm https://ultracode.plutokeating.beer/install.ps1 | iex"
-    copyLabel="Copy"
-    copiedLabel="Copied"
-  />
+## <span class="uc-step-no">01</span> Install with one line
 
-  Both boxes do the same thing. If the current window cannot find `ultracode` afterwards, close and reopen the terminal.
-
-  <AnnotatedShot
-    src="/tutorials/terminal-install.webp"
-    alt="The ready screen after installation finishes"
-    width={439}
-    height={638}
-    callouts={[
-      { id: 1, x: 4.4, y: 52.2, w: 36.4, h: 11.6, label: "Ready means the install worked", pin: "top-left" },
-      { id: 2, x: 12.6, y: 68.4, w: 79.4, h: 28.0, tone: "ice", label: "The three commands you will use", pin: "bottom-left" },
-    ]}
-  />
-</TutorialStep>
-
-<TutorialStep
-  step={2}
-  title="Open it inside the folder you want to work on"
-  promptLabel="Enter the folder first, then run"
-  promptText="ultracode"
-  isCommand={true}
+<CommandBlock
+  title="macOS / Linux"
+  command="curl -fsSL https://ultracode.plutokeating.beer/install.sh | bash"
   copyLabel="Copy"
   copiedLabel="Copied"
-  expectLabel="What you'll see"
-  expectText="A prompt appears in the middle and the current folder name sits along the bottom."
->
-  To work somewhere else, run it again inside that folder. It never touches anything outside it.
-</TutorialStep>
+/>
 
-<TutorialStep
-  step={3}
-  title="Confirm it sees your folder"
-  expectLabel="What you'll see"
-  expectText="The path at the bottom matches the folder you meant, with UltraCode on the right."
->
-  Wrong path means you opened it somewhere else — exit and reopen in the right place.
-</TutorialStep>
+<CommandBlock
+  title="Windows"
+  command="irm https://ultracode.plutokeating.beer/install.ps1 | iex"
+  copyLabel="Copy"
+  copiedLabel="Copied"
+/>
+
+Both boxes do the same thing. If the current window cannot find `ultracode` afterwards, close and reopen the terminal.
+
+<AnnotatedShot
+  src="/tutorials/terminal-install.webp"
+  alt="The ready screen after installation finishes"
+  width={439}
+  height={638}
+  callouts={[
+    { id: 1, x: 4.4, y: 52.2, w: 36.4, h: 11.6, label: "Ready means the install worked", pin: "top-left" },
+    { id: 2, x: 12.6, y: 68.4, w: 79.4, h: 28.0, tone: "ice", label: "The three commands you will use", pin: "bottom-left" },
+  ]}
+/>
+
+**What you'll see:** it updates OpenCode, installs UltraCode, finishes setup, and ends with the version plus Ready.
+
+## <span class="uc-step-no">02</span> Open it inside the folder you want to work on
+
+<CommandBlock
+  label="Enter the folder first, then run"
+  command="ultracode"
+  copyLabel="Copy"
+  copiedLabel="Copied"
+/>
+
+To work somewhere else, run it again inside that folder. It never touches anything outside it.
+
+**What you'll see:** a prompt appears in the middle and the current folder name sits along the bottom.
+
+## <span class="uc-step-no">03</span> Confirm it sees your folder
+
+Wrong path means you opened it somewhere else — exit and reopen in the right place.
+
+**What you'll see:** the path at the bottom matches the folder you meant, with UltraCode on the right.
 
 Installed? Continue with [Terminal mode without fear](/docs/tutorial-terminal/). Want the desktop window later? Run `ultracode desktop` whenever you like — no reinstall needed.

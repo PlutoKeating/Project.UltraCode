@@ -5,63 +5,41 @@ sidebar:
   label: "终端 + 桌面安装"
 ---
 
-import AnnotatedShot from "@tutorials/AnnotatedShot.astro";
-import InstallCommands from "@tutorials/InstallCommands.astro";
-import TutorialStep from "@tutorials/TutorialStep.astro";
+import CommandBlock from "@tutorials/CommandBlock.astro";
 
-大多数人选这一种：**先装好 UltraCode，再把桌面窗口加上。** 两个平台只有一行命令不同，复制你电脑对应的那个框就行。
+大多数人选这一种：**先装好 UltraCode，再加上桌面窗口。** 复制你电脑对应的那一行，粘贴到终端里执行（Windows 用 PowerShell）。
 
-<TutorialStep
-  step={1}
-  title="装好 UltraCode"
-  expectLabel="你会看到"
-  expectText="安装过程会依次更新 OpenCode、安装 UltraCode、完成设置，最后出现版本号和 Ready。"
->
-  <InstallCommands
-    unixLabel="macOS / Linux"
-    windowsLabel="Windows"
-    unixHint="在「终端」里粘贴"
-    windowsHint="在 PowerShell 里粘贴"
-    unixCommand="curl -fsSL https://ultracode.plutokeating.beer/install.sh | bash"
-    windowsCommand="irm https://ultracode.plutokeating.beer/install.ps1 | iex"
-    copyLabel="复制"
-    copiedLabel="已复制"
-  />
+## <span class="uc-step-no">01</span> 装好 UltraCode
 
-  两个框做的是同一件事：准备好官方 OpenCode、UltraCode 本体和运行环境，不需要你先装别的东西。如果当前窗口还认不出 `ultracode`，关掉重开一次终端再继续。
-</TutorialStep>
-
-<TutorialStep
-  step={2}
-  title="再加上桌面窗口"
-  promptLabel="在终端里运行"
-  promptText="ultracode desktop"
-  isCommand={true}
+<CommandBlock
+  title="macOS / Linux"
+  command="curl -fsSL https://ultracode.plutokeating.beer/install.sh | bash"
   copyLabel="复制"
   copiedLabel="已复制"
-  expectLabel="你会看到"
-  expectText="桌面应用自动打开；没装过时会先下载当前系统的官方安装包，装过一次以后就是直接启动。"
->
-  第一次运行会下载官方桌面安装包：macOS 和 Windows 会弹出系统安装窗口，按提示点几下完成；Linux 会直接打开。之后从系统应用列表打开也可以。
-</TutorialStep>
+/>
 
-<TutorialStep
-  step={3}
-  title="第一次打开时，先养熟这三个地方"
-  expectLabel="你会看到"
-  expectText="顶部是标签页，中间是输入框，左下角能选项目。三条都认全了，就可以开始干活。"
->
-  桌面窗口和手机、网页看到的是同一套东西，所以你换窗口不用重新学。
-  <AnnotatedShot
-    src="/tutorials/desktop-first-run.webp"
-    alt="桌面应用第一次打开时的界面"
-    width={1100}
-    height={320}
-    callouts={[
-      { id: 1, x: 8.6, y: 39.0, w: 83.0, h: 30.6, label: "中间这个框，就是你说话的地方", pin: "top-left" },
-      { id: 2, x: 11.2, y: 48.4, w: 14.8, h: 6.0, tone: "ice", label: "左边能选角色和模型", pin: "bottom-left" },
-    ]}
-  />
-</TutorialStep>
+<CommandBlock
+  title="Windows"
+  command="irm https://ultracode.plutokeating.beer/install.ps1 | iex"
+  copyLabel="复制"
+  copiedLabel="已复制"
+/>
+
+两个框做的是同一件事：准备好官方 OpenCode、UltraCode 本体和运行环境，不需要你先装别的东西。如果当前窗口还认不出 `ultracode`，关掉重开一次终端再继续。
+
+**你会看到**：安装过程会依次更新 OpenCode、安装 UltraCode、完成设置，最后出现版本号和 Ready。
+
+## <span class="uc-step-no">02</span> 把桌面窗口也装上
+
+<CommandBlock
+  label="在终端里运行"
+  command="ultracode desktop"
+  copyLabel="复制"
+  copiedLabel="已复制"
+/>
+
+第一次运行会下载官方桌面安装包：macOS 和 Windows 会弹出系统安装窗口，按提示点几下完成；Linux 会直接打开。之后从系统应用列表打开也可以。
+
+**你会看到**：桌面应用自动打开；没装过时会先下载当前系统的官方安装包，装过一次以后就是直接启动。
 
 装好之后，从 [桌面端实战](/zh/docs/tutorial-desktop/) 开始第一次任务。只想用终端、不需要桌面窗口？看 [仅终端安装](/zh/docs/install-terminal/)。

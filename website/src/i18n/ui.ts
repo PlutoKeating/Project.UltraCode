@@ -26,7 +26,7 @@ export const LOCALE_META: Record<Locale, LocaleMeta> = {
     nativeLabel: "English",
     shortLabel: "EN",
     homePath: "/",
-    docsStartPath: "/docs/getting-started/",
+    docsStartPath: "/docs/install-desktop/",
   },
   zh: {
     code: "zh",
@@ -38,7 +38,7 @@ export const LOCALE_META: Record<Locale, LocaleMeta> = {
     nativeLabel: "简体中文",
     shortLabel: "中文",
     homePath: "/zh/",
-    docsStartPath: "/zh/docs/getting-started/",
+    docsStartPath: "/zh/docs/install-desktop/",
   },
   ar: {
     code: "ar",
@@ -50,7 +50,7 @@ export const LOCALE_META: Record<Locale, LocaleMeta> = {
     nativeLabel: "العربية",
     shortLabel: "AR",
     homePath: "/ar/",
-    docsStartPath: "/ar/docs/getting-started/",
+    docsStartPath: "/ar/docs/install-desktop/",
   },
   fr: {
     code: "fr",
@@ -62,7 +62,7 @@ export const LOCALE_META: Record<Locale, LocaleMeta> = {
     nativeLabel: "Français",
     shortLabel: "FR",
     homePath: "/fr/",
-    docsStartPath: "/fr/docs/getting-started/",
+    docsStartPath: "/fr/docs/install-desktop/",
   },
   ru: {
     code: "ru",
@@ -74,7 +74,7 @@ export const LOCALE_META: Record<Locale, LocaleMeta> = {
     nativeLabel: "Русский",
     shortLabel: "RU",
     homePath: "/ru/",
-    docsStartPath: "/ru/docs/getting-started/",
+    docsStartPath: "/ru/docs/install-desktop/",
   },
   es: {
     code: "es",
@@ -86,7 +86,7 @@ export const LOCALE_META: Record<Locale, LocaleMeta> = {
     nativeLabel: "Español",
     shortLabel: "ES",
     homePath: "/es/",
-    docsStartPath: "/es/docs/getting-started/",
+    docsStartPath: "/es/docs/install-desktop/",
   },
 };
 

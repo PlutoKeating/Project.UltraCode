@@ -6,77 +6,73 @@ sidebar:
 ---
 
 import AnnotatedShot from "@tutorials/AnnotatedShot.astro";
-import TutorialStep from "@tutorials/TutorialStep.astro";
+import CommandBlock from "@tutorials/CommandBlock.astro";
 
 还没装好？先看 [桌面端安装/连接方法](/zh/docs/install-desktop/)。
-
 
 这一篇我们只做一件事：**在一个空文件夹里，做出一张能打开的周末读书会报名页。**
 
 不用记命令，也不用懂编程。你只需要点几下鼠标，然后像跟同事说话一样把要求讲清楚。
 
+## <span class="uc-step-no">01</span> 打开桌面窗口，把空文件夹放进去
 
-<TutorialStep
-  step={1}
-  title="打开桌面窗口，把空文件夹放进去"
-  expectLabel="你会看到"
-  expectText="窗口左侧出现你这个文件夹的名字，表示 UltraCode 已经在这里准备开工。"
->
-  打开桌面应用后，点击左侧「添加项目」，选中你提前建好的空文件夹。路径里尽量不要有太多层，放在桌面或文稿里都可以。
-  <AnnotatedShot
-    src="/tutorials/desktop-home.webp"
-    alt="桌面端主界面：左侧项目列表与添加入口"
-    width={1180}
-    height={560}
-    callouts={[
-      { id: 1, x: 20.4, y: 53.4, w: 47.6, h: 7.8, label: "点这里把文件夹加进来", pin: "top-left" },
-    ]}
-  />
-</TutorialStep>
+打开桌面应用后，点击左侧「添加项目」，选中你提前建好的空文件夹。路径里尽量不要有太多层，放在桌面或文稿里都可以。
 
-<TutorialStep
-  step={2}
-  title="像交代同事一样，把要求说清楚"
-  promptLabel="把这句话发给它"
-  promptText="帮我在这个文件夹里做一个周末读书会报名页：能选周六或周日场次、填参加人数，提交后显示一张确认卡片。手机打开时也要好看，做完直接给我打开预览。"
+<AnnotatedShot
+  src="/tutorials/desktop-home.webp"
+  alt="桌面端主界面：左侧项目列表与添加入口"
+  width={1180}
+  height={560}
+  callouts={[
+    { id: 1, x: 20.4, y: 53.4, w: 47.6, h: 7.8, label: "点这里把文件夹加进来", pin: "top-left" },
+  ]}
+/>
+
+**你会看到**：窗口左侧出现你这个文件夹的名字，表示 UltraCode 已经在这里准备开工。
+
+## <span class="uc-step-no">02</span> 像交代同事一样，把要求说清楚
+
+把需求写成完整的一句话就行：**给谁用、要能做哪些事、做完怎么验收**。这三件事说到了，后面的返工就会少很多。
+
+<AnnotatedShot
+  src="/tutorials/desktop-composer.webp"
+  alt="桌面端输入框：左侧可选角色与模型，中间是输入区"
+  width={2000}
+  height={820}
+  callouts={[
+    { id: 1, x: 4.8, y: 26.2, w: 90.4, h: 22.2, label: "把整句话写在这里，然后按回车", pin: "top-left" },
+    { id: 2, x: 4.8, y: 37.8, w: 14.4, h: 9.2, tone: "ice", label: "保持默认角色 UltraBuild 就好", pin: "bottom-left" },
+  ]}
+/>
+
+<CommandBlock
+  label="把这句话发给它"
+  command="帮我在这个文件夹里做一个周末读书会报名页：能选周六或周日场次、填参加人数，提交后显示一张确认卡片。手机打开时也要好看，做完直接给我打开预览。"
+  mono={false}
   copyLabel="复制"
   copiedLabel="已复制"
-  expectLabel="你会看到"
-  expectText="它不会立刻埋头乱写，而是先问你几个关键取舍（比如风格、是否需要填手机号），用几张选项卡片让你点选。"
->
-  把需求写成完整的一句话就行：**给谁用、要能做哪些事、做完怎么验收**。这三件事说到了，后面的返工就会少很多。
-  <AnnotatedShot
-    src="/tutorials/desktop-composer.webp"
-    alt="桌面端输入框：左侧可选角色与模型，中间是输入区"
-    width={2000}
-    height={820}
-    callouts={[
-      { id: 1, x: 4.8, y: 26.2, w: 90.4, h: 22.2, label: "把整句话写在这里，然后按回车", pin: "top-left" },
-      { id: 2, x: 4.8, y: 37.8, w: 14.4, h: 9.2, tone: "ice", label: "保持默认角色 UltraBuild 就好", pin: "bottom-left" },
-    ]}
-  />
-</TutorialStep>
+/>
 
-<TutorialStep
-  step={3}
-  title="点选卡片，然后等它自己检查一遍"
-  expectLabel="你会看到"
-  expectText="它做出一版页面后，会自己打开浏览器点一遍按钮，检查电脑和手机两种排布，再告诉你结果。收到「已检查通过」再验收。"
->
-  遇到选择题时，点最符合你想法的那一项；拿不准就选它标注的推荐项。之后它会分小步推进，你随时可以打断它改主意。
-</TutorialStep>
+**你会看到**：它不会立刻埋头乱写，而是先问你几个关键取舍（比如风格、是否需要填手机号），用几张选项卡片让你点选。
 
-<TutorialStep
-  step={4}
-  title="不满意就继续说，不用重来"
-  promptLabel="想改风格时，可以直接这样说"
-  promptText="整体再简洁一点，标题改用暖色，按钮放大一点，手机上也保持一行能放下。"
+## <span class="uc-step-no">03</span> 点选卡片，然后等它自己检查一遍
+
+遇到选择题时，点最符合你想法的那一项；拿不准就选它标注的推荐项。之后它会分小步推进，你随时可以打断它改主意。
+
+**你会看到**：它做出一版页面后，会自己打开浏览器点一遍按钮，检查电脑和手机两种排布，再告诉你结果。收到「已检查通过」再验收。
+
+## <span class="uc-step-no">04</span> 不满意就继续说，不用重来
+
+这就是「说目标」而不是「写代码」的区别：你描述**结果**，它负责实现和自查。
+
+<CommandBlock
+  label="想改风格时，可以直接这样说"
+  command="整体再简洁一点，标题改用暖色，按钮放大一点，手机上也保持一行能放下。"
+  mono={false}
   copyLabel="复制"
   copiedLabel="已复制"
-  expectLabel="你会看到"
-  expectText="它只改配色和版式，不会把已经做好的报名逻辑推倒重来。"
->
-  这就是「说目标」而不是「写代码」的区别：你描述**结果**，它负责实现和自查。
-</TutorialStep>
+/>
+
+**你会看到**：它只改配色和版式，不会把已经做好的报名逻辑推倒重来。
 
 下一步可以看看 [终端模式入门](/zh/docs/tutorial-terminal/)，或者先了解 [主角色与后台专家](/zh/docs/roles-and-workflow/) 是怎么分工的。
