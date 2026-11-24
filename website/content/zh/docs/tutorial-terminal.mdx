@@ -1,0 +1,78 @@
+---
+title: "终端模式入门：像发消息一样整理文件夹"
+description: "黑窗口其实只是一个聊天框。看完这一篇，你会用它整理一堆零散的会议记录。"
+sidebar:
+  label: "终端入门"
+---
+
+import AnnotatedShot from "@tutorials/AnnotatedShot.astro";
+import TutorialStep from "@tutorials/TutorialStep.astro";
+
+终端听起来吓人，但你真正面对的只有一件事：**一个可以打字的输入框。**
+
+这一篇我们让它帮你把一个乱糟糟的文件夹，整理成一份清楚的待办清单。
+
+<TutorialStep
+  step={1}
+  title="打开它，先看一眼这个「黑窗口」"
+  expectLabel="你会看到"
+  expectText="中间是一个输入框，底部写着当前文件夹的名字，右边能看到 UltraCode 字样。光标闪动就是在等你说话。"
+>
+  在你要处理的文件夹里打开它。窗口里那些线只是装饰边框，没有任何东西需要你输入命令。
+  <AnnotatedShot
+    src="/tutorials/terminal-welcome.webp"
+    alt="终端界面：中间是输入框，底部显示当前文件夹与 UltraCode 状态"
+    width={1800}
+    height={1000}
+    callouts={[
+      { id: 1, x: 19.4, y: 74.3, w: 51.3, h: 16.9, label: "就是在这里说话，跟聊天软件一样", pin: "top-left" },
+      { id: 2, x: 19.4, y: 92.0, w: 61, h: 5.0, tone: "ice", label: "底部显示文件夹、UltraCode 和快捷键提示", pin: "bottom-left" },
+    ]}
+  />
+</TutorialStep>
+
+<TutorialStep
+  step={2}
+  title="用一句话说明你想要的结果"
+  promptLabel="把这句话发给它"
+  promptText="帮我把这个文件夹里的会议记录整理成一份清楚的待办清单：按负责人分组，每条写明要做什么和截止时间，最后存成一个新的文件，不要删掉原文件。"
+  copyLabel="复制"
+  copiedLabel="已复制"
+  expectLabel="你会看到"
+  expectText="它会先看一眼文件夹里有什么，然后告诉你打算怎么整理，再开始动手。"
+>
+  关键是最后半句：**说清楚哪些文件可以动、哪些必须保留**。这样你就不用担心它误删东西。
+</TutorialStep>
+
+<TutorialStep
+  step={3}
+  title="需要它多做一步时，用斜杠打开菜单"
+  expectLabel="你会看到"
+  expectText="按下快捷键后，中间会弹出一列可以点选的命令，比如切换模型、查看设置，用方向键选、回车确认。"
+>
+  看到窗口底部写着 `ctrl+p commands` 吗？那就是「命令菜单」的入口。记不住命令也没关系，打开菜单挑就行。
+  <AnnotatedShot
+    src="/tutorials/terminal-commands.webp"
+    alt="终端命令菜单：按 ctrl+p 后弹出的可点选命令列表"
+    width={1800}
+    height={1456}
+    callouts={[
+      { id: 1, x: 25.5, y: 28, w: 40, h: 41, label: "这里是可点选的命令菜单", pin: "top-left" },
+    ]}
+  />
+</TutorialStep>
+
+<TutorialStep
+  step={4}
+  title="不满意就继续说，它不会从头再来"
+  promptLabel="想调整时这样说"
+  promptText="清单再精简一些，只保留这周还没做完的事，按截止时间从近到远排。"
+  copyLabel="复制"
+  copiedLabel="已复制"
+  expectLabel="你会看到"
+  expectText="它只调整这一份清单，不会把已经整理好的内容重做一遍。"
+>
+  终端模式和桌面端其实是同一套能力，只是窗口长得不一样。你用哪个顺手就用哪个。
+</TutorialStep>
+
+想进一步用它检查界面，可以看 [先定蓝图，再自动验收页面](/zh/docs/tutorial-plan-and-verify/)。

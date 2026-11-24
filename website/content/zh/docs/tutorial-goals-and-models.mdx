@@ -1,0 +1,69 @@
+---
+title: "进阶妙用二：大任务挂机、隔天续做与快慢模型搭配"
+description: "把多步骤的大活交给它自动推进，随时暂停或继续；关掉电脑第二天接着说；有多个模型时让聪明的管判断、快的管查资料。"
+sidebar:
+  label: "挂机与模型搭配"
+---
+
+import AnnotatedShot from "@tutorials/AnnotatedShot.astro";
+import TutorialStep from "@tutorials/TutorialStep.astro";
+
+这一篇是三件小事的组合：**让它自己往前推、明天还能接上、花钱更省。**
+
+它们经常一起出现，所以放在同一篇里。
+
+<TutorialStep
+  step={1}
+  title="给它一个能自动推进的目标"
+  promptLabel="用它开启一个多步骤目标"
+  promptText="/goal 把这个报名页做成可上线的版本：补充空场次提示、加上提交后的确认卡片、手机端再检查一遍，全部通过后再交给我。"
+  copyLabel="复制"
+  copiedLabel="已复制"
+  expectLabel="你会看到"
+  expectText="它把这个目标记下来，之后每完成一小步就自动进入下一步，直到全部验收通过。"
+>
+  适合用 `/goal` 的是**能拆成好几步、且每步都能验证**的活。一句话说不完的需求，就先写进目标里。
+</TutorialStep>
+
+<TutorialStep
+  step={2}
+  title="要暂停或继续，随时一句话"
+  promptLabel="想停下来时"
+  promptText="/goal pause"
+  isCommand={true}
+  copyLabel="复制"
+  copiedLabel="已复制"
+  expectLabel="你会看到"
+  expectText="它停在当前这一步，不会继续往下改；想继续时把 pause 换成 resume 即可。"
+>
+  你也可以直接发一条新消息打断它——插话永远优先于自动推进。
+</TutorialStep>
+
+<TutorialStep
+  step={3}
+  title="关掉电脑，第二天接着做"
+  promptLabel="第二天打开后，只需要说这一句"
+  promptText="读取交接记录，接着昨天的进度继续。"
+  copyLabel="复制"
+  copiedLabel="已复制"
+  expectLabel="你会看到"
+  expectText="它先说明昨天做到哪、验过什么、还差什么，然后从下一步继续，而不是从头再来。"
+>
+  进度不只是存在聊天记录里，而是写在你项目里的交接文件。所以换个窗口、换一天，都能接上。
+</TutorialStep>
+
+<TutorialStep
+  step={4}
+  title="有多个模型时，让合适的角色用合适的模型"
+  promptLabel="给规划、编码、查资料和视觉检查分别配对模型"
+  promptText="/setup-models"
+  isCommand={true}
+  copyLabel="复制"
+  copiedLabel="已复制"
+  expectLabel="你会看到"
+  expectText="它会根据你已经配置好的模型给出一份推荐，确认一次就写好：规划和审查用更强的模型，快速查资料用更快更便宜的模型。"
+>
+  如果你只配了一个模型，这一步可以跳过——所有角色会自动沿用你当前用的那个。
+</TutorialStep>
+
+到这里，完整闭环就走通了：澄清、实现、验收、跨天接着做。想回顾，可以回到 [桌面端实战](/zh/docs/tutorial-desktop/) 再走一遍。

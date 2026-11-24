@@ -8,6 +8,7 @@
     "baseUrl": ".",
     "paths": {
       "@diagrams/*": ["src/components/diagrams/*"],
+      "@tutorials/*": ["src/components/tutorials/*"],
       "@components/*": ["src/components/*"],
       "@i18n/*": ["src/i18n/*"]
     }

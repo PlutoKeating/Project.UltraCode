@@ -1,0 +1,256 @@
+---
+export interface CalloutBox {
+  id: number;
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  tone?: "amber" | "ice";
+  pin?: "top-left" | "top-right" | "bottom-left" | "bottom-right";
+  label: string;
+}
+
+export interface Props {
+  src: string;
+  alt: string;
+  width?: number;
+  height?: number;
+  mobileFrame?: boolean;
+  callouts?: CalloutBox[];
+}
+
+const {
+  src,
+  alt,
+  width = 1280,
+  height = 800,
+  mobileFrame = false,
+  callouts = [],
+} = Astro.props;
+---
+
+<figure class:list={["uc-shot", "not-content", { "is-mobile": mobileFrame }]}>
+  <div class="uc-shot-stage">
+    <div class="uc-shot-canvas" dir="ltr">
+      <img
+        src={src}
+        alt={alt}
+        width={width}
+        height={height}
+        loading="lazy"
+        decoding="async"
+        class="uc-shot-img"
+      />
+      {
+        callouts.map((item) => {
+          const toneClass = item.tone === "ice" ? "is-ice" : "is-amber";
+          const pinClass = `pin-${item.pin ?? "top-left"}`;
+          return (
+            <div
+              class:list={["uc-callout-box", toneClass, pinClass]}
+              style={`left:${item.x}%;top:${item.y}%;width:${item.w}%;height:${item.h}%;`}
+              aria-hidden="true"
+            >
+              <span class="uc-callout-pin">{item.id}</span>
+            </div>
+          );
+        })
+      }
+    </div>
+  </div>
+
+  {
+    callouts.length > 0 && (
+      <ol class="uc-shot-legend">
+        {callouts.map((item) => {
+          const toneClass = item.tone === "ice" ? "is-ice" : "is-amber";
+          return (
+            <li class="uc-shot-legend-item">
+              <span class:list={["uc-legend-pin", toneClass]} aria-hidden="true">
+                {item.id}
+              </span>
+              <span class="uc-legend-text">{item.label}</span>
+            </li>
+          );
+        })}
+      </ol>
+    )
+  }
+</figure>
+
+<style>
+  .uc-shot {
+    margin: 1.35rem 0 1.5rem;
+  }
+
+  .uc-shot-stage {
+    width: 100%;
+  }
+
+  .uc-shot.is-mobile .uc-shot-stage {
+    max-width: 340px;
+    margin-inline: auto;
+  }
+
+  .uc-shot-canvas {
+    position: relative;
+    line-height: 0;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.11);
+    background: #070707;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.68);
+    overflow: hidden;
+  }
+
+  .uc-shot.is-mobile .uc-shot-canvas {
+    border-radius: 18px;
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+
+  .uc-shot-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    user-select: none;
+  }
+
+  .uc-callout-box {
+    position: absolute;
+    border-radius: 6px;
+    pointer-events: none;
+    box-sizing: border-box;
+  }
+
+  .uc-callout-box.is-amber {
+    border: 2px solid #e5a03d;
+    background: rgba(229, 160, 61, 0.08);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.55);
+  }
+
+  .uc-callout-box.is-ice {
+    border: 2px solid #bae6fd;
+    background: rgba(186, 230, 253, 0.08);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.55);
+  }
+
+  .uc-callout-pin {
+    position: absolute;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 21px;
+    height: 21px;
+    border-radius: 999px;
+    font-family: var(--uc-font-mono);
+    font-size: 0.74rem;
+    font-weight: 600;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    color: #000000;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.75);
+  }
+
+  .uc-callout-box.is-amber .uc-callout-pin {
+    background: #e5a03d;
+  }
+
+  .uc-callout-box.is-ice .uc-callout-pin {
+    background: #bae6fd;
+  }
+
+  .uc-callout-box.pin-top-left .uc-callout-pin {
+    top: -11px;
+    left: -11px;
+  }
+
+  .uc-callout-box.pin-top-right .uc-callout-pin {
+    top: -11px;
+    right: -11px;
+  }
+
+  .uc-callout-box.pin-bottom-left .uc-callout-pin {
+    bottom: -11px;
+    left: -11px;
+  }
+
+  .uc-callout-box.pin-bottom-right .uc-callout-pin {
+    bottom: -11px;
+    right: -11px;
+  }
+
+  .uc-shot-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem 1.35rem;
+    list-style: none;
+    padding: 0.85rem 0.15rem 0;
+    margin: 0;
+  }
+
+  .uc-shot-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: #c8c8c8;
+  }
+
+  .uc-legend-pin {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    border-radius: 999px;
+    font-family: var(--uc-font-mono);
+    font-size: 0.7rem;
+    font-weight: 600;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    color: #000000;
+  }
+
+  .uc-legend-pin.is-amber {
+    background: #e5a03d;
+  }
+
+  .uc-legend-pin.is-ice {
+    background: #bae6fd;
+  }
+
+  @media (max-width: 600px) {
+    .uc-callout-pin {
+      width: 18px;
+      height: 18px;
+      font-size: 0.68rem;
+    }
+
+    .uc-callout-box.pin-top-left .uc-callout-pin {
+      top: -9px;
+      left: -9px;
+    }
+
+    .uc-callout-box.pin-top-right .uc-callout-pin {
+      top: -9px;
+      right: -9px;
+    }
+
+    .uc-callout-box.pin-bottom-left .uc-callout-pin {
+      bottom: -9px;
+      left: -9px;
+    }
+
+    .uc-callout-box.pin-bottom-right .uc-callout-pin {
+      bottom: -9px;
+      right: -9px;
+    }
+
+    .uc-shot-legend {
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+  }
+</style>

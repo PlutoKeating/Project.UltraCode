@@ -1,0 +1,83 @@
+---
+title: "桌面实战: Build an Event Page Without Commands"
+description: "No code and no terminal: turn one plain sentence into a sign-up page you can open in a browser."
+sidebar:
+  label: "Desktop walkthrough"
+---
+
+import AnnotatedShot from "@tutorials/AnnotatedShot.astro";
+import TutorialStep from "@tutorials/TutorialStep.astro";
+
+In this lesson we do exactly one thing: **build a working weekend book-club sign-up page inside an empty folder.**
+
+No commands to memorise, no programming knowledge required. You click a few times, then describe what you want the way you would to a colleague.
+
+<div class="uc-tut-goal">
+  <span class="uc-tut-goal-label">What you end up with</span>
+  <p>A sign-up page you can open in a browser, still comfortable to use on a phone.</p>
+</div>
+
+<TutorialStep
+  step={1}
+  title="Open the desktop window and add your empty folder"
+  expectLabel="What you'll see"
+  expectText="Your folder name appears in the left sidebar, which means UltraCode is ready to work there."
+>
+  Open the desktop app, click **Add project** in the sidebar, and pick the empty folder you prepared. Keeping it near your Desktop or Documents is easiest.
+  <AnnotatedShot
+    src="/tutorials/desktop-home.webp"
+    alt="Desktop home screen with the project sidebar and the add-project entry"
+    width={1180}
+    height={560}
+    callouts={[
+      { id: 1, x: 20.7, y: 52.5, w: 45.6, h: 10.0, label: "Click here to bring the folder in", pin: "top-left" },
+    ]}
+  />
+</TutorialStep>
+
+<TutorialStep
+  step={2}
+  title="Describe it the way you would to a colleague"
+  promptLabel="Send this sentence"
+  promptText="Build a sign-up page for a weekend book club in this folder: pick Saturday or Sunday, enter the number of guests, and show a confirmation card after submitting. It should look good on a phone too, then open a preview for me."
+  copyLabel="Copy"
+  copiedLabel="Copied"
+  expectLabel="What you'll see"
+  expectText="Instead of guessing and writing immediately, it asks a few decisive questions first, using choice cards you can click."
+>
+  One complete sentence is enough: **who it is for, what it must do, and how you will check it.** Those three things cut most of the rework later.
+  <AnnotatedShot
+    src="/tutorials/desktop-composer.webp"
+    alt="Desktop composer with the role and model selectors on the left"
+    width={2000}
+    height={820}
+    callouts={[
+      { id: 1, x: 6.0, y: 27.4, w: 87.2, h: 11.0, label: "Type the whole request here, then press Enter", pin: "top-left" },
+      { id: 2, x: 10.0, y: 40.4, w: 9.8, h: 7.0, tone: "ice", label: "Leave the default UltraBuild role as it is", pin: "bottom-left" },
+    ]}
+  />
+</TutorialStep>
+
+<TutorialStep
+  step={3}
+  title="Answer the cards, then let it check its own work"
+  expectLabel="What you'll see"
+  expectText="After building a first version it opens a real browser, clicks the buttons, checks both desktop and phone layouts, and reports back. Accept it once you see that check pass."
+>
+  When a choice card appears, click whichever option matches your intent; if you are unsure, take the recommended one. Then it moves forward in small steps, and you can interrupt at any moment.
+</TutorialStep>
+
+<TutorialStep
+  step={4}
+  title="Not happy? Keep talking instead of starting over"
+  promptLabel="Ask for a style change like this"
+  promptText="Make the whole thing calmer, use a warmer heading colour, make the button bigger, and keep it on one line on a phone."
+  copyLabel="Copy"
+  copiedLabel="Copied"
+  expectLabel="What you'll see"
+  expectText="Only the colours and layout change; the sign-up logic you already approved stays intact."
+>
+  This is the difference between describing a **goal** and writing code: you describe the outcome, and it handles implementation plus self-checking.
+</TutorialStep>
+
+Next, try [Terminal mode without fear](/docs/tutorial-terminal/), or read how [primary roles and specialists](/docs/roles-and-workflow/) divide the work.

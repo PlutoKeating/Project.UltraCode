@@ -41,6 +41,11 @@ const DOC_ORDER = [
   "roles-and-workflow",
   "long-running",
   "visual-qa",
+  "tutorial-desktop",
+  "tutorial-terminal",
+  "tutorial-mobile",
+  "tutorial-plan-and-verify",
+  "tutorial-goals-and-models",
   "controls-and-maintenance",
   "faq",
 ];
@@ -61,6 +66,18 @@ function stripMdxToPlainMarkdown(raw) {
   const cleanedBody = body
     .replace(/^import\s+[^\r\n]+[\r\n]*/gm, "")
     .replace(/<figure[\s\S]*?<\/figure>/g, "")
+    .replace(/<AnnotatedShot[\s\S]*?\/>/g, "")
+    .replace(/<TutorialStep([\s\S]*?)>/g, (_m, attrs) => {
+      const titleM = attrs.match(/title="([^"]+)"/);
+      const promptM = attrs.match(/promptText="([^"]+)"/);
+      const expectM = attrs.match(/expectText="([^"]+)"/);
+      const lines = [];
+      if (titleM) lines.push(`### ${titleM[1]}`);
+      if (promptM) lines.push(`\n> ${promptM[1]}`);
+      if (expectM) lines.push(`\nExpected result: ${expectM[1]}`);
+      return lines.join("\n") + "\n";
+    })
+    .replace(/<\/TutorialStep>/g, "")
     .replace(/\n{3,}/g, "\n\n")
     .trim();
   return { title, description, body: cleanedBody };
@@ -71,7 +88,12 @@ const docEntries = [];
 
 for (const slug of DOC_ORDER) {
   const mdxPath = join(root, "content/root/docs", `${slug}.mdx`);
-  const raw = await readFile(mdxPath, "utf8");
+  let raw;
+  try {
+    raw = await readFile(mdxPath, "utf8");
+  } catch {
+    continue;
+  }
   const parsed = stripMdxToPlainMarkdown(raw);
   docEntries.push({
     slug,

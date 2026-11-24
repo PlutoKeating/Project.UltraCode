@@ -1,0 +1,67 @@
+---
+title: "Power Trick 2: Autopilot, Next-Day Resume, Fast and Deep Models"
+description: "Let a multi-step job advance on its own, pause or resume at will, pick it up tomorrow, and spend less by pairing a smart model with a fast one."
+sidebar:
+  label: "Autopilot & models"
+---
+
+import AnnotatedShot from "@tutorials/AnnotatedShot.astro";
+import TutorialStep from "@tutorials/TutorialStep.astro";
+
+This lesson bundles three small things that usually show up together: **advance on its own, resume tomorrow, and spend less.**
+
+<TutorialStep
+  step={1}
+  title="Give it a goal that can advance on its own"
+  promptLabel="Start a multi-step goal with this"
+  promptText="/goal Turn this sign-up page into something shippable: add an empty-slot hint, add the confirmation card after submitting, re-check the phone layout, and hand it over once everything passes."
+  copyLabel="Copy"
+  copiedLabel="Copied"
+  expectLabel="What you'll see"
+  expectText="It records the goal, then moves from one small completed step to the next until every check passes."
+>
+  `/goal` suits work that **splits into several steps, each of which can be verified**. If one sentence cannot hold the request, put it in the goal.
+</TutorialStep>
+
+<TutorialStep
+  step={2}
+  title="Pause or resume with one line"
+  promptLabel="When you want it to stop"
+  promptText="/goal pause"
+  isCommand={true}
+  copyLabel="Copy"
+  copiedLabel="Copied"
+  expectLabel="What you'll see"
+  expectText="It stops on the current step instead of editing further; swap pause for resume to continue."
+>
+  You can also just send a new message to interrupt — your words always outrank automatic progress.
+</TutorialStep>
+
+<TutorialStep
+  step={3}
+  title="Close the laptop, continue tomorrow"
+  promptLabel="The next day, this is all you need"
+  promptText="Read the handoff notes and continue from yesterday's progress."
+  copyLabel="Copy"
+  copiedLabel="Copied"
+  expectLabel="What you'll see"
+  expectText="It first says what was finished, what was verified, what is left, then continues from the next step instead of restarting."
+>
+  Progress is not trapped in a chat log: it is written into handoff files in your project, so a new window or a new day can pick it up.
+</TutorialStep>
+
+<TutorialStep
+  step={4}
+  title="With several models, let each role do what it is good at"
+  promptLabel="Pair models for planning, coding, research, and visual checks"
+  promptText="/setup-models"
+  isCommand={true}
+  copyLabel="Copy"
+  copiedLabel="Copied"
+  expectLabel="What you'll see"
+  expectText="A short recommendation appears, and one confirmation writes it in. Planning and review get the stronger model; quick lookups get the faster, cheaper one."
+>
+  If you only have one model configured, skip this step — every role simply uses your current model.
+</TutorialStep>
+
+That covers the whole loop: clarify, build, verify, and carry it across days. Start again from [the desktop walkthrough](/docs/tutorial-desktop/) whenever you want a refresher.

@@ -262,3 +262,29 @@ html[lang="ar"] .sl-markdown-content h3 {
 .uc-doc-figure figcaption {
   display: none;
 }
+
+/* Hands-On Tutorials — goal banner */
+.uc-tut-goal {
+  margin: 1.6rem 0 0.4rem;
+  padding: 0.95rem 1.15rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: #0a0a0a;
+}
+
+.uc-tut-goal-label {
+  display: block;
+  font-family: var(--uc-font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #bae6fd;
+  margin-bottom: 0.35rem;
+}
+
+.uc-tut-goal p {
+  margin: 0 !important;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #e5e5e5;
+}

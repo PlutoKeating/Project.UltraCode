@@ -64,6 +64,23 @@ export default defineConfig({
           ],
         },
         {
+          label: "Hands-On Tutorials",
+          translations: {
+            "zh-CN": "使用教程",
+            ar: "دروس تطبيقية",
+            fr: "Tutoriels pratiques",
+            ru: "Практические уроки",
+            es: "Tutoriales prácticos",
+          },
+          items: [
+            { slug: "docs/tutorial-desktop" },
+            { slug: "docs/tutorial-terminal" },
+            { slug: "docs/tutorial-mobile" },
+            { slug: "docs/tutorial-plan-and-verify" },
+            { slug: "docs/tutorial-goals-and-models" },
+          ],
+        },
+        {
           label: "Controls & FAQ",
           translations: {
             "zh-CN": "控制与维护",
