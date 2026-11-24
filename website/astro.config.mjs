@@ -45,6 +45,9 @@ export default defineConfig({
           },
           items: [
             { slug: "docs/getting-started" },
+            { slug: "docs/install-terminal" },
+            { slug: "docs/install-desktop" },
+            { slug: "docs/install-mobile" },
             { slug: "docs/goal-engineering" },
           ],
         },

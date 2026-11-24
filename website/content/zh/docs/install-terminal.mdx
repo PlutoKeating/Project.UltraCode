@@ -1,0 +1,60 @@
+---
+title: "安装方法：终端模式"
+description: "一行命令装好，之后在任意文件夹里直接跟它说话。"
+sidebar:
+  label: "终端安装"
+---
+
+import AnnotatedShot from "@tutorials/AnnotatedShot.astro";
+import TutorialStep from "@tutorials/TutorialStep.astro";
+
+终端模式就是最原始也最直接的那个界面：**在哪个文件夹里打开，它就只在这个文件夹里干活。**
+
+<TutorialStep
+  step={1}
+  title="用一行命令装好"
+  promptLabel="macOS / Linux，复制这一行"
+  promptText="curl -fsSL https://ultracode.plutokeating.beer/install.sh | bash"
+  isCommand={true}
+  copyLabel="复制"
+  copiedLabel="已复制"
+  expectLabel="你会看到"
+  expectText="安装过程会依次提示更新 OpenCode、安装 UltraCode、完成设置，最后出现版本号和 Ready。"
+>
+  Windows 用 PowerShell：`irm https://ultracode.plutokeating.beer/install.ps1 | iex`。装完如果当前窗口还认不出命令，关掉重开一次终端即可。
+  <AnnotatedShot
+    src="/tutorials/terminal-install.webp"
+    alt="安装完成后终端里显示的就绪画面"
+    width={439}
+    height={638}
+    callouts={[
+      { id: 1, x: 4.5, y: 54.5, w: 34, h: 7, label: "看到 Ready 就表示装好了", pin: "top-left" },
+      { id: 2, x: 10, y: 70.5, w: 80, h: 23, tone: "ice", label: "之后常用的三条命令", pin: "bottom-left" },
+    ]}
+  />
+</TutorialStep>
+
+<TutorialStep
+  step={2}
+  title="在你要干活的文件夹里打开它"
+  promptLabel="先进入文件夹，再运行"
+  promptText="ultracode"
+  isCommand={true}
+  copyLabel="复制"
+  copiedLabel="已复制"
+  expectLabel="你会看到"
+  expectText="窗口中间出现输入框，底部显示当前文件夹的名字。"
+>
+  想打开别的文件夹，就在那个文件夹里再运行一次。它不会去动这个文件夹以外的东西。
+</TutorialStep>
+
+<TutorialStep
+  step={3}
+  title="确认它认得出你的文件夹"
+  expectLabel="你会看到"
+  expectText="底部路径和你要处理的文件夹一致，右下角能看到 UltraCode 字样。"
+>
+  如果路径不对，说明你在别的目录里打开的，退出重开就好。
+</TutorialStep>
+
+装好之后，从 [终端模式入门](/zh/docs/tutorial-terminal/) 开始第一次整理任务。

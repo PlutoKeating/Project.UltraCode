@@ -37,6 +37,9 @@ await cp(join(root, "../scripts/install.ps1"), join(root, "public/install.ps1"))
 // Auto-generate /llms.txt and /llms-full.txt from canonical English docs so AI crawlers never read stale info
 const DOC_ORDER = [
   "getting-started",
+  "install-terminal",
+  "install-desktop",
+  "install-mobile",
   "goal-engineering",
   "roles-and-workflow",
   "long-running",

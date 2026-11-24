@@ -1,0 +1,60 @@
+---
+title: "Install: Terminal Mode"
+description: "One line installs it; afterwards you talk to it inside any folder."
+sidebar:
+  label: "Terminal install"
+---
+
+import AnnotatedShot from "@tutorials/AnnotatedShot.astro";
+import TutorialStep from "@tutorials/TutorialStep.astro";
+
+Terminal mode is the most direct surface: **it works only inside the folder you opened it in.**
+
+<TutorialStep
+  step={1}
+  title="Install with one line"
+  promptLabel="On macOS / Linux, copy this"
+  promptText="curl -fsSL https://ultracode.plutokeating.beer/install.sh | bash"
+  isCommand={true}
+  copyLabel="Copy"
+  copiedLabel="Copied"
+  expectLabel="What you'll see"
+  expectText="It updates OpenCode, installs UltraCode, finishes setup, and ends with the version plus Ready."
+>
+  On Windows use PowerShell: `irm https://ultracode.plutokeating.beer/install.ps1 | iex`. If the current window cannot find the command afterwards, close and reopen the terminal.
+  <AnnotatedShot
+    src="/tutorials/terminal-install.webp"
+    alt="The ready screen after installation finishes"
+    width={439}
+    height={638}
+    callouts={[
+      { id: 1, x: 4.5, y: 54.5, w: 34, h: 7, label: "Ready means the install worked", pin: "top-left" },
+      { id: 2, x: 10, y: 70.5, w: 80, h: 23, tone: "ice", label: "The three commands you will use", pin: "bottom-left" },
+    ]}
+  />
+</TutorialStep>
+
+<TutorialStep
+  step={2}
+  title="Open it inside the folder you want to work on"
+  promptLabel="Enter the folder first, then run"
+  promptText="ultracode"
+  isCommand={true}
+  copyLabel="Copy"
+  copiedLabel="Copied"
+  expectLabel="What you'll see"
+  expectText="A prompt appears in the middle and the current folder name sits along the bottom."
+>
+  To work somewhere else, run it again inside that folder. It never touches anything outside it.
+</TutorialStep>
+
+<TutorialStep
+  step={3}
+  title="Confirm it sees your folder"
+  expectLabel="What you'll see"
+  expectText="The path at the bottom matches the folder you meant, with UltraCode on the right."
+>
+  Wrong path means you opened it somewhere else — exit and reopen in the right place.
+</TutorialStep>
+
+Installed? Continue with [Terminal mode without fear](/docs/tutorial-terminal/).

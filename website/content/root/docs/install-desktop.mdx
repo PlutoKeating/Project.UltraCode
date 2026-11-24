@@ -1,0 +1,60 @@
+---
+title: "Install: Desktop App"
+description: "One command installs UltraCode plus the official desktop app, then you open a window and start."
+sidebar:
+  label: "Desktop install"
+---
+
+import AnnotatedShot from "@tutorials/AnnotatedShot.astro";
+import TutorialStep from "@tutorials/TutorialStep.astro";
+
+Two steps: **install UltraCode, then let it open the desktop window.**
+
+<TutorialStep
+  step={1}
+  title="Install UltraCode on your computer"
+  promptLabel="On macOS / Linux, paste this into your terminal"
+  promptText="curl -fsSL https://ultracode.plutokeating.beer/install.sh | bash"
+  isCommand={true}
+  copyLabel="Copy"
+  copiedLabel="Copied"
+  expectLabel="What you'll see"
+  expectText="The UltraCode version and a Ready line at the end — that means it worked."
+>
+  On Windows use PowerShell instead: `irm https://ultracode.plutokeating.beer/install.ps1 | iex`. Either way, official OpenCode is prepared for you, so there is nothing else to install first.
+</TutorialStep>
+
+<TutorialStep
+  step={2}
+  title="Let it open the desktop window"
+  promptLabel="Type this in the terminal"
+  promptText="ultracode desktop"
+  isCommand={true}
+  copyLabel="Copy"
+  copiedLabel="Copied"
+  expectLabel="What you'll see"
+  expectText="The desktop app opens; if it is not installed yet it downloads the official installer for your system first."
+>
+  Once installed you can also just open it from your normal app list — no need to type this every time.
+</TutorialStep>
+
+<TutorialStep
+  step={3}
+  title="On first launch, recognise these three places"
+  expectLabel="What you'll see"
+  expectText="Tabs at the top, the prompt in the middle, project selection bottom-left. Once those three make sense you can start."
+>
+  The desktop window, the phone, and the browser all show the same thing, so switching surfaces never means relearning.
+  <AnnotatedShot
+    src="/tutorials/desktop-first-run.webp"
+    alt="The desktop app right after first launch"
+    width={1280}
+    height={800}
+    callouts={[
+      { id: 1, x: 18, y: 69, w: 78, h: 10, label: "The middle box is where you speak", pin: "top-left" },
+      { id: 2, x: 20, y: 74.5, w: 8, h: 5, tone: "ice", label: "Role and model live on the left", pin: "bottom-left" },
+    ]}
+  />
+</TutorialStep>
+
+When it is open, start with [the desktop walkthrough](/docs/tutorial-desktop/).
