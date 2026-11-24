@@ -292,17 +292,17 @@ h1#_top {
 
 /* Green region: article body */
 .sl-markdown-content {
-  font-size: calc(0.98rem * 1.46);
+  font-size: calc(0.98rem * 1.30);
   line-height: 1.7;
 }
 
 .sl-markdown-content h2 {
-  font-size: calc(1.4rem * 1.46) !important;
+  font-size: calc(1.4rem * 1.30) !important;
   line-height: 1.24 !important;
 }
 
 .sl-markdown-content h3 {
-  font-size: calc(1.12rem * 1.46) !important;
+  font-size: calc(1.12rem * 1.30) !important;
   line-height: 1.28 !important;
 }
 
