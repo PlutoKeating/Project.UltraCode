@@ -3,14 +3,6 @@ import starlight from "@astrojs/starlight";
 
 export default defineConfig({
   site: "https://ultracode.plutokeating.beer",
-  redirects: {
-    "/docs/getting-started": "/docs/install-desktop/",
-    "/zh/docs/getting-started": "/zh/docs/install-desktop/",
-    "/ar/docs/getting-started": "/ar/docs/install-desktop/",
-    "/fr/docs/getting-started": "/fr/docs/install-desktop/",
-    "/ru/docs/getting-started": "/ru/docs/install-desktop/",
-    "/es/docs/getting-started": "/es/docs/install-desktop/",
-  },
   integrations: [
     starlight({
       title: "UltraCode",
