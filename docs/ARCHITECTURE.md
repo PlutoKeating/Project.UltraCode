@@ -31,7 +31,7 @@ UltraCode 在 `<config>/ultracode/conversation/` 安装单一多触点插件包�
   - `ultracode_checkpoint` 采用 `ctx.storage` 持久化存储，具备进程启动围栏（`BOOT_ID` fencing，防止异常重启后静默误触发旧任务）、单轮授权上限与停滞熔断保护（`MAX_CHECKPOINT_ROUNDS = 25`、`MAX_CHECKPOINT_STALLS = 3`），并在同一会话启用官方 `opencode.goal`（`/goal`）时自动避让以杜绝双重续跑提示。
 - **TUI 入口（`tui.tsx`，ID `ultracode-conversation-ui`）**：
   - 在命令面板（`UltraCode` 分组）注册双开关，调用 `UltraCodeRpc`（带本地回退），并在 `home.footer.status` 提供克制的 `UltraCode` 状态标识。
-- **GUI 入口（`gui-experimental.cjs`，由 `packages/plugin-gui/` 基于 `@opencode/plugin@2.4.0` 与 Vite 预编译为单文件 CJS 并内嵌至二进制）**：
+- **GUI 入口（`gui-experimental.cjs`，由 `packages/plugin-gui/` 基于 `@opencode/plugin@2.4.1` 与 Vite 预编译为单文件 CJS 并内嵌至二进制）**：
   - 在 OpenCode Desktop 界面提供输入框上方的 **UltraCode** `ComposerPill`（两行一键切换开关，且当当前会话存在待执行里程碑时动态展示第 3 行里程碑摘要与一键清除动作）、独立的 **Settings → UltraCode** 页面（`SettingsLayout` + 双 `Switch`）以及命令面板动作，支持联合国 6 种官方语言（`en` / `zh` / `ar` / `fr` / `ru` / `es`）。
 
 模式状态原子持久化至 `$ULTRACODE_HOME/permissions.mode` 与 `$ULTRACODE_HOME/direction.mode`（Linux/macOS 默认 `~/.local/share/ultracode`，Windows 默认 `%LOCALAPPDATA%\ultracode`）。

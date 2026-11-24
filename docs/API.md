@@ -78,4 +78,4 @@ bun run scripts/check-upstreams.ts [--json | --markdown] [--fail-on-outdated] [-
 
 ## 版本基线
 
-UltraCode `v1.1.0`、OpenCode `v2.3.2+`（已验证基线 `v2.4.0`，`@opencode/plugin@2.4.0`）、Superpowers `v7.0.2`、Ralph `v1.3.1` 固定 commit、Playwright MCP `0.0.86`（统一维护于 `packages/config/upstream-baseline.json`）。
+UltraCode `v1.1.0`、OpenCode `v2.3.2+`（已验证基线 `v2.4.1`，`@opencode/plugin@2.4.1`）、Superpowers `v7.0.2`、Ralph `v1.3.1` 固定 commit、Playwright MCP `0.0.86`（统一维护于 `packages/config/upstream-baseline.json`）。

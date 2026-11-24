@@ -18,9 +18,9 @@ describe("declarative upstream baseline", () => {
     expect(baseline.opencode).toEqual({
       repo: "anomalyco/opencode",
       minSupported: "2.3.2",
-      verifiedRelease: "2.4.0",
+      verifiedRelease: "2.4.1",
       pluginSdkPackage: "@opencode/plugin",
-      pluginSdkVersion: "2.4.0",
+      pluginSdkVersion: "2.4.1",
     });
     expect(baseline.superpowers).toEqual({
       repo: "obra/superpowers",
@@ -36,9 +36,9 @@ describe("declarative upstream baseline", () => {
       repo: "Th0rgal/open-ralph-wiggum",
       branch: "main",
       versionLabel: "1.3.1",
-      commit: "53c87ded9fc329b452298f361145d17bf52cac09",
-      tarballUrl: "https://codeload.github.com/Th0rgal/open-ralph-wiggum/tar.gz/53c87ded9fc329b452298f361145d17bf52cac09",
-      sha256: "c7c77bd1ff288f157ed79711a3ac0d1982cbb7c5bd70d017a8308c6c45a3cc20",
+      commit: "7559f267b227d74d82776048697615536c2a6b2a",
+      tarballUrl: "https://codeload.github.com/Th0rgal/open-ralph-wiggum/tar.gz/7559f267b227d74d82776048697615536c2a6b2a",
+      sha256: "98812d14f81731ab4ad6ba6df6d3d5826ea9e773c8dad33fff4c69c75e8153c9",
     });
   });
 
@@ -59,7 +59,7 @@ describe("declarative upstream baseline", () => {
     expect(runtimeSrc).toContain("upstream-baseline.json");
     expect(runtimeSrc).not.toContain('"0.0.86"');
     expect(runtimeSrc).not.toContain('"v7.0.2"');
-    expect(runtimeSrc).not.toContain('"53c87ded9fc329b452298f361145d17bf52cac09"');
+    expect(runtimeSrc).not.toContain('"7559f267b227d74d82776048697615536c2a6b2a"');
 
     expect(componentsSrc).toContain("upstream-baseline.json");
     expect(componentsSrc).not.toContain("0.0.86");

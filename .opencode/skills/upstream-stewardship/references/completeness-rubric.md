@@ -95,11 +95,11 @@ return await tools.automation.create({
     type: "code",
     args: {
       baseline: {
-        opencode: "2.4.0",
-        opencodePlugin: "2.4.0",
+        opencode: "2.4.1",
+        opencodePlugin: "2.4.1",
         superpowers: "v7.0.2",
         playwrightMcp: "0.0.86",
-        ralph: "53c87ded9fc329b452298f361145d17bf52cac09",
+        ralph: "7559f267b227d74d82776048697615536c2a6b2a",
       },
     },
     code: `
