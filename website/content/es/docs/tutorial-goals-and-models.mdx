@@ -1,0 +1,67 @@
+---
+title: "Truco avanzado 2: piloto automático, reanudación al día siguiente y modelos rápidos y profundos"
+description: "Deja que un trabajo de varios pasos avance solo, pausa o reanuda cuando quieras, retómalo mañana y gasta menos combinando un modelo inteligente con uno rápido."
+sidebar:
+  label: "Autopiloto y modelos"
+---
+
+import AnnotatedShot from "@tutorials/AnnotatedShot.astro";
+import CommandBlock from "@tutorials/CommandBlock.astro";
+
+Esta lección reúne tres cosas pequeñas que suelen aparecer juntas: **avanzar solo, reanudar mañana y gastar menos.**
+
+## <span class="uc-step-no">01</span> Dale un objetivo que pueda avanzar solo
+
+`/goal` encaja en trabajos que **se dividen en varios pasos, y cada uno se puede verificar**. Si una sola frase no contiene la petición, ponla en el objetivo.
+
+<CommandBlock
+  label="Inicia un objetivo de varios pasos con esto"
+  command="/goal Turn this sign-up page into something shippable: add an empty-slot hint, add the confirmation card after submitting, re-check the phone layout, and hand it over once everything passes."
+  mono={false}
+  copyLabel="Copiar"
+  copiedLabel="Copiado"
+/>
+
+**Lo que verás:** registra el objetivo y luego pasa de un paso pequeño completado al siguiente hasta que todas las comprobaciones pasan.
+
+## <span class="uc-step-no">02</span> Pausa o reanuda con una línea
+
+También puedes simplemente enviar un mensaje nuevo para interrumpir: tus palabras siempre tienen prioridad sobre el avance automático.
+
+<CommandBlock
+  label="Cuando quieras que se detenga"
+  command="/goal pause"
+  copyLabel="Copiar"
+  copiedLabel="Copiado"
+/>
+
+**Lo que verás:** se detiene en el paso actual en lugar de seguir editando; cambia pause por resume para continuar.
+
+## <span class="uc-step-no">03</span> Cierra el portátil y continúa mañana
+
+El progreso no está atrapado en un registro de chat: se escribe en archivos de traspaso dentro de tu proyecto, así que una ventana nueva o un día nuevo puede retomarlo.
+
+<CommandBlock
+  label="Al día siguiente, esto es todo lo que necesitas"
+  command="Read the handoff notes and continue from yesterday's progress."
+  mono={false}
+  copyLabel="Copiar"
+  copiedLabel="Copiado"
+/>
+
+**Lo que verás:** primero dice qué se terminó, qué se verificó y qué queda; después continúa desde el paso siguiente en lugar de reiniciar.
+
+## <span class="uc-step-no">04</span> Con varios modelos, deja que cada rol haga aquello en lo que destaca
+
+Si solo tienes un modelo configurado, sáltate este paso: cada rol usará simplemente tu modelo actual.
+
+<CommandBlock
+  label="Combina modelos para planificación, código, investigación y comprobaciones visuales"
+  command="/setup-models"
+  copyLabel="Copiar"
+  copiedLabel="Copiado"
+/>
+
+**Lo que verás:** aparece una recomendación breve y una confirmación la aplica. La planificación y la revisión reciben el modelo más potente; las consultas rápidas, el más rápido y económico.
+
+Eso cubre todo el ciclo: aclarar, construir, verificar y mantenerlo a lo largo de varios días. Vuelve a empezar desde [el recorrido por el escritorio](/es/docs/tutorial-desktop/) cuando quieras repasar.

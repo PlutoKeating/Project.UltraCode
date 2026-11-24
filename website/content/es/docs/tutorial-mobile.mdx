@@ -1,0 +1,66 @@
+---
+title: "Control remoto desde el teléfono: dirige desde el sofá"
+description: "El ordenador sigue trabajando mientras respondes preguntas, observas el progreso y lo pausas desde tu teléfono."
+sidebar:
+  label: "Mando móvil"
+---
+
+import AnnotatedShot from "@tutorials/AnnotatedShot.astro";
+import CommandBlock from "@tutorials/CommandBlock.astro";
+
+¿Aún no lo has instalado? Empieza con [la guía de conexión con el teléfono](/es/docs/install-mobile/).
+
+Esta lección resuelve algo muy práctico: **el trabajo ha empezado, pero tienes que alejarte del ordenador.**
+
+No necesitas escritorio remoto ni llevar el portátil encima. Un navegador de teléfono puede retomar el mismo progreso.
+
+## <span class="uc-step-no">01</span> Crea un enlace de vinculación en el ordenador
+
+Copia ese enlace y envíatelo a ti mismo en una ventana de chat del teléfono: es la forma más fiable de pasarlo de un dispositivo a otro.
+
+<CommandBlock
+  label="Escribe esto en la terminal: la única línea que necesitas"
+  command="ultracode pair"
+  copyLabel="Copiar"
+  copiedLabel="Copiado"
+/>
+
+**Lo que verás:** aparece un enlace que puedes abrir directamente. Solo es válido unos minutos.
+
+## <span class="uc-step-no">02</span> Ábrelo en tu teléfono
+
+No hace falta instalar nada en el teléfono. La interfaz se adapta a los toques con el dedo.
+
+<AnnotatedShot
+  src="/tutorials/mobile-home-en.webp"
+  alt="La pantalla del proyecto en el navegador de un teléfono"
+  width={780}
+  height={1688}
+  mobileFrame={true}
+  callouts={[
+    { id: 1, x: 4.8, y: 7.5, w: 91.4, h: 3.6, label: "Los proyectos y las sesiones también están aquí, en el teléfono", pin: "top-left" },
+  ]}
+/>
+
+**Lo que verás:** el mismo proyecto se abre en el navegador de tu teléfono, con el mismo nombre y el mismo progreso.
+
+## <span class="uc-step-no">03</span> Responde sus preguntas directamente en el teléfono
+
+Así nunca se pierden los momentos en los que de verdad se te necesita: elegir un estilo, decidir un enfoque o determinar si continuar.
+
+**Lo que verás:** las tarjetas de opciones se tocan igual de bien en el teléfono y el escritorio se actualiza en cuanto eliges.
+
+## <span class="uc-step-no">04</span> ¿Prefieres menos interrupciones? Cambia los dos interruptores
+
+El otro interruptor es `/approvals`, que controla si pregunta antes de ejecutar una acción. Ambos se mantienen sincronizados entre el ordenador y el teléfono.
+
+<CommandBlock
+  label="Envía este comando en el cuadro de mensaje del teléfono"
+  command="/direction"
+  copyLabel="Copiar"
+  copiedLabel="Copiado"
+/>
+
+**Lo que verás:** se muestra el modo de preguntas actual y cambia al instante: deja que decida por su cuenta o haz que te pregunte cada vez.
+
+Cuando vuelvas al ordenador no hay nada que reconectar. Siguiente: [Fija un plan y verifica la página](/es/docs/tutorial-plan-and-verify/).

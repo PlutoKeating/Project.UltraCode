@@ -1,0 +1,56 @@
+---
+title: "الربط: الهاتف والمتصفح"
+description: "أنشئ رابطاً واحداً على الحاسوب؛ ثم افتحه على هاتفك وتابِع التقدّم نفسه."
+sidebar:
+  label: "ربط الهاتف"
+---
+
+import AnnotatedShot from "@tutorials/AnnotatedShot.astro";
+import CommandBlock from "@tutorials/CommandBlock.astro";
+
+لا حاجة إلى تثبيت أي شيء على الهاتف: **فهو يستعير مساحة العمل من حاسوبك.**
+
+## <span class="uc-step-no">01</span> تأكّد من تثبيت UltraCode على الحاسوب
+
+<CommandBlock
+  label="اكتب هذا في طرفية الحاسوب"
+  command="ultracode pair"
+  copyLabel="نسخ"
+  copiedLabel="تم النسخ"
+/>
+
+إن لم يكن UltraCode مثبتاً على هذا الحاسوب بعد، فابدأ بـ[تثبيت الطرفية + سطح المكتب](/ar/docs/install-desktop/) ثم عُد إلى هنا.
+
+**ما ستراه:** يظهر رابط واحد يمكنك فتحه مباشرة. لكنه يبقى صالحاً لبضع دقائق فقط.
+
+## <span class="uc-step-no">02</span> أرسل الرابط إلى هاتفك وافتحه
+
+يكفي تطبيق محادثة أو ملاحظة أو رسالة بريد إلى نفسك؛ وبعض الطرفيات تعرض أيضاً رمز QR يمكنك مسحه.
+
+<AnnotatedShot
+  src="/tutorials/mobile-home-en.webp"
+  alt="شاشة المشروع داخل متصفح الهاتف"
+  width={780}
+  height={1688}
+  mobileFrame={true}
+  callouts={[
+    { id: 1, x: 4.8, y: 7.5, w: 91.4, h: 3.6, label: "الواجهة نفسها على هاتفك", pin: "top-left" },
+  ]}
+/>
+
+**ما ستراه:** الواجهة نفسها في متصفح هاتفك، مع قائمة المشاريع ذاتها الموجودة على الحاسوب.
+
+## <span class="uc-step-no">03</span> انقر، وتدخّل، وتابِع من الهاتف
+
+<CommandBlock
+  label="الأوامر تعمل في مربع إدخال الهاتف أيضاً"
+  command="/direction"
+  copyLabel="نسخ"
+  copiedLabel="تم النسخ"
+/>
+
+المفتاح الآخر هو `/approvals`، وهو يتحكم في ما إذا كان يسأل قبل تنفيذ أي إجراء. ويبقى الاثنان متزامنين بين الحاسوب والهاتف.
+
+**ما ستراه:** يتبدّل وضع الأسئلة فوراً ويتبع عرض الحاسوب التغيير نفسه.
+
+أتممت الربط؟ تابع مع [التحكم من الهاتف](/ar/docs/tutorial-mobile/).

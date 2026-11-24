@@ -1,0 +1,65 @@
+---
+title: "Astuce 1 : verrouiller un plan, puis vérifier la page"
+description: "S’accorder d’abord sur l’approche en lecture seule, construire ensuite, puis le laisser cliquer dans la vraie page et faire valider le résultat par un relecteur indépendant."
+sidebar:
+  label: "Plan puis vérification"
+---
+
+import AnnotatedShot from "@tutorials/AnnotatedShot.astro";
+import CommandBlock from "@tutorials/CommandBlock.astro";
+
+Les deux premières leçons ont couvert **comment démarrer**. Celle-ci porte sur **comment éviter le travail inutile**.
+
+Trois mouvements : s’accorder sur le plan, le construire, puis le faire se vérifier lui-même.
+
+## <span class="uc-step-no">01</span> Basculer d’abord sur le rôle de planification seule
+
+Appuyez sur `Shift + Tab` pour basculer. L’erreur la plus coûteuse est de commencer à modifier avant que l’approche soit arrêtée — cette étape l’évite précisément.
+
+<AnnotatedShot
+  src="/tutorials/terminal-plan-mode.webp"
+  alt="Terminal après bascule sur UltraPlan"
+  width={1400}
+  height={520}
+  callouts={[
+    { id: 1, x: 5.2, y: 68.8, w: 14.4, h: 11.2, label: "UltraPlan ici signifie planification en lecture seule", pin: "top-left" },
+  ]}
+/>
+
+**Ce que vous verrez :** le rôle en bas passe d’UltraBuild à UltraPlan. Dans ce rôle, il ne fait que lire et écrire des plans ; vos fichiers restent intacts.
+
+## <span class="uc-step-no">02</span> Lui faire expliciter les risques et les compromis
+
+Le résultat ici n’est pas du code ; c’est **le standard sur lequel vous vous êtes mis d’accord**. Tout ce qui suit est jugé à son aune.
+
+<CommandBlock
+  label="Envoyez cette phrase"
+  command="Do not write code yet. Tell me how many steps this sign-up page needs, how each step will be verified, and where it is easy to get wrong. List the open questions for me."
+  mono={false}
+  copyLabel="Copier"
+  copiedLabel="Copié"
+/>
+
+**Ce que vous verrez :** un plan étape par étape avec des critères d’acceptation, plus les questions qui demandent vraiment votre décision.
+
+## <span class="uc-step-no">03</span> Valider, puis rebasculer et construire
+
+Continuez à affiner tant que vous n’êtes pas satisfait. Une fois que c’est le cas, rebasculer l’amène à suivre le plan au lieu d’improviser.
+
+**Ce que vous verrez :** le rôle revient à UltraBuild et il implémente le plan validé étape par étape.
+
+## <span class="uc-step-no">04</span> Le laisser cliquer dans la vraie page
+
+L’auto-vérification est l’endroit où la qualité se dégrade discrètement, donc ce que vous voulez ici, c’est **que quelqu’un d’autre vérifie**. C’est le fonctionnement par défaut d’UltraCode.
+
+<CommandBlock
+  label="Demandez une vérification et une revue indépendante"
+  command="When it is built, open a real browser and click through both the desktop and phone layouts: buttons work, nothing overflows, no console errors. Then have an independent reviewer check it and fix anything it finds."
+  mono={false}
+  copyLabel="Copier"
+  copiedLabel="Copié"
+/>
+
+**Ce que vous verrez :** il manipule réellement la page et prend des captures d’écran, corrige ce qu’il trouve ; puis un rôle de relecture distinct rend un verdict de réussite ou d’échec.
+
+La dernière leçon porte sur les tâches longues : [autopilote, reprise le lendemain et association de modèles rapides et profonds](/fr/docs/tutorial-goals-and-models/).

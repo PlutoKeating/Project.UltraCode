@@ -1,0 +1,65 @@
+---
+title: "حيلة متقدمة 1: ثبّت المخطط، ثم تحقّق من الصفحة"
+description: "اتفق على المقاربة للقراءة فقط أولاً، ثم ابنِ، ثم دعه ينقر عبر الصفحة الحقيقية ويحصل على موافقة مراجع مستقل."
+sidebar:
+  label: "الخطة ثم التحقق"
+---
+
+import AnnotatedShot from "@tutorials/AnnotatedShot.astro";
+import CommandBlock from "@tutorials/CommandBlock.astro";
+
+غطّى الدرسان الأولان **كيف تبدأ**. وهذا الدرس عن **كيف تتجنب العمل الضائع**.
+
+ثلاث حركات: اتفق على الخطة، ثم ابنِها، ثم اجعله يتحقق منها بنفسه.
+
+## <span class="uc-step-no">01</span> بدّل إلى دور التخطيط فقط أولاً
+
+اضغط `Shift + Tab` للتبديل. أغلى خطأ هو أن تبدأ التعديل قبل أن تستقر المقاربة — وهذه الخطوة تمنع ذلك تحديداً.
+
+<AnnotatedShot
+  src="/tutorials/terminal-plan-mode.webp"
+  alt="الطرفية بعد التبديل إلى UltraPlan"
+  width={1400}
+  height={520}
+  callouts={[
+    { id: 1, x: 5.2, y: 68.8, w: 14.4, h: 11.2, label: "UltraPlan هنا تعني تخطيطاً للقراءة فقط", pin: "top-left" },
+  ]}
+/>
+
+**ما ستراه:** يتغير الدور في الأسفل من UltraBuild إلى UltraPlan. وفي ذلك الدور يقرأ الخطط ويكتبها فقط؛ وتبقى ملفاتك كما هي.
+
+## <span class="uc-step-no">02</span> دعه يوضّح المخاطر والمفاضلات
+
+المخرجات هنا ليست شيفرة؛ إنها **المعيار الذي اتفقتما عليه**. وكل ما يأتي لاحقاً يُقاس عليه.
+
+<CommandBlock
+  label="أرسل هذه الجملة"
+  command="Do not write code yet. Tell me how many steps this sign-up page needs, how each step will be verified, and where it is easy to get wrong. List the open questions for me."
+  mono={false}
+  copyLabel="نسخ"
+  copiedLabel="تم النسخ"
+/>
+
+**ما ستراه:** خطة خطوة بخطوة مع فحوص القبول، إضافة إلى الأسئلة التي تحتاج قرارك فعلاً.
+
+## <span class="uc-step-no">03</span> وافق عليها، ثم بدّل وابدأ البناء
+
+واصل التحسين ما دمت غير راضٍ. وحين ترضى، فإن التبديل يجعله يتبع الخطة بدل الارتجال.
+
+**ما ستراه:** يعود الدور إلى UltraBuild، وينفّذ الخطة المتفق عليها خطوة بخطوة.
+
+## <span class="uc-step-no">04</span> دعه ينقر عبر الصفحة الحقيقية
+
+التحقق الذاتي هو حيث تتسرب الجودة بهدوء، لذا ما تريده هنا هو **أن يتحقق شخص آخر**. وهذه هي الطريقة الافتراضية التي يعمل بها UltraCode.
+
+<CommandBlock
+  label="اطلب التحقق ومراجعة مستقلة"
+  command="When it is built, open a real browser and click through both the desktop and phone layouts: buttons work, nothing overflows, no console errors. Then have an independent reviewer check it and fix anything it finds."
+  mono={false}
+  copyLabel="نسخ"
+  copiedLabel="تم النسخ"
+/>
+
+**ما ستراه:** يتفاعل فعلياً مع الصفحة ويلتقط لقطات شاشة، ويصلح ما يجده؛ ثم يعيد دور مراجع منفصل حكماً بالنجاح أو الفشل.
+
+الدرس الأخير عن المهام الطويلة: [التشغيل التلقائي، والاستئناف في اليوم التالي، ودمج النماذج السريعة والعميقة](/ar/docs/tutorial-goals-and-models/).

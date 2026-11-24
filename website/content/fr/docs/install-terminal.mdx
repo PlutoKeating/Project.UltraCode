@@ -1,0 +1,63 @@
+---
+title: "Installer : Terminal seul (TUI)"
+description: "Pour les développeurs et celles et ceux qui travaillent au clavier : une seule ligne installe l’interface terminal, sans fenêtre de bureau."
+sidebar:
+  label: "Terminal seul"
+---
+
+import AnnotatedShot from "@tutorials/AnnotatedShot.astro";
+import CommandBlock from "@tutorials/CommandBlock.astro";
+
+Si l’interface terminal vous suffit : **installez-la une fois et utilisez-la dans n’importe quel dossier**, sans fenêtre de bureau. Copiez la ligne correspondant à votre ordinateur et collez-la dans un terminal (PowerShell sous Windows).
+
+## <span class="uc-step-no">01</span> Installer en une seule ligne
+
+<CommandBlock
+  title="macOS / Linux"
+  command="curl -fsSL https://ultracode.plutokeating.beer/install.sh | bash"
+  copyLabel="Copier"
+  copiedLabel="Copié"
+/>
+
+<CommandBlock
+  title="Windows"
+  command="irm https://ultracode.plutokeating.beer/install.ps1 | iex"
+  copyLabel="Copier"
+  copiedLabel="Copié"
+/>
+
+Les deux fenêtres font la même chose. Si la fenêtre actuelle ne trouve pas `ultracode` ensuite, fermez et rouvrez le terminal.
+
+<AnnotatedShot
+  src="/tutorials/terminal-install.webp"
+  alt="L’écran de confirmation une fois l’installation terminée"
+  width={439}
+  height={638}
+  callouts={[
+    { id: 1, x: 4.4, y: 52.2, w: 36.4, h: 11.6, label: "Ready signifie que l’installation a réussi", pin: "top-left" },
+    { id: 2, x: 12.6, y: 68.4, w: 79.4, h: 28.0, tone: "ice", label: "Les trois commandes que vous utiliserez", pin: "bottom-left" },
+  ]}
+/>
+
+**Ce que vous verrez :** la mise à jour d’OpenCode, l’installation d’UltraCode, la fin de la configuration, puis le numéro de version et Ready.
+
+## <span class="uc-step-no">02</span> L’ouvrir dans le dossier sur lequel vous voulez travailler
+
+<CommandBlock
+  label="Entrez d’abord dans le dossier, puis lancez"
+  command="ultracode"
+  copyLabel="Copier"
+  copiedLabel="Copié"
+/>
+
+Pour travailler ailleurs, relancez-le dans ce dossier-là. Il ne touche jamais à quoi que ce soit en dehors.
+
+**Ce que vous verrez :** une zone de saisie apparaît au centre et le nom du dossier courant s’affiche en bas.
+
+## <span class="uc-step-no">03</span> Vérifier qu’il voit bien votre dossier
+
+Un mauvais chemin signifie que vous l’avez ouvert ailleurs — quittez et rouvrez au bon endroit.
+
+**Ce que vous verrez :** le chemin en bas correspond au dossier voulu, avec UltraCode à droite.
+
+Installé ? Continuez avec [le terminal sans peur](/fr/docs/tutorial-terminal/). Vous voulez la fenêtre de bureau plus tard ? Lancez `ultracode desktop` quand vous voulez — aucune réinstallation nécessaire.

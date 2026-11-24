@@ -1,0 +1,56 @@
+---
+title: "Connecter : téléphone et navigateur"
+description: "Générez un seul lien sur l’ordinateur ; ouvrez-le sur votre téléphone et reprenez la même progression."
+sidebar:
+  label: "Connexion mobile"
+---
+
+import AnnotatedShot from "@tutorials/AnnotatedShot.astro";
+import CommandBlock from "@tutorials/CommandBlock.astro";
+
+Rien n’est à installer sur le téléphone : **il emprunte l’atelier de votre ordinateur.**
+
+## <span class="uc-step-no">01</span> Vérifier qu’UltraCode est installé sur l’ordinateur
+
+<CommandBlock
+  label="Tapez ceci dans le terminal de l’ordinateur"
+  command="ultracode pair"
+  copyLabel="Copier"
+  copiedLabel="Copié"
+/>
+
+Si UltraCode n’est pas encore installé sur cet ordinateur, faites d’abord [l’installation terminal + bureau](/fr/docs/install-desktop/), puis revenez ici.
+
+**Ce que vous verrez :** un lien apparaît, que vous pouvez ouvrir directement. Il ne reste valide que quelques minutes.
+
+## <span class="uc-step-no">02</span> Envoyer le lien sur votre téléphone et l’ouvrir
+
+Une messagerie, une note ou un e-mail à vous-même font l’affaire ; certains terminaux affichent aussi un QR code à scanner.
+
+<AnnotatedShot
+  src="/tutorials/mobile-home-en.webp"
+  alt="L’écran du projet dans le navigateur d’un téléphone"
+  width={780}
+  height={1688}
+  mobileFrame={true}
+  callouts={[
+    { id: 1, x: 4.8, y: 7.5, w: 91.4, h: 3.6, label: "La même interface sur votre téléphone", pin: "top-left" },
+  ]}
+/>
+
+**Ce que vous verrez :** la même interface dans le navigateur de votre téléphone, avec la même liste de projets que sur l’ordinateur.
+
+## <span class="uc-step-no">03</span> Toucher, interrompre et continuer depuis le téléphone
+
+<CommandBlock
+  label="Les commandes marchent aussi dans la zone de saisie du téléphone"
+  command="/direction"
+  copyLabel="Copier"
+  copiedLabel="Copié"
+/>
+
+L’autre interrupteur est `/approvals`, qui décide s’il demande avant d’exécuter une action. Les deux restent synchronisés entre l’ordinateur et le téléphone.
+
+**Ce que vous verrez :** le mode de questionnement bascule immédiatement et l’affichage de l’ordinateur suit.
+
+Connecté ? Continuez avec [la télécommande mobile](/fr/docs/tutorial-mobile/).

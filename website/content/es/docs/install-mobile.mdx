@@ -1,0 +1,56 @@
+---
+title: "Conectar: teléfono y navegador"
+description: "Genera un enlace en el ordenador; ábrelo en tu teléfono y retoma el mismo progreso."
+sidebar:
+  label: "Conectar móvil"
+---
+
+import AnnotatedShot from "@tutorials/AnnotatedShot.astro";
+import CommandBlock from "@tutorials/CommandBlock.astro";
+
+No hace falta instalar nada en el teléfono: **toma prestado el entorno de trabajo de tu ordenador.**
+
+## <span class="uc-step-no">01</span> Asegúrate de que UltraCode está instalado en el ordenador
+
+<CommandBlock
+  label="Escribe esto en la terminal del ordenador"
+  command="ultracode pair"
+  copyLabel="Copiar"
+  copiedLabel="Copiado"
+/>
+
+Si UltraCode todavía no está instalado en este ordenador, haz primero [la instalación de terminal + escritorio](/es/docs/install-desktop/) y luego vuelve.
+
+**Lo que verás:** aparece un enlace que puedes abrir directamente. Solo es válido unos minutos.
+
+## <span class="uc-step-no">02</span> Envía el enlace a tu teléfono y ábrelo
+
+Cualquier vía sirve: una aplicación de mensajería, una nota o un correo enviado a ti mismo; algunas terminales también muestran un código QR que puedes escanear.
+
+<AnnotatedShot
+  src="/tutorials/mobile-home-en.webp"
+  alt="La pantalla del proyecto en el navegador de un teléfono"
+  width={780}
+  height={1688}
+  mobileFrame={true}
+  callouts={[
+    { id: 1, x: 4.8, y: 7.5, w: 91.4, h: 3.6, label: "La misma interfaz en tu teléfono", pin: "top-left" },
+  ]}
+/>
+
+**Lo que verás:** la misma interfaz en el navegador de tu teléfono, con la misma lista de proyectos que el ordenador.
+
+## <span class="uc-step-no">03</span> Toca, interrumpe y continúa desde el teléfono
+
+<CommandBlock
+  label="Los comandos también funcionan en el cuadro de mensaje del teléfono"
+  command="/direction"
+  copyLabel="Copiar"
+  copiedLabel="Copiado"
+/>
+
+El otro interruptor es `/approvals`, que controla si pregunta antes de ejecutar una acción. Ambos se mantienen sincronizados entre el ordenador y el teléfono.
+
+**Lo que verás:** el modo de preguntas cambia al instante y la pantalla del ordenador se actualiza.
+
+¿Ya está conectado? Continúa con [el control remoto desde el teléfono](/es/docs/tutorial-mobile/).

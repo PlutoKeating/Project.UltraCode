@@ -1,0 +1,63 @@
+---
+title: "Instalar: solo terminal (TUI)"
+description: "Para desarrolladores y flujos de trabajo con teclado: una línea instala la interfaz de terminal, sin ventana de escritorio."
+sidebar:
+  label: "Solo terminal"
+---
+
+import AnnotatedShot from "@tutorials/AnnotatedShot.astro";
+import CommandBlock from "@tutorials/CommandBlock.astro";
+
+Si lo único que quieres es la interfaz de terminal: **instálala una vez y úsala dentro de cualquier carpeta**, sin ventana de escritorio. Copia la línea de tu equipo y pégala en una terminal (PowerShell en Windows).
+
+## <span class="uc-step-no">01</span> Instala con una sola línea
+
+<CommandBlock
+  title="macOS / Linux"
+  command="curl -fsSL https://ultracode.plutokeating.beer/install.sh | bash"
+  copyLabel="Copiar"
+  copiedLabel="Copiado"
+/>
+
+<CommandBlock
+  title="Windows"
+  command="irm https://ultracode.plutokeating.beer/install.ps1 | iex"
+  copyLabel="Copiar"
+  copiedLabel="Copiado"
+/>
+
+Ambos cuadros hacen lo mismo. Si después la ventana actual no encuentra `ultracode`, cierra y vuelve a abrir la terminal.
+
+<AnnotatedShot
+  src="/tutorials/terminal-install.webp"
+  alt="La pantalla con Ready cuando termina la instalación"
+  width={439}
+  height={638}
+  callouts={[
+    { id: 1, x: 4.4, y: 52.2, w: 36.4, h: 11.6, label: "Que aparezca Ready significa que la instalación funcionó", pin: "top-left" },
+    { id: 2, x: 12.6, y: 68.4, w: 79.4, h: 28.0, tone: "ice", label: "Los tres comandos que usarás", pin: "bottom-left" },
+  ]}
+/>
+
+**Lo que verás:** actualiza OpenCode, instala UltraCode, termina la configuración y acaba con la versión y Ready.
+
+## <span class="uc-step-no">02</span> Ábrela dentro de la carpeta en la que quieras trabajar
+
+<CommandBlock
+  label="Entra primero en la carpeta y luego ejecuta"
+  command="ultracode"
+  copyLabel="Copiar"
+  copiedLabel="Copiado"
+/>
+
+Para trabajar en otro sitio, ejecútala de nuevo dentro de esa carpeta. Nunca toca nada fuera de ella.
+
+**Lo que verás:** aparece un indicador en el centro y el nombre de la carpeta actual queda en la parte inferior.
+
+## <span class="uc-step-no">03</span> Confirma que ve tu carpeta
+
+Si la ruta es incorrecta, la abriste en otro sitio: sal y vuelve a abrirla en el lugar correcto.
+
+**Lo que verás:** la ruta de la parte inferior coincide con la carpeta que querías, con UltraCode a la derecha.
+
+¿Ya está instalado? Continúa con [el modo terminal sin miedo](/es/docs/tutorial-terminal/). ¿Prefieres la ventana de escritorio más adelante? Ejecuta `ultracode desktop` cuando quieras: no hace falta reinstalar.

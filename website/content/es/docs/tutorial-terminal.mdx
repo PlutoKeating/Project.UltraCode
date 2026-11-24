@@ -1,0 +1,78 @@
+---
+title: "Modo terminal sin miedo: ordena una carpeta conversando"
+description: "La ventana negra es solo un cuadro de chat. En una lección, convierte notas de reunión desordenadas en una lista de acciones clara."
+sidebar:
+  label: "Terminal sin miedo"
+---
+
+import AnnotatedShot from "@tutorials/AnnotatedShot.astro";
+import CommandBlock from "@tutorials/CommandBlock.astro";
+
+¿Aún no lo has instalado? Empieza con [la guía de instalación del modo terminal](/es/docs/install-terminal/).
+
+La terminal suena intimidante, pero en realidad solo hay una cosa delante de ti: **un cuadro en el que puedes escribir.**
+
+En esta lección la usamos para convertir una carpeta desordenada de notas de reunión en una lista de tareas clara.
+
+## <span class="uc-step-no">01</span> Ábrela y mira la «ventana negra» una vez
+
+Ábrela dentro de la carpeta en la que quieras trabajar. Las líneas de los bordes son solo marcos: no hay ningún comando que tengas que escribir.
+
+<AnnotatedShot
+  src="/tutorials/terminal-welcome.webp"
+  alt="Vista de la terminal con el indicador en el centro y la línea de estado de UltraCode en la parte inferior"
+  width={1400}
+  height={520}
+  callouts={[
+    { id: 1, x: 5.0, y: 51.6, w: 80.0, h: 31.0, label: "Habla aquí, exactamente como en una aplicación de chat", pin: "top-left" },
+    { id: 2, x: 4.0, y: 85.2, w: 80.4, h: 10.4, tone: "ice", label: "La parte inferior muestra la carpeta, UltraCode y los atajos", pin: "bottom-left" },
+  ]}
+/>
+
+**Lo que verás:** un indicador en el centro, el nombre de tu carpeta actual en la parte inferior y la etiqueta UltraCode a la derecha. El cursor parpadeante solo espera a que hables.
+
+## <span class="uc-step-no">02</span> Expresa el resultado en una frase
+
+La mitad importante es el final: **di qué archivos pueden cambiar y cuáles deben quedar intactos.** Eso es lo que hace seguro dejarle actuar.
+
+<CommandBlock
+  label="Envía esta frase"
+  command="Turn the meeting notes in this folder into a clear action list: group by owner, say what to do and when it is due, and save it as a new file without deleting the originals."
+  mono={false}
+  copyLabel="Copiar"
+  copiedLabel="Copiado"
+/>
+
+**Lo que verás:** primero revisa la carpeta, te cuenta cómo piensa organizarlo y solo entonces empieza a trabajar.
+
+## <span class="uc-step-no">03</span> Cuando necesites una acción más, abre el menú de comandos
+
+¿Ves `ctrl+p commands` en la parte inferior? Ese es el menú de comandos. No tienes que memorizar ningún comando: abre el menú y elige.
+
+<AnnotatedShot
+  src="/tutorials/terminal-commands.webp"
+  alt="Menú de comandos de la terminal abierto con ctrl+p"
+  width={1500}
+  height={760}
+  callouts={[
+    { id: 1, x: 17.0, y: 6.4, w: 60.0, h: 85.6, label: "El menú de comandos en el que puedes hacer clic", pin: "top-left" },
+  ]}
+/>
+
+**Lo que verás:** aparece una lista de comandos en los que puedes hacer clic en el centro: cambiar de modelo, abrir los ajustes, etc. Muévete con las flechas y pulsa Enter.
+
+## <span class="uc-step-no">04</span> Sigue hablando en lugar de empezar de cero
+
+El modo terminal y la aplicación de escritorio son la misma capacidad en una ventana distinta. Usa el que te resulte más natural.
+
+<CommandBlock
+  label="Ajústalo así"
+  command="Tighten the list: only what is still open this week, sorted by the nearest due date."
+  mono={false}
+  copyLabel="Copiar"
+  copiedLabel="Copiado"
+/>
+
+**Lo que verás:** solo cambia esta lista; las notas que ya había organizado no se rehacen desde cero.
+
+¿Quieres que a continuación compruebe una interfaz real? Continúa con [Fija un plan y verifica la página](/es/docs/tutorial-plan-and-verify/).

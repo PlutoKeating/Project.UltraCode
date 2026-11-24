@@ -1,0 +1,45 @@
+---
+title: "Instalar: terminal + escritorio"
+description: "Recomendado para la mayoría: un solo comando instala UltraCode y después añades la ventana de escritorio."
+sidebar:
+  label: "Terminal + escritorio"
+---
+
+import CommandBlock from "@tutorials/CommandBlock.astro";
+
+Recomendado para la mayoría: **instala UltraCode primero y después añade la ventana de escritorio.** Copia la línea de tu equipo y pégala en una terminal (PowerShell en Windows).
+
+## <span class="uc-step-no">01</span> Instala UltraCode
+
+<CommandBlock
+  title="macOS / Linux"
+  command="curl -fsSL https://ultracode.plutokeating.beer/install.sh | bash"
+  copyLabel="Copiar"
+  copiedLabel="Copiado"
+/>
+
+<CommandBlock
+  title="Windows"
+  command="irm https://ultracode.plutokeating.beer/install.ps1 | iex"
+  copyLabel="Copiar"
+  copiedLabel="Copiado"
+/>
+
+Ambos cuadros hacen lo mismo: preparan OpenCode oficial, el binario de UltraCode y el entorno de ejecución que necesita. No hace falta instalar nada más antes. Si después la ventana actual no encuentra `ultracode`, cierra y vuelve a abrir la terminal antes del siguiente paso.
+
+**Lo que verás:** actualiza OpenCode, instala UltraCode, termina la configuración y acaba con la versión y Ready.
+
+## <span class="uc-step-no">02</span> Añade la ventana de escritorio
+
+<CommandBlock
+  label="Escribe esto en la terminal"
+  command="ultracode desktop"
+  copyLabel="Copiar"
+  copiedLabel="Copiado"
+/>
+
+En la primera ejecución descarga el instalador oficial de escritorio: en macOS y Windows se abre una ventana de instalación del sistema que solo tienes que seguir; en Linux se abre directamente. Después también puedes abrirlo desde la lista de aplicaciones habitual.
+
+**Lo que verás:** se abre la aplicación de escritorio; la primera vez descarga el instalador oficial para tu sistema y, a partir de ahí, solo se inicia.
+
+¿Ya está instalado? Empieza con [el recorrido por el escritorio](/es/docs/tutorial-desktop/). ¿Solo quieres la terminal, sin ventana de escritorio? Consulta [la instalación solo para terminal](/es/docs/install-terminal/).

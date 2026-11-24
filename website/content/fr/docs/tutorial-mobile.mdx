@@ -1,0 +1,66 @@
+---
+title: "Télécommande mobile : piloter depuis le canapé"
+description: "L’ordinateur continue de travailler pendant que vous répondez aux questions, suivez la progression et mettez en pause depuis votre téléphone."
+sidebar:
+  label: "Télécommande mobile"
+---
+
+import AnnotatedShot from "@tutorials/AnnotatedShot.astro";
+import CommandBlock from "@tutorials/CommandBlock.astro";
+
+Pas encore installé ? Commencez par [le guide d’installation pour téléphone](/fr/docs/install-mobile/).
+
+Cette leçon règle un problème très concret : **le travail a commencé, mais vous devez quitter le bureau.**
+
+Pas besoin de bureau à distance, ni de transporter l’ordinateur portable. Le navigateur d’un téléphone peut reprendre la même progression.
+
+## <span class="uc-step-no">01</span> Créer un lien d’association sur l’ordinateur
+
+Copiez ce lien et envoyez-le à vous-même dans une messagerie sur votre téléphone — c’est la façon la plus fiable de le transférer.
+
+<CommandBlock
+  label="Tapez ceci dans le terminal — la seule ligne dont vous avez besoin"
+  command="ultracode pair"
+  copyLabel="Copier"
+  copiedLabel="Copié"
+/>
+
+**Ce que vous verrez :** un lien apparaît, que vous pouvez ouvrir directement. Il ne reste valide que quelques minutes.
+
+## <span class="uc-step-no">02</span> L’ouvrir sur votre téléphone
+
+Rien n’est à installer sur le téléphone. L’interface se réorganise pour se manipuler du bout des doigts.
+
+<AnnotatedShot
+  src="/tutorials/mobile-home-en.webp"
+  alt="L’écran du projet dans le navigateur d’un téléphone"
+  width={780}
+  height={1688}
+  mobileFrame={true}
+  callouts={[
+    { id: 1, x: 4.8, y: 7.5, w: 91.4, h: 3.6, label: "Les projets et les sessions sont là aussi, sur le téléphone", pin: "top-left" },
+  ]}
+/>
+
+**Ce que vous verrez :** le même projet s’ouvre dans le navigateur de votre téléphone, avec le même nom de projet et la même progression.
+
+## <span class="uc-step-no">03</span> Répondre à ses questions directement sur le téléphone
+
+Ainsi, les moments où vous êtes vraiment nécessaire ne passent jamais à la trappe : choisir un style, trancher une approche, décider de continuer ou non.
+
+**Ce que vous verrez :** les cartes à choix se touchent tout aussi bien sur un téléphone, et le bureau se met à jour dès que vous choisissez.
+
+## <span class="uc-step-no">04</span> Moins d’interruptions ? Basculez les deux interrupteurs
+
+L’autre interrupteur est `/approvals`, qui décide s’il demande avant d’exécuter une action. Les deux restent synchronisés entre l’ordinateur et le téléphone.
+
+<CommandBlock
+  label="Envoyez cette commande dans la zone de saisie du téléphone"
+  command="/direction"
+  copyLabel="Copier"
+  copiedLabel="Copié"
+/>
+
+**Ce que vous verrez :** le mode de questionnement actuel s’affiche et bascule immédiatement : soit il décide seul, soit il vous demande à chaque fois.
+
+De retour au bureau, il n’y a rien à reconnecter. Ensuite : [verrouiller un plan, puis vérifier la page](/fr/docs/tutorial-plan-and-verify/).

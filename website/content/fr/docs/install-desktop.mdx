@@ -1,0 +1,45 @@
+---
+title: "Installer : Terminal + bureau"
+description: "Recommandé pour la plupart des gens : une seule commande installe UltraCode, puis vous ajoutez la fenêtre de bureau officielle."
+sidebar:
+  label: "Terminal + bureau"
+---
+
+import CommandBlock from "@tutorials/CommandBlock.astro";
+
+Recommandé pour la plupart des gens : **installez d’abord UltraCode, puis ajoutez la fenêtre de bureau.** Copiez la ligne correspondant à votre ordinateur et collez-la dans un terminal (PowerShell sous Windows).
+
+## <span class="uc-step-no">01</span> Installer UltraCode
+
+<CommandBlock
+  title="macOS / Linux"
+  command="curl -fsSL https://ultracode.plutokeating.beer/install.sh | bash"
+  copyLabel="Copier"
+  copiedLabel="Copié"
+/>
+
+<CommandBlock
+  title="Windows"
+  command="irm https://ultracode.plutokeating.beer/install.ps1 | iex"
+  copyLabel="Copier"
+  copiedLabel="Copié"
+/>
+
+Les deux fenêtres font exactement la même chose : elles préparent OpenCode officiel, le binaire UltraCode et l’environnement d’exécution dont il a besoin. Rien d’autre n’est à installer au préalable. Si la fenêtre actuelle ne trouve pas `ultracode` ensuite, fermez et rouvrez le terminal avant de passer à l’étape suivante.
+
+**Ce que vous verrez :** la mise à jour d’OpenCode, l’installation d’UltraCode, la fin de la configuration, puis le numéro de version et Ready.
+
+## <span class="uc-step-no">02</span> Ajouter la fenêtre de bureau
+
+<CommandBlock
+  label="Tapez ceci dans le terminal"
+  command="ultracode desktop"
+  copyLabel="Copier"
+  copiedLabel="Copié"
+/>
+
+Au premier lancement, il télécharge l’installateur de bureau officiel : sur macOS et Windows, une fenêtre d’installation système s’ouvre et il suffit de la suivre ; sur Linux, il se lance directement. Ensuite, vous pouvez aussi le démarrer depuis votre liste d’applications habituelle.
+
+**Ce que vous verrez :** l’application de bureau s’ouvre ; la première fois, elle télécharge l’installateur officiel de votre système, et les fois suivantes, elle se contente de démarrer.
+
+Installé ? Poursuivez avec [le parcours bureau](/fr/docs/tutorial-desktop/). Vous préférez le terminal seul, sans fenêtre de bureau ? Voir [l’installation terminal seul](/fr/docs/install-terminal/).

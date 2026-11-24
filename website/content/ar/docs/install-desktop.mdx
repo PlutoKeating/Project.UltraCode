@@ -1,0 +1,45 @@
+---
+title: "التثبيت: الطرفية + سطح المكتب"
+description: "الأنسب لمعظم الناس: أمر واحد يثبّت UltraCode، ثم تضيف نافذة سطح المكتب الرسمية."
+sidebar:
+  label: "الطرفية + سطح المكتب"
+---
+
+import CommandBlock from "@tutorials/CommandBlock.astro";
+
+الأنسب لمعظم الناس: **ثبّت UltraCode أولاً، ثم أضف نافذة سطح المكتب.** انسخ السطر الموافق لحاسوبك والصقه في الطرفية (PowerShell على Windows).
+
+## <span class="uc-step-no">01</span> ثبّت UltraCode
+
+<CommandBlock
+  title="macOS / Linux"
+  command="curl -fsSL https://ultracode.plutokeating.beer/install.sh | bash"
+  copyLabel="نسخ"
+  copiedLabel="تم النسخ"
+/>
+
+<CommandBlock
+  title="Windows"
+  command="irm https://ultracode.plutokeating.beer/install.ps1 | iex"
+  copyLabel="نسخ"
+  copiedLabel="تم النسخ"
+/>
+
+الصندوقان يفعلان الشيء نفسه: يجهّزان OpenCode الرسمي، وثنائي UltraCode، وبيئة التشغيل التي يحتاجها. لا شيء آخر يلزم تثبيته مسبقاً. وإن لم تتعرّف النافذة الحالية على `ultracode` بعد ذلك، فأغلق الطرفية وأعد فتحها قبل الخطوة التالية.
+
+**ما ستراه:** يحدّث OpenCode، ويثبّت UltraCode، ويكمل الإعداد، وينتهي بعرض الإصدار مع Ready.
+
+## <span class="uc-step-no">02</span> أضف نافذة سطح المكتب
+
+<CommandBlock
+  label="اكتب هذا في الطرفية"
+  command="ultracode desktop"
+  copyLabel="نسخ"
+  copiedLabel="تم النسخ"
+/>
+
+عند أول تشغيل ينزّل مثبّت سطح المكتب الرسمي: على macOS وWindows تُفتح نافذة تثبيت من النظام تنقر فيها حتى الإتمام؛ وعلى Linux يُفتح مباشرة. وبعد ذلك يمكنك تشغيله أيضاً من قائمة التطبيقات المعتادة.
+
+**ما ستراه:** يفتح تطبيق سطح المكتب؛ في المرة الأولى ينزّل المثبّت الرسمي لنظامك، وبعدها يفتح مباشرة.
+
+أتممت التثبيت؟ ابدأ من [جولة سطح المكتب](/ar/docs/tutorial-desktop/). تريد الطرفية فقط بلا نافذة سطح مكتب؟ راجع [تثبيت الطرفية فقط](/ar/docs/install-terminal/).

@@ -28,6 +28,8 @@ const outDir = join(repoRoot, "website", "public", "tutorials");
 
 const args = process.argv.slice(2);
 const only = args.includes("--only") ? args[args.indexOf("--only") + 1] : "all";
+const CAPTURE_LOCALE = process.env.ULTRACODE_CAPTURE_LOCALE || "zh-CN";
+const CAPTURE_EN = CAPTURE_LOCALE.toLowerCase().startsWith("en");
 
 const OPENCODE_BIN =
   process.env.ULTRACODE_OPENCODE_BIN ||
@@ -75,7 +77,7 @@ async function resolveChrome() {
 async function makeSandbox() {
   const root = await mkdtemp(join(tmpdir(), "ultracode-shots-"));
   const home = join(root, "home");
-  const project = join(home, "周末读书会报名页");
+  const project = join(home, CAPTURE_EN ? "Weekend Book Club" : "周末读书会报名页");
   await mkdir(project, { recursive: true });
   await writeFile(
     join(project, "README.md"),
@@ -318,7 +320,7 @@ async function captureTuiScreen({ chromium, chrome, harness, box, session, name,
 
 /* ------------------------------------------------------------------ GUI ---- */
 
-async function guiContext({ chromium, chrome, server, locale = "zh-CN", viewport }) {
+async function guiContext({ chromium, chrome, server, locale = CAPTURE_LOCALE, viewport }) {
   const browser = await chromium.launch({ executablePath: chrome, headless: true });
   const context = await browser.newContext({
     viewport,
@@ -330,27 +332,27 @@ async function guiContext({ chromium, chrome, server, locale = "zh-CN", viewport
   const page = await context.newPage();
   await page.goto(server.url, { waitUntil: "networkidle" });
   await page.waitForTimeout(900);
-  const passwordLink = page.getByText("使用密码");
+  const passwordLink = page.getByText(CAPTURE_EN ? "Use password" : "使用密码");
   if (await passwordLink.count()) {
     await passwordLink.click();
     await page.waitForTimeout(250);
     await page.locator('input[type="password"]').fill(server.password);
-    await page.getByRole("button", { name: "连接" }).click();
+    await page.getByRole("button", { name: CAPTURE_EN ? "Connect" : "连接" }).click();
     await page.waitForTimeout(1500);
   }
   return { browser, context, page };
 }
 
 async function openProject(page, box) {
-  const addProject = page.getByRole("button", { name: "添加项目" }).first();
+  const addProject = page.getByRole("button", { name: CAPTURE_EN ? "Add project" : "添加项目" }).first();
   if (await addProject.count()) {
     await addProject.click();
     await page.waitForTimeout(600);
-    const search = page.getByPlaceholder("搜索项目或输入 ~/路径…");
+    const search = page.getByPlaceholder(CAPTURE_EN ? /search folders/i : "搜索项目或输入 ~/路径…");
     if (await search.count()) {
       await search.fill(box.project);
       await page.waitForTimeout(500);
-      const pick = page.getByRole("button", { name: "选择文件夹" });
+      const pick = page.getByRole("button", { name: CAPTURE_EN ? "Select folder" : "选择文件夹" });
       if (await pick.count()) await pick.click();
       await page.waitForTimeout(1500);
     }
@@ -370,7 +372,7 @@ async function captureGui({ chromium, chrome, server, box }) {
     await openProject(page, box);
     await shoot(page, box, "desktop-project-added");
 
-    const newSession = page.getByRole("button", { name: "新建会话" }).first();
+    const newSession = page.getByRole("button", { name: CAPTURE_EN ? "New session" : "新建会话" }).first();
     if (await newSession.count()) {
       await newSession.click();
       await page.waitForTimeout(1800);
@@ -392,7 +394,7 @@ async function captureMobile({ chromium, chrome, server, box }) {
     await page.waitForTimeout(1200);
     await shoot(page, box, "mobile-home");
     await openProject(page, box);
-    const newSession = page.getByRole("button", { name: "新建会话" }).first();
+    const newSession = page.getByRole("button", { name: CAPTURE_EN ? "New session" : "新建会话" }).first();
     if (await newSession.count()) {
       await newSession.click();
       await page.waitForTimeout(1800);

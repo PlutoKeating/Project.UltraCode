@@ -1,0 +1,78 @@
+---
+title: "Le terminal sans peur : ranger un dossier en discutant"
+description: "La fenêtre noire n’est qu’une zone de discussion. En une leçon, transformez des notes de réunion en liste d’actions claire."
+sidebar:
+  label: "Terminal sans peur"
+---
+
+import AnnotatedShot from "@tutorials/AnnotatedShot.astro";
+import CommandBlock from "@tutorials/CommandBlock.astro";
+
+Pas encore installé ? Commencez par [le guide d’installation du mode terminal](/fr/docs/install-terminal/).
+
+Le terminal impressionne, mais il n’y a vraiment qu’une chose devant vous : **une zone où vous pouvez taper.**
+
+Dans cette leçon, nous l’utilisons pour transformer un dossier de notes de réunion en une liste de tâches claire.
+
+## <span class="uc-step-no">01</span> L’ouvrir et regarder une fois la « fenêtre noire »
+
+Ouvrez-le dans le dossier sur lequel vous voulez travailler. Les lignes sur les bords ne sont que des cadres — il n’y a rien à taper comme commande.
+
+<AnnotatedShot
+  src="/tutorials/terminal-welcome.webp"
+  alt="Vue du terminal avec la zone de saisie au centre et la ligne d’état UltraCode en bas"
+  width={1400}
+  height={520}
+  callouts={[
+    { id: 1, x: 5.0, y: 51.6, w: 80.0, h: 31.0, label: "Parlez ici, exactement comme dans une messagerie", pin: "top-left" },
+    { id: 2, x: 4.0, y: 85.2, w: 80.4, h: 10.4, tone: "ice", label: "Le bas affiche le dossier, UltraCode et les raccourcis", pin: "bottom-left" },
+  ]}
+/>
+
+**Ce que vous verrez :** une zone de saisie au centre, le nom de votre dossier courant en bas et le libellé UltraCode à droite. Le curseur clignotant attend simplement que vous parliez.
+
+## <span class="uc-step-no">02</span> Énoncer le résultat en une phrase
+
+La moitié importante, c’est la fin : **dites quels fichiers peuvent changer et lesquels doivent rester intacts.** C’est ce qui permet de le laisser agir en sécurité.
+
+<CommandBlock
+  label="Envoyez cette phrase"
+  command="Turn the meeting notes in this folder into a clear action list: group by owner, say what to do and when it is due, and save it as a new file without deleting the originals."
+  mono={false}
+  copyLabel="Copier"
+  copiedLabel="Copié"
+/>
+
+**Ce que vous verrez :** il parcourt d’abord le dossier, vous explique comment il compte organiser les choses, et ne commence à travailler qu’ensuite.
+
+## <span class="uc-step-no">03</span> Besoin d’une action de plus ? Ouvrez le menu slash
+
+Vous voyez `ctrl+p commands` en bas ? C’est le menu des commandes. Inutile de mémoriser une commande : ouvrez le menu et choisissez.
+
+<AnnotatedShot
+  src="/tutorials/terminal-commands.webp"
+  alt="Menu des commandes du terminal ouvert avec ctrl+p"
+  width={1500}
+  height={760}
+  callouts={[
+    { id: 1, x: 17.0, y: 6.4, w: 60.0, h: 85.6, label: "Le menu de commandes cliquable", pin: "top-left" },
+  ]}
+/>
+
+**Ce que vous verrez :** une liste de commandes cliquables apparaît au centre — changer de modèle, ouvrir les réglages, etc. Déplacez-vous avec les flèches et appuyez sur Entrée.
+
+## <span class="uc-step-no">04</span> Continuer la conversation plutôt que repartir de zéro
+
+Le mode terminal et l’application de bureau, c’est la même capacité dans une fenêtre différente. Utilisez celui qui vous semble le plus naturel.
+
+<CommandBlock
+  label="Ajustez comme ceci"
+  command="Tighten the list: only what is still open this week, sorted by the nearest due date."
+  mono={false}
+  copyLabel="Copier"
+  copiedLabel="Copié"
+/>
+
+**Ce que vous verrez :** seule cette liste change ; les notes déjà organisées ne sont pas reconstruites de zéro.
+
+Vous voulez qu’il vérifie une vraie interface ensuite ? Continuez avec [verrouiller un plan, puis vérifier la page](/fr/docs/tutorial-plan-and-verify/).

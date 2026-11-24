@@ -1,0 +1,78 @@
+---
+title: "وضع الطرفية بلا خوف: رتّب مجلداً عبر المحادثة"
+description: "النافذة السوداء مجرد مربع محادثة. وفي درس واحد، حوّل ملاحظات اجتماع مبعثرة إلى قائمة مهام واضحة."
+sidebar:
+  label: "الطرفية بلا خوف"
+---
+
+import AnnotatedShot from "@tutorials/AnnotatedShot.astro";
+import CommandBlock from "@tutorials/CommandBlock.astro";
+
+لم تثبّت بعد؟ ابدأ من [دليل تثبيت وضع الطرفية](/ar/docs/install-terminal/).
+
+تبدو الطرفية مخيفة، لكن أمامك في الحقيقة شيء واحد فقط: **مربع يمكنك الكتابة فيه.**
+
+في هذا الدرس نستخدمه لتحويل مجلد مبعثر من ملاحظات الاجتماع إلى قائمة مهام واضحة.
+
+## <span class="uc-step-no">01</span> افتحه وألقِ نظرة على «النافذة السوداء» مرة واحدة
+
+افتحه داخل المجلد الذي تريد العمل عليه. السطور المحيطة بالحواف مجرد إطارات — لا شيء عليك كتابته كأمر.
+
+<AnnotatedShot
+  src="/tutorials/terminal-welcome.webp"
+  alt="عرض الطرفية مع مربع الإدخال في الوسط وسطر حالة UltraCode في الأسفل"
+  width={1400}
+  height={520}
+  callouts={[
+    { id: 1, x: 5.0, y: 51.6, w: 80.0, h: 31.0, label: "تحدّث هنا، تماماً كما في تطبيق محادثة", pin: "top-left" },
+    { id: 2, x: 4.0, y: 85.2, w: 80.4, h: 10.4, tone: "ice", label: "الأسفل يعرض المجلد وUltraCode والاختصارات", pin: "bottom-left" },
+  ]}
+/>
+
+**ما ستراه:** مربع إدخال في الوسط، واسم مجلدك الحالي على الشريط السفلي، وشعار UltraCode إلى اليمين. المؤشر الوامض ينتظرك فقط لتتحدث.
+
+## <span class="uc-step-no">02</span> اذكر النتيجة في جملة واحدة
+
+النصف المهم هو النهاية: **قل أي الملفات يجوز تغييرها وأيها يجب أن يبقى كما هو.** هذا ما يجعل السماح له بالتصرف آمناً.
+
+<CommandBlock
+  label="أرسل هذه الجملة"
+  command="Turn the meeting notes in this folder into a clear action list: group by owner, say what to do and when it is due, and save it as a new file without deleting the originals."
+  mono={false}
+  copyLabel="نسخ"
+  copiedLabel="تم النسخ"
+/>
+
+**ما ستراه:** يتصفّح المجلد أولاً، ويخبرك كيف يعتزم تنظيم الأشياء، ثم يبدأ العمل بعد ذلك فقط.
+
+## <span class="uc-step-no">03</span> حين تحتاج إجراءً إضافياً، افتح قائمة الأوامر
+
+أترى `ctrl+p commands` في الأسفل؟ تلك هي قائمة الأوامر. لا حاجة إلى حفظ أي أمر أبداً؛ افتح القائمة واختر.
+
+<AnnotatedShot
+  src="/tutorials/terminal-commands.webp"
+  alt="قائمة أوامر الطرفية مفتوحة عبر ctrl+p"
+  width={1500}
+  height={760}
+  callouts={[
+    { id: 1, x: 17.0, y: 6.4, w: 60.0, h: 85.6, label: "قائمة الأوامر القابلة للنقر", pin: "top-left" },
+  ]}
+/>
+
+**ما ستراه:** تظهر في الوسط قائمة أوامر قابلة للنقر — تبديل النموذج، وفتح الإعدادات، وما إلى ذلك. تحرّك بمفاتيح الأسهم واضغط Enter.
+
+## <span class="uc-step-no">04</span> واصل الحوار بدل البدء من الصفر
+
+وضع الطرفية وتطبيق سطح المكتب هما القدرة نفسها في نافذة مختلفة. استخدم ما يبدو طبيعياً لك.
+
+<CommandBlock
+  label="عدّله هكذا"
+  command="Tighten the list: only what is still open this week, sorted by the nearest due date."
+  mono={false}
+  copyLabel="نسخ"
+  copiedLabel="تم النسخ"
+/>
+
+**ما ستراه:** تتغير هذه القائمة فقط؛ ولا تُبنى الملاحظات التي نظّمها من قبل من جديد.
+
+تريد أن يفحص واجهة حقيقية بعد ذلك؟ تابع مع [ثبّت مخططاً، ثم تحقّق من الصفحة](/ar/docs/tutorial-plan-and-verify/).

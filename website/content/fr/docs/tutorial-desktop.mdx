@@ -1,0 +1,78 @@
+---
+title: "Parcours bureau : construire une page d’inscription sans commandes"
+description: "Ni code ni terminal : transformez une simple phrase en page d’inscription que vous pouvez ouvrir dans un navigateur."
+sidebar:
+  label: "Parcours bureau"
+---
+
+import AnnotatedShot from "@tutorials/AnnotatedShot.astro";
+import CommandBlock from "@tutorials/CommandBlock.astro";
+
+Pas encore installé ? Commencez par [le guide d’installation de l’application de bureau](/fr/docs/install-desktop/).
+
+Dans cette leçon, nous faisons exactement une chose : **construire une page d’inscription fonctionnelle pour un club de lecture du week-end, dans un dossier vide.**
+
+Aucune commande à mémoriser, aucune connaissance en programmation requise. Vous cliquez quelques fois, puis vous décrivez ce que vous voulez comme vous le feriez à un collègue.
+
+## <span class="uc-step-no">01</span> Ouvrir la fenêtre de bureau et ajouter votre dossier vide
+
+Ouvrez l’application de bureau, cliquez sur **Add project** dans la barre latérale et choisissez le dossier vide que vous avez préparé. Le plus simple est de le garder près de votre Bureau ou de vos Documents.
+
+<AnnotatedShot
+  src="/tutorials/desktop-home-en.webp"
+  alt="Écran d’accueil du bureau avec la barre latérale des projets et l’entrée d’ajout de projet"
+  width={2560}
+  height={1600}
+  callouts={[
+    { id: 1, x: 9.4, y: 24.5, w: 9.6, h: 4.0, label: "Cliquez ici pour ajouter le dossier", pin: "top-left" },
+  ]}
+/>
+
+**Ce que vous verrez :** le nom de votre dossier apparaît dans la barre latérale de gauche, ce qui signifie qu’UltraCode est prêt à y travailler.
+
+## <span class="uc-step-no">02</span> Le décrire comme vous le feriez à un collègue
+
+Une phrase complète suffit : **à qui cela s’adresse, ce que cela doit faire et comment vous allez le vérifier.** Ces trois éléments évitent la plupart des retouches ensuite.
+
+<AnnotatedShot
+  src="/tutorials/desktop-composer-en.webp"
+  alt="Zone de saisie du bureau avec les sélecteurs de rôle et de modèle à gauche"
+  width={2560}
+  height={1600}
+  callouts={[
+    { id: 1, x: 15.2, y: 45.5, w: 70.0, h: 7.0, label: "Tapez toute la demande ici, puis appuyez sur Entrée", pin: "top-left" },
+    { id: 2, x: 16.4, y: 52.2, w: 17.5, h: 4.0, tone: "ice", label: "Laissez le rôle UltraBuild par défaut tel quel", pin: "bottom-left" },
+  ]}
+/>
+
+<CommandBlock
+  label="Envoyez cette phrase"
+  command="Build a sign-up page for a weekend book club in this folder: pick Saturday or Sunday, enter the number of guests, and show a confirmation card after submitting. It should look good on a phone too, then open a preview for me."
+  mono={false}
+  copyLabel="Copier"
+  copiedLabel="Copié"
+/>
+
+**Ce que vous verrez :** au lieu de deviner et d’écrire tout de suite, il pose d’abord quelques questions décisives, sous forme de cartes à choix cliquables.
+
+## <span class="uc-step-no">03</span> Répondre aux cartes, puis le laisser vérifier son propre travail
+
+Quand une carte à choix apparaît, cliquez sur l’option qui correspond à votre intention ; en cas de doute, prenez celle qui est recommandée. Il avance ensuite par petites étapes, et vous pouvez l’interrompre à tout moment.
+
+**Ce que vous verrez :** après une première version, il ouvre un vrai navigateur, clique sur les boutons, vérifie les mises en page bureau et téléphone, puis fait son rapport. Acceptez une fois cette vérification passée.
+
+## <span class="uc-step-no">04</span> Pas convaincu ? Continuez la conversation plutôt que de repartir de zéro
+
+C’est la différence entre décrire un **objectif** et écrire du code : vous décrivez le résultat, et il s’occupe de l’implémentation comme de l’auto-vérification.
+
+<CommandBlock
+  label="Demandez un changement de style comme ceci"
+  command="Make the whole thing calmer, use a warmer heading colour, make the button bigger, and keep it on one line on a phone."
+  mono={false}
+  copyLabel="Copier"
+  copiedLabel="Copié"
+/>
+
+**Ce que vous verrez :** seuls les couleurs et la mise en page changent ; la logique d’inscription que vous avez déjà validée reste intacte.
+
+Ensuite, essayez [le terminal sans peur](/fr/docs/tutorial-terminal/), ou découvrez comment [les rôles principaux et les spécialistes](/fr/docs/roles-and-workflow/) se répartissent le travail.

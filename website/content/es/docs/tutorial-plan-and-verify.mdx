@@ -1,0 +1,65 @@
+---
+title: "Truco avanzado 1: fija un plan y luego verifica la página"
+description: "Acuerda primero el enfoque en modo de solo lectura, construye después y deja que recorra la página real y que un revisor independiente dé el visto bueno."
+sidebar:
+  label: "Plan y verificación"
+---
+
+import AnnotatedShot from "@tutorials/AnnotatedShot.astro";
+import CommandBlock from "@tutorials/CommandBlock.astro";
+
+Las dos primeras lecciones trataban de **cómo empezar**. Esta trata de **cómo evitar trabajo desperdiciado**.
+
+Tres movimientos: acordar el plan, construirlo y hacer que lo verifique por sí mismo.
+
+## <span class="uc-step-no">01</span> Cambia primero al rol de solo planificación
+
+Pulsa `Shift + Tab` para cambiar. El error más costoso es empezar a editar antes de tener claro el enfoque: este paso evita exactamente eso.
+
+<AnnotatedShot
+  src="/tutorials/terminal-plan-mode.webp"
+  alt="Terminal después de cambiar a UltraPlan"
+  width={1400}
+  height={520}
+  callouts={[
+    { id: 1, x: 5.2, y: 68.8, w: 14.4, h: 11.2, label: "UltraPlan aquí significa planificación de solo lectura", pin: "top-left" },
+  ]}
+/>
+
+**Lo que verás:** el rol de la parte inferior cambia de UltraBuild a UltraPlan. En ese rol solo lee y escribe planes; tus archivos quedan intactos.
+
+## <span class="uc-step-no">02</span> Haz que exponga riesgos y compromisos
+
+La salida aquí no es código: es **el estándar que ambos habéis acordado**. Todo lo posterior se juzga contra él.
+
+<CommandBlock
+  label="Envía esta frase"
+  command="Do not write code yet. Tell me how many steps this sign-up page needs, how each step will be verified, and where it is easy to get wrong. List the open questions for me."
+  mono={false}
+  copyLabel="Copiar"
+  copiedLabel="Copiado"
+/>
+
+**Lo que verás:** un plan paso a paso con criterios de aceptación, además de las preguntas que de verdad necesitan tu decisión.
+
+## <span class="uc-step-no">03</span> Apruébalo, vuelve a cambiar y construye
+
+Sigue refinándolo mientras no estés satisfecho. Cuando lo estés, volver al otro rol hace que siga el plan en lugar de improvisar.
+
+**Lo que verás:** el rol vuelve a UltraBuild e implementa el plan acordado paso a paso.
+
+## <span class="uc-step-no">04</span> Deja que recorra la página real
+
+La autocomprobación es justo donde la calidad se escapa sin que se note, así que lo que quieres aquí es **que lo verifique otra persona**. Esa es la forma predeterminada de trabajar de UltraCode.
+
+<CommandBlock
+  label="Pide verificación y una revisión independiente"
+  command="When it is built, open a real browser and click through both the desktop and phone layouts: buttons work, nothing overflows, no console errors. Then have an independent reviewer check it and fix anything it finds."
+  mono={false}
+  copyLabel="Copiar"
+  copiedLabel="Copiado"
+/>
+
+**Lo que verás:** opera la página de verdad y toma capturas, corrigiendo lo que encuentra; después, un rol de revisión independiente devuelve un veredicto de aprobado o suspenso.
+
+La última lección trata de tareas largas: [piloto automático, reanudación al día siguiente y combinación de modelos rápidos y profundos](/es/docs/tutorial-goals-and-models/).

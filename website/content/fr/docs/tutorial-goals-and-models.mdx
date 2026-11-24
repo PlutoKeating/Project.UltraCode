@@ -1,0 +1,67 @@
+---
+title: "Astuce 2 : autopilote, reprise le lendemain, modèles rapides et profonds"
+description: "Laissez une tâche en plusieurs étapes avancer seule, mettez-la en pause ou reprenez-la à volonté, retrouvez-la le lendemain et dépensez moins en associant un modèle intelligent à un modèle rapide."
+sidebar:
+  label: "Autopilote & modèles"
+---
+
+import AnnotatedShot from "@tutorials/AnnotatedShot.astro";
+import CommandBlock from "@tutorials/CommandBlock.astro";
+
+Cette leçon réunit trois petites choses qui vont souvent ensemble : **avancer seul, reprendre le lendemain et dépenser moins.**
+
+## <span class="uc-step-no">01</span> Donner un objectif qui peut avancer seul
+
+`/goal` convient aux travaux qui **se découpent en plusieurs étapes, chacune vérifiable**. Si une seule phrase ne peut pas porter la demande, mettez-la dans l’objectif.
+
+<CommandBlock
+  label="Démarrez un objectif en plusieurs étapes avec ceci"
+  command="/goal Turn this sign-up page into something shippable: add an empty-slot hint, add the confirmation card after submitting, re-check the phone layout, and hand it over once everything passes."
+  mono={false}
+  copyLabel="Copier"
+  copiedLabel="Copié"
+/>
+
+**Ce que vous verrez :** il enregistre l’objectif, puis passe d’une petite étape terminée à la suivante jusqu’à ce que toutes les vérifications passent.
+
+## <span class="uc-step-no">02</span> Mettre en pause ou reprendre en une ligne
+
+Vous pouvez aussi simplement envoyer un nouveau message pour l’interrompre — vos mots passent toujours avant la progression automatique.
+
+<CommandBlock
+  label="Quand vous voulez qu’il s’arrête"
+  command="/goal pause"
+  copyLabel="Copier"
+  copiedLabel="Copié"
+/>
+
+**Ce que vous verrez :** il s’arrête à l’étape courante au lieu de continuer à modifier ; remplacez pause par resume pour reprendre.
+
+## <span class="uc-step-no">03</span> Fermer l’ordinateur portable, continuer le lendemain
+
+La progression n’est pas prisonnière d’un journal de conversation : elle est écrite dans des fichiers de passation au sein de votre projet, si bien qu’une nouvelle fenêtre ou un nouveau jour peut la reprendre.
+
+<CommandBlock
+  label="Le lendemain, c’est tout ce qu’il vous faut"
+  command="Read the handoff notes and continue from yesterday's progress."
+  mono={false}
+  copyLabel="Copier"
+  copiedLabel="Copié"
+/>
+
+**Ce que vous verrez :** il dit d’abord ce qui a été terminé, ce qui a été vérifié et ce qui reste, puis reprend à l’étape suivante au lieu de recommencer.
+
+## <span class="uc-step-no">04</span> Avec plusieurs modèles, laissez chaque rôle faire ce qu’il sait faire
+
+Si vous n’avez qu’un seul modèle configuré, sautez cette étape — chaque rôle utilise simplement votre modèle actuel.
+
+<CommandBlock
+  label="Associez les modèles pour la planification, le code, la recherche et les vérifications visuelles"
+  command="/setup-models"
+  copyLabel="Copier"
+  copiedLabel="Copié"
+/>
+
+**Ce que vous verrez :** une courte recommandation apparaît, et une confirmation l’enregistre. La planification et la relecture reçoivent le modèle le plus fort ; les recherches rapides, le plus rapide et le moins cher.
+
+Voilà la boucle complète : clarifier, construire, vérifier et poursuivre sur plusieurs jours. Revenez au [parcours bureau](/fr/docs/tutorial-desktop/) quand vous voulez vous rafraîchir la mémoire.

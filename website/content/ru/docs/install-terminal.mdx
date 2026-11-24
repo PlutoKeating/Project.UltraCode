@@ -1,0 +1,63 @@
+---
+title: "Установка: только терминал (TUI)"
+description: "Для разработчиков и тех, кто любит работать с клавиатуры: одна строка устанавливает терминальный интерфейс, без настольного окна."
+sidebar:
+  label: "Только терминал"
+---
+
+import AnnotatedShot from "@tutorials/AnnotatedShot.astro";
+import CommandBlock from "@tutorials/CommandBlock.astro";
+
+Если вам нужен только терминальный интерфейс: **установите его один раз и работайте в любой папке**, без настольного окна. Скопируйте строку для своего компьютера и вставьте её в терминал (в Windows — PowerShell).
+
+## <span class="uc-step-no">01</span> Установка одной строкой
+
+<CommandBlock
+  title="macOS / Linux"
+  command="curl -fsSL https://ultracode.plutokeating.beer/install.sh | bash"
+  copyLabel="Копировать"
+  copiedLabel="Скопировано"
+/>
+
+<CommandBlock
+  title="Windows"
+  command="irm https://ultracode.plutokeating.beer/install.ps1 | iex"
+  copyLabel="Копировать"
+  copiedLabel="Скопировано"
+/>
+
+Оба блока делают одно и то же. Если после этого текущее окно не находит `ultracode`, закройте и снова откройте терминал.
+
+<AnnotatedShot
+  src="/tutorials/terminal-install.webp"
+  alt="Экран готовности после завершения установки"
+  width={439}
+  height={638}
+  callouts={[
+    { id: 1, x: 4.4, y: 52.2, w: 36.4, h: 11.6, label: "Ready означает, что установка прошла успешно", pin: "top-left" },
+    { id: 2, x: 12.6, y: 68.4, w: 79.4, h: 28.0, tone: "ice", label: "Три команды, которыми вы будете пользоваться", pin: "bottom-left" },
+  ]}
+/>
+
+**Что вы увидите:** обновление OpenCode, установку UltraCode, завершение настройки и в конце — версию и Ready.
+
+## <span class="uc-step-no">02</span> Откройте его в нужной папке
+
+<CommandBlock
+  label="Сначала перейдите в папку, затем запускайте"
+  command="ultracode"
+  copyLabel="Копировать"
+  copiedLabel="Скопировано"
+/>
+
+Чтобы поработать в другом месте, запустите его снова в той папке. Он никогда не трогает ничего за её пределами.
+
+**Что вы увидите:** посередине появляется приглашение, а внизу — имя текущей папки.
+
+## <span class="uc-step-no">03</span> Убедитесь, что он видит вашу папку
+
+Неверный путь означает, что вы открыли его не там — выйдите и откройте заново в нужном месте.
+
+**Что вы увидите:** путь внизу совпадает с нужной папкой, а справа отображается UltraCode.
+
+Установили? Продолжите с [режима терминала без страха](/ru/docs/tutorial-terminal/). Захотите настольное окно позже? Просто запустите `ultracode desktop` в любой момент — переустанавливать ничего не нужно.

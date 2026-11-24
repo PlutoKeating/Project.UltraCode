@@ -1,0 +1,78 @@
+---
+title: "جولة سطح المكتب: ابنِ صفحة فعالية دون أوامر"
+description: "لا شيفرة ولا طرفية: حوّل جملة واحدة بسيطة إلى صفحة تسجيل يمكنك فتحها في المتصفح."
+sidebar:
+  label: "جولة سطح المكتب"
+---
+
+import AnnotatedShot from "@tutorials/AnnotatedShot.astro";
+import CommandBlock from "@tutorials/CommandBlock.astro";
+
+لم تثبّت بعد؟ ابدأ من [دليل تثبيت تطبيق سطح المكتب](/ar/docs/install-desktop/).
+
+في هذا الدرس نفعل شيئاً واحداً فقط: **نبني صفحة تسجيل عاملة لنادي كتاب في عطلة نهاية الأسبوع، داخل مجلد فارغ.**
+
+لا أوامر تحفظها، ولا معرفة برمجية مطلوبة. تنقر بضع نقرات، ثم تصف ما تريده كما كنت تصفه لزميل.
+
+## <span class="uc-step-no">01</span> افتح نافذة سطح المكتب وأضف مجلدك الفارغ
+
+افتح تطبيق سطح المكتب، وانقر **إضافة مشروع** في الشريط الجانبي، واختر المجلد الفارغ الذي أعددته. الأسهل أن يكون قريباً من سطح المكتب أو مجلد المستندات.
+
+<AnnotatedShot
+  src="/tutorials/desktop-home-en.webp"
+  alt="شاشة سطح المكتب الرئيسية مع الشريط الجانبي للمشاريع ومدخل إضافة مشروع"
+  width={2560}
+  height={1600}
+  callouts={[
+    { id: 1, x: 9.4, y: 24.5, w: 9.6, h: 4.0, label: "انقر هنا لإدخال المجلد", pin: "top-left" },
+  ]}
+/>
+
+**ما ستراه:** يظهر اسم مجلدك في الشريط الجانبي الأيسر، وهذا يعني أن UltraCode جاهز للعمل هناك.
+
+## <span class="uc-step-no">02</span> اوصفه كما تصفه لزميل
+
+جملة واحدة كاملة تكفي: **لمن هو، وماذا يجب أن يفعل، وكيف ستتحقق منه.** هذه الأمور الثلاثة تقلّص معظم إعادة العمل لاحقاً.
+
+<AnnotatedShot
+  src="/tutorials/desktop-composer-en.webp"
+  alt="مربع إدخال سطح المكتب مع محدّدَي الدور والنموذج على اليسار"
+  width={2560}
+  height={1600}
+  callouts={[
+    { id: 1, x: 15.2, y: 45.5, w: 70.0, h: 7.0, label: "اكتب الطلب كاملاً هنا، ثم اضغط Enter", pin: "top-left" },
+    { id: 2, x: 16.4, y: 52.2, w: 17.5, h: 4.0, tone: "ice", label: "اترك دور UltraBuild الافتراضي كما هو", pin: "bottom-left" },
+  ]}
+/>
+
+<CommandBlock
+  label="أرسل هذه الجملة"
+  command="Build a sign-up page for a weekend book club in this folder: pick Saturday or Sunday, enter the number of guests, and show a confirmation card after submitting. It should look good on a phone too, then open a preview for me."
+  mono={false}
+  copyLabel="نسخ"
+  copiedLabel="تم النسخ"
+/>
+
+**ما ستراه:** بدل أن يخمّن ويكتب فوراً، يطرح أولاً أسئلة حاسمة قليلة عبر بطاقات اختيار يمكنك النقر عليها.
+
+## <span class="uc-step-no">03</span> أجب عن البطاقات، ثم دعه يتحقق من عمله بنفسه
+
+حين تظهر بطاقة اختيار، انقر الخيار الذي يوافق قصدك؛ وإن لم تكن متأكداً فاختر الموصى به. ثم يتقدّم في خطوات صغيرة، ويمكنك التدخل في أي لحظة.
+
+**ما ستراه:** بعد بناء نسخة أولى يفتح متصفحاً حقيقياً، وينقر الأزرار، ويفحص تخطيطي سطح المكتب والهاتف، ثم يخبرك بالنتيجة. اقبله حين ترى هذا الفحص ينجح.
+
+## <span class="uc-step-no">04</span> لست راضياً؟ واصل الحوار بدل البدء من الصفر
+
+هذا الفرق بين وصف **هدف** وكتابة شيفرة: أنت تصف النتيجة، وهو يتولى التنفيذ والتحقق الذاتي.
+
+<CommandBlock
+  label="اطلب تغييراً في الأسلوب هكذا"
+  command="Make the whole thing calmer, use a warmer heading colour, make the button bigger, and keep it on one line on a phone."
+  mono={false}
+  copyLabel="نسخ"
+  copiedLabel="تم النسخ"
+/>
+
+**ما ستراه:** تتغير الألوان والتخطيط فقط؛ ويبقى منطق التسجيل الذي وافقت عليه سليماً.
+
+بعد ذلك، جرّب [وضع الطرفية بلا خوف](/ar/docs/tutorial-terminal/)، أو اقرأ كيف يتقاسم [الدوران الأساسيان والخبراء المتخصصون](/ar/docs/roles-and-workflow/) العمل.

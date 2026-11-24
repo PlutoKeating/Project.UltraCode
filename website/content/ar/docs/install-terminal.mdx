@@ -1,0 +1,63 @@
+---
+title: "التثبيت: الطرفية فقط (TUI)"
+description: "للمطوّرين ولمن يفضّلون لوحة المفاتيح: سطر واحد يثبّت واجهة الطرفية، دون نافذة سطح مكتب."
+sidebar:
+  label: "الطرفية فقط"
+---
+
+import AnnotatedShot from "@tutorials/AnnotatedShot.astro";
+import CommandBlock from "@tutorials/CommandBlock.astro";
+
+إن كنت تريد واجهة الطرفية فقط: **ثبّتها مرة واحدة واستخدمها داخل أي مجلد**، دون نافذة سطح مكتب. انسخ السطر الموافق لحاسوبك والصقه في الطرفية (PowerShell على Windows).
+
+## <span class="uc-step-no">01</span> ثبّت بسطر واحد
+
+<CommandBlock
+  title="macOS / Linux"
+  command="curl -fsSL https://ultracode.plutokeating.beer/install.sh | bash"
+  copyLabel="نسخ"
+  copiedLabel="تم النسخ"
+/>
+
+<CommandBlock
+  title="Windows"
+  command="irm https://ultracode.plutokeating.beer/install.ps1 | iex"
+  copyLabel="نسخ"
+  copiedLabel="تم النسخ"
+/>
+
+الصندوقان يفعلان الشيء نفسه. وإن لم تتعرّف النافذة الحالية على `ultracode` بعد ذلك، فأغلق الطرفية وأعد فتحها.
+
+<AnnotatedShot
+  src="/tutorials/terminal-install.webp"
+  alt="شاشة الجاهزية بعد انتهاء التثبيت"
+  width={439}
+  height={638}
+  callouts={[
+    { id: 1, x: 4.4, y: 52.2, w: 36.4, h: 11.6, label: "Ready تعني أن التثبيت نجح", pin: "top-left" },
+    { id: 2, x: 12.6, y: 68.4, w: 79.4, h: 28.0, tone: "ice", label: "الأوامر الثلاثة التي ستستخدمها", pin: "bottom-left" },
+  ]}
+/>
+
+**ما ستراه:** يحدّث OpenCode، ويثبّت UltraCode، ويكمل الإعداد، وينتهي بعرض الإصدار مع Ready.
+
+## <span class="uc-step-no">02</span> افتحه داخل المجلد الذي تريد العمل عليه
+
+<CommandBlock
+  label="ادخل إلى المجلد أولاً، ثم شغّله"
+  command="ultracode"
+  copyLabel="نسخ"
+  copiedLabel="تم النسخ"
+/>
+
+للعمل في مكان آخر، شغّله مرة أخرى داخل ذلك المجلد. لا يمسّ شيئاً خارجه أبداً.
+
+**ما ستراه:** يظهر مربع إدخال في الوسط، ويستقر اسم المجلد الحالي على الشريط السفلي.
+
+## <span class="uc-step-no">03</span> تأكّد أنه يرى مجلدك
+
+مسار خاطئ يعني أنك فتحته في مكان آخر — اخرج وأعد الفتح في المكان الصحيح.
+
+**ما ستراه:** يطابق المسار الظاهر في الأسفل المجلد الذي تقصده، مع ظهور UltraCode إلى اليمين.
+
+أتممت التثبيت؟ تابع مع [وضع الطرفية بلا خوف](/ar/docs/tutorial-terminal/). تريد نافذة سطح المكتب لاحقاً؟ نفّذ `ultracode desktop` وقتما تشاء — بلا حاجة إلى إعادة تثبيت.

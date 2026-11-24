@@ -1,0 +1,78 @@
+---
+title: "Recorrido por el escritorio: crea una página de evento sin comandos"
+description: "Sin código y sin terminal: convierte una frase sencilla en una página de inscripción que puedes abrir en el navegador."
+sidebar:
+  label: "Práctica: escritorio"
+---
+
+import AnnotatedShot from "@tutorials/AnnotatedShot.astro";
+import CommandBlock from "@tutorials/CommandBlock.astro";
+
+¿Aún no lo has instalado? Empieza con [la guía de instalación de la aplicación de escritorio](/es/docs/install-desktop/).
+
+En esta lección hacemos exactamente una cosa: **crear una página de inscripción para un club de lectura de fin de semana dentro de una carpeta vacía.**
+
+No hay comandos que memorizar ni conocimientos de programación. Haces clic unas cuantas veces y luego describes lo que quieres tal como se lo contarías a un compañero de trabajo.
+
+## <span class="uc-step-no">01</span> Abre la ventana de escritorio y añade tu carpeta vacía
+
+Abre la aplicación de escritorio, haz clic en **Add project** en la barra lateral y elige la carpeta vacía que hayas preparado. Lo más fácil es tenerla cerca del Escritorio o de Documentos.
+
+<AnnotatedShot
+  src="/tutorials/desktop-home-en.webp"
+  alt="Pantalla de inicio del escritorio con la barra lateral de proyectos y la entrada para añadir proyectos"
+  width={2560}
+  height={1600}
+  callouts={[
+    { id: 1, x: 9.4, y: 24.5, w: 9.6, h: 4.0, label: "Haz clic aquí para incorporar la carpeta", pin: "top-left" },
+  ]}
+/>
+
+**Lo que verás:** el nombre de tu carpeta aparece en la barra lateral izquierda, lo que significa que UltraCode está listo para trabajar allí.
+
+## <span class="uc-step-no">02</span> Descríbelo tal como se lo contarías a un compañero
+
+Una sola frase completa basta: **para quién es, qué debe hacer y cómo lo vas a comprobar.** Esas tres cosas evitan gran parte del trabajo repetido después.
+
+<AnnotatedShot
+  src="/tutorials/desktop-composer-en.webp"
+  alt="Cuadro de mensaje del escritorio con los selectores de rol y modelo a la izquierda"
+  width={2560}
+  height={1600}
+  callouts={[
+    { id: 1, x: 15.2, y: 45.5, w: 70.0, h: 7.0, label: "Escribe aquí toda la petición y pulsa Enter", pin: "top-left" },
+    { id: 2, x: 16.4, y: 52.2, w: 17.5, h: 4.0, tone: "ice", label: "Deja el rol UltraBuild predeterminado tal como está", pin: "bottom-left" },
+  ]}
+/>
+
+<CommandBlock
+  label="Envía esta frase"
+  command="Build a sign-up page for a weekend book club in this folder: pick Saturday or Sunday, enter the number of guests, and show a confirmation card after submitting. It should look good on a phone too, then open a preview for me."
+  mono={false}
+  copyLabel="Copiar"
+  copiedLabel="Copiado"
+/>
+
+**Lo que verás:** en lugar de adivinar y escribir de inmediato, primero hace algunas preguntas decisivas mediante tarjetas de opciones en las que puedes hacer clic.
+
+## <span class="uc-step-no">03</span> Responde a las tarjetas y deja que compruebe su propio trabajo
+
+Cuando aparezca una tarjeta de opciones, haz clic en la opción que coincida con tu intención; si dudas, elige la recomendada. Después avanza en pasos pequeños y puedes interrumpirlo en cualquier momento.
+
+**Lo que verás:** tras crear una primera versión, abre un navegador real, pulsa los botones, comprueba los diseños de escritorio y de teléfono, y te informa. Acéptalo cuando veas que esa comprobación pasa.
+
+## <span class="uc-step-no">04</span> ¿No te convence? Sigue hablando en lugar de empezar de cero
+
+Esta es la diferencia entre describir un **objetivo** y escribir código: describes el resultado y UltraCode se encarga de la implementación y de comprobar su propio trabajo.
+
+<CommandBlock
+  label="Pide un cambio de estilo así"
+  command="Make the whole thing calmer, use a warmer heading colour, make the button bigger, and keep it on one line on a phone."
+  mono={false}
+  copyLabel="Copiar"
+  copiedLabel="Copiado"
+/>
+
+**Lo que verás:** solo cambian los colores y el diseño; la lógica de inscripción que ya aprobaste se mantiene intacta.
+
+A continuación, prueba [el modo terminal sin miedo](/es/docs/tutorial-terminal/) o lee cómo se reparten el trabajo [los roles principales y los especialistas](/es/docs/roles-and-workflow/).
