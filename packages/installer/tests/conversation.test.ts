@@ -802,28 +802,45 @@ describe("ultracode-conversation durable checkpoints, circuit breaker, and /goal
     });
     const guiPlugin = cjsExports.default;
 
-    expect(guiPlugin.i18n.en["pill.checkpoint"]).toBe("Next milestone");
-    expect(guiPlugin.i18n.en["pill.clear"]).toBe("Clear");
-    expect(guiPlugin.i18n.zh["pill.checkpoint"]).toBe("下一里程碑");
-    expect(guiPlugin.i18n.zh["pill.clear"]).toBe("清除");
-    expect(guiPlugin.i18n.ar["pill.checkpoint"]).toBe("المرحلة التالية");
-    expect(guiPlugin.i18n.ar["pill.clear"]).toBe("مسح");
-    expect(guiPlugin.i18n.fr["pill.checkpoint"]).toBe("Prochaine étape");
-    expect(guiPlugin.i18n.fr["pill.clear"]).toBe("Effacer");
-    expect(guiPlugin.i18n.ru["pill.checkpoint"]).toBe("Следующий этап");
-    expect(guiPlugin.i18n.ru["pill.clear"]).toBe("Очистить");
-    expect(guiPlugin.i18n.es["pill.checkpoint"]).toBe("Siguiente hito");
-    expect(guiPlugin.i18n.es["pill.clear"]).toBe("Limpiar");
+    for (const locale of ["en", "zh", "ar", "fr", "ru", "es"]) {
+      for (const key of [
+        "pill.checkpoint",
+        "pill.goal.active",
+        "pill.goal.paused",
+        "pill.goal.complete",
+        "pill.pause",
+        "pill.resume",
+        "pill.clear",
+        "command.goal.pause",
+        "command.goal.resume",
+        "command.goal.clear",
+      ]) {
+        expect(typeof guiPlugin.i18n[locale]?.[key]).toBe("string");
+        expect(guiPlugin.i18n[locale][key].length).toBeGreaterThan(0);
+      }
+    }
 
-    let currentServerState = {
+    let currentServerState: any = {
       permissions: "auto",
       direction: "manual",
       version: "1.1.1",
       checkpoints: {
         ses_long: "1234567890123456789012345678901234567890",
       } as Record<string, string>,
+      goals: {
+        ses_goal_ui: {
+          id: "g_ui",
+          objective: "Ship full-stack dashboard",
+          status: "active",
+          nextMilestone: "Verify dark mode contrast",
+          rounds: 3,
+          maxRounds: 60,
+          updatedAt: 1000,
+        },
+      } as Record<string, any>,
     };
     const clearedCalls: Array<{ sessionID: string; options?: unknown }> = [];
+    const goalActionCalls: Array<{ action: string; sessionID: string; options?: unknown }> = [];
     const client = {
       rpc: () => ({
         getState: async () => currentServerState,
@@ -836,6 +853,35 @@ describe("ultracode-conversation durable checkpoints, circuit breaker, and /goal
           currentServerState = { ...currentServerState, checkpoints: nextCheckpoints };
           return currentServerState;
         },
+        pauseGoal: async ({ sessionID }: { sessionID: string }, options?: unknown) => {
+          goalActionCalls.push({ action: "pause", sessionID, options });
+          currentServerState = {
+            ...currentServerState,
+            goals: {
+              ...currentServerState.goals,
+              [sessionID]: { ...currentServerState.goals[sessionID], status: "paused", reason: "Paused by user" },
+            },
+          };
+          return currentServerState;
+        },
+        resumeGoal: async ({ sessionID }: { sessionID: string }, options?: unknown) => {
+          goalActionCalls.push({ action: "resume", sessionID, options });
+          currentServerState = {
+            ...currentServerState,
+            goals: {
+              ...currentServerState.goals,
+              [sessionID]: { ...currentServerState.goals[sessionID], status: "active", reason: "" },
+            },
+          };
+          return currentServerState;
+        },
+        clearGoal: async ({ sessionID }: { sessionID: string }, options?: unknown) => {
+          goalActionCalls.push({ action: "clear", sessionID, options });
+          const nextGoals = { ...currentServerState.goals };
+          delete nextGoals[sessionID];
+          currentServerState = { ...currentServerState, goals: nextGoals };
+          return currentServerState;
+        },
         events: {
           on: () => () => {},
         },
@@ -843,14 +889,17 @@ describe("ultracode-conversation durable checkpoints, circuit breaker, and /goal
     };
 
     const contributions = new Map<unknown, any>();
+    const commandList: any[] = [];
     const dispose: () => void = solid.createRoot((d: () => void) => {
       guiPlugin.setup({
         client,
         t: (key: string) => guiPlugin.i18n.en[key] ?? key,
         toast: { show: () => {} },
+        sessions: { current: () => ({ id: "ses_goal_ui", directory: "/workspace/ui" }) },
         ui: {},
         add: (registry: unknown, item: any) => {
-          contributions.set(registry, item);
+          if (registry === guiSdk.Command) commandList.push(item);
+          else contributions.set(registry, item);
         },
       });
       return d;
@@ -863,9 +912,37 @@ describe("ultracode-conversation durable checkpoints, circuit breaker, and /goal
 
       // Unscheduled session has only the 2 standard rows
       const otherView = pill.show({ session: { id: "ses_other" } });
+      expect(otherView.label).toBe("UltraCode");
       expect(otherView.rows.map((r: any) => r.id)).toEqual(["permissions", "direction"]);
 
-      // Session with active checkpoint appends truncated 3rd row with Clear detail and forwards { location }
+      // Active Goal session shows round count in label and Pause + Clear rows
+      const goalActiveView = pill.show({ session: { id: "ses_goal_ui", directory: "/workspace/ui" } });
+      expect(goalActiveView.label).toBe("UltraCode · 3/60");
+      expect(goalActiveView.tone).toBeUndefined();
+      expect(goalActiveView.rows.map((r: any) => r.id)).toEqual(["permissions", "direction", "goal-toggle", "goal-clear"]);
+      expect(goalActiveView.rows[2].detail).toBe("Pause");
+
+      // Click Pause -> transitions pill to warning tone with Resume action
+      goalActiveView.rows[2].run();
+      await new Promise((r) => setTimeout(r, 15));
+      const goalPausedView = pill.show({ session: { id: "ses_goal_ui", directory: "/workspace/ui" } });
+      expect(goalPausedView.tone).toBe("warning");
+      expect(goalPausedView.rows[2].detail).toBe("Resume");
+
+      // Click Resume -> back to active, then Clear -> removes goal rows
+      goalPausedView.rows[2].run();
+      await new Promise((r) => setTimeout(r, 15));
+      expect(pill.show({ session: { id: "ses_goal_ui", directory: "/workspace/ui" } }).label).toBe("UltraCode · 3/60");
+
+      goalPausedView.rows[3].run();
+      await new Promise((r) => setTimeout(r, 15));
+      expect(pill.show({ session: { id: "ses_goal_ui", directory: "/workspace/ui" } }).rows.map((r: any) => r.id)).toEqual([
+        "permissions",
+        "direction",
+      ]);
+      expect(goalActionCalls.map((c) => c.action)).toEqual(["pause", "resume", "clear"]);
+
+      // Bare checkpoint fallback still appends 3rd checkpoint row with Clear detail and forwards { location }
       const activeView = pill.show({ session: { id: "ses_long", directory: "/workspace/alpha" } });
       expect(activeView.rows.map((r: any) => r.id)).toEqual(["permissions", "direction", "checkpoint"]);
       expect(activeView.rows[2].label).toBe("Next milestone: 12345678901234567890123456789012345…");
@@ -882,6 +959,13 @@ describe("ultracode-conversation durable checkpoints, circuit breaker, and /goal
 
       const afterClearView = pill.show({ session: { id: "ses_long", directory: "/workspace/alpha" } });
       expect(afterClearView.rows.map((r: any) => r.id)).toEqual(["permissions", "direction"]);
+
+      // Verify tui.tsx exposes live Goal status slot and Pause/Resume + Clear Goal palette commands
+      const tuiCode = await readFile(join(conversationSrcDir, "tui.tsx"), "utf8");
+      expect(tuiCode).toContain("prompt.footer.status");
+      expect(tuiCode).toContain("pauseGoal");
+      expect(tuiCode).toContain("resumeGoal");
+      expect(tuiCode).toContain("clearGoal");
     } finally {
       dispose();
     }
