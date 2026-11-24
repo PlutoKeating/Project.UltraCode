@@ -47,18 +47,41 @@ function createMockStorage(backing = new Map<string, unknown>()) {
 interface MockHarnessOptions {
   storage?: ReturnType<typeof createMockStorage>;
   goalState?: (sessionID: string, rpcDef: { id: string }) => unknown;
+  models?: unknown;
 }
 
 function createMockContext(directory: string, options: MockHarnessOptions = {}) {
   const storage = options.storage ?? createMockStorage();
   const emitted: Array<{ event: string; data: any }> = [];
   const syntheticCalls: Array<{ sessionID: string; text: string }> = [];
+  const promptCalls: Array<{ sessionID: string; text: string }> = [];
+  const interruptCalls: string[] = [];
+  const sessionRecords = new Map<string, { id: string; parentID?: string; title?: string; agent?: string; location: { directory: string } }>();
   const tools = new Map<string, any>();
+  const toolHooks = new Map<string, (event: any) => Promise<void> | void>();
   const commands = new Map<string, any>();
+  const agents = new Map<string, any>([
+    ["build", { id: "build", hidden: false }],
+    ["plan", { id: "plan", hidden: false }],
+    ["UltraBuild", { id: "UltraBuild", hidden: false }],
+    ["UltraPlan", { id: "UltraPlan", hidden: false }],
+  ]);
+  let defaultAgent: string | undefined;
   const sessionHooks = new Map<string, (event: any) => Promise<void> | void>();
   const permissionHooks = new Map<string, (event: any) => Promise<void> | void>();
   let rpcHandlers: Record<string, (input: any) => Promise<any>> = {};
   let registeredRpcDef: any = null;
+  const registeredRpcs = new Map<string, { definition: any; handlers: Record<string, (input: any) => Promise<any>> }>();
+  const eventSubscribers = new Set<(evt: any) => void>();
+
+  const ensureSession = (sessionID: string) => {
+    let rec = sessionRecords.get(sessionID);
+    if (!rec) {
+      rec = { id: sessionID, parentID: undefined, title: undefined, agent: "UltraBuild", location: { directory } };
+      sessionRecords.set(sessionID, rec);
+    }
+    return rec;
+  };
 
   const rpcFn = Object.assign(
     (definition: { id: string; methods: Record<string, unknown>; events: Record<string, unknown> }) => {
@@ -67,6 +90,8 @@ function createMockContext(directory: string, options: MockHarnessOptions = {}) 
       return {
         get: async ({ sessionID }: { sessionID: string }) => {
           if (options.goalState) return options.goalState(sessionID, definition);
+          const reg = registeredRpcs.get(definition.id);
+          if (reg?.handlers.get) return reg.handlers.get({ sessionID });
           return null;
         },
       };
@@ -75,12 +100,17 @@ function createMockContext(directory: string, options: MockHarnessOptions = {}) 
       register: async (definition: any, handlers: Record<string, (input: any) => Promise<any>>) => {
         Object.entries(definition.events);
         Object.entries(definition.methods);
-        registeredRpcDef = definition;
-        rpcHandlers = handlers;
+        registeredRpcs.set(definition.id, { definition, handlers });
+        if (definition.id === "ultracode") {
+          registeredRpcDef = definition;
+          rpcHandlers = handlers;
+        }
         return {
           events: {
             emit: async (event: string, data: any) => {
-              emitted.push({ event, data });
+              if (definition.id === "ultracode") {
+                emitted.push({ event, data });
+              }
             },
           },
           dispose: async () => {},
@@ -93,6 +123,26 @@ function createMockContext(directory: string, options: MockHarnessOptions = {}) 
     location: { directory },
     storage,
     rpc: rpcFn,
+    agent: {
+      transform: async (fn: (editor: any) => void) => {
+        fn({
+          list: () => [...agents.values()],
+          get: (id: string) => agents.get(id),
+          default: (id: string | undefined) => {
+            if (id && !agents.has(id)) throw new Error(`Unknown agent: ${id}`);
+            defaultAgent = id;
+          },
+          update: (id: string, updater: (agent: any) => void) => {
+            const found = agents.get(id);
+            if (found) updater(found);
+          },
+          remove: (id: string) => {
+            agents.delete(id);
+          },
+        });
+      },
+      reload: async () => {},
+    },
     command: {
       transform: async (fn: (editor: { add: (cmd: any) => void }) => void) => {
         fn({
@@ -116,19 +166,84 @@ function createMockContext(directory: string, options: MockHarnessOptions = {}) 
           },
         });
       },
+      hook: async (name: string, fn: (event: any) => Promise<void> | void) => {
+        toolHooks.set(name, fn);
+      },
+    },
+    event: {
+      subscribe: (opts?: { signal?: AbortSignal; types?: readonly string[] }) => {
+        const queue: any[] = [];
+        let resolveNext: ((res: IteratorResult<any>) => void) | null = null;
+        let closed = false;
+        const push = (evt: any) => {
+          if (closed) return;
+          if (opts?.types && !opts.types.includes(evt.type)) return;
+          if (resolveNext) {
+            const r = resolveNext;
+            resolveNext = null;
+            r({ value: evt, done: false });
+          } else {
+            queue.push(evt);
+          }
+        };
+        eventSubscribers.add(push);
+        const close = () => {
+          if (closed) return;
+          closed = true;
+          eventSubscribers.delete(push);
+          if (resolveNext) {
+            const r = resolveNext;
+            resolveNext = null;
+            r({ value: undefined, done: true });
+          }
+        };
+        opts?.signal?.addEventListener("abort", close, { once: true });
+        return {
+          [Symbol.asyncIterator]() {
+            return {
+              next() {
+                if (queue.length > 0) return Promise.resolve({ value: queue.shift(), done: false });
+                if (closed) return Promise.resolve({ value: undefined, done: true });
+                return new Promise<IteratorResult<any>>((res) => {
+                  resolveNext = res;
+                });
+              },
+              return() {
+                close();
+                return Promise.resolve({ value: undefined, done: true });
+              },
+            };
+          },
+        };
+      },
     },
     session: {
       hook: async (name: string, fn: (event: any) => Promise<void> | void) => {
         sessionHooks.set(name, fn);
       },
-      get: async ({ sessionID }: { sessionID: string }) => ({ id: sessionID, parentID: undefined }),
+      get: async ({ sessionID }: { sessionID: string }) => ensureSession(sessionID),
+      update: async ({ sessionID, title }: { sessionID: string; title?: string }) => {
+        const rec = ensureSession(sessionID);
+        if (title !== undefined) rec.title = title;
+      },
+      prompt: async (call: { sessionID: string; text: string }) => {
+        promptCalls.push(call);
+        return { id: "msg_1" };
+      },
       synthetic: async (call: { sessionID: string; text: string }) => {
         syntheticCalls.push(call);
+      },
+      interrupt: async ({ sessionID }: { sessionID: string }) => {
+        interruptCalls.push(sessionID);
       },
       switchModel: async () => {},
     },
     model: {
-      list: async () => [{ providerID: "test", id: "m1", enabled: true }],
+      list: async () =>
+        options.models ?? {
+          location: { directory },
+          data: [{ providerID: "test", id: "m1", enabled: true }],
+        },
     },
   };
 
@@ -137,10 +252,23 @@ function createMockContext(directory: string, options: MockHarnessOptions = {}) 
     storage,
     emitted,
     syntheticCalls,
+    promptCalls,
+    interruptCalls,
+    sessionRecords,
     tools,
+    toolHooks,
     commands,
+    agents,
+    get defaultAgent() {
+      return defaultAgent;
+    },
     sessionHooks,
     permissionHooks,
+    registeredRpcs,
+    emitHostEvent: async (evt: any) => {
+      for (const sub of [...eventSubscribers]) sub(evt);
+      await new Promise((r) => setTimeout(r, 10));
+    },
     get rpcHandlers() {
       return rpcHandlers;
     },
@@ -187,237 +315,228 @@ describe("ultracode-conversation durable checkpoints, circuit breaker, and /goal
     return {
       UltraCodeRpc: rpcMod.UltraCodeRpc,
       OpencodeGoalRpc: serverMod.OpencodeGoalRpc,
+      MAX_GOAL_ROUNDS: serverMod.MAX_GOAL_ROUNDS,
+      MAX_CHECKPOINT_ROUNDS: serverMod.MAX_CHECKPOINT_ROUNDS,
       MAX_CHECKPOINT_STALLS: serverMod.MAX_CHECKPOINT_STALLS,
       serverPlugin: serverMod.default,
     };
   }
 
-  test("persists scheduled checkpoint in ctx.storage, exposes it in getState(), and fires synthetic on idle", async () => {
-    const { UltraCodeRpc, serverPlugin } = await importFreshConversation({ newServerProcess: true });
+  test("persists scheduled checkpoint in unified goal:<sessionID> storage, exposes checkpoints & goals in getState(), and fires synthetic on idle", async () => {
+    const { UltraCodeRpc, MAX_GOAL_ROUNDS, MAX_CHECKPOINT_ROUNDS, serverPlugin } = await importFreshConversation({
+      newServerProcess: true,
+    });
+    expect(MAX_GOAL_ROUNDS).toBe(60);
+    expect(MAX_CHECKPOINT_ROUNDS).toBe(60);
     expect(UltraCodeRpc.methods.clearCheckpoint).toBeDefined();
+    expect(UltraCodeRpc.methods.pauseGoal).toBeDefined();
+    expect(UltraCodeRpc.methods.resumeGoal).toBeDefined();
+    expect(UltraCodeRpc.methods.clearGoal).toBeDefined();
     expect(UltraCodeRpc.methods.getState.output.properties.checkpoints).toEqual({
       type: "object",
       additionalProperties: { type: "string" },
     });
+    expect(UltraCodeRpc.methods.getState.output.properties.goals).toBeDefined();
 
     const harness = createMockContext(root);
-    await serverPlugin.setup(harness.ctx);
+    const cleanup = await serverPlugin.setup(harness.ctx);
 
-    const checkpointTool = harness.tools.get("ultracode_checkpoint");
-    expect(checkpointTool).toBeDefined();
+    try {
+      const checkpointTool = harness.tools.get("ultracode_checkpoint");
+      expect(checkpointTool).toBeDefined();
 
-    const res = await checkpointTool.execute({ next: "  Verify API schema  " }, { sessionID: "ses_alpha" });
-    expect(res.content).toBe("Next milestone recorded.");
+      const res = await checkpointTool.execute({ next: "  Verify API schema  " }, { sessionID: "ses_alpha" });
+      expect(res.content).toBe("Next milestone recorded.");
 
-    const stored = harness.storage.backing.get("checkpoint:ses_alpha") as Record<string, unknown> | undefined;
-    expect(stored).toBeDefined();
-    expect(stored?.next).toBe("Verify API schema");
-    expect(typeof stored?.bootID).toBe("string");
+      const stored = harness.storage.backing.get("goal:ses_alpha") as Record<string, unknown> | undefined;
+      expect(stored).toBeDefined();
+      expect(stored?.nextMilestone).toBe("Verify API schema");
+      expect(typeof stored?.bootID).toBe("string");
 
-    const state = await harness.rpcHandlers.getState!({});
-    expect(state.checkpoints).toEqual({ ses_alpha: "Verify API schema" });
-    expect(harness.emitted[harness.emitted.length - 1]?.data.checkpoints).toEqual({
-      ses_alpha: "Verify API schema",
-    });
+      const state = await harness.rpcHandlers.getState!({});
+      expect(state.checkpoints).toEqual({ ses_alpha: "Verify API schema" });
+      expect(harness.emitted[harness.emitted.length - 1]?.data.checkpoints).toEqual({
+        ses_alpha: "Verify API schema",
+      });
 
-    const idleHook = harness.sessionHooks.get("experimental.idle")!;
-    // Background job running for this session -> must wait
-    await idleHook({ sessionID: "ses_alpha", background: [{ sessionID: "ses_alpha" }] });
-    expect(harness.syntheticCalls).toHaveLength(0);
+      const idleHook = harness.sessionHooks.get("experimental.idle")!;
+      // Background job running for this session -> must wait
+      await idleHook({ sessionID: "ses_alpha", background: [{ sessionID: "ses_alpha" }] });
+      expect(harness.syntheticCalls).toHaveLength(0);
 
-    // Background clear -> fires synthetic once and clears active next
-    await idleHook({ sessionID: "ses_alpha", background: [] });
-    expect(harness.syntheticCalls).toEqual([
-      {
-        sessionID: "ses_alpha",
-        text: "Continue the authorized goal from the latest handoff: Verify API schema",
-      },
-    ]);
+      // Background clear -> fires synthetic once and clears active nextMilestone
+      await idleHook({ sessionID: "ses_alpha", background: [] });
+      expect(harness.syntheticCalls).toEqual([
+        {
+          sessionID: "ses_alpha",
+          text: "Continue the authorized goal from the latest handoff: Verify API schema",
+        },
+      ]);
 
-    const stateAfterIdle = await harness.rpcHandlers.getState!({});
-    expect(stateAfterIdle.checkpoints).toEqual({});
+      const stateAfterIdle = await harness.rpcHandlers.getState!({});
+      expect(stateAfterIdle.checkpoints).toEqual({});
+    } finally {
+      await cleanup?.();
+    }
   });
 
-  test("purges stale checkpoints from previous bootID during setup and idle while preserving same-boot reloads", async () => {
+  test("purges stale implicit checkpoints from previous bootID while transitioning explicit /goal entries to paused on server restart", async () => {
     const sharedStorage = createMockStorage();
-    await sharedStorage.set("checkpoint:ses_stale_setup", {
-      next: "From crashed server",
+    await sharedStorage.set("goal:ses_stale_setup", {
+      id: "g_imp",
+      objective: "From crashed server",
+      status: "active",
+      explicit: false,
+      nextMilestone: "From crashed server",
       bootID: "boot-old-process",
       rounds: 1,
+      maxRounds: 60,
       stalls: 0,
       lastMilestone: "From crashed server",
       updatedAt: Date.now() - 10_000,
     });
+    await sharedStorage.set("goal:ses_explicit_restart", {
+      id: "g_exp",
+      objective: "Ship billing service",
+      status: "active",
+      explicit: true,
+      nextMilestone: "Run integration tests",
+      bootID: "boot-old-process",
+      rounds: 4,
+      maxRounds: 60,
+      stalls: 0,
+      lastMilestone: "Run integration tests",
+      updatedAt: Date.now() - 5_000,
+    });
 
     const first = await importFreshConversation({ newServerProcess: true });
     const harness1 = createMockContext(root, { storage: sharedStorage });
-    await first.serverPlugin.setup(harness1.ctx);
+    const c1 = await first.serverPlugin.setup(harness1.ctx);
 
-    // Stale checkpoint from old bootID was purged on setup
-    expect(sharedStorage.backing.has("checkpoint:ses_stale_setup")).toBe(false);
+    try {
+      // Stale implicit checkpoint from old bootID was purged on setup
+      expect(sharedStorage.backing.has("goal:ses_stale_setup")).toBe(false);
+      // Explicit /goal from old bootID was transitioned to paused (NOT deleted!)
+      const pausedExplicit = sharedStorage.backing.get("goal:ses_explicit_restart") as any;
+      expect(pausedExplicit?.status).toBe("paused");
+      expect(pausedExplicit?.objective).toBe("Ship billing service");
 
-    // Schedule valid checkpoint on current process bootID
-    await harness1.tools.get("ultracode_checkpoint").execute({ next: "Hot reload safe" }, { sessionID: "ses_live" });
+      const state1 = await harness1.rpcHandlers.getState!({});
+      expect(state1.goals.ses_explicit_restart).toMatchObject({
+        id: "g_exp",
+        objective: "Ship billing service",
+        status: "paused",
+        rounds: 4,
+        maxRounds: 60,
+      });
 
-    // Simulate hot location reload in the SAME server process (same globalThis.__ultracodeBootID)
-    const reloaded = await importFreshConversation({ newServerProcess: false });
-    const harnessReload = createMockContext(root, { storage: sharedStorage });
-    await reloaded.serverPlugin.setup(harnessReload.ctx);
-    expect((await harnessReload.rpcHandlers.getState!({})).checkpoints).toEqual({
-      ses_live: "Hot reload safe",
-    });
+      // Resume via UltraCodeRpc.resumeGoal under the new BOOT_ID
+      const resumedState = await harness1.rpcHandlers.resumeGoal!({ sessionID: "ses_explicit_restart" });
+      expect(resumedState.goals.ses_explicit_restart.status).toBe("active");
+      expect(harness1.syntheticCalls.some((c) => c.sessionID === "ses_explicit_restart")).toBe(true);
 
-    // Inject a stale-boot record before idle and verify idle purges it without firing synthetic
-    await sharedStorage.set("checkpoint:ses_stale_idle", {
-      next: "Injected stale",
-      bootID: "another-stale-boot",
-      rounds: 0,
-      stalls: 0,
-      lastMilestone: "Injected stale",
-      updatedAt: Date.now(),
-    });
-    await harnessReload.sessionHooks.get("experimental.idle")!({
-      sessionID: "ses_stale_idle",
-      background: [],
-    });
-    expect(harnessReload.syntheticCalls).toHaveLength(0);
-    expect(sharedStorage.backing.has("checkpoint:ses_stale_idle")).toBe(false);
+      // Schedule valid implicit checkpoint on current process bootID
+      await harness1.tools.get("ultracode_checkpoint").execute({ next: "Hot reload safe" }, { sessionID: "ses_live" });
 
-    // Simulate FULL server restart (new bootID) -> previously live checkpoint is now stale and purged
-    const restarted = await importFreshConversation({ newServerProcess: true });
-    const harnessRestart = createMockContext(root, { storage: sharedStorage });
-    await restarted.serverPlugin.setup(harnessRestart.ctx);
-    expect(sharedStorage.backing.has("checkpoint:ses_live")).toBe(false);
-    expect((await harnessRestart.rpcHandlers.getState!({})).checkpoints).toEqual({});
+      // Simulate hot location reload in the SAME server process (same globalThis.__ultracodeBootID)
+      const reloaded = await importFreshConversation({ newServerProcess: false });
+      const harnessReload = createMockContext(root, { storage: sharedStorage });
+      const c2 = await reloaded.serverPlugin.setup(harnessReload.ctx);
+      try {
+        expect((await harnessReload.rpcHandlers.getState!({})).checkpoints.ses_live).toBe("Hot reload safe");
+      } finally {
+        await c2?.();
+      }
+    } finally {
+      await c1?.();
+    }
   });
 
-  test("trips circuit breaker on 3 consecutive identical milestones or 25 rounds, and resets on prompt hook", async () => {
+  test("trips circuit breaker on 3 consecutive identical milestones or 60 rounds, and resets implicit checkpoint on prompt hook", async () => {
     const { serverPlugin } = await importFreshConversation({ newServerProcess: true });
     const harness = createMockContext(root);
-    await serverPlugin.setup(harness.ctx);
+    const cleanup = await serverPlugin.setup(harness.ctx);
 
-    const checkpointTool = harness.tools.get("ultracode_checkpoint");
-    const idleHook = harness.sessionHooks.get("experimental.idle")!;
-    const promptHook = harness.sessionHooks.get("prompt")!;
+    try {
+      const checkpointTool = harness.tools.get("ultracode_checkpoint");
+      const idleHook = harness.sessionHooks.get("experimental.idle")!;
+      const promptHook = harness.sessionHooks.get("prompt")!;
 
-    // 3 consecutive identical milestones on ses_stall
-    const r1 = await checkpointTool.execute({ next: "Fix flaky assertion" }, { sessionID: "ses_stall" });
-    expect(r1.content).toBe("Next milestone recorded.");
-    await idleHook({ sessionID: "ses_stall", background: [] });
+      // 3 consecutive identical milestones on ses_stall
+      const r1 = await checkpointTool.execute({ next: "Fix flaky assertion" }, { sessionID: "ses_stall" });
+      expect(r1.content).toBe("Next milestone recorded.");
+      await idleHook({ sessionID: "ses_stall", background: [] });
 
-    const r2 = await checkpointTool.execute({ next: "Fix flaky assertion" }, { sessionID: "ses_stall" });
-    expect(r2.content).toBe("Next milestone recorded.");
-    await idleHook({ sessionID: "ses_stall", background: [] });
-    expect(harness.syntheticCalls).toHaveLength(2);
+      const r2 = await checkpointTool.execute({ next: "Fix flaky assertion" }, { sessionID: "ses_stall" });
+      expect(r2.content).toBe("Next milestone recorded.");
+      await idleHook({ sessionID: "ses_stall", background: [] });
+      expect(harness.syntheticCalls).toHaveLength(2);
 
-    const r3 = await checkpointTool.execute({ next: "Fix flaky assertion" }, { sessionID: "ses_stall" });
-    expect(r3.content.toLowerCase()).toContain("circuit breaker");
-    expect((await harness.rpcHandlers.getState!({})).checkpoints).toEqual({});
+      const r3 = await checkpointTool.execute({ next: "Fix flaky assertion" }, { sessionID: "ses_stall" });
+      expect(r3.content.toLowerCase()).toContain("circuit breaker");
+      expect((await harness.rpcHandlers.getState!({})).checkpoints).toEqual({});
 
-    await idleHook({ sessionID: "ses_stall", background: [] });
-    expect(harness.syntheticCalls).toHaveLength(2);
+      await idleHook({ sessionID: "ses_stall", background: [] });
+      expect(harness.syntheticCalls).toHaveLength(2);
 
-    // Fresh user prompt resets counters and clears active checkpoint
-    await promptHook({ sessionID: "ses_stall" });
-    const afterReset = await checkpointTool.execute({ next: "Fix flaky assertion" }, { sessionID: "ses_stall" });
-    expect(afterReset.content).toBe("Next milestone recorded.");
-    await promptHook({ sessionID: "ses_stall" });
-    expect((await harness.rpcHandlers.getState!({})).checkpoints).toEqual({});
+      // Fresh user prompt resets counters and clears implicit checkpoint
+      await promptHook({ sessionID: "ses_stall" });
+      const afterReset = await checkpointTool.execute({ next: "Fix flaky assertion" }, { sessionID: "ses_stall" });
+      expect(afterReset.content).toBe("Next milestone recorded.");
+      await promptHook({ sessionID: "ses_stall" });
+      expect((await harness.rpcHandlers.getState!({})).checkpoints).toEqual({});
 
-    // 25-round cap on ses_rounds
-    const beforeCount = harness.syntheticCalls.length;
-    for (let i = 1; i <= 25; i++) {
-      const res = await checkpointTool.execute({ next: `Milestone #${i}` }, { sessionID: "ses_rounds" });
-      expect(res.content).toBe("Next milestone recorded.");
+      // 60-round cap on ses_rounds
+      const beforeCount = harness.syntheticCalls.length;
+      for (let i = 1; i <= 60; i++) {
+        const res = await checkpointTool.execute({ next: `Milestone #${i}` }, { sessionID: "ses_rounds" });
+        expect(res.content).toBe("Next milestone recorded.");
+        await idleHook({ sessionID: "ses_rounds", background: [] });
+      }
+      expect(harness.syntheticCalls.length - beforeCount).toBe(60);
+
+      const r61 = await checkpointTool.execute({ next: "Milestone #61" }, { sessionID: "ses_rounds" });
+      expect(r61.content.toLowerCase()).toContain("circuit breaker");
       await idleHook({ sessionID: "ses_rounds", background: [] });
+      expect(harness.syntheticCalls.length - beforeCount).toBe(60);
+    } finally {
+      await cleanup?.();
     }
-    expect(harness.syntheticCalls.length - beforeCount).toBe(25);
-
-    const r26 = await checkpointTool.execute({ next: "Milestone #26" }, { sessionID: "ses_rounds" });
-    expect(r26.content.toLowerCase()).toContain("circuit breaker");
-    await idleHook({ sessionID: "ses_rounds", background: [] });
-    expect(harness.syntheticCalls.length - beforeCount).toBe(25);
   });
 
-  test("defers cleanly to official /goal when opencode.goal reports status active", async () => {
-    const { serverPlugin } = await importFreshConversation({ newServerProcess: true });
-    let activeGoal = true;
-    const queriedDefs: string[] = [];
-    const harness = createMockContext(root, {
-      goalState: (sessionID, def) => {
-        queriedDefs.push(`${def.id}:${sessionID}`);
-        return activeGoal ? { id: "g1", status: "active", objective: "Ship feature" } : { id: "g1", status: "paused" };
-      },
-    });
-    await serverPlugin.setup(harness.ctx);
-
-    const checkpointTool = harness.tools.get("ultracode_checkpoint");
-    const idleHook = harness.sessionHooks.get("experimental.idle")!;
-
-    await checkpointTool.execute({ next: "Redundant step" }, { sessionID: "ses_goal" });
-    expect((await harness.rpcHandlers.getState!({})).checkpoints).toEqual({ ses_goal: "Redundant step" });
-
-    await idleHook({ sessionID: "ses_goal", background: [] });
-    expect(queriedDefs).toContain("opencode.goal:ses_goal");
-    expect(harness.syntheticCalls).toHaveLength(0);
-    expect((await harness.rpcHandlers.getState!({})).checkpoints).toEqual({});
-
-    // When /goal is paused/inactive, ultracode_checkpoint resumes firing normally
-    activeGoal = false;
-    await checkpointTool.execute({ next: "UltraCode step" }, { sessionID: "ses_goal" });
-    await idleHook({ sessionID: "ses_goal", background: [] });
-    expect(harness.syntheticCalls).toHaveLength(1);
-  });
-
-  test("OpencodeGoalRpc defines events: {}, works with real @opencode/client makeRpc, and idle survives synchronous rpc errors", async () => {
+  test("registers OpencodeGoalRpc (id: 'opencode.goal') null-stub so stock OpenCode Goal pills stay hidden without retry storms", async () => {
     const { OpencodeGoalRpc, serverPlugin } = await importFreshConversation({ newServerProcess: true });
-    expect(OpencodeGoalRpc.events).toEqual({});
+    expect(OpencodeGoalRpc.id).toBe("opencode.goal");
+    expect(OpencodeGoalRpc.events.changed).toBeDefined();
 
-    const { makeRpc } = await import(
-      pathToFileURL(join(pluginGuiNodeModules, "@opencode", "client", "dist", "promise", "rpc.js")).href
-    );
-    const rawCalls: any[] = [];
-    const realRpc = makeRpc(
-      {
-        rpc: {
-          call: async (req: any) => {
-            rawCalls.push(req);
-            return { output: { status: "paused" } };
+    const harness = createMockContext(root);
+    const cleanup = await serverPlugin.setup(harness.ctx);
+    try {
+      const stub = harness.registeredRpcs.get("opencode.goal");
+      expect(stub).toBeDefined();
+      expect(await stub!.handlers.get!({ sessionID: "ses_any" })).toBeNull();
+
+      // Also works with real @opencode/client makeRpc
+      const { makeRpc } = await import(
+        pathToFileURL(join(pluginGuiNodeModules, "@opencode", "client", "dist", "promise", "rpc.js")).href
+      );
+      const realRpc = makeRpc(
+        {
+          rpc: {
+            call: async (req: any) => ({
+              output: await stub!.handlers[req.method]!(req.input),
+            }),
           },
         },
-      },
-      {
-        subscribe: async function* () {},
-      },
-    );
-    const goalClient = realRpc(OpencodeGoalRpc);
-    const goalOut = await goalClient.get({ sessionID: "ses_real_rpc" });
-    expect(goalOut).toEqual({ status: "paused" });
-    expect(rawCalls).toHaveLength(1);
-    expect(rawCalls[0]).toMatchObject({
-      rpcID: "opencode.goal",
-      method: "get",
-      input: { sessionID: "ses_real_rpc" },
-    });
-
-    const harness = createMockContext(root);
-    await serverPlugin.setup(harness.ctx);
-    // Simulate a synchronous throw during ctx.rpc(OpencodeGoalRpc) client construction
-    harness.ctx.rpc = Object.assign(
-      () => {
-        throw new Error("Simulated synchronous client-construction failure");
-      },
-      { register: harness.ctx.rpc.register },
-    ) as any;
-
-    await harness.tools.get("ultracode_checkpoint").execute({ next: "Survive sync rpc throw" }, { sessionID: "ses_sync_err" });
-    await harness.sessionHooks.get("experimental.idle")!({ sessionID: "ses_sync_err", background: [] });
-    expect(harness.syntheticCalls).toEqual([
-      {
-        sessionID: "ses_sync_err",
-        text: "Continue the authorized goal from the latest handoff: Survive sync rpc throw",
-      },
-    ]);
+        {
+          subscribe: async function* () {},
+        },
+      );
+      const goalClient = realRpc(OpencodeGoalRpc);
+      expect(await goalClient.get({ sessionID: "ses_real_rpc" })).toBeNull();
+    } finally {
+      await cleanup?.();
+    }
   });
 
   test("mid-turn empty checkpoint ({ next: '' }) preserves rounds and stalls without prompt hook and still trips MAX_CHECKPOINT_STALLS = 3", async () => {
@@ -425,69 +544,239 @@ describe("ultracode-conversation durable checkpoints, circuit breaker, and /goal
     expect(MAX_CHECKPOINT_STALLS).toBe(3);
 
     const harness = createMockContext(root);
-    await serverPlugin.setup(harness.ctx);
-    const checkpointTool = harness.tools.get("ultracode_checkpoint");
-    const idleHook = harness.sessionHooks.get("experimental.idle")!;
+    const cleanup = await serverPlugin.setup(harness.ctx);
+    try {
+      const checkpointTool = harness.tools.get("ultracode_checkpoint");
+      const idleHook = harness.sessionHooks.get("experimental.idle")!;
 
-    // Advance 1 round so rounds === 1 before mid-turn clear/re-arm attempts
-    await checkpointTool.execute({ next: "warmup step" }, { sessionID: "ses_midclear" });
-    await idleHook({ sessionID: "ses_midclear", background: [] });
-    expect((harness.storage.backing.get("checkpoint:ses_midclear") as any)?.rounds).toBe(1);
+      await checkpointTool.execute({ next: "warmup step" }, { sessionID: "ses_midclear" });
+      await idleHook({ sessionID: "ses_midclear", background: [] });
+      expect((harness.storage.backing.get("goal:ses_midclear") as any)?.rounds).toBe(1);
 
-    const a1 = await checkpointTool.execute({ next: "step A" }, { sessionID: "ses_midclear" });
-    expect(a1.content).toBe("Next milestone recorded.");
+      const a1 = await checkpointTool.execute({ next: "step A" }, { sessionID: "ses_midclear" });
+      expect(a1.content).toBe("Next milestone recorded.");
 
-    const c1 = await checkpointTool.execute({ next: "" }, { sessionID: "ses_midclear" });
-    expect(c1.content).toBe("Continuation cleared.");
-    expect((await harness.rpcHandlers.getState!({})).checkpoints).toEqual({});
-    expect(harness.storage.backing.get("checkpoint:ses_midclear")).toMatchObject({
-      next: "",
-      rounds: 1,
-      stalls: 1,
-      lastMilestone: "step A",
-    });
+      const c1 = await checkpointTool.execute({ next: "" }, { sessionID: "ses_midclear" });
+      expect(c1.content).toBe("Continuation cleared.");
+      expect((await harness.rpcHandlers.getState!({})).checkpoints).toEqual({});
+      expect(harness.storage.backing.get("goal:ses_midclear")).toMatchObject({
+        nextMilestone: "",
+        rounds: 1,
+        stalls: 1,
+        lastMilestone: "step A",
+      });
 
-    const a2 = await checkpointTool.execute({ next: "step A" }, { sessionID: "ses_midclear" });
-    expect(a2.content).toBe("Next milestone recorded.");
+      const a2 = await checkpointTool.execute({ next: "step A" }, { sessionID: "ses_midclear" });
+      expect(a2.content).toBe("Next milestone recorded.");
 
-    const c2 = await checkpointTool.execute({ next: "" }, { sessionID: "ses_midclear" });
-    expect(c2.content).toBe("Continuation cleared.");
-    expect((await harness.rpcHandlers.getState!({})).checkpoints).toEqual({});
-    expect(harness.storage.backing.get("checkpoint:ses_midclear")).toMatchObject({
-      next: "",
-      rounds: 1,
-      stalls: 2,
-      lastMilestone: "step A",
-    });
+      const c2 = await checkpointTool.execute({ next: "" }, { sessionID: "ses_midclear" });
+      expect(c2.content).toBe("Continuation cleared.");
+      expect((await harness.rpcHandlers.getState!({})).checkpoints).toEqual({});
+      expect(harness.storage.backing.get("goal:ses_midclear")).toMatchObject({
+        nextMilestone: "",
+        rounds: 1,
+        stalls: 2,
+        lastMilestone: "step A",
+      });
 
-    const a3 = await checkpointTool.execute({ next: "step A" }, { sessionID: "ses_midclear" });
-    expect(a3.content.toLowerCase()).toContain("circuit breaker");
-    expect(a3.content.toLowerCase()).toContain("repeated identical milestone");
-    expect(harness.storage.backing.get("checkpoint:ses_midclear")).toMatchObject({
-      next: "",
-      rounds: 1,
-      stalls: 3,
-      lastMilestone: "step A",
-    });
+      const a3 = await checkpointTool.execute({ next: "step A" }, { sessionID: "ses_midclear" });
+      expect(a3.content.toLowerCase()).toContain("circuit breaker");
+      expect(a3.content.toLowerCase()).toContain("repeated identical milestone");
+    } finally {
+      await cleanup?.();
+    }
   });
 
-  test("clearCheckpoint removes checkpoint:<sessionID> from ctx.storage and emits changed with empty checkpoints", async () => {
+  test("clearCheckpoint and clearGoal remove goal:<sessionID> from ctx.storage and emit changed", async () => {
     const { serverPlugin } = await importFreshConversation({ newServerProcess: true });
     const harness = createMockContext(root);
-    await serverPlugin.setup(harness.ctx);
+    const cleanup = await serverPlugin.setup(harness.ctx);
+    try {
+      await harness.tools.get("ultracode_checkpoint").execute({ next: "Pending work" }, { sessionID: "ses_clear" });
+      expect(harness.storage.backing.has("goal:ses_clear")).toBe(true);
 
-    await harness.tools.get("ultracode_checkpoint").execute({ next: "Pending work" }, { sessionID: "ses_clear" });
-    expect(harness.storage.backing.has("checkpoint:ses_clear")).toBe(true);
+      harness.emitted.length = 0;
+      const clearedState = await harness.rpcHandlers.clearCheckpoint!({ sessionID: "ses_clear" });
+      expect(harness.storage.backing.has("goal:ses_clear")).toBe(false);
+      expect(clearedState.checkpoints).toEqual({});
+      expect(harness.emitted).toHaveLength(1);
+    } finally {
+      await cleanup?.();
+    }
+  });
 
-    harness.emitted.length = 0;
-    const clearedState = await harness.rpcHandlers.clearCheckpoint!({ sessionID: "ses_clear" });
-    expect(harness.storage.backing.has("checkpoint:ses_clear")).toBe(false);
-    expect(clearedState.checkpoints).toEqual({});
-    expect(harness.emitted).toHaveLength(1);
-    expect(harness.emitted[0]).toEqual({
-      event: "changed",
-      data: clearedState,
-    });
+  test("/goal creates active goal, titles untitled session, respects direction manual vs --auto, handles question lifecycle, user interrupt, premature completion gate, post-compaction anchor, agent hiding, UltraPlan->UltraBuild transition, and /review", async () => {
+    const { serverPlugin } = await importFreshConversation({ newServerProcess: true });
+    const workDir = join(root, "goal-workspace");
+    await mkdir(join(workDir, ".opencode", "ultracode"), { recursive: true });
+    const harness = createMockContext(workDir);
+    // Verify ctx.agent.transform does NOT fail even if UltraBuild is not yet loaded before post phase
+    harness.agents.delete("UltraBuild");
+    const cleanup = await serverPlugin.setup(harness.ctx);
+
+    try {
+      // 1. Built-in build & plan hidden; no throw when UltraBuild absent during early plugin phase
+      expect(harness.agents.get("build")?.hidden).toBe(true);
+      expect(harness.agents.get("plan")?.hidden).toBe(true);
+
+      // Also verify ultracode_model works with OpenCode v2.4.1 { location, data: [...] } ModelListOutput shape
+      const modelListOut = await harness.tools.get("ultracode_model").execute({}, { sessionID: "ses_g1" });
+      expect(modelListOut.content).toBe("test/m1");
+
+      // 2. /goal in manual direction mode creates goal:ses_g1, titles untitled session, and kicks off with question/prior-art guidance
+      const goalCmd = harness.commands.get("goal");
+      expect(goalCmd).toBeDefined();
+      await goalCmd.execute({
+        sessionID: "ses_g1",
+        prompt: { text: "Build an offline Pomodoro web app" },
+        delivery: "queue",
+      });
+
+      expect(harness.sessionRecords.get("ses_g1")?.title).toBe("Build an offline Pomodoro web app");
+      expect(harness.promptCalls).toHaveLength(1);
+      expect(harness.promptCalls[0]?.text).toContain("question");
+      const stateActive = await harness.rpcHandlers.getState!({});
+      expect(stateActive.goals.ses_g1).toMatchObject({
+        objective: "Build an offline Pomodoro web app",
+        status: "active",
+        rounds: 0,
+        maxRounds: 60,
+      });
+
+      // /goal --auto skips manual question prompt and uses autonomous direction
+      await goalCmd.execute({
+        sessionID: "ses_g_auto",
+        prompt: { text: "--auto Migrate legacy config parser" },
+        delivery: "queue",
+      });
+      expect(harness.promptCalls[1]?.text.toLowerCase()).toContain("autonomous");
+
+      // 3. question tool lifecycle on active /goal:
+      // Case A: completed question resets awaitingUserQuestion immediately so idle continuation proceeds
+      const beforeTool = harness.toolHooks.get("execute.before")!;
+      const afterTool = harness.toolHooks.get("execute.after")!;
+      const idleHook = harness.sessionHooks.get("experimental.idle")!;
+      const promptHook = harness.sessionHooks.get("prompt")!;
+
+      await beforeTool({ tool: "question", sessionID: "ses_g1", id: "call_q1", input: {} });
+      await afterTool({
+        tool: "question",
+        sessionID: "ses_g1",
+        id: "call_q1",
+        input: {},
+        status: "completed",
+        result: { content: "Selected Option A" },
+      });
+      await idleHook({ sessionID: "ses_g1", background: [] });
+      expect(harness.syntheticCalls.length).toBe(1);
+
+      // Case B: errored/cancelled question keeps awaitingUserQuestion = true until user sends prompt, and prompt NEVER deletes active /goal!
+      await beforeTool({ tool: "question", sessionID: "ses_g1", id: "call_q2", input: {} });
+      await afterTool({
+        tool: "question",
+        sessionID: "ses_g1",
+        id: "call_q2",
+        input: {},
+        status: "error",
+        error: new Error("User dismissed"),
+      });
+      const countBeforeDismissedIdle = harness.syntheticCalls.length;
+      await idleHook({ sessionID: "ses_g1", background: [] });
+      expect(harness.syntheticCalls.length).toBe(countBeforeDismissedIdle);
+
+      await promptHook({ sessionID: "ses_g1", prompt: { text: "Use SQLite and dark mode" } });
+      expect((await harness.rpcHandlers.getState!({})).goals.ses_g1.status).toBe("active");
+
+      // 4. Premature completion blocked by evaluateWorkspaceGate + 3-stall circuit breaker into paused
+      await writeFile(
+        join(workDir, ".opencode", "ultracode", "FEATURE_LIST.json"),
+        JSON.stringify({ features: [{ id: "F-101", description: "Timer countdown", passes: false }] }, null, 2),
+      );
+      const countBeforeGate = harness.syntheticCalls.length;
+      await idleHook({ sessionID: "ses_g1", background: [] });
+      expect(harness.syntheticCalls.length).toBe(countBeforeGate + 1);
+      expect(harness.syntheticCalls[harness.syntheticCalls.length - 1]?.text).toContain("F-101");
+
+      await idleHook({ sessionID: "ses_g1", background: [] });
+      expect(harness.syntheticCalls.length).toBe(countBeforeGate + 2);
+
+      // 3rd identical gate failure trips circuit breaker into status: "paused"
+      await idleHook({ sessionID: "ses_g1", background: [] });
+      expect(harness.syntheticCalls.length).toBe(countBeforeGate + 2);
+      const pausedByGate = (await harness.rpcHandlers.getState!({})).goals.ses_g1;
+      expect(pausedByGate.status).toBe("paused");
+      expect(pausedByGate.reason.toLowerCase()).toContain("circuit breaker");
+
+      // Resume + verify feature via ultracode_task_graph -> next idle transitions goal to "complete"
+      await goalCmd.execute({ sessionID: "ses_g1", prompt: { text: "resume" }, delivery: "queue" });
+      expect((await harness.rpcHandlers.getState!({})).goals.ses_g1.status).toBe("active");
+
+      // 5. Post-compaction context hook splices round-invariant <ultracode_goal_anchor> at index Math.min(1, messages.length) without mutating last message
+      const contextHook = harness.sessionHooks.get("context")!;
+      const summaryMsg = { role: "user", content: [{ type: "text", text: "Compacted summary without objective tag" }] };
+      const lastMsg = { role: "user", content: [{ type: "text", text: "Continue step" }] };
+      const ctxEvent = {
+        sessionID: "ses_g1",
+        agent: "UltraPlan",
+        system: [] as any[],
+        messages: [summaryMsg, lastMsg],
+      };
+      await contextHook(ctxEvent);
+      expect(ctxEvent.messages).toHaveLength(3);
+      expect(ctxEvent.messages[0]).toBe(summaryMsg);
+      expect(ctxEvent.messages[2]).toBe(lastMsg);
+      expect(ctxEvent.messages[2]!.content[0]!.text).toBe("Continue step");
+      expect(ctxEvent.messages[1]!.content[0]!.text).toContain("<ultracode_goal_anchor>");
+
+      // Switching from UltraPlan to UltraBuild injects <system-update> lifting read-only restriction
+      const ctxEventBuild = {
+        sessionID: "ses_g1",
+        agent: "UltraBuild",
+        system: [] as any[],
+        messages: ctxEvent.messages,
+      };
+      await contextHook(ctxEventBuild);
+      expect(ctxEventBuild.system.some((s) => s.text.includes("<system-update>"))).toBe(true);
+      // Anchor was not duplicated when already present in messages
+      expect(ctxEventBuild.messages).toHaveLength(3);
+
+      // Complete F-101 via ultracode_task_graph tool and confirm idle marks goal complete
+      const graphTool = harness.tools.get("ultracode_task_graph");
+      expect(graphTool).toBeDefined();
+      const verRes = await graphTool.execute(
+        {
+          action: "verify",
+          featureID: "F-101",
+          executedCommand: "bun test",
+          evidenceSummary: "Timer verified",
+        },
+        { sessionID: "ses_g1" },
+      );
+      expect(verRes.content).toContain("Verified feature F-101");
+      await idleHook({ sessionID: "ses_g1", background: [] });
+      expect((await harness.rpcHandlers.getState!({})).goals.ses_g1.status).toBe("complete");
+
+      // 6. User interrupt transitions active goal to paused
+      await harness.emitHostEvent({
+        type: "session.execution.interrupted",
+        data: { sessionID: "ses_g_auto", reason: "user" },
+      });
+      expect((await harness.rpcHandlers.getState!({})).goals.ses_g_auto.status).toBe("paused");
+
+      // 7. /review dispatches independent ultracode/reviewer verification prompt
+      const reviewCmd = harness.commands.get("review");
+      expect(reviewCmd).toBeDefined();
+      const promptsBeforeReview = harness.promptCalls.length;
+      await reviewCmd.execute({
+        sessionID: "ses_g_auto",
+        prompt: { text: "main...HEAD" },
+        delivery: "queue",
+      });
+      expect(harness.promptCalls.length).toBe(promptsBeforeReview + 1);
+      expect(harness.promptCalls[harness.promptCalls.length - 1]?.text).toContain("ultracode/reviewer");
+    } finally {
+      await cleanup?.();
+    }
   });
 
   test("built gui-experimental.cjs exposes 6-locale checkpoint strings and session-scoped ComposerPill clear row", async () => {
