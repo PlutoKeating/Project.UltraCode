@@ -26,6 +26,7 @@ export interface ModelCandidate {
   enabled?: boolean;
   status?: string;
   capabilities?: Record<string, unknown>;
+  compatibility?: Record<string, unknown>;
 }
 
 export interface RoleModelRecommendation {
@@ -57,6 +58,7 @@ function scoreModel(model: ModelCandidate) {
   const full = `${provider}/${id}`;
   const hay = `${provider} ${id} ${model.name || ""} ${model.family || ""}`.toLowerCase();
   const caps = model.capabilities && typeof model.capabilities === "object" ? model.capabilities : {};
+  const compat = model.compatibility && typeof model.compatibility === "object" ? model.compatibility : {};
 
   const isLight =
     /(?:^|[-_/. ])(haiku|mini|nano|flash|lite|hydrogen|argon|small|instant|turbo|7b|8b)(?:$|[-_/. 0-9])/i.test(hay);
@@ -67,16 +69,30 @@ function scoreModel(model: ModelCandidate) {
       hay,
     );
   const isCodingWorkhorse = /(?:^|[-_/. ])(sonnet|codex|neon|coder|swe)(?:$|[-_/. 0-9])/i.test(hay);
-  const hasReasoning = caps.reasoning === true || caps.thinking === true;
-  const inputCaps = caps.input && typeof caps.input === "object" ? (caps.input as Record<string, unknown>) : null;
+  const reasoningObj =
+    caps.reasoning && typeof caps.reasoning === "object" ? (caps.reasoning as Record<string, unknown>) : null;
+  const hasReasoning =
+    caps.reasoning === true ||
+    caps.thinking === true ||
+    Boolean(compat.reasoningField) ||
+    reasoningObj?.supported === true;
+  const hasInputArray = Array.isArray(caps.input);
+  const inputCaps =
+    !hasInputArray && caps.input && typeof caps.input === "object" ? (caps.input as Record<string, unknown>) : null;
   const hasVision =
-    caps.vision === true || caps.image === true || caps.multimodal === true || inputCaps?.image === true;
+    (hasInputArray && (caps.input as unknown[]).includes("image")) ||
+    caps.vision === true ||
+    caps.image === true ||
+    caps.multimodal === true ||
+    inputCaps?.image === true;
   const lacksVision =
-    ("vision" in caps && caps.vision === false) || /(deepseek-r1|deepseek-coder|o1-mini|o3-mini|argon)/i.test(hay);
+    (hasInputArray && !(caps.input as unknown[]).includes("image")) ||
+    ("vision" in caps && caps.vision === false) ||
+    /(deepseek-r1|deepseek-coder|o1-mini|o3-mini|argon)/i.test(hay);
 
   let deep = 10;
   if (isDeepFlagship) deep += 55;
-  if (hasReasoning) deep += 20;
+  if (hasReasoning) deep += 35;
   if (isCodingWorkhorse) deep += 25;
   if (isLight) deep -= 40;
 
@@ -227,18 +243,30 @@ async function persistOnboardingState(paths: Paths, reason: string): Promise<voi
 
 async function discoverOpenCodeModels(paths: Paths): Promise<ModelCandidate[]> {
   const opencode = (await findOpenCode(paths)) ?? paths.opencodeBinary;
-  for (const args of [
-    ["api", "get", "/api/model"],
-    ["api", "--standalone", "get", "/api/model"],
-  ]) {
-    const res = await run(opencode, args).catch(() => ({ code: 1, stdout: "", stderr: "" }));
+  for (let attempt = 0; attempt < 4; attempt++) {
+    const res = await run(opencode, ["api", "get", "/api/model"]).catch(() => ({ code: 1, stdout: "", stderr: "" }));
     if (res.code === 0 && res.stdout.trim()) {
       try {
         const extracted = extractModelArray(JSON.parse(res.stdout));
         if (extracted.length > 0) return extracted;
       } catch {
-        // try next
+        // retry after async provider plugin startup
       }
+    }
+    if (attempt < 3) {
+      await new Promise((r) => setTimeout(r, 180));
+    }
+  }
+  const fallback = await run(opencode, ["api", "--standalone", "get", "/api/model"]).catch(() => ({
+    code: 1,
+    stdout: "",
+    stderr: "",
+  }));
+  if (fallback.code === 0 && fallback.stdout.trim()) {
+    try {
+      return extractModelArray(JSON.parse(fallback.stdout));
+    } catch {
+      return [];
     }
   }
   return [];

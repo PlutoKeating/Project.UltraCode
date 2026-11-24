@@ -774,6 +774,46 @@ describe("ultracode-conversation durable checkpoints, circuit breaker, and /goal
       });
       expect(harness.promptCalls.length).toBe(promptsBeforeReview + 1);
       expect(harness.promptCalls[harness.promptCalls.length - 1]?.text).toContain("ultracode/reviewer");
+
+      // 8. Completed /goal is NOT resurrected when user continues chatting and ultracode_checkpoint schedules a new milestone
+      expect((await harness.rpcHandlers.getState!({})).goals.ses_g1?.status).toBe("complete");
+      await promptHook({ sessionID: "ses_g1", prompt: { text: "Now add CSV export" } });
+      expect((await harness.rpcHandlers.getState!({})).goals.ses_g1).toBeUndefined();
+      const cpNew = await harness.tools.get("ultracode_checkpoint").execute(
+        { next: "Write CSV parser tests" },
+        { sessionID: "ses_g1" },
+      );
+      expect(cpNew.content).toBe("Next milestone recorded.");
+      const synthsBeforeCsv = harness.syntheticCalls.length;
+      await idleHook({ sessionID: "ses_g1", background: [] });
+      expect(harness.syntheticCalls.length).toBe(synthsBeforeCsv + 1);
+      expect(harness.syntheticCalls[harness.syntheticCalls.length - 1]?.text).toBe(
+        "Continue the authorized goal from the latest handoff: Write CSV parser tests",
+      );
+
+      // 9. Resuming a /goal paused at maxRounds (60/60) extends maxRounds by +60 so continuation proceeds
+      await harness.storage.set("goal:ses_maxed", {
+        id: "g_maxed",
+        objective: "Large 8-hour migration",
+        explicit: true,
+        status: "paused",
+        reason: "Circuit breaker: max goal rounds reached (60)",
+        nextMilestone: "",
+        bootID: (globalThis as any).__ultracodeBootID,
+        rounds: 60,
+        maxRounds: 60,
+        stalls: 0,
+        gateStalls: 0,
+        updatedAt: Date.now(),
+      });
+      const resumedMaxed = await harness.rpcHandlers.resumeGoal!({ sessionID: "ses_maxed" });
+      expect(resumedMaxed.goals.ses_maxed.status).toBe("active");
+      expect(resumedMaxed.goals.ses_maxed.maxRounds).toBe(120);
+      const cpAfterExtend = await harness.tools.get("ultracode_checkpoint").execute(
+        { next: "Phase 2 step 1" },
+        { sessionID: "ses_maxed" },
+      );
+      expect(cpAfterExtend.content).toBe("Next milestone recorded.");
     } finally {
       await cleanup?.();
     }
@@ -1247,6 +1287,28 @@ describe("first-use model routing onboarding and /setup-models", () => {
         { providerID: "google-vertex", id: "gemini-4-argon", capabilities: { vision: false } },
       ]),
     ).toEqual(vertexRec);
+
+    // Real OpenCode v2.4.1 capabilities.input string[] schema: text-only coder vs multimodal model
+    const v24Pool = [
+      {
+        providerID: "openrouter",
+        id: "qwen3-coder",
+        capabilities: { tools: true, input: ["text"], output: ["text"] },
+      },
+      {
+        providerID: "openrouter",
+        id: "kimi-k2.5",
+        capabilities: { tools: true, input: ["text", "image"], output: ["text"] },
+        compatibility: { reasoningField: "reasoning_content" },
+      },
+    ];
+    const v24RecJs = onboarding.recommendRoleModels(v24Pool);
+    const v24RecTs = tsOnboarding.recommendRoleModels(v24Pool);
+    expect(v24RecJs).toEqual(v24RecTs);
+    expect(v24RecJs.visual).toBe("openrouter/kimi-k2.5");
+    expect(v24RecJs.roles["ultracode/visual-evaluator"]).toBe("openrouter/kimi-k2.5");
+    expect(v24RecJs.deep).toBe("openrouter/kimi-k2.5");
+    expect(v24RecJs.coding).toBe("openrouter/qwen3-coder");
   });
 
   test("first-session onboarding hint fires at most once, skips child subagents and pre-configured roles, and /setup-models recommended|inherit updates opencode.jsonc in zero tokens preserving comments", async () => {

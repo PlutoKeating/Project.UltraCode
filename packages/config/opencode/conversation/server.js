@@ -122,7 +122,7 @@ export default {
     const awaitingQuestionSessions = new Set()
     const lastAgentBySession = new Map()
     const transitionedFromPlanSessions = new Set()
-    let onboardingChecked = false
+    let onboardingCheckedUntil = 0
     const eventAbort = new AbortController()
 
     const storage = ctx.storage ?? {
@@ -292,10 +292,14 @@ export default {
       if (!existing || typeof existing !== "object") {
         return emitChanged()
       }
+      const prevRounds = typeof existing.rounds === "number" ? existing.rounds : 0
+      const prevMaxRounds = typeof existing.maxRounds === "number" ? existing.maxRounds : MAX_GOAL_ROUNDS
+      const nextMaxRounds = prevRounds >= prevMaxRounds ? prevRounds + MAX_GOAL_ROUNDS : prevMaxRounds
       const nextRecord = {
         ...existing,
         status: "active",
         bootID: BOOT_ID,
+        maxRounds: nextMaxRounds,
         reason: "",
         stalls: 0,
         gateStalls: 0,
@@ -506,7 +510,7 @@ export default {
           await writeConfigAtomically(cfgFile, updated)
         }
         await markModelRoutingGuided("command-inherit")
-        onboardingChecked = true
+        onboardingCheckedUntil = Number.MAX_SAFE_INTEGER
         notifyLocations()
         return
       }
@@ -521,13 +525,13 @@ export default {
           await writeConfigAtomically(cfgFile, updated)
         }
         await markModelRoutingGuided("command-recommended")
-        onboardingChecked = true
+        onboardingCheckedUntil = Number.MAX_SAFE_INTEGER
         notifyLocations()
         return
       }
 
       await markModelRoutingGuided("command-interactive")
-      onboardingChecked = true
+      onboardingCheckedUntil = Number.MAX_SAFE_INTEGER
       const mappingLines = rec
         ? Object.entries(rec.roles)
             .map(([role, spec]) => `- \`${role}\` → \`${spec}\``)
@@ -608,7 +612,9 @@ export default {
           const milestone = typeof input?.next === "string" ? input.next.trim() : ""
           const raw = await storage.get(key)
           const existing =
-            raw && typeof raw === "object" && (raw.bootID === BOOT_ID || raw.explicit) ? raw : null
+            raw && typeof raw === "object" && raw.status !== "complete" && (raw.bootID === BOOT_ID || raw.explicit)
+              ? raw
+              : null
 
           if (!milestone) {
             if (existing) {
@@ -834,7 +840,7 @@ export default {
       const existing = await storage.get(key)
       if (!existing || typeof existing !== "object") return
 
-      if (existing.explicit) {
+      if (existing.explicit && existing.status !== "complete") {
         await storage.set(key, {
           ...existing,
           bootID: BOOT_ID,
@@ -885,10 +891,10 @@ export default {
           })
         }
 
-        if (!onboardingChecked && process.env.ULTRACODE_RALPH_ACTIVE !== "1") {
+        if (Date.now() >= onboardingCheckedUntil && process.env.ULTRACODE_RALPH_ACTIVE !== "1") {
           const prevOnboard = await readOnboardingState()
           if (prevOnboard && Number(prevOnboard.modelRoutingGuidedVersion) >= 1) {
-            onboardingChecked = true
+            onboardingCheckedUntil = Number.MAX_SAFE_INTEGER
           } else {
             const cfgFile = await resolveOpenCodeConfigFile()
             let cfgText = ""
@@ -899,18 +905,20 @@ export default {
               cfgText = ""
             }
             if (cfgText && hasConfiguredRoleModels(cfgText)) {
-              onboardingChecked = true
+              onboardingCheckedUntil = Number.MAX_SAFE_INTEGER
               await markModelRoutingGuided("preconfigured").catch(() => {})
             } else {
               const models = extractModelList(await ctx.model.list().catch(() => []))
               const rec = recommendRoleModels(models)
               if (rec) {
-                onboardingChecked = true
+                onboardingCheckedUntil = Number.MAX_SAFE_INTEGER
                 await markModelRoutingGuided("shown").catch(() => {})
                 event.system.push({
                   type: "text",
                   text: `<ultracode_onboarding_hint>Multiple configured models were detected (recommended tier pairing: deep=${rec.deep}, coding=${rec.coding}, fast=${rec.fast}, visual=${rec.visual}). Without blocking the user's request, include a brief one-line tip at the end of your response noting they can run \`/setup-models\` (or \`/setup-models recommended\`) anytime to bind optional per-role model preferences in opencode.jsonc.</ultracode_onboarding_hint>`,
                 })
+              } else {
+                onboardingCheckedUntil = Date.now() + 60_000
               }
             }
           }

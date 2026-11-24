@@ -1,7 +1,7 @@
 import { mkdir, readdir, rm, writeFile } from "node:fs/promises";
 import { delimiter, dirname, isAbsolute, join } from "node:path";
 import baseline from "../../config/upstream-baseline.json";
-import { atomicWrite, exists, sha256 } from "./fs";
+import { atomicWrite, exists, makeExecutable, sha256 } from "./fs";
 import { findOpenCode, run } from "./opencode";
 import type { Paths } from "./paths";
 
@@ -63,6 +63,29 @@ async function extractTar(archive: string, target: string): Promise<void> {
   await mkdir(target, { recursive: true });
   const result = await run("tar", ["-xzf", archive, "-C", target, "--strip-components=1"]);
   if (result.code !== 0) throw new Error(`Could not extract ${archive}: ${result.stderr}`);
+}
+
+async function ensureRuntimeBunShim(paths: Paths): Promise<string> {
+  const shimDir = join(paths.runtime, "bin");
+  await mkdir(shimDir, { recursive: true });
+  const execTarget = (await exists(paths.binary)) ? paths.binary : process.execPath;
+  if (process.platform === "win32") {
+    const cmdShim = join(shimDir, "bun.cmd");
+    const content = `@echo off\r\nset BUN_BE_BUN=1\r\n"${execTarget}" %*\r\n`;
+    await atomicWrite(cmdShim, content);
+  } else {
+    const shShim = join(shimDir, "bun");
+    const escaped = execTarget.replace(/'/g, "'\\''");
+    const content = `#!/bin/sh\nBUN_BE_BUN=1 exec '${escaped}' "$@"\n`;
+    await atomicWrite(shShim, content, 0o755);
+    await makeExecutable(shShim);
+  }
+  return shimDir;
+}
+
+function prependPathDir(currentPath: string | undefined, dir: string): string {
+  const parts = (currentPath || "").split(delimiter).filter(Boolean);
+  return parts.includes(dir) ? parts.join(delimiter) : [dir, ...parts].join(delimiter);
 }
 
 async function runBun(args: string[], options: { cwd?: string; env?: NodeJS.ProcessEnv; inherit?: boolean } = {}) {
@@ -146,13 +169,17 @@ export async function installRuntime(paths: Paths): Promise<void> {
 
 export async function runPlaywright(paths: Paths, args: string[] = []): Promise<number> {
   if (process.env.ULTRACODE_SKIP_RUNTIME !== "1") await installRuntime(paths);
+  const shimDir = await ensureRuntimeBunShim(paths);
   const cli = join(paths.runtime, "node_modules", "@playwright", "mcp", "cli.js");
   const serverArgs =
     args.length > 0
       ? args
       : ["--browser", "chromium", "--headless", "--isolated", "--output-dir", ".opencode/ultracode/qa"];
   const result = await runBun(["run", cli, ...serverArgs], {
-    env: { PLAYWRIGHT_BROWSERS_PATH: paths.browsers },
+    env: {
+      PLAYWRIGHT_BROWSERS_PATH: paths.browsers,
+      PATH: prependPathDir(process.env.PATH, shimDir),
+    },
     inherit: true,
   });
   return result.code;
@@ -160,14 +187,16 @@ export async function runPlaywright(paths: Paths, args: string[] = []): Promise<
 
 export async function runRalph(paths: Paths, args: string[], options: { cwd?: string } = {}): Promise<number> {
   if (process.env.ULTRACODE_SKIP_RUNTIME !== "1") await installRuntime(paths);
+  const shimDir = await ensureRuntimeBunShim(paths);
   const opencode = await findOpenCode(paths);
   const env: NodeJS.ProcessEnv = { ...process.env };
+  env.PATH = prependPathDir(env.PATH, shimDir);
   if (opencode && isAbsolute(opencode)) {
-    const dir = dirname(opencode);
-    const parts = (env.PATH || "").split(delimiter).filter(Boolean);
-    if (!parts.includes(dir)) env.PATH = [dir, ...parts].join(delimiter);
+    env.PATH = prependPathDir(env.PATH, dirname(opencode));
   }
-  const cli = join(paths.runtime, "node_modules", "@th0rgal", "ralph-wiggum", "bin", "ralph.js");
-  const result = await runBun(["run", cli, ...args], { cwd: options.cwd, env, inherit: true });
+  const tsEntry = join(paths.runtime, "node_modules", "@th0rgal", "ralph-wiggum", "ralph.ts");
+  const jsWrapper = join(paths.runtime, "node_modules", "@th0rgal", "ralph-wiggum", "bin", "ralph.js");
+  const entry = (await exists(tsEntry)) ? tsEntry : jsWrapper;
+  const result = await runBun(["run", entry, ...args], { cwd: options.cwd, env, inherit: true });
   return result.code;
 }

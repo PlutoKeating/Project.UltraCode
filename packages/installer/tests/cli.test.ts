@@ -298,6 +298,13 @@ describe("unified ultracode CLI router", () => {
       expect(code2).toBe(0);
       const defIdx = defaultArgs.indexOf("--max-iterations");
       expect(defaultArgs[defIdx + 1]).toBe("50");
+
+      // Leading-hyphen --worktree=-bad is rejected uniformly
+      const badWtCode = await runRalphWorkflow(p, ["run", "SPEC.md", "--worktree=-bad"], {
+        cwd: repo,
+        error: () => {},
+      });
+      expect(badWtCode).toBe(2);
     } finally {
       await rm(dir, { recursive: true, force: true });
     }
@@ -366,7 +373,58 @@ describe("unified ultracode CLI router", () => {
       const afterInh = parseJsonc(afterInhText) as any;
       expect(afterInh.agents.UltraBuild).toBeUndefined();
       expect(afterInh.agents.build).toEqual({ hidden: true });
+
+      // Cold-start retry: first /api/model returns {"data":[]}, second returns models
+      const attemptFlag = join(dir, "model-attempt-1");
+      await writeFile(
+        fake,
+        process.platform === "win32"
+          ? `@echo off\r\nif "%*"=="--version" (\r\n  echo opencode v2.4.1\r\n  exit /b 0\r\n)\r\nif "%*"=="api get /api/model" (\r\n  if not exist "${attemptFlag}" (\r\n    echo 1 > "${attemptFlag}"\r\n    echo {"data":[]}\r\n    exit /b 0\r\n  )\r\n  echo ${modelPayload}\r\n  exit /b 0\r\n)\r\nexit /b 0\r\n`
+          : `#!/bin/sh\ncase "$*" in\n  --version) echo 'opencode v2.4.1';;\n  'api get /api/model')\n    if [ ! -f '${attemptFlag}' ]; then\n      printf '1' > '${attemptFlag}'\n      printf '%s\\n' '{"data":[]}'\n      exit 0\n    fi\n    printf '%s\\n' '${modelPayload}';;\nesac\nexit 0\n`,
+        { mode: 0o755 },
+      );
+      const retryCode = await dispatch(["setup-models", "--recommended"], p, { ...makeDeps([], out) });
+      expect(retryCode).toBe(0);
+      const afterRetry = parseJsonc(await readFile(p.opencodeConfigFile, "utf8")) as any;
+      expect(afterRetry.agents.UltraPlan.model).toBe("openai/gpt-6");
     } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  test("runRalph executes vendored ralph wrapper even when global bun is absent from PATH", async () => {
+    const { runRalph } = await import("../src/runtime");
+    const dir = await mkdtemp(join(tmpdir(), "uc-ralph-nobun-"));
+    const prevSkip = process.env.ULTRACODE_SKIP_RUNTIME;
+    const prevPath = process.env.PATH;
+    process.env.ULTRACODE_SKIP_RUNTIME = "1";
+    try {
+      const p = resolvePaths({
+        HOME: dir,
+        USERPROFILE: dir,
+        LOCALAPPDATA: dir,
+        ULTRACODE_BIN_DIR: join(dir, "bin"),
+      });
+      await mkdir(join(p.runtime, "node_modules", "@th0rgal", "ralph-wiggum", "bin"), { recursive: true });
+      // Exact upstream ralph.js pattern that spawns "bun" from PATH + sibling ralph.ts
+      await writeFile(
+        join(p.runtime, "node_modules", "@th0rgal", "ralph-wiggum", "bin", "ralph.js"),
+        `const { spawnSync } = require("node:child_process");\nconst { resolve } = require("node:path");\nconst r = spawnSync("bun", [resolve(__dirname, "..", "ralph.ts"), ...process.argv.slice(2)], { stdio: "inherit" });\nprocess.exit(r.error ? 1 : (r.status ?? 1));\n`,
+      );
+      const marker = join(dir, "ralph-ran.txt");
+      await writeFile(
+        join(p.runtime, "node_modules", "@th0rgal", "ralph-wiggum", "ralph.ts"),
+        `import { writeFileSync } from "node:fs";\nwriteFileSync(${JSON.stringify(marker)}, process.argv.slice(2).join(" "));\n`,
+      );
+      process.env.PATH = process.platform === "win32" ? "C:\\Windows\\System32" : "/usr/bin:/bin";
+      const code = await runRalph(p, ["--version"]);
+      expect(code).toBe(0);
+      expect(await readFile(marker, "utf8")).toBe("--version");
+    } finally {
+      if (prevSkip === undefined) delete process.env.ULTRACODE_SKIP_RUNTIME;
+      else process.env.ULTRACODE_SKIP_RUNTIME = prevSkip;
+      if (prevPath === undefined) delete process.env.PATH;
+      else process.env.PATH = prevPath;
       await rm(dir, { recursive: true, force: true });
     }
   });

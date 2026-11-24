@@ -85,7 +85,12 @@ export async function runRalphWorkflow(
       continue;
     }
     if (token.startsWith("--worktree=")) {
-      worktreeName = token.slice("--worktree=".length);
+      const val = token.slice("--worktree=".length);
+      if (!val || val.startsWith("-")) {
+        reportError("--worktree requires a valid worktree name.");
+        return 2;
+      }
+      worktreeName = val;
       continue;
     }
     extraFlags.push(token);

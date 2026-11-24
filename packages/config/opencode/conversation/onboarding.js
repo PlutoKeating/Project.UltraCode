@@ -29,6 +29,7 @@ function scoreModel(model) {
   const full = `${provider}/${id}`
   const hay = `${provider} ${id} ${model.name || ""} ${model.family || ""}`.toLowerCase()
   const caps = model.capabilities && typeof model.capabilities === "object" ? model.capabilities : {}
+  const compat = model.compatibility && typeof model.compatibility === "object" ? model.compatibility : {}
 
   const isLight =
     /(?:^|[-_/. ])(haiku|mini|nano|flash|lite|hydrogen|argon|small|instant|turbo|7b|8b)(?:$|[-_/. 0-9])/i.test(hay)
@@ -39,18 +40,26 @@ function scoreModel(model) {
       hay,
     )
   const isCodingWorkhorse = /(?:^|[-_/. ])(sonnet|codex|neon|coder|swe)(?:$|[-_/. 0-9])/i.test(hay)
-  const hasReasoning = caps.reasoning === true || caps.thinking === true
+  const hasReasoning =
+    caps.reasoning === true ||
+    caps.thinking === true ||
+    Boolean(compat.reasoningField) ||
+    Boolean(caps.reasoning && typeof caps.reasoning === "object" && caps.reasoning.supported === true)
+  const hasInputArray = Array.isArray(caps.input)
   const hasVision =
+    (hasInputArray && caps.input.includes("image")) ||
     caps.vision === true ||
     caps.image === true ||
     caps.multimodal === true ||
-    (caps.input && typeof caps.input === "object" && caps.input.image === true)
+    (!hasInputArray && caps.input && typeof caps.input === "object" && caps.input.image === true)
   const lacksVision =
-    ("vision" in caps && caps.vision === false) || /(deepseek-r1|deepseek-coder|o1-mini|o3-mini|argon)/i.test(hay)
+    (hasInputArray && !caps.input.includes("image")) ||
+    ("vision" in caps && caps.vision === false) ||
+    /(deepseek-r1|deepseek-coder|o1-mini|o3-mini|argon)/i.test(hay)
 
   let deep = 10
   if (isDeepFlagship) deep += 55
-  if (hasReasoning) deep += 20
+  if (hasReasoning) deep += 35
   if (isCodingWorkhorse) deep += 25
   if (isLight) deep -= 40
 
