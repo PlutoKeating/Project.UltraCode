@@ -206,13 +206,34 @@
 
       $tmpExe = Join-Path $workDir $asset
       $tmpSha = Join-Path $workDir "$asset.sha256"
-      Download-File "$base/$asset" $tmpExe
-      Download-File "$base/$asset.sha256" $tmpSha
-
-      $expected = ((Get-Content -LiteralPath $tmpSha -Raw).Trim() -split '\s+')[0].ToLowerInvariant()
-      $actual = (Get-FileHash -LiteralPath $tmpExe -Algorithm SHA256).Hash.ToLowerInvariant()
-      if (-not $expected -or ($actual -ne $expected)) {
-        throw "Checksum verification failed: expected $expected, got $actual"
+      $verified = $false
+      for ($attempt = 1; $attempt -le 3; $attempt++) {
+        Remove-Item -LiteralPath $tmpExe, $tmpSha -Force -ErrorAction SilentlyContinue
+        try {
+          Download-File "$base/$asset" $tmpExe
+          Download-File "$base/$asset.sha256" $tmpSha
+        } catch {
+          Write-StepLog $_.Exception.Message
+        }
+        $expected = $null
+        $actual = $null
+        if (Test-Path -LiteralPath $tmpSha) {
+          $expected = ((Get-Content -LiteralPath $tmpSha -Raw).Trim() -split '\s+')[0].ToLowerInvariant()
+        }
+        if ((Test-Path -LiteralPath $tmpExe) -and $expected) {
+          $actual = (Get-FileHash -LiteralPath $tmpExe -Algorithm SHA256).Hash.ToLowerInvariant()
+        }
+        if ($expected -and $actual -eq $expected) {
+          $verified = $true
+          break
+        }
+        if ($attempt -lt 3) {
+          [Console]::Error.WriteLine("Download interrupted, retrying ($attempt/3)...")
+          Start-Sleep -Seconds 2
+        }
+      }
+      if (-not $verified) {
+        throw "The download could not be verified after 3 attempts. Check your network connection, then run the installer again."
       }
 
       New-Item -ItemType Directory -Path $binDir -Force | Out-Null

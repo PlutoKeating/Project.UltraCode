@@ -220,4 +220,54 @@ exit 0
       await rm(dir, { recursive: true, force: true });
     }
   });
+
+  test("retries once when the binary download is truncated, then installs successfully", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "uc-install-sh-retry-"));
+    const scriptPath = fileURLToPath(new URL("../../../scripts/install.sh", import.meta.url));
+    const mockUltracode = "#!/bin/sh\nif [ \"$1\" = \"version\" ]; then printf 'v1.2.0\\n'; fi\nexit 0\n";
+    const hash = sha256(mockUltracode);
+    let binaryRequests = 0;
+    const server = createServer((req, res) => {
+      if (req.url?.endsWith(".sha256")) {
+        res.writeHead(200, { "content-type": "text/plain" });
+        res.end(`${hash}  artifact\n`);
+        return;
+      }
+      binaryRequests += 1;
+      res.writeHead(200, { "content-type": "application/octet-stream" });
+      // First response simulates a connection that drops mid-download.
+      res.end(binaryRequests === 1 ? mockUltracode.slice(0, 12) : mockUltracode);
+    });
+    await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve));
+    const port = (server.address() as { port: number }).port;
+
+    try {
+      const home = join(dir, "home");
+      const mockBin = join(dir, "mock-bin");
+      await mkdir(home, { recursive: true });
+      await mkdir(mockBin, { recursive: true });
+      const fakeOpenCode = join(mockBin, "opencode");
+      await writeFile(fakeOpenCode, "#!/bin/sh\nprintf 'opencode v2.4.1\\n'\n", { mode: 0o755 });
+
+      const res = await run("bash", [scriptPath], {
+        env: {
+          ...process.env,
+          HOME: home,
+          SHELL: "/bin/zsh",
+          PATH: `${mockBin}:/usr/bin:/bin`,
+          ULTRACODE_RELEASE_BASE_URL: `http://127.0.0.1:${port}`,
+          ULTRACODE_OPENCODE_BIN: fakeOpenCode,
+          ULTRACODE_SKIP_RUNTIME: "1",
+          ULTRACODE_SKIP_BROWSER: "1",
+          NO_COLOR: "1",
+        },
+      });
+      expect(res.code).toBe(0);
+      expect(binaryRequests).toBe(2);
+      expect(await exists(join(home, ".local", "bin", "ultracode"))).toBe(true);
+    } finally {
+      await new Promise<void>((resolve) => server.close(() => resolve()));
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
 });

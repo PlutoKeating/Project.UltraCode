@@ -101,9 +101,25 @@ upgrade_opencode_step() {
   check_opencode_version "$found"
 }
 
+verify_download() {
+  local file="$1"
+  local sha_file="$2"
+  local expected actual
+  expected="$(awk '{print $1}' "$sha_file" 2>/dev/null || true)"
+  if [[ -z "$expected" || ! -s "$file" ]]; then
+    return 1
+  fi
+  if command -v sha256sum >/dev/null 2>&1; then
+    actual="$(sha256sum "$file" | awk '{print $1}')"
+  else
+    actual="$(shasum -a 256 "$file" | awk '{print $1}')"
+  fi
+  [[ "$actual" == "$expected" ]]
+}
+
 install_ultracode_step() {
   local asset="ultracode-$os-$arch"
-  local base expected actual backup_dir
+  local base backup_dir attempt
   if [[ -n "${ULTRACODE_RELEASE_BASE_URL:-}" ]]; then
     base="${ULTRACODE_RELEASE_BASE_URL%/}"
   elif [[ "$version" == latest ]]; then
@@ -112,18 +128,24 @@ install_ultracode_step() {
     base="https://github.com/$repo/releases/download/$version"
   fi
 
-  curl -fsSL --retry 3 --retry-delay 2 "$base/$asset" -o "$work/$asset"
-  curl -fsSL --retry 3 --retry-delay 2 "$base/$asset.sha256" -o "$work/$asset.sha256"
-  expected="$(awk '{print $1}' "$work/$asset.sha256")"
-  if command -v sha256sum >/dev/null 2>&1; then
-    actual="$(sha256sum "$work/$asset" | awk '{print $1}')"
-  else
-    actual="$(shasum -a 256 "$work/$asset" | awk '{print $1}')"
-  fi
-  if [[ -z "$expected" || "$actual" != "$expected" ]]; then
-    printf 'Checksum mismatch: expected %s, got %s\n' "$expected" "$actual"
-    return 1
-  fi
+  for attempt in 1 2 3; do
+    rm -f "$work/$asset" "$work/$asset.sha256"
+    if ! curl -fsSL --retry 3 --retry-delay 2 "$base/$asset" -o "$work/$asset" ||
+       ! curl -fsSL --retry 3 --retry-delay 2 "$base/$asset.sha256" -o "$work/$asset.sha256"; then
+      :
+    fi
+    if verify_download "$work/$asset" "$work/$asset.sha256"; then
+      break
+    fi
+    if [[ "$attempt" -lt 3 ]]; then
+      printf 'Download interrupted, retrying (%s/3)...\n' "$attempt" >&2
+      sleep 2
+    else
+      printf 'UltraCode: the download could not be verified after 3 attempts.\n' >&2
+      printf 'Check your network connection, then run the installer again.\n' >&2
+      return 1
+    fi
+  done
 
   mkdir -p "$bin_dir"
   if [[ -f "$bin_dir/ultracode" ]]; then
