@@ -4,7 +4,6 @@ import { fileURLToPath } from "node:url";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
 const generated = join(root, "src/content/docs");
-await rm(generated, { recursive: true, force: true });
 await mkdir(generated, { recursive: true });
 
 async function files(directory) {
@@ -20,6 +19,8 @@ async function files(directory) {
 
 const LOCALES = ["root", "zh", "ar", "fr", "ru", "es"];
 
+const written = new Set();
+
 for (const locale of LOCALES) {
   const source = join(root, "content", locale);
   for (const file of await files(source)) {
@@ -27,7 +28,14 @@ for (const locale of LOCALES) {
     const target = locale === "root" ? join(generated, suffix) : join(generated, locale, suffix);
     await mkdir(dirname(target), { recursive: true });
     await cp(file, target);
+    written.add(target);
   }
+}
+
+// Remove only files whose source was deleted, leaving every other generated file in
+// place so a running dev server never sees its content directory disappear.
+for (const file of await files(generated)) {
+  if (!written.has(file)) await rm(file, { force: true });
 }
 
 await mkdir(join(root, "public"), { recursive: true });
