@@ -1,41 +1,48 @@
 ---
-title: "Install: Desktop App"
-description: "One command installs UltraCode plus the official desktop app, then you open a window and start."
+title: "Install: Terminal + Desktop"
+description: "What most people pick: one command installs UltraCode, then you add the official desktop window."
 sidebar:
-  label: "Desktop install"
+  label: "Terminal + desktop"
 ---
 
 import AnnotatedShot from "@tutorials/AnnotatedShot.astro";
+import InstallCommands from "@tutorials/InstallCommands.astro";
 import TutorialStep from "@tutorials/TutorialStep.astro";
 
-Two steps: **install UltraCode, then let it open the desktop window.**
+Recommended for most people: **install UltraCode first, then add the desktop window.** The only difference between platforms is one line of command — copy the box that matches your computer.
 
 <TutorialStep
   step={1}
-  title="Install UltraCode on your computer"
-  promptLabel="On macOS / Linux, paste this into your terminal"
-  promptText="curl -fsSL https://ultracode.plutokeating.beer/install.sh | bash"
-  isCommand={true}
-  copyLabel="Copy"
-  copiedLabel="Copied"
+  title="Install UltraCode"
   expectLabel="What you'll see"
-  expectText="The UltraCode version and a Ready line at the end — that means it worked."
+  expectText="It updates OpenCode, installs UltraCode, finishes setup, and ends with the version plus Ready."
 >
-  On Windows use PowerShell instead: `irm https://ultracode.plutokeating.beer/install.ps1 | iex`. Either way, official OpenCode is prepared for you, so there is nothing else to install first.
+  <InstallCommands
+    unixLabel="macOS / Linux"
+    windowsLabel="Windows"
+    unixHint="Paste it in Terminal"
+    windowsHint="Paste it in PowerShell"
+    unixCommand="curl -fsSL https://ultracode.plutokeating.beer/install.sh | bash"
+    windowsCommand="irm https://ultracode.plutokeating.beer/install.ps1 | iex"
+    copyLabel="Copy"
+    copiedLabel="Copied"
+  />
+
+  Both boxes do the same thing: they prepare official OpenCode, the UltraCode binary, and the runtime it needs. Nothing else has to be installed first. If the current window cannot find `ultracode` afterwards, close and reopen the terminal before the next step.
 </TutorialStep>
 
 <TutorialStep
   step={2}
-  title="Let it open the desktop window"
+  title="Add the desktop window"
   promptLabel="Type this in the terminal"
   promptText="ultracode desktop"
   isCommand={true}
   copyLabel="Copy"
   copiedLabel="Copied"
   expectLabel="What you'll see"
-  expectText="The desktop app opens; if it is not installed yet it downloads the official installer for your system first."
+  expectText="The desktop app opens; the first time it downloads the official installer for your system, after that it just launches."
 >
-  Once installed you can also just open it from your normal app list — no need to type this every time.
+  On the first run it downloads the official desktop installer: macOS and Windows open a system installer window you click through; Linux opens it directly. Afterwards you can also launch it from your normal app list.
 </TutorialStep>
 
 <TutorialStep
@@ -57,4 +64,4 @@ Two steps: **install UltraCode, then let it open the desktop window.**
   />
 </TutorialStep>
 
-When it is open, start with [the desktop walkthrough](/docs/tutorial-desktop/).
+Installed? Start with [the desktop walkthrough](/docs/tutorial-desktop/). Want the terminal only, no desktop window? See [terminal-only install](/docs/install-terminal/).

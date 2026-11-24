@@ -1,27 +1,35 @@
 ---
-title: "Install: Terminal Mode"
-description: "One line installs it; afterwards you talk to it inside any folder."
+title: "Install: Terminal Only (TUI)"
+description: "For developers and keyboard-first workflows: one line installs the terminal interface, with no desktop window."
 sidebar:
-  label: "Terminal install"
+  label: "Terminal only"
 ---
 
 import AnnotatedShot from "@tutorials/AnnotatedShot.astro";
+import InstallCommands from "@tutorials/InstallCommands.astro";
 import TutorialStep from "@tutorials/TutorialStep.astro";
 
-Terminal mode is the most direct surface: **it works only inside the folder you opened it in.**
+If all you want is the terminal interface: **install it once and use it inside any folder**, with no desktop window. The only difference between platforms is one line of command.
 
 <TutorialStep
   step={1}
   title="Install with one line"
-  promptLabel="On macOS / Linux, copy this"
-  promptText="curl -fsSL https://ultracode.plutokeating.beer/install.sh | bash"
-  isCommand={true}
-  copyLabel="Copy"
-  copiedLabel="Copied"
   expectLabel="What you'll see"
   expectText="It updates OpenCode, installs UltraCode, finishes setup, and ends with the version plus Ready."
 >
-  On Windows use PowerShell: `irm https://ultracode.plutokeating.beer/install.ps1 | iex`. If the current window cannot find the command afterwards, close and reopen the terminal.
+  <InstallCommands
+    unixLabel="macOS / Linux"
+    windowsLabel="Windows"
+    unixHint="Paste it in Terminal"
+    windowsHint="Paste it in PowerShell"
+    unixCommand="curl -fsSL https://ultracode.plutokeating.beer/install.sh | bash"
+    windowsCommand="irm https://ultracode.plutokeating.beer/install.ps1 | iex"
+    copyLabel="Copy"
+    copiedLabel="Copied"
+  />
+
+  Both boxes do the same thing. If the current window cannot find `ultracode` afterwards, close and reopen the terminal.
+
   <AnnotatedShot
     src="/tutorials/terminal-install.webp"
     alt="The ready screen after installation finishes"
@@ -57,4 +65,4 @@ Terminal mode is the most direct surface: **it works only inside the folder you 
   Wrong path means you opened it somewhere else — exit and reopen in the right place.
 </TutorialStep>
 
-Installed? Continue with [Terminal mode without fear](/docs/tutorial-terminal/).
+Installed? Continue with [Terminal mode without fear](/docs/tutorial-terminal/). Want the desktop window later? Run `ultracode desktop` whenever you like — no reinstall needed.

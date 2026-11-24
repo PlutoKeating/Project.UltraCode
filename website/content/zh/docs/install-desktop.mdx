@@ -1,41 +1,48 @@
 ---
-title: "安装方法：桌面应用"
-description: "一条命令装好 UltraCode 与官方桌面应用，然后打开窗口开始用。"
+title: "安装方法：终端 + 桌面"
+description: "大多数人选这一种：一条命令装好 UltraCode，再加上官方桌面窗口。"
 sidebar:
-  label: "桌面端安装"
+  label: "终端 + 桌面安装"
 ---
 
 import AnnotatedShot from "@tutorials/AnnotatedShot.astro";
+import InstallCommands from "@tutorials/InstallCommands.astro";
 import TutorialStep from "@tutorials/TutorialStep.astro";
 
-装桌面端只需要两步：**先装 UltraCode，再让它帮你打开桌面窗口。**
+大多数人选这一种：**先装好 UltraCode，再把桌面窗口加上。** 两个平台只有一行命令不同，复制你电脑对应的那个框就行。
 
 <TutorialStep
   step={1}
-  title="先在电脑上装好 UltraCode"
-  promptLabel="macOS / Linux 打开终端，粘贴这一行"
-  promptText="curl -fsSL https://ultracode.plutokeating.beer/install.sh | bash"
-  isCommand={true}
-  copyLabel="复制"
-  copiedLabel="已复制"
+  title="装好 UltraCode"
   expectLabel="你会看到"
-  expectText="最后出现 UltraCode 的版本号和「Ready」，说明装好了。"
+  expectText="安装过程会依次更新 OpenCode、安装 UltraCode、完成设置，最后出现版本号和 Ready。"
 >
-  Windows 用 PowerShell 粘贴：`irm https://ultracode.plutokeating.beer/install.ps1 | iex`。两种方式都会自动备好官方 OpenCode，不用你先装别的。
+  <InstallCommands
+    unixLabel="macOS / Linux"
+    windowsLabel="Windows"
+    unixHint="在「终端」里粘贴"
+    windowsHint="在 PowerShell 里粘贴"
+    unixCommand="curl -fsSL https://ultracode.plutokeating.beer/install.sh | bash"
+    windowsCommand="irm https://ultracode.plutokeating.beer/install.ps1 | iex"
+    copyLabel="复制"
+    copiedLabel="已复制"
+  />
+
+  两个框做的是同一件事：准备好官方 OpenCode、UltraCode 本体和运行环境，不需要你先装别的东西。如果当前窗口还认不出 `ultracode`，关掉重开一次终端再继续。
 </TutorialStep>
 
 <TutorialStep
   step={2}
-  title="让它帮你打开桌面窗口"
-  promptLabel="在终端里输入"
+  title="再加上桌面窗口"
+  promptLabel="在终端里运行"
   promptText="ultracode desktop"
   isCommand={true}
   copyLabel="复制"
   copiedLabel="已复制"
   expectLabel="你会看到"
-  expectText="桌面应用自动打开；如果电脑上还没装，它会先下载当前系统的官方安装包再打开。"
+  expectText="桌面应用自动打开；没装过时会先下载当前系统的官方安装包，装过一次以后就是直接启动。"
 >
-  装好之后，之后也可以直接从系统的应用列表里打开它，不必每次都敲这一行。
+  第一次运行会下载官方桌面安装包：macOS 和 Windows 会弹出系统安装窗口，按提示点几下完成；Linux 会直接打开。之后从系统应用列表打开也可以。
 </TutorialStep>
 
 <TutorialStep
@@ -57,4 +64,4 @@ import TutorialStep from "@tutorials/TutorialStep.astro";
   />
 </TutorialStep>
 
-装好之后，从 [桌面端实战](/zh/docs/tutorial-desktop/) 开始第一次任务。
+装好之后，从 [桌面端实战](/zh/docs/tutorial-desktop/) 开始第一次任务。只想用终端、不需要桌面窗口？看 [仅终端安装](/zh/docs/install-terminal/)。

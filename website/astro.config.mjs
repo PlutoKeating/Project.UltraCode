@@ -45,10 +45,9 @@ export default defineConfig({
           },
           items: [
             { slug: "docs/getting-started" },
-            { slug: "docs/install-terminal" },
             { slug: "docs/install-desktop" },
+            { slug: "docs/install-terminal" },
             { slug: "docs/install-mobile" },
-            { slug: "docs/goal-engineering" },
           ],
         },
         {
@@ -61,6 +60,7 @@ export default defineConfig({
             es: "Capacidades clave",
           },
           items: [
+            { slug: "docs/goal-engineering" },
             { slug: "docs/roles-and-workflow" },
             { slug: "docs/long-running" },
             { slug: "docs/visual-qa" },
