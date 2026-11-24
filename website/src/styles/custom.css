@@ -320,3 +320,55 @@ h1#_top {
   margin-right: 0.7em;
   vertical-align: 0.16em;
 }
+
+/* ---------------------------------------------------------------------------
+   Page aura — the landing page's anamorphic ice/amber horizon, adapted for
+   long-form reading: it lights the title band of every doc page, then fades
+   into pure black exactly where the first section begins.
+   Painted as a background layer on .page so it never adds scroll height.
+   --------------------------------------------------------------------------- */
+.page {
+  background-image:
+    radial-gradient(58% 46% at 30% 8%, rgba(186, 230, 253, 0.16), transparent 70%),
+    radial-gradient(54% 44% at 70% 6%, rgba(229, 160, 61, 0.13), transparent 72%);
+  background-repeat: no-repeat;
+  background-size: 100% 1100px;
+  background-position: top left;
+}
+
+/* Specular seam between the page title and the article — the same ice-to-amber
+   light line the landing page uses on its section edges. */
+@media (min-width: 50rem) {
+  .content-panel + .content-panel {
+    border-top-color: transparent !important;
+    position: relative;
+  }
+
+  .content-panel + .content-panel::before {
+    content: "";
+    position: absolute;
+    top: -1px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    pointer-events: none;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(186, 230, 253, 0.3) 28%,
+      rgba(255, 255, 255, 0.42) 50%,
+      rgba(229, 160, 61, 0.28) 72%,
+      transparent 100%
+    );
+  }
+}
+
+@media print {
+  .page {
+    background-image: none;
+  }
+
+  .content-panel + .content-panel::before {
+    display: none;
+  }
+}
