@@ -1,5 +1,5 @@
-import { copyFile, mkdir, realpath } from "node:fs/promises";
-import { join, resolve } from "node:path";
+import { copyFile, mkdir, realpath, writeFile } from "node:fs/promises";
+import { basename, dirname, join, resolve } from "node:path";
 import { exists } from "./fs";
 import { run } from "./opencode";
 import type { Paths } from "./paths";
@@ -30,20 +30,65 @@ export async function runRalphWorkflow(
   }
 
   const rest = args.slice(1);
-  if (rest.length < 1) {
-    reportError("Usage: ultracode ralph run <goal-file> [max-iterations] [flags...]");
+  if (rest.length < 1 || rest[0]!.startsWith("-")) {
+    reportError("Usage: ultracode ralph run <goal-file> [max-iterations] [--worktree <name>] [--init] [flags...]");
     return 2;
   }
 
   const goalArg = rest[0]!;
-  let maxIterations = "20";
-  let extraFlags: string[] = [];
+  let maxIterations = "50";
+  let rawExtra: string[];
 
   if (rest.length >= 2 && !rest[1]!.startsWith("-")) {
     maxIterations = rest[1]!;
-    extraFlags = rest.slice(2);
+    rawExtra = rest.slice(2);
   } else {
-    extraFlags = rest.slice(1);
+    rawExtra = rest.slice(1);
+  }
+
+  const extraFlags: string[] = [];
+  let worktreeName: string | undefined;
+  let initMode = false;
+
+  for (let i = 0; i < rawExtra.length; i++) {
+    const token = rawExtra[i]!;
+    if (token === "--init") {
+      initMode = true;
+      continue;
+    }
+    if (token === "--max-iterations" || token === "-n") {
+      const val = rawExtra[i + 1];
+      if (!val) {
+        reportError(`${token} requires a positive integer value.`);
+        return 2;
+      }
+      maxIterations = val;
+      i += 1;
+      continue;
+    }
+    if (token.startsWith("--max-iterations=")) {
+      maxIterations = token.slice("--max-iterations=".length);
+      continue;
+    }
+    if (token.startsWith("-n=")) {
+      maxIterations = token.slice(3);
+      continue;
+    }
+    if (token === "--worktree") {
+      const val = rawExtra[i + 1];
+      if (!val || val.startsWith("-")) {
+        reportError("--worktree requires a worktree name.");
+        return 2;
+      }
+      worktreeName = val;
+      i += 1;
+      continue;
+    }
+    if (token.startsWith("--worktree=")) {
+      worktreeName = token.slice("--worktree=".length);
+      continue;
+    }
+    extraFlags.push(token);
   }
 
   if (!/^[1-9][0-9]*$/.test(maxIterations)) {
@@ -58,59 +103,110 @@ export async function runRalphWorkflow(
   ]);
 
   if (topRes.code !== 0 || gitDirRes.code !== 0 || commonDirRes.code !== 0) {
-    reportError("UltraCode Ralph requires a dedicated linked Git worktree.");
+    reportError("UltraCode Ralph requires a dedicated linked Git worktree (or pass --worktree <name>).");
     return 2;
   }
 
-  const root = await realpath(topRes.stdout.trim());
+  let root = await realpath(topRes.stdout.trim());
   const gitDir = await realpath(resolve(cwd, gitDirRes.stdout.trim()));
   const commonDir = await realpath(resolve(cwd, commonDirRes.stdout.trim()));
 
   if (gitDir === commonDir) {
-    reportError("UltraCode Ralph requires a dedicated linked Git worktree.");
-    return 2;
+    if (!worktreeName) {
+      reportError("UltraCode Ralph requires a dedicated linked Git worktree (or pass --worktree <name>).");
+      return 2;
+    }
+    if (!/^[a-zA-Z0-9._/-]+$/.test(worktreeName) || worktreeName.includes("..")) {
+      reportError("Invalid --worktree name.");
+      return 2;
+    }
+    const safeSlug = worktreeName.replace(/[\\/]+/g, "-");
+    const worktreesParent = join(dirname(root), ".ultracode-worktrees");
+    const targetWorktree = join(worktreesParent, `${basename(root)}-${safeSlug}`);
+    await mkdir(worktreesParent, { recursive: true });
+
+    if (!(await exists(join(targetWorktree, ".git")))) {
+      const branchName = worktreeName.includes("/") ? worktreeName : `feature/${worktreeName}`;
+      const branchExists = await run("git", ["show-ref", "--verify", "--quiet", `refs/heads/${branchName}`], {
+        cwd: root,
+      });
+      const addArgs =
+        branchExists.code === 0
+          ? ["worktree", "add", targetWorktree, branchName]
+          : ["worktree", "add", "-b", branchName, targetWorktree];
+      const created = await run("git", addArgs, { cwd: root });
+      if (created.code !== 0) {
+        reportError(`Failed to create linked Git worktree "${targetWorktree}": ${created.stderr.trim() || created.stdout.trim()}`);
+        return 2;
+      }
+    }
+    root = await realpath(targetWorktree);
   }
 
-  const resolvedGoal = resolve(cwd, goalArg);
+  const worktreeGoalCandidate = resolve(root, goalArg);
+  const callerGoalCandidate = resolve(cwd, goalArg);
+  const resolvedGoal = (await exists(worktreeGoalCandidate)) ? worktreeGoalCandidate : callerGoalCandidate;
   if (!(await exists(resolvedGoal))) {
     reportError(`Goal file not found: ${goalArg}`);
     return 2;
   }
 
+  const templatesDir = join(paths.config, "ultracode", "templates");
+  await mkdir(join(root, ".ralph"), { recursive: true });
+  await mkdir(join(root, ".opencode", "ultracode", "qa"), { recursive: true });
+
+  if (initMode) {
+    await copyIfMissing(join(templatesDir, "FEATURE_LIST.json"), join(root, ".opencode", "ultracode", "FEATURE_LIST.json"));
+    await copyIfMissing(join(templatesDir, "SPRINT_CONTRACT.md"), join(root, ".opencode", "ultracode", "SPRINT_CONTRACT.md"));
+    await copyIfMissing(join(templatesDir, "UI_RUBRIC.md"), join(root, ".opencode", "ultracode", "UI_RUBRIC.md"));
+    const starterTasks = join(root, ".ralph", "ralph-tasks.md");
+    if (!(await exists(starterTasks))) {
+      await writeFile(
+        starterTasks,
+        `# Ralph Tasks\n\n- [ ] Break down and verify features from ${basename(resolvedGoal)}\n`,
+      );
+    }
+  }
+
   const tasksFile = join(root, ".ralph", "ralph-tasks.md");
   if (!(await exists(tasksFile))) {
-    reportError(`Missing task list: ${tasksFile}`);
+    reportError(`Missing task list: ${tasksFile} (pass --init to scaffold starter artifacts)`);
     return 2;
   }
 
-  const templatesDir = join(paths.config, "ultracode", "templates");
-  await mkdir(join(root, ".ralph"), { recursive: true });
   await copyIfMissing(join(templatesDir, "PROGRESS.md"), join(root, ".ralph", "PROGRESS.md"));
   await copyIfMissing(join(templatesDir, "HANDOFF.md"), join(root, ".ralph", "HANDOFF.md"));
   await copyIfMissing(join(templatesDir, "gitignore"), join(root, ".ralph", ".gitignore"));
-  await mkdir(join(root, ".opencode", "ultracode", "qa"), { recursive: true });
   await copyIfMissing(join(templatesDir, "qa.gitignore"), join(root, ".opencode", "ultracode", "qa", ".gitignore"));
 
-  const status = await runner(
-    paths,
-    [
-      "--prompt-file",
-      resolvedGoal,
-      "--prompt-template",
-      join(paths.config, "ultracode", "prompt.md"),
-      "--tasks",
-      "--max-iterations",
-      maxIterations,
-      "--agent",
-      "opencode",
-      "--abort-promise",
-      "BLOCKED",
-      "--no-commit",
-      "--no-allow-all",
-      ...extraFlags,
-    ],
-    { cwd: root },
-  );
+  const prevRalphActive = process.env.ULTRACODE_RALPH_ACTIVE;
+  process.env.ULTRACODE_RALPH_ACTIVE = "1";
+  let status: number;
+  try {
+    status = await runner(
+      paths,
+      [
+        "--prompt-file",
+        resolvedGoal,
+        "--prompt-template",
+        join(paths.config, "ultracode", "prompt.md"),
+        "--tasks",
+        "--max-iterations",
+        maxIterations,
+        "--agent",
+        "opencode",
+        "--abort-promise",
+        "BLOCKED",
+        "--no-commit",
+        "--no-allow-all",
+        ...extraFlags,
+      ],
+      { cwd: root },
+    );
+  } finally {
+    if (prevRalphActive === undefined) delete process.env.ULTRACODE_RALPH_ACTIVE;
+    else process.env.ULTRACODE_RALPH_ACTIVE = prevRalphActive;
+  }
 
   if (status !== 0) return status;
 

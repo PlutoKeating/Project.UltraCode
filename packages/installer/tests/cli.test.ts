@@ -225,4 +225,81 @@ describe("unified ultracode CLI router", () => {
       await rm(dir, { recursive: true, force: true });
     }
   });
+
+  test("ralph run deduplicates --max-iterations/-n flags, defaults to 50, supports --init scaffolding, and auto-creates --worktree from main checkout", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "uc-ralph-ergonomics-"));
+    try {
+      const home = join(dir, "home");
+      await mkdir(join(home, "bin"), { recursive: true });
+      const fake = join(home, "bin", process.platform === "win32" ? "opencode.cmd" : "opencode");
+      await writeFile(
+        fake,
+        process.platform === "win32" ? "@echo off\r\necho opencode v2.4.1\r\n" : "#!/bin/sh\nprintf 'opencode v2.4.1\\n'\n",
+        { mode: 0o755 },
+      );
+      const p = resolvePaths({
+        HOME: home,
+        USERPROFILE: home,
+        LOCALAPPDATA: home,
+        ULTRACODE_OPENCODE_BIN: fake,
+        ULTRACODE_SKIP_RUNTIME: "1",
+      });
+      await apply(p, { runtime: false });
+
+      const repo = join(dir, "repo");
+      await mkdir(repo, { recursive: true });
+      execFileSync("git", ["init", "-q"], { cwd: repo });
+      execFileSync("git", ["config", "user.name", "Test"], { cwd: repo });
+      execFileSync("git", ["config", "user.email", "test@example.com"], { cwd: repo });
+      await writeFile(join(repo, ".gitignore"), ".ralph/\n.opencode/ultracode/\n");
+      await writeFile(join(repo, "SPEC.md"), "# Build Feature\n");
+      execFileSync("git", ["add", ".gitignore", "SPEC.md"], { cwd: repo });
+      execFileSync("git", ["commit", "-q", "-m", "init"], { cwd: repo });
+
+      // Run directly from main checkout using --worktree auth --init --max-iterations 80
+      let capturedArgs: string[] = [];
+      let capturedCwd = "";
+      const code1 = await runRalphWorkflow(
+        p,
+        ["run", "SPEC.md", "--worktree", "auth", "--init", "--max-iterations", "80", "--no-questions"],
+        {
+          cwd: repo,
+          runner: async (_paths, ralphArgs, opts) => {
+            capturedArgs = ralphArgs;
+            capturedCwd = opts?.cwd || "";
+            return 0;
+          },
+        },
+      );
+      expect(code1).toBe(0);
+      expect(capturedCwd).toContain(".ultracode-worktrees");
+      expect(capturedCwd).toContain("repo-auth");
+      expect(capturedArgs.filter((a) => a === "--max-iterations")).toHaveLength(1);
+      const maxIdx = capturedArgs.indexOf("--max-iterations");
+      expect(capturedArgs[maxIdx + 1]).toBe("80");
+      expect(capturedArgs).not.toContain("--worktree");
+      expect(capturedArgs).not.toContain("--init");
+
+      // Verify --init scaffolded ralph-tasks.md and .opencode/ultracode/{FEATURE_LIST.json,SPRINT_CONTRACT.md,UI_RUBRIC.md}
+      expect(await readFile(join(capturedCwd, ".ralph", "ralph-tasks.md"), "utf8")).toContain("- [ ]");
+      expect(await readFile(join(capturedCwd, ".opencode", "ultracode", "FEATURE_LIST.json"), "utf8")).toContain("F-001");
+      expect(await readFile(join(capturedCwd, ".opencode", "ultracode", "SPRINT_CONTRACT.md"), "utf8")).toBeTruthy();
+      expect(await readFile(join(capturedCwd, ".opencode", "ultracode", "UI_RUBRIC.md"), "utf8")).toBeTruthy();
+
+      // Reusing --worktree auth without explicit max-iterations defaults to 50
+      let defaultArgs: string[] = [];
+      const code2 = await runRalphWorkflow(p, ["run", "SPEC.md", "--worktree", "auth"], {
+        cwd: repo,
+        runner: async (_paths, ralphArgs) => {
+          defaultArgs = ralphArgs;
+          return 0;
+        },
+      });
+      expect(code2).toBe(0);
+      const defIdx = defaultArgs.indexOf("--max-iterations");
+      expect(defaultArgs[defIdx + 1]).toBe("50");
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
 });

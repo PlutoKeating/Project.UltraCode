@@ -20,7 +20,7 @@
 4. Follow the project's existing test discipline. For new behavior, use a genuine failing test before implementation when the repository supports it. Never delete, skip, or weaken checks to force completion.
 5. Implement the smallest coherent change, then run the project's real verification command and the task's acceptance scenarios. For user-facing work, exercise the real interface and request an independent reviewer or visual-evaluator when available.
 6. Update `.ralph/PROGRESS.md` with work completed and commands actually run. Update `.ralph/HANDOFF.md` with current evidence, failures, unverified items, and the exact next action. Do not record an unexecuted check as passed.
-7. A task may be marked complete only when every hard criterion has evidence. If verification fails, leave the task unfinished and record the failure so the next fresh iteration can continue.
+7. A task may be marked complete only when every hard criterion has evidence. When `.opencode/ultracode/FEATURE_LIST.json` is present, update verified features via `ultracode_task_graph` (`action: "verify"`, recording the real `executedCommand` and `evidenceSummary`). If verification fails, leave the task unfinished and record the failure so the next fresh iteration can continue.
 8. Create exactly one local Git commit after verification, including the implementation and updated task/progress/handoff artifacts plus QA_REPORT.md when requested. Keep screenshots and automatic browser output in the ignored `.opencode/ultracode/qa/` directory. Do not commit when blocked without a meaningful change. Never add agent co-author trailers or push.
 
 ## Exit Signals
