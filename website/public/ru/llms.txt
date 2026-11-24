@@ -1,0 +1,43 @@
+# UltraCode
+
+> UltraCode — слой Goal Engineering, не зависящий от провайдеров и моделей, поверх официального OpenCode V2 для macOS, Linux и Windows (терминал, десктоп, веб и телефон).
+
+Установка одной командой (официальный OpenCode V2 ставится автоматически при отсутствии), ваши модели и API-ключи не затрагиваются; карточки выбора уточняют задачу, затем UltraBuild / UltraPlan и пять фоновых специалистов работают вместе, открывают реальный браузер для проверки и сохраняют передачу длинных задач в проекте.
+
+## Быстрая установка
+
+- macOS / Linux: `curl -fsSL https://ultracode.plutokeating.beer/install.sh | bash`
+- Windows (PowerShell): `irm https://ultracode.plutokeating.beer/install.ps1 | iex`
+- Основные команды: `ultracode`, `ultracode desktop`, `ultracode pair`, `ultracode upgrade`, `ultracode sync`, `ultracode doctor`, `ultracode uninstall --yes`
+
+## Документация
+
+- [Установка: терминал + десктоп](https://ultracode.plutokeating.beer/ru/docs/install-desktop/): Рекомендуется большинству: одна команда устанавливает UltraCode, после чего вы добавляете официальное настольное окно.
+- [Установка: только терминал (TUI)](https://ultracode.plutokeating.beer/ru/docs/install-terminal/): Для разработчиков и тех, кто любит работать с клавиатуры: одна строка устанавливает терминальный интерфейс, без настольного окна.
+- [Подключение: смартфон и браузер](https://ultracode.plutokeating.beer/ru/docs/install-mobile/): Создайте одну ссылку на компьютере, откройте её на телефоне и продолжите тот же прогресс.
+- [Что такое инженерия целей](https://ultracode.plutokeating.beer/ru/docs/goal-engineering/): Переход от подбора промптов и ручной сборки контекста к постановке конечной цели и проверенному результату.
+- [Основные роли и фоновые эксперты](https://ultracode.plutokeating.beer/ru/docs/roles-and-workflow/): Две понятные основные роли на переднем плане (UltraBuild и UltraPlan) при автоматической поддержке пяти профильных специалистов.
+- [Длительные задачи и продолжение работы](https://ultracode.plutokeating.beer/ru/docs/long-running/): Автоматическое выполнение многоэтапных задач, корректировка курса в любой момент и бесшовное продолжение после перезапуска или на следующий день.
+- [Визуальная проверка в реальном браузере](https://ultracode.plutokeating.beer/ru/docs/visual-qa/): Проходящих юнит-тестов недостаточно для UI. UltraCode открывает реальный браузер, прокликивает интерфейс, проверяет скриншоты и устраняет дефекты до сдачи.
+- [Практика на десктопе: страница события без команд](https://ultracode.plutokeating.beer/ru/docs/tutorial-desktop/): Без кода и терминала: превратите одно обычное предложение в страницу записи, которую можно открыть в браузере.
+- [Режим терминала без страха: наведите порядок в папке через чат](https://ultracode.plutokeating.beer/ru/docs/tutorial-terminal/): Чёрное окно — это просто чат. За один урок превратите хаос из заметок со встреч в понятный список задач.
+- [Управление с телефона: рулите с дивана](https://ultracode.plutokeating.beer/ru/docs/tutorial-mobile/): Компьютер продолжает работать, пока вы отвечаете на вопросы, следите за прогрессом и ставите его на паузу с телефона.
+- [Приём 1: зафиксируйте план и проверьте страницу](https://ultracode.plutokeating.beer/ru/docs/tutorial-plan-and-verify/): Сначала согласуйте подход в режиме только для чтения, потом собирайте, а затем дайте ему пройти по реальной странице и получите вердикт независимого ревьюера.
+- [Приём 2: автопилот, продолжение на следующий день, быстрые и глубокие модели](https://ultracode.plutokeating.beer/ru/docs/tutorial-goals-and-models/): Дайте многошаговой задаче продвигаться самой, ставьте на паузу и продолжайте когда угодно, подхватывайте завтра и тратьте меньше, сочетая умную модель с быстрой.
+- [Управление на лету, обновление и удаление](https://ultracode.plutokeating.beer/ru/docs/controls-and-maintenance/): Переключайте уровень автономности в реальном времени между терминалом, десктопом и мобильным вебом и управляйте всем через единую команду ultracode.
+- [Частые вопросы и гарантия невмешательства](https://ultracode.plutokeating.beer/ru/docs/faq/): Прямые ответы о кроссплатформенной установке, безопасности, поддержке моделей, сохранности конфигов и обновлениях.
+- [Полный контекст для LLM (один файл)](https://ultracode.plutokeating.beer/ru/llms-full.txt)
+
+## Локализованные версии (6 официальных языков ООН)
+
+- [English (Default)](https://ultracode.plutokeating.beer/)
+- [简体中文 (Simplified Chinese)](https://ultracode.plutokeating.beer/zh/)
+- [العربية (Arabic)](https://ultracode.plutokeating.beer/ar/)
+- [Français (French)](https://ultracode.plutokeating.beer/fr/)
+- [Русский (Russian)](https://ultracode.plutokeating.beer/ru/)
+- [Español (Spanish)](https://ultracode.plutokeating.beer/es/)
+
+## Репозиторий и релизы
+
+- [GitHub Repository](https://github.com/PlutoKeating/Project.UltraCode): MIT-licensed source code.
+- [Latest Release (v1.2.0)](https://github.com/PlutoKeating/Project.UltraCode/releases/latest): Standalone binaries with SHA-256 checksums.

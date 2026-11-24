@@ -1,0 +1,536 @@
+# UltraCode v1.2.0 — Referencia completa de la documentación
+
+> Fuente: https://ultracode.plutokeating.beer/es/
+> Repositorio: https://github.com/PlutoKeating/Project.UltraCode
+> Licencia: MIT
+> Procedencia: Built and shipped with UltraCode v1.0.0
+
+UltraCode es una capa de Goal Engineering neutral respecto a proveedores y modelos, sobre OpenCode V2 oficial para macOS, Linux y Windows (terminal, escritorio, web y móvil).
+
+---
+
+## Instalar: terminal + escritorio
+
+URL canónica: https://ultracode.plutokeating.beer/es/docs/install-desktop/
+Resumen: Recomendado para la mayoría: un solo comando instala UltraCode y después añades la ventana de escritorio.
+
+Recomendado para la mayoría: **instala UltraCode primero y después añade la ventana de escritorio.** Copia la línea de tu equipo y pégala en una terminal (PowerShell en Windows).
+
+## 01 Instala UltraCode
+
+```
+curl -fsSL https://ultracode.plutokeating.beer/install.sh | bash
+```
+
+```
+irm https://ultracode.plutokeating.beer/install.ps1 | iex
+```
+
+Ambos cuadros hacen lo mismo: preparan OpenCode oficial, el binario de UltraCode y el entorno de ejecución que necesita. No hace falta instalar nada más antes. Si después la ventana actual no encuentra `ultracode`, cierra y vuelve a abrir la terminal antes del siguiente paso.
+
+**Lo que verás:** actualiza OpenCode, instala UltraCode, termina la configuración y acaba con la versión y Ready.
+
+## 02 Añade la ventana de escritorio
+
+**Escribe esto en la terminal**
+
+```
+ultracode desktop
+```
+
+En la primera ejecución descarga el instalador oficial de escritorio: en macOS y Windows se abre una ventana de instalación del sistema que solo tienes que seguir; en Linux se abre directamente. Después también puedes abrirlo desde la lista de aplicaciones habitual.
+
+**Lo que verás:** se abre la aplicación de escritorio; la primera vez descarga el instalador oficial para tu sistema y, a partir de ahí, solo se inicia.
+
+¿Ya está instalado? Empieza con [el recorrido por el escritorio](/es/docs/tutorial-desktop/). ¿Solo quieres la terminal, sin ventana de escritorio? Consulta [la instalación solo para terminal](/es/docs/install-terminal/).
+
+---
+
+## Instalar: solo terminal (TUI)
+
+URL canónica: https://ultracode.plutokeating.beer/es/docs/install-terminal/
+Resumen: Para desarrolladores y flujos de trabajo con teclado: una línea instala la interfaz de terminal, sin ventana de escritorio.
+
+Si lo único que quieres es la interfaz de terminal: **instálala una vez y úsala dentro de cualquier carpeta**, sin ventana de escritorio. Copia la línea de tu equipo y pégala en una terminal (PowerShell en Windows).
+
+## 01 Instala con una sola línea
+
+```
+curl -fsSL https://ultracode.plutokeating.beer/install.sh | bash
+```
+
+```
+irm https://ultracode.plutokeating.beer/install.ps1 | iex
+```
+
+Ambos cuadros hacen lo mismo. Si después la ventana actual no encuentra `ultracode`, cierra y vuelve a abrir la terminal.
+
+**Lo que verás:** actualiza OpenCode, instala UltraCode, termina la configuración y acaba con la versión y Ready.
+
+## 02 Ábrela dentro de la carpeta en la que quieras trabajar
+
+**Entra primero en la carpeta y luego ejecuta**
+
+```
+ultracode
+```
+
+Para trabajar en otro sitio, ejecútala de nuevo dentro de esa carpeta. Nunca toca nada fuera de ella.
+
+**Lo que verás:** aparece un indicador en el centro y el nombre de la carpeta actual queda en la parte inferior.
+
+## 03 Confirma que ve tu carpeta
+
+Si la ruta es incorrecta, la abriste en otro sitio: sal y vuelve a abrirla en el lugar correcto.
+
+**Lo que verás:** la ruta de la parte inferior coincide con la carpeta que querías, con UltraCode a la derecha.
+
+¿Ya está instalado? Continúa con [el modo terminal sin miedo](/es/docs/tutorial-terminal/). ¿Prefieres la ventana de escritorio más adelante? Ejecuta `ultracode desktop` cuando quieras: no hace falta reinstalar.
+
+---
+
+## Conectar: teléfono y navegador
+
+URL canónica: https://ultracode.plutokeating.beer/es/docs/install-mobile/
+Resumen: Genera un enlace en el ordenador; ábrelo en tu teléfono y retoma el mismo progreso.
+
+No hace falta instalar nada en el teléfono: **toma prestado el entorno de trabajo de tu ordenador.**
+
+## 01 Asegúrate de que UltraCode está instalado en el ordenador
+
+**Escribe esto en la terminal del ordenador**
+
+```
+ultracode pair
+```
+
+Si UltraCode todavía no está instalado en este ordenador, haz primero [la instalación de terminal + escritorio](/es/docs/install-desktop/) y luego vuelve.
+
+**Lo que verás:** aparece un enlace que puedes abrir directamente. Solo es válido unos minutos.
+
+## 02 Envía el enlace a tu teléfono y ábrelo
+
+Cualquier vía sirve: una aplicación de mensajería, una nota o un correo enviado a ti mismo; algunas terminales también muestran un código QR que puedes escanear.
+
+**Lo que verás:** la misma interfaz en el navegador de tu teléfono, con la misma lista de proyectos que el ordenador.
+
+## 03 Toca, interrumpe y continúa desde el teléfono
+
+**Los comandos también funcionan en el cuadro de mensaje del teléfono**
+
+```
+/direction
+```
+
+El otro interruptor es `/approvals`, que controla si pregunta antes de ejecutar una acción. Ambos se mantienen sincronizados entre el ordenador y el teléfono.
+
+**Lo que verás:** el modo de preguntas cambia al instante y la pantalla del ordenador se actualiza.
+
+¿Ya está conectado? Continúa con [el control remoto desde el teléfono](/es/docs/tutorial-mobile/).
+
+---
+
+## Qué es la Ingeniería de Objetivos
+
+URL canónica: https://ultracode.plutokeating.beer/es/docs/goal-engineering/
+Resumen: Supera los trucos de prompts y la gestión manual de contexto: describe el resultado que buscas y deja que el sistema lo entregue.
+
+La programación con IA está entrando en su tercera etapa. No deberías tener que memorizar fórmulas ingeniosas de prompts ni cargar manualmente decenas de archivos en cada conversación.
+
+## Por qué el chat convencional pierde el rumbo a mitad de camino
+
+En un chat de IA convencional, el modelo se lanza directamente a escribir código adivinando tu intención, pierde el hilo de las decisiones previas en conversaciones largas y suele detenerse con el trabajo a medias. UltraCode convierte ese proceso en un ciclo cerrado de ingeniería:
+
+## Habla con UltraCode como PM o arquitecto
+
+Sin trucos mágicos de prompts ni comandos especiales. Basta con explicar tres cosas en lenguaje claro:
+
+- **Para quién es**: quiénes lo usan y en qué entorno (escritorio, móvil, terminal, etc.).
+- **Qué debe hacer**: el flujo principal, las preferencias visuales y todo lo que queda explícitamente fuera de alcance.
+- **Cómo saber que está terminado**: tu criterio real de aceptación (pruebas en verde, diseño móvil limpio, casos límite fiables).
+
+---
+
+## Roles principales y expertos en segundo plano
+
+URL canónica: https://ultracode.plutokeating.beer/es/docs/roles-and-workflow/
+Resumen: Dos roles principales sencillos en primer plano (UltraBuild y UltraPlan) respaldados por cinco especialistas automáticos.
+
+UltraCode oculta la complejidad multiagente detrás de una entrada clara y limpia. Solo interactúas con **2 roles principales**, mientras que 5 expertos en segundo plano intervienen automáticamente cuando hace falta.
+
+## Cómo elegir entre los dos roles principales
+
+Pulsa `Shift+Tab` dentro de OpenCode en cualquier momento para cambiar de rol:
+
+| Rol principal | Modo | Qué hace | Ideal para |
+| --- | --- | --- | --- |
+| **`UltraBuild`** | Por defecto | Aclara objetivos, planifica hitos, coordina especialistas y entrega resultados funcionales | Desarrollo diario, corrección de errores y entregas de principio a fin |
+| **`UltraPlan`** | `Shift+Tab` | Planificación estrictamente de solo lectura — nunca modifica tu código | Explorar ideas iniciales, compromisos técnicos y arquitectura sin riesgo |
+
+## Qué hacen automáticamente los 5 expertos en segundo plano
+
+Nunca tienes que invocarlos manualmente — `UltraBuild` incorpora a cada uno en el momento oportuno:
+
+- **Investigación**: explora las convenciones de tu proyecto y la documentación externa para no construir sobre suposiciones.
+- **Arquitectura**: traza el flujo de datos, los límites entre módulos y los compromisos técnicos antes de escribir código.
+- **Implementación**: escribe cambios limpios y bien acotados junto con sus pruebas correspondientes.
+- **Revisión escéptica de código**: audita el diff de forma independiente en busca de casos límite, regresiones y requisitos omitidos.
+- **QA visual en navegador real**: abre un navegador real para recorrer los flujos e inspeccionar capturas de escritorio y móvil.
+
+---
+
+## Trabajo de larga duración y reanudación
+
+URL canónica: https://ultracode.plutokeating.beer/es/docs/long-running/
+Resumen: Avanza automáticamente por hitos de varios pasos, corrige el rumbo en cualquier momento y retoma sin fricción tras reiniciar o al día siguiente.
+
+Las funcionalidades grandes rara vez se completan en un solo turno rápido. UltraCode mantiene en marcha el trabajo de múltiples hitos sin inundar el chat con registros ruidosos ni detenerse a mitad de camino.
+
+## Cómo se siente el trabajo prolongado en la práctica
+
+- **Avance constante y verificado**: empieza en conversación natural o con `/goal <tu objetivo>` — UltraCode aclara decisiones clave al inicio, avanza por hitos y comprueba cada requisito antes de dar el trabajo por terminado.
+- **Pausa, reanudación o giro inmediato**: envía un mensaje nuevo, usa `/goal pause` y `/goal resume`, controla el objetivo con un clic desde la píldora **UltraCode**, o ejecuta `/review` para una auditoría independiente.
+- **Reanudación fluida al día siguiente**: cierra la terminal o la ventana de escritorio, reinicia o vuelve mañana — solo abre `ultracode` y escribe:
+
+```text
+Lee el traspaso y continúa
+```
+
+UltraCode retoma tu progreso exacto, lo que ya quedó verificado y el siguiente paso pendiente.
+
+---
+
+## QA visual en navegador real
+
+URL canónica: https://ultracode.plutokeating.beer/es/docs/visual-qa/
+Resumen: Pasar las pruebas unitarias no basta para la interfaz. UltraCode abre un navegador real, interactúa con controles, revisa capturas y corrige defectos antes de entregar.
+
+En aplicaciones web e interfaces, unas pruebas unitarias en verde aún pueden ocultar botones superpuestos, diseños móviles rotos, texto con bajo contraste o manejadores de clic sin respuesta.
+
+## Cuatro comprobaciones visuales antes de dar el trabajo por terminado
+
+1. **Ejecuta tu aplicación real**: inicia la aplicación local y la abre en un navegador headless real.
+2. **Interactúa como un usuario real**: ejercita botones, formularios, navegación y estados interactivos para detectar errores de flujo o en tiempo de ejecución.
+3. **Inspecciona capturas de escritorio y móvil**: busca elementos superpuestos, textos recortados, desajustes de alineación y problemas de contraste en distintos tamaños de pantalla.
+4. **Corrige y vuelve a verificar**: cada vez que aparece un defecto visual o de interacción, UltraCode lo corrige y toma nuevas capturas antes de entregar.
+
+---
+
+## Recorrido por el escritorio: crea una página de evento sin comandos
+
+URL canónica: https://ultracode.plutokeating.beer/es/docs/tutorial-desktop/
+Resumen: Sin código y sin terminal: convierte una frase sencilla en una página de inscripción que puedes abrir en el navegador.
+
+¿Aún no lo has instalado? Empieza con [la guía de instalación de la aplicación de escritorio](/es/docs/install-desktop/).
+
+En esta lección hacemos exactamente una cosa: **crear una página de inscripción para un club de lectura de fin de semana dentro de una carpeta vacía.**
+
+No hay comandos que memorizar ni conocimientos de programación. Haces clic unas cuantas veces y luego describes lo que quieres tal como se lo contarías a un compañero de trabajo.
+
+## 01 Abre la ventana de escritorio y añade tu carpeta vacía
+
+Abre la aplicación de escritorio, haz clic en **Add project** en la barra lateral y elige la carpeta vacía que hayas preparado. Lo más fácil es tenerla cerca del Escritorio o de Documentos.
+
+**Lo que verás:** el nombre de tu carpeta aparece en la barra lateral izquierda, lo que significa que UltraCode está listo para trabajar allí.
+
+## 02 Descríbelo tal como se lo contarías a un compañero
+
+Una sola frase completa basta: **para quién es, qué debe hacer y cómo lo vas a comprobar.** Esas tres cosas evitan gran parte del trabajo repetido después.
+
+**Envía esta frase**
+
+```
+Build a sign-up page for a weekend book club in this folder: pick Saturday or Sunday, enter the number of guests, and show a confirmation card after submitting. It should look good on a phone too, then open a preview for me.
+```
+
+**Lo que verás:** en lugar de adivinar y escribir de inmediato, primero hace algunas preguntas decisivas mediante tarjetas de opciones en las que puedes hacer clic.
+
+## 03 Responde a las tarjetas y deja que compruebe su propio trabajo
+
+Cuando aparezca una tarjeta de opciones, haz clic en la opción que coincida con tu intención; si dudas, elige la recomendada. Después avanza en pasos pequeños y puedes interrumpirlo en cualquier momento.
+
+**Lo que verás:** tras crear una primera versión, abre un navegador real, pulsa los botones, comprueba los diseños de escritorio y de teléfono, y te informa. Acéptalo cuando veas que esa comprobación pasa.
+
+## 04 ¿No te convence? Sigue hablando en lugar de empezar de cero
+
+Esta es la diferencia entre describir un **objetivo** y escribir código: describes el resultado y UltraCode se encarga de la implementación y de comprobar su propio trabajo.
+
+**Pide un cambio de estilo así**
+
+```
+Make the whole thing calmer, use a warmer heading colour, make the button bigger, and keep it on one line on a phone.
+```
+
+**Lo que verás:** solo cambian los colores y el diseño; la lógica de inscripción que ya aprobaste se mantiene intacta.
+
+A continuación, prueba [el modo terminal sin miedo](/es/docs/tutorial-terminal/) o lee cómo se reparten el trabajo [los roles principales y los especialistas](/es/docs/roles-and-workflow/).
+
+---
+
+## Modo terminal sin miedo: ordena una carpeta conversando
+
+URL canónica: https://ultracode.plutokeating.beer/es/docs/tutorial-terminal/
+Resumen: La ventana negra es solo un cuadro de chat. En una lección, convierte notas de reunión desordenadas en una lista de acciones clara.
+
+¿Aún no lo has instalado? Empieza con [la guía de instalación del modo terminal](/es/docs/install-terminal/).
+
+La terminal suena intimidante, pero en realidad solo hay una cosa delante de ti: **un cuadro en el que puedes escribir.**
+
+En esta lección la usamos para convertir una carpeta desordenada de notas de reunión en una lista de tareas clara.
+
+## 01 Ábrela y mira la «ventana negra» una vez
+
+Ábrela dentro de la carpeta en la que quieras trabajar. Las líneas de los bordes son solo marcos: no hay ningún comando que tengas que escribir.
+
+**Lo que verás:** un indicador en el centro, el nombre de tu carpeta actual en la parte inferior y la etiqueta UltraCode a la derecha. El cursor parpadeante solo espera a que hables.
+
+## 02 Expresa el resultado en una frase
+
+La mitad importante es el final: **di qué archivos pueden cambiar y cuáles deben quedar intactos.** Eso es lo que hace seguro dejarle actuar.
+
+**Envía esta frase**
+
+```
+Turn the meeting notes in this folder into a clear action list: group by owner, say what to do and when it is due, and save it as a new file without deleting the originals.
+```
+
+**Lo que verás:** primero revisa la carpeta, te cuenta cómo piensa organizarlo y solo entonces empieza a trabajar.
+
+## 03 Cuando necesites una acción más, abre el menú de comandos
+
+¿Ves `ctrl+p commands` en la parte inferior? Ese es el menú de comandos. No tienes que memorizar ningún comando: abre el menú y elige.
+
+**Lo que verás:** aparece una lista de comandos en los que puedes hacer clic en el centro: cambiar de modelo, abrir los ajustes, etc. Muévete con las flechas y pulsa Enter.
+
+## 04 Sigue hablando en lugar de empezar de cero
+
+El modo terminal y la aplicación de escritorio son la misma capacidad en una ventana distinta. Usa el que te resulte más natural.
+
+**Ajústalo así**
+
+```
+Tighten the list: only what is still open this week, sorted by the nearest due date.
+```
+
+**Lo que verás:** solo cambia esta lista; las notas que ya había organizado no se rehacen desde cero.
+
+¿Quieres que a continuación compruebe una interfaz real? Continúa con [Fija un plan y verifica la página](/es/docs/tutorial-plan-and-verify/).
+
+---
+
+## Control remoto desde el teléfono: dirige desde el sofá
+
+URL canónica: https://ultracode.plutokeating.beer/es/docs/tutorial-mobile/
+Resumen: El ordenador sigue trabajando mientras respondes preguntas, observas el progreso y lo pausas desde tu teléfono.
+
+¿Aún no lo has instalado? Empieza con [la guía de conexión con el teléfono](/es/docs/install-mobile/).
+
+Esta lección resuelve algo muy práctico: **el trabajo ha empezado, pero tienes que alejarte del ordenador.**
+
+No necesitas escritorio remoto ni llevar el portátil encima. Un navegador de teléfono puede retomar el mismo progreso.
+
+## 01 Crea un enlace de vinculación en el ordenador
+
+Copia ese enlace y envíatelo a ti mismo en una ventana de chat del teléfono: es la forma más fiable de pasarlo de un dispositivo a otro.
+
+**Escribe esto en la terminal: la única línea que necesitas**
+
+```
+ultracode pair
+```
+
+**Lo que verás:** aparece un enlace que puedes abrir directamente. Solo es válido unos minutos.
+
+## 02 Ábrelo en tu teléfono
+
+No hace falta instalar nada en el teléfono. La interfaz se adapta a los toques con el dedo.
+
+**Lo que verás:** el mismo proyecto se abre en el navegador de tu teléfono, con el mismo nombre y el mismo progreso.
+
+## 03 Responde sus preguntas directamente en el teléfono
+
+Así nunca se pierden los momentos en los que de verdad se te necesita: elegir un estilo, decidir un enfoque o determinar si continuar.
+
+**Lo que verás:** las tarjetas de opciones se tocan igual de bien en el teléfono y el escritorio se actualiza en cuanto eliges.
+
+## 04 ¿Prefieres menos interrupciones? Cambia los dos interruptores
+
+El otro interruptor es `/approvals`, que controla si pregunta antes de ejecutar una acción. Ambos se mantienen sincronizados entre el ordenador y el teléfono.
+
+**Envía este comando en el cuadro de mensaje del teléfono**
+
+```
+/direction
+```
+
+**Lo que verás:** se muestra el modo de preguntas actual y cambia al instante: deja que decida por su cuenta o haz que te pregunte cada vez.
+
+Cuando vuelvas al ordenador no hay nada que reconectar. Siguiente: [Fija un plan y verifica la página](/es/docs/tutorial-plan-and-verify/).
+
+---
+
+## Truco avanzado 1: fija un plan y luego verifica la página
+
+URL canónica: https://ultracode.plutokeating.beer/es/docs/tutorial-plan-and-verify/
+Resumen: Acuerda primero el enfoque en modo de solo lectura, construye después y deja que recorra la página real y que un revisor independiente dé el visto bueno.
+
+Las dos primeras lecciones trataban de **cómo empezar**. Esta trata de **cómo evitar trabajo desperdiciado**.
+
+Tres movimientos: acordar el plan, construirlo y hacer que lo verifique por sí mismo.
+
+## 01 Cambia primero al rol de solo planificación
+
+Pulsa `Shift + Tab` para cambiar. El error más costoso es empezar a editar antes de tener claro el enfoque: este paso evita exactamente eso.
+
+**Lo que verás:** el rol de la parte inferior cambia de UltraBuild a UltraPlan. En ese rol solo lee y escribe planes; tus archivos quedan intactos.
+
+## 02 Haz que exponga riesgos y compromisos
+
+La salida aquí no es código: es **el estándar que ambos habéis acordado**. Todo lo posterior se juzga contra él.
+
+**Envía esta frase**
+
+```
+Do not write code yet. Tell me how many steps this sign-up page needs, how each step will be verified, and where it is easy to get wrong. List the open questions for me.
+```
+
+**Lo que verás:** un plan paso a paso con criterios de aceptación, además de las preguntas que de verdad necesitan tu decisión.
+
+## 03 Apruébalo, vuelve a cambiar y construye
+
+Sigue refinándolo mientras no estés satisfecho. Cuando lo estés, volver al otro rol hace que siga el plan en lugar de improvisar.
+
+**Lo que verás:** el rol vuelve a UltraBuild e implementa el plan acordado paso a paso.
+
+## 04 Deja que recorra la página real
+
+La autocomprobación es justo donde la calidad se escapa sin que se note, así que lo que quieres aquí es **que lo verifique otra persona**. Esa es la forma predeterminada de trabajar de UltraCode.
+
+**Pide verificación y una revisión independiente**
+
+```
+When it is built, open a real browser and click through both the desktop and phone layouts: buttons work, nothing overflows, no console errors. Then have an independent reviewer check it and fix anything it finds.
+```
+
+**Lo que verás:** opera la página de verdad y toma capturas, corrigiendo lo que encuentra; después, un rol de revisión independiente devuelve un veredicto de aprobado o suspenso.
+
+La última lección trata de tareas largas: [piloto automático, reanudación al día siguiente y combinación de modelos rápidos y profundos](/es/docs/tutorial-goals-and-models/).
+
+---
+
+## Truco avanzado 2: piloto automático, reanudación al día siguiente y modelos rápidos y profundos
+
+URL canónica: https://ultracode.plutokeating.beer/es/docs/tutorial-goals-and-models/
+Resumen: Deja que un trabajo de varios pasos avance solo, pausa o reanuda cuando quieras, retómalo mañana y gasta menos combinando un modelo inteligente con uno rápido.
+
+Esta lección reúne tres cosas pequeñas que suelen aparecer juntas: **avanzar solo, reanudar mañana y gastar menos.**
+
+## 01 Dale un objetivo que pueda avanzar solo
+
+`/goal` encaja en trabajos que **se dividen en varios pasos, y cada uno se puede verificar**. Si una sola frase no contiene la petición, ponla en el objetivo.
+
+**Inicia un objetivo de varios pasos con esto**
+
+```
+/goal Turn this sign-up page into something shippable: add an empty-slot hint, add the confirmation card after submitting, re-check the phone layout, and hand it over once everything passes.
+```
+
+**Lo que verás:** registra el objetivo y luego pasa de un paso pequeño completado al siguiente hasta que todas las comprobaciones pasan.
+
+## 02 Pausa o reanuda con una línea
+
+También puedes simplemente enviar un mensaje nuevo para interrumpir: tus palabras siempre tienen prioridad sobre el avance automático.
+
+**Cuando quieras que se detenga**
+
+```
+/goal pause
+```
+
+**Lo que verás:** se detiene en el paso actual en lugar de seguir editando; cambia pause por resume para continuar.
+
+## 03 Cierra el portátil y continúa mañana
+
+El progreso no está atrapado en un registro de chat: se escribe en archivos de traspaso dentro de tu proyecto, así que una ventana nueva o un día nuevo puede retomarlo.
+
+**Al día siguiente, esto es todo lo que necesitas**
+
+```
+Read the handoff notes and continue from yesterday's progress.
+```
+
+**Lo que verás:** primero dice qué se terminó, qué se verificó y qué queda; después continúa desde el paso siguiente en lugar de reiniciar.
+
+## 04 Con varios modelos, deja que cada rol haga aquello en lo que destaca
+
+Si solo tienes un modelo configurado, sáltate este paso: cada rol usará simplemente tu modelo actual.
+
+**Combina modelos para planificación, código, investigación y comprobaciones visuales**
+
+```
+/setup-models
+```
+
+**Lo que verás:** aparece una recomendación breve y una confirmación la aplica. La planificación y la revisión reciben el modelo más potente; las consultas rápidas, el más rápido y económico.
+
+Eso cubre todo el ciclo: aclarar, construir, verificar y mantenerlo a lo largo de varios días. Vuelve a empezar desde [el recorrido por el escritorio](/es/docs/tutorial-desktop/) cuando quieras repasar.
+
+---
+
+## Controles en vivo, actualización y desinstalación
+
+URL canónica: https://ultracode.plutokeating.beer/es/docs/controls-and-maintenance/
+Resumen: Alterna la autonomía entre Terminal, Escritorio y Móvil/Web en tiempo real, y gestiona todo desde un único comando ultracode.
+
+El control diario permanece integrado entre Terminal, Escritorio y Web/Móvil — sincronizado en tiempo real sin necesidad de editar archivos de configuración manualmente.
+
+## Interruptores en cualquier superficie
+
+- **Aplicación de escritorio (OpenCode Desktop)**: haz clic en la píldora **UltraCode** encima del cuadro de mensaje para cambiar con un toque (y pausar, reanudar o limpiar el objetivo activo de la sesión), o abre **Settings → UltraCode**.
+- **Terminal (TUI)**: abre la paleta de comandos y busca **UltraCode**.
+- **Web y móvil (`ultracode pair`)**: escribe `/goal`, `/review`, `/setup-models`, `/approvals` o `/direction` en el cuadro de mensaje (los interruptores cambian al instante sin llamadas a modelos de IA).
+
+- **Aprobación de comandos (`/approvals`)**: activado (`auto`) por defecto para que los pasos rutinarios se ejecuten sin confirmaciones constantes, mientras las reglas explícitas de denegación siguen siempre vigentes.
+- **Preguntas de dirección (`/direction`)**: activado (`manual`) por defecto para que UltraCode consulte mediante tarjetas de opciones cada vez que una decisión importante de producto o arquitectura requiera tu criterio.
+
+## Referencia unificada de comandos
+
+| Comando | Qué hace |
+| --- | --- |
+| `ultracode` | Abre la interfaz de terminal (todos los flags y subcomandos de OpenCode funcionan directamente) |
+| `ultracode desktop` | Inicia OpenCode Desktop o descarga el instalador oficial si no está presente |
+| `ultracode pair` | Muestra un enlace de vinculación y un código QR para acceso desde navegador o móvil |
+| `ultracode setup-models` | Vincula opcionalmente distintos niveles de modelos a planificación, código, investigación y revisión visual |
+| `ultracode upgrade` | Actualiza conjuntamente OpenCode oficial y UltraCode, y después sincroniza |
+| `ultracode sync` | Realinea la configuración y el entorno de ejecución gestionado |
+| `ultracode doctor` | Comprobación rápida de estado con cero llamadas a modelos de IA |
+| `ultracode uninstall --yes` | Desinstala UltraCode limpiamente conservando tus propias configuraciones y copias de seguridad |
+
+---
+
+## Preguntas frecuentes y garantía no invasiva
+
+URL canónica: https://ultracode.plutokeating.beer/es/docs/faq/
+Resumen: Respuestas directas sobre instalación multiplataforma, seguridad, soporte de modelos, conservación de configuraciones y actualizaciones.
+
+UltraCode se construye sobre una garantía **estrictamente aditiva, reversible y no invasiva** en macOS, Linux y Windows — en Terminal, Escritorio, Web y Móvil.
+
+## 1. ¿Modifica OpenCode oficial o lee mis claves de API?
+
+**No.** UltraCode es estrictamente aditivo y neutral frente a proveedores y modelos. Nunca parchea el CLI oficial ni la aplicación OpenCode Desktop, y jamás lee, almacena ni transmite tus claves de API.
+
+## 2. ¿Necesito instalar OpenCode antes de instalar UltraCode?
+
+**No.** En macOS, Linux y Windows, tanto el instalador como `ultracode upgrade` detectan automáticamente OpenCode V2 oficial — instalándolo desde el canal oficial si falta o manteniéndolo actualizado si ya está presente.
+
+## 3. ¿Qué modelos de IA admite?
+
+**Cualquier modelo y proveedor que ya utilices en OpenCode.** UltraCode no te ata a ningún proveedor de modelos.
+
+## 4. ¿Sobrescribirá mi configuración actual o mis skills de OpenCode?
+
+**No.** La instalación y la sincronización se combinan limpiamente respetando tus propios ajustes y skills. Ejecutar `ultracode uninstall --yes` elimina únicamente lo que UltraCode añadió.
+
+## 5. ¿Cómo actualizo el sistema o compruebo su estado?
+
+Ejecuta `ultracode upgrade` para actualizar OpenCode oficial y UltraCode juntos en un solo paso, o ejecuta `ultracode doctor` en cualquier momento para una verificación rápida con **cero llamadas a modelos de IA**.

@@ -1,0 +1,43 @@
+# UltraCode
+
+> UltraCode طبقة لهندسة الأهداف، محايدة تجاه المزوّدين والنماذج، مبنية على OpenCode V2 الرسمي وتعمل على macOS وLinux وWindows عبر الطرفية وسطح المكتب والويب والهاتف.
+
+التثبيت بأمر واحد (يثبّت OpenCode V2 الرسمي تلقائياً عند غيابه)، مع الحفاظ على نماذجك ومفاتيح API؛ توضّح بطاقات الاختيار المتطلبات أولاً، ثم يتعاون UltraBuild / UltraPlan مع خمسة خبراء خلفيين، ويفتح المتصفح الحقيقي للتحقق، ويحفظ تسليم المهام الطويلة في المشروع.
+
+## التثبيت السريع
+
+- macOS / Linux: `curl -fsSL https://ultracode.plutokeating.beer/install.sh | bash`
+- Windows (PowerShell): `irm https://ultracode.plutokeating.beer/install.ps1 | iex`
+- الأوامر الأساسية: `ultracode`, `ultracode desktop`, `ultracode pair`, `ultracode upgrade`, `ultracode sync`, `ultracode doctor`, `ultracode uninstall --yes`
+
+## التوثيق
+
+- [التثبيت: الطرفية + سطح المكتب](https://ultracode.plutokeating.beer/ar/docs/install-desktop/): الأنسب لمعظم الناس: أمر واحد يثبّت UltraCode، ثم تضيف نافذة سطح المكتب الرسمية.
+- [التثبيت: الطرفية فقط (TUI)](https://ultracode.plutokeating.beer/ar/docs/install-terminal/): للمطوّرين ولمن يفضّلون لوحة المفاتيح: سطر واحد يثبّت واجهة الطرفية، دون نافذة سطح مكتب.
+- [الربط: الهاتف والمتصفح](https://ultracode.plutokeating.beer/ar/docs/install-mobile/): أنشئ رابطاً واحداً على الحاسوب؛ ثم افتحه على هاتفك وتابِع التقدّم نفسه.
+- [ما هي هندسة الأهداف](https://ultracode.plutokeating.beer/ar/docs/goal-engineering/): تجاوز حيل صياغة الأوامر وإدارة السياق يدوياً — صِف النتيجة التي تريدها ودع النظام ينجزها ويتحقق منها.
+- [الأدوار الأساسية وخبراء الخلفية](https://ultracode.plutokeating.beer/ar/docs/roles-and-workflow/): دوران أساسيان واضحان في الواجهة (UltraBuild وUltraPlan) يدعمهما خمسة خبراء متخصصين تلقائياً.
+- [المهام الطويلة واستئناف العمل](https://ultracode.plutokeating.beer/ar/docs/long-running/): انتقل عبر المراحل المتعددة تلقائياً، ووجّه التنفيذ في أي لحظة، واستأنف العمل بسلاسة بعد إعادة التشغيل أو في اليوم التالي.
+- [الفحص البصري بمتصفح حقيقي](https://ultracode.plutokeating.beer/ar/docs/visual-qa/): نجاح الاختبارات الوحدوية وحده لا يكفي للواجهات. يفتح UltraCode متصفحاً حقيقياً، ويتفاعل مع العناصر، ويفحص لقطات الشاشة، ويصلح العيوب قبل الاعتماد.
+- [جولة سطح المكتب: ابنِ صفحة فعالية دون أوامر](https://ultracode.plutokeating.beer/ar/docs/tutorial-desktop/): لا شيفرة ولا طرفية: حوّل جملة واحدة بسيطة إلى صفحة تسجيل يمكنك فتحها في المتصفح.
+- [وضع الطرفية بلا خوف: رتّب مجلداً عبر المحادثة](https://ultracode.plutokeating.beer/ar/docs/tutorial-terminal/): النافذة السوداء مجرد مربع محادثة. وفي درس واحد، حوّل ملاحظات اجتماع مبعثرة إلى قائمة مهام واضحة.
+- [التحكم من الهاتف: أدر العمل من الأريكة](https://ultracode.plutokeating.beer/ar/docs/tutorial-mobile/): يواصل الحاسوب عمله بينما تجيب عن الأسئلة، وتتابع التقدّم، وتوقفه مؤقتاً من هاتفك.
+- [حيلة متقدمة 1: ثبّت المخطط، ثم تحقّق من الصفحة](https://ultracode.plutokeating.beer/ar/docs/tutorial-plan-and-verify/): اتفق على المقاربة للقراءة فقط أولاً، ثم ابنِ، ثم دعه ينقر عبر الصفحة الحقيقية ويحصل على موافقة مراجع مستقل.
+- [حيلة متقدمة 2: التشغيل التلقائي، والاستئناف غداً، والنماذج السريعة والعميقة](https://ultracode.plutokeating.beer/ar/docs/tutorial-goals-and-models/): دع مهمة متعددة الخطوات تتقدم من تلقاء نفسها، وأوقفها أو استأنفها وقتما تشاء، واستكملها غداً، وأنفق أقل بدمج نموذج ذكي مع نموذج سريع.
+- [التحكم الفوري والتحديثات وإزالة التثبيت](https://ultracode.plutokeating.beer/ar/docs/controls-and-maintenance/): بدّل مستوى الاستقلالية عبر الطرفية وسطح المكتب والويب/الهاتف في الوقت الفعلي، وأدر كل شيء من أمر ultracode واحد.
+- [الأسئلة الشائعة وضمان عدم التطفل](https://ultracode.plutokeating.beer/ar/docs/faq/): إجابات مباشرة حول التثبيت متعدد المنصات، والأمان، ودعم النماذج، والحفاظ على الإعدادات، والتحديثات.
+- [سياق LLM الكامل (ملف واحد)](https://ultracode.plutokeating.beer/ar/llms-full.txt)
+
+## الإصدارات المترجمة (لغات الأمم المتحدة الست الرسمية)
+
+- [English (Default)](https://ultracode.plutokeating.beer/)
+- [简体中文 (Simplified Chinese)](https://ultracode.plutokeating.beer/zh/)
+- [العربية (Arabic)](https://ultracode.plutokeating.beer/ar/)
+- [Français (French)](https://ultracode.plutokeating.beer/fr/)
+- [Русский (Russian)](https://ultracode.plutokeating.beer/ru/)
+- [Español (Spanish)](https://ultracode.plutokeating.beer/es/)
+
+## المستودع والإصدارات
+
+- [GitHub Repository](https://github.com/PlutoKeating/Project.UltraCode): MIT-licensed source code.
+- [Latest Release (v1.2.0)](https://github.com/PlutoKeating/Project.UltraCode/releases/latest): Standalone binaries with SHA-256 checksums.

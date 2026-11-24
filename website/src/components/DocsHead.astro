@@ -1,4 +1,6 @@
 ---
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import StarlightHead from "@astrojs/starlight/components/Head.astro";
 import type { StarlightRouteData } from "@astrojs/starlight/route-data";
 import { FAQ_SCHEMA_ITEMS, LANDING_COPY, LOCALE_META, type Locale } from "../i18n/ui";
@@ -20,6 +22,80 @@ const pageDesc = route?.entry?.data?.description ?? landingCopy.metaDescription;
 
 const isFaq = pathname.endsWith("/docs/faq/");
 
+const slugMatch = pathname.match(/\/docs\/([^/]+)\//);
+const slug = slugMatch?.[1] ?? "";
+const isHowTo = slug.startsWith("tutorial-") || slug.startsWith("install-");
+
+function stripInlineMarkdown(value: string) {
+  return value
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, "")
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
+    .replace(/`([^`]+)`/g, "$1")
+    .replace(/\*\*([^*]+)\*\*/g, "$1")
+    .replace(/[*_>#]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function extractHowToSteps(raw: string) {
+  const body = raw.replace(/^---[\s\S]*?---/, "");
+  const steps: { name: string; text: string }[] = [];
+  let current: { name: string; text: string } | null = null;
+
+  let insideComponent = false;
+
+  for (const line of body.split(/\r?\n/)) {
+    const heading = line.match(/^##\s+<span class="uc-step-no">(\d+)<\/span>\s+(.+)$/);
+    if (heading) {
+      if (current?.text) steps.push(current);
+      current = { name: stripInlineMarkdown(heading[2]), text: "" };
+      insideComponent = false;
+      continue;
+    }
+
+    const text = line.trim();
+    if (insideComponent) {
+      if (text.endsWith("/>") || text.endsWith(">")) insideComponent = false;
+      continue;
+    }
+
+    if (!current || current.text) continue;
+    if (!text) continue;
+    if (text.startsWith("<")) {
+      if (!text.endsWith("/>") && !text.endsWith(">")) insideComponent = true;
+      continue;
+    }
+    if (/^[|#>`-]/.test(text) || text.startsWith("```")) continue;
+    if (text.startsWith("import ")) continue;
+
+    const cleaned = stripInlineMarkdown(text);
+    if (cleaned.length > 12) {
+      current.text = cleaned.length > 300 ? `${cleaned.slice(0, 297)}…` : cleaned;
+    }
+  }
+  if (current?.text) steps.push(current);
+  return steps;
+}
+
+let howToSteps: { name: string; text: string }[] = [];
+if (isHowTo && route?.entry?.filePath && !route.isFallback) {
+  const dir = localeKey === "en" ? "root" : localeKey;
+  const candidates = [
+    join(process.cwd(), "src/content/docs", route.entry.filePath),
+    join(process.cwd(), "content", dir, "docs", `${slug}.mdx`),
+    join(process.cwd(), "website/src/content/docs", route.entry.filePath),
+    join(process.cwd(), "website/content", dir, "docs", `${slug}.mdx`),
+  ];
+  for (const candidate of candidates) {
+    try {
+      howToSteps = extractHowToSteps(readFileSync(candidate, "utf8"));
+      if (howToSteps.length > 0) break;
+    } catch {
+      // try the next candidate
+    }
+  }
+}
+
 const graph: Record<string, unknown>[] = [
   {
     "@type": "Organization",
@@ -37,6 +113,17 @@ const graph: Record<string, unknown>[] = [
     publisher: { "@id": `${siteOrigin}/#organization` },
   },
   {
+    "@type": "SoftwareApplication",
+    "@id": `${siteOrigin}/#software`,
+    name: "UltraCode",
+    applicationCategory: "DeveloperApplication",
+    operatingSystem: "macOS, Linux, Windows",
+    softwareVersion: "1.2.0",
+    url: `${siteOrigin}/`,
+    downloadUrl: "https://github.com/PlutoKeating/Project.UltraCode/releases/latest",
+    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+  },
+  {
     "@type": "TechArticle",
     "@id": `${canonicalUrl}#article`,
     headline: pageTitle,
@@ -45,9 +132,11 @@ const graph: Record<string, unknown>[] = [
     inLanguage: localeMeta.htmlLang,
     mainEntityOfPage: canonicalUrl,
     image: ogImageUrl,
+    about: { "@id": `${siteOrigin}/#software` },
     author: { "@id": `${siteOrigin}/#organization` },
     publisher: { "@id": `${siteOrigin}/#organization` },
     isPartOf: { "@id": `${siteOrigin}/#website` },
+    ...(route?.lastUpdated ? { dateModified: route.lastUpdated.toISOString() } : {}),
   },
   {
     "@type": "BreadcrumbList",
@@ -69,6 +158,26 @@ const graph: Record<string, unknown>[] = [
   },
 ];
 
+if (isHowTo && howToSteps.length >= 2) {
+  graph.push({
+    "@type": "HowTo",
+    "@id": `${canonicalUrl}#howto`,
+    name: pageTitle,
+    description: pageDesc,
+    url: canonicalUrl,
+    inLanguage: localeMeta.htmlLang,
+    about: { "@id": `${siteOrigin}/#software` },
+    isPartOf: { "@id": `${siteOrigin}/#website` },
+    publisher: { "@id": `${siteOrigin}/#organization` },
+    step: howToSteps.map((step, index) => ({
+      "@type": "HowToStep",
+      position: index + 1,
+      name: step.name,
+      text: step.text,
+    })),
+  });
+}
+
 if (isFaq) {
   graph.push({
     "@type": "FAQPage",
@@ -89,6 +198,8 @@ const jsonLd = JSON.stringify({
   "@context": "https://schema.org",
   "@graph": graph,
 }).replace(/</g, "\\u003c");
+
+const llmsHref = localeKey === "en" ? "/llms.txt" : `/${localeKey}/llms.txt`;
 ---
 
 <StarlightHead />
@@ -97,7 +208,11 @@ const jsonLd = JSON.stringify({
 <meta property="og:image:height" content="630" />
 <meta property="og:image:alt" content={landingCopy.metaTitle} />
 <meta name="twitter:image" content={ogImageUrl} />
-<link rel="alternate" type="text/plain" href="/llms.txt" title={landingCopy.llmsLinkTitle} />
+<meta
+  name="robots"
+  content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
+/>
+<link rel="alternate" type="text/plain" href={llmsHref} title={landingCopy.llmsLinkTitle} />
 <script type="application/ld+json" set:html={jsonLd} />
 <script is:inline>
   (() => {
