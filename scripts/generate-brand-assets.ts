@@ -143,7 +143,7 @@ const BANNER_COPY: Record<
 
 function renderHeroBannerSvg(lang: Locale): string {
   const b = BANNER_COPY[lang];
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 340" fill="none" direction="ltr" role="img" aria-label="UltraCode v1.1.0 — ${esc(b.title)}">
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 340" fill="none" direction="ltr" role="img" aria-label="UltraCode v1.1.1 — ${esc(b.title)}">
   <defs>
     <radialGradient id="iceHorizon" cx="32%" cy="62%" r="46%">
       <stop offset="0%" stop-color="#BAE6FD" stop-opacity="0.16"/>
@@ -181,7 +181,7 @@ function renderHeroBannerSvg(lang: Locale): string {
     </g>
     <text x="34" y="20" fill="#FFFFFF" font-family="${SANS_STACK}" font-size="19" font-weight="600">UltraCode</text>
     <rect x="144" y="4" width="56" height="21" rx="4" fill="#111111" stroke="#FFFFFF" stroke-opacity="0.18"/>
-    <text x="172" y="18.5" text-anchor="middle" fill="#BAE6FD" font-family="${MONO_STACK}" font-size="11.5" font-weight="500">v1.1.0</text>
+    <text x="172" y="18.5" text-anchor="middle" fill="#BAE6FD" font-family="${MONO_STACK}" font-size="11.5" font-weight="500">v1.1.1</text>
   </g>
   <text x="1120" y="44" text-anchor="end" fill="#9A9A9A" font-family="${MONO_STACK}" font-size="13">${esc(b.domain)}</text>
 
@@ -432,7 +432,7 @@ function renderOgHtml(lang: Locale, width = 1200, height = 630): string {
           <path d="M180 0H240V42H180V0Z" fill="#E5A03D"/>
         </svg>
         <span class="brand-name">UltraCode</span>
-        <span class="ver">v1.1.0</span>
+        <span class="ver">v1.1.1</span>
       </div>
       <span class="domain">${esc(b.domain)}</span>
     </div>

@@ -1,12 +1,12 @@
 <div align="center">
 
 <a href="https://ultracode.plutokeating.beer/es/">
-  <img src="./docs/assets/es/hero-banner.svg" alt="UltraCode v1.1.0 — Define el objetivo. Entrega trabajo verificado." width="100%" />
+  <img src="./docs/assets/es/hero-banner.svg" alt="UltraCode v1.1.1 — Define el objetivo. Entrega trabajo verificado." width="100%" />
 </a>
 
 <br />
 
-[![Versión](https://img.shields.io/badge/Versi%C3%B3n-v1.1.0-ffffff?style=flat-square&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/releases/latest)
+[![Versión](https://img.shields.io/badge/Versi%C3%B3n-v1.1.1-ffffff?style=flat-square&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/releases/latest)
 [![Sitio web](https://img.shields.io/badge/Sitio%20web-ultracode.plutokeating.beer-bae6fd?style=flat-square&labelColor=0a0a0a)](https://ultracode.plutokeating.beer/es/)
 [![Plataformas](https://img.shields.io/badge/Plataformas-macOS%20%7C%20Linux%20%7C%20Windows-d4d4d4?style=flat-square&labelColor=0a0a0a)](https://ultracode.plutokeating.beer/es/docs/getting-started/)
 [![Construido con](https://img.shields.io/badge/Construido%20con-UltraCode%20v1.0.0-e5a03d?style=flat-square&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/releases/tag/v1.0.0)
@@ -18,12 +18,12 @@
 
 </div>
 
-**UltraCode (`v1.1.0`)** es una capa de mejora no invasiva y neutral frente a proveedores y modelos, construida sobre **OpenCode V2** oficial para **macOS, Linux y Windows** — unificada en **Terminal (TUI), aplicación de Escritorio, Web y Móvil**.
+**UltraCode (`v1.1.1`)** es una capa de mejora no invasiva y neutral frente a proveedores y modelos, construida sobre **OpenCode V2** oficial para **macOS, Linux y Windows** — unificada en **Terminal (TUI), aplicación de Escritorio, Web y Móvil**.
 
 En lugar de adivinar antes de tiempo o perder el rumbo a mitad de una tarea compleja, UltraCode aclara los requisitos clave al inicio mediante tarjetas de opciones, delega la ejecución en especialistas en segundo plano, inspecciona la interfaz renderizada en un navegador Chromium real y guarda traspasos persistentes en tu repositorio.
 
 > [!NOTE]
-> **Construcción autoalojada:** UltraCode `v1.1.0` — incluida su compatibilidad verificada con OpenCode `v2.4+`, sus hitos persistentes de sesión y su sistema de vigilancia de versiones — fue desarrollado y construido con **UltraCode `v1.0.0`**.
+> **Construcción autoalojada:** UltraCode `v1.1.1` — incluida su compatibilidad verificada con OpenCode `v2.4+`, sus hitos persistentes de sesión y su sistema de vigilancia de versiones — fue desarrollado y construido con **UltraCode `v1.0.0`**.
 
 ## Descripción general
 

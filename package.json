@@ -1,7 +1,7 @@
 {
   "name": "project-ultracode",
   "private": true,
-  "version": "1.1.0",
+  "version": "1.1.1",
   "scripts": {
     "build": "bun run --cwd packages/installer build && bun run --cwd website build",
     "test": "bun run --cwd packages/installer test",

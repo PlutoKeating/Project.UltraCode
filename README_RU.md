@@ -1,12 +1,12 @@
 <div align="center">
 
 <a href="https://ultracode.plutokeating.beer/ru/">
-  <img src="./docs/assets/ru/hero-banner.svg" alt="UltraCode v1.1.0 — Опишите цель. Получите проверенный результат." width="100%" />
+  <img src="./docs/assets/ru/hero-banner.svg" alt="UltraCode v1.1.1 — Опишите цель. Получите проверенный результат." width="100%" />
 </a>
 
 <br />
 
-[![Релиз](https://img.shields.io/badge/%D0%A0%D0%B5%D0%BB%D0%B8%D0%B7-v1.1.0-ffffff?style=flat-square&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/releases/latest)
+[![Релиз](https://img.shields.io/badge/%D0%A0%D0%B5%D0%BB%D0%B8%D0%B7-v1.1.1-ffffff?style=flat-square&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/releases/latest)
 [![Сайт](https://img.shields.io/badge/%D0%A1%D0%B0%D0%B9%D1%82-ultracode.plutokeating.beer-bae6fd?style=flat-square&labelColor=0a0a0a)](https://ultracode.plutokeating.beer/ru/)
 [![Платформы](https://img.shields.io/badge/%D0%9F%D0%BB%D0%B0%D1%82%D1%84%D0%BE%D1%80%D0%BC%D1%8B-macOS%20%7C%20Linux%20%7C%20Windows-d4d4d4?style=flat-square&labelColor=0a0a0a)](https://ultracode.plutokeating.beer/ru/docs/getting-started/)
 [![Собрано на](https://img.shields.io/badge/%D0%A1%D0%BE%D0%B1%D1%80%D0%B0%D0%BD%D0%BE%20%D0%BD%D0%B0-UltraCode%20v1.0.0-e5a03d?style=flat-square&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/releases/tag/v1.0.0)
@@ -18,12 +18,12 @@
 
 </div>
 
-**UltraCode (`v1.1.0`)** — это неинвазивная, независимая от провайдеров и моделей надстройка **Goal Engineering** поверх официального **OpenCode V2** для **macOS, Linux и Windows**, охватывающая **терминал (TUI), десктопное приложение, веб-интерфейс и мобильные устройства**.
+**UltraCode (`v1.1.1`)** — это неинвазивная, независимая от провайдеров и моделей надстройка **Goal Engineering** поверх официального **OpenCode V2** для **macOS, Linux и Windows**, охватывающая **терминал (TUI), десктопное приложение, веб-интерфейс и мобильные устройства**.
 
 Вместо поспешных догадок и потери контекста на длинных задачах UltraCode заранее уточняет ключевые развилки карточками выбора, распределяет задачи между профильными фоновыми агентами, проверяет вёрстку и сценарии в реальном браузере Chromium и сохраняет прогресс в репозитории.
 
 > [!NOTE]
-> **Разработка на собственном стеке:** релиз UltraCode `v1.1.0` (включая поддержку OpenCode `v2.4+`, устойчивые контрольные точки этапов и систему контроля апстримов) разработан и собран с помощью **UltraCode `v1.0.0`**.
+> **Разработка на собственном стеке:** релиз UltraCode `v1.1.1` (включая поддержку OpenCode `v2.4+`, устойчивые контрольные точки этапов и систему контроля апстримов) разработан и собран с помощью **UltraCode `v1.0.0`**.
 
 ## Обзор
 

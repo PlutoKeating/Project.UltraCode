@@ -19,7 +19,7 @@ irm https://ultracode.plutokeating.beer/install.ps1 | iex
 安装完成后终端会显示极简就绪提示：
 
 ```text
-UltraCode 1.1.0
+UltraCode 1.1.1
 
 ✓ Ready
 

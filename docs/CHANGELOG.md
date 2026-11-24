@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.1.1 - 2026-11-24
+
+上游基线对齐与多触点会话运行时稳定性补丁版本（Verified on OpenCode v2.4.1）：
+
+- **OpenCode `v2.4.1` 与 Ralph `7559f26` 上游对齐**：将 `packages/config/upstream-baseline.json` 与 `packages/plugin-gui` 升级至 OpenCode `v2.4.1`（`@opencode/plugin@2.4.1`）及 `Th0rgal/open-ralph-wiggum` 最新主线提交 `7559f267b227d74d82776048697615536c2a6b2a`（支持可选 `--task-min-iterations` 等改进，完全兼容 `--agent opencode`），并通过实机隔离金丝雀校验。
+- **`ultracode-conversation` 与 Desktop GUI 稳定性加固**：加固 `OpencodeGoalRpc` 事件监听与官方 `/goal` 避让逻辑、修复重复里程碑停滞状态保留，并修正 OpenCode Desktop 路由下的会话上下文识别。
+- **跨平台测试修复**：修复 Windows `cmd.exe` 下重定向解析引发的测试稳定性问题。
+
 ## v1.1.0 - 2026-11-24
 
 面向 OpenCode `v2.4.0+` 的全面对齐、持久化里程碑加固与上游看护体系版本（Built with UltraCode v1.0.0 / Verified on OpenCode v2.4.0）：

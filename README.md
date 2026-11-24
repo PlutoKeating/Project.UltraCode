@@ -1,12 +1,12 @@
 <div align="center">
 
 <a href="https://ultracode.plutokeating.beer">
-  <img src="./docs/assets/en/hero-banner.svg" alt="UltraCode v1.1.0 — State the Goal. Ship Verified Work." width="100%" />
+  <img src="./docs/assets/en/hero-banner.svg" alt="UltraCode v1.1.1 — State the Goal. Ship Verified Work." width="100%" />
 </a>
 
 <br />
 
-[![Release](https://img.shields.io/badge/Release-v1.1.0-ffffff?style=flat-square&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/releases/latest)
+[![Release](https://img.shields.io/badge/Release-v1.1.1-ffffff?style=flat-square&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/releases/latest)
 [![Website](https://img.shields.io/badge/Website-ultracode.plutokeating.beer-bae6fd?style=flat-square&labelColor=0a0a0a)](https://ultracode.plutokeating.beer)
 [![Platforms](https://img.shields.io/badge/Platform-macOS%20%7C%20Linux%20%7C%20Windows-d4d4d4?style=flat-square&labelColor=0a0a0a)](https://ultracode.plutokeating.beer/docs/getting-started/)
 [![Provenance](https://img.shields.io/badge/Built%20with-UltraCode%20v1.0.0-e5a03d?style=flat-square&labelColor=0a0a0a)](https://github.com/PlutoKeating/Project.UltraCode/releases/tag/v1.0.0)
@@ -18,12 +18,12 @@
 
 </div>
 
-**UltraCode (`v1.1.0`)** is a non-invasive, provider- and model-neutral **Goal Engineering** layer built on official **OpenCode V2** across **macOS, Linux, and Windows** — spanning **Terminal (TUI), Desktop App, Web, and Mobile**.
+**UltraCode (`v1.1.1`)** is a non-invasive, provider- and model-neutral **Goal Engineering** layer built on official **OpenCode V2** across **macOS, Linux, and Windows** — spanning **Terminal (TUI), Desktop App, Web, and Mobile**.
 
 Instead of guessing early or drifting halfway through multi-step tasks, UltraCode clarifies open requirements upfront with structured choice cards, delegates work across specialized background agents, inspects rendered UI in a real Chromium browser, and saves durable handoffs inside your repository.
 
 > [!NOTE]
-> **Self-hosted engineering provenance:** UltraCode `v1.1.0` — including its OpenCode `v2.4+` runtime alignment, durable milestone checkpoints, and upstream stewardship canary — was developed and built with **UltraCode `v1.0.0`**.
+> **Self-hosted engineering provenance:** UltraCode `v1.1.1` — including its OpenCode `v2.4+` runtime alignment, durable milestone checkpoints, and upstream stewardship canary — was developed and built with **UltraCode `v1.0.0`**.
 
 ## Overview
 
