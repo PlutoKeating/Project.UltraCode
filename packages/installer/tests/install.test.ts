@@ -391,7 +391,7 @@ exit 1
 
 test("planner.md allows writing .opencode/plans/**, .opencode/ultracode/**, and .ralph/** while denying product code edits, and orchestrator.md preserves web-search and question-card paragraphs verbatim", async () => {
   await apply(paths, { runtime: false });
-  const plannerContent = await readFile(join(paths.config, "agents/UltraPlan.md"), "utf8");
+  const plannerContent = (await readFile(join(paths.config, "agents/UltraPlan.md"), "utf8")).replace(/\r\n/g, "\n");
   expect(plannerContent).toContain('resource: "*"\n    effect: deny');
   expect(plannerContent).toContain('resource: ".opencode/plans/**"\n    effect: allow');
   expect(plannerContent).toContain('resource: ".opencode/ultracode/**"\n    effect: allow');

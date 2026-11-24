@@ -301,7 +301,7 @@ describe("ultracode-conversation durable checkpoints, circuit breaker, and /goal
     else process.env.ULTRACODE_HOME = previousHome;
     delete (globalThis as Record<string, unknown>).__ultracodeBootID;
     delete (globalThis as Record<string, unknown>).__ultracodeCheckpoints;
-    await rm(root, { recursive: true, force: true });
+    await rm(root, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
   });
 
   async function importFreshConversation(options: { newServerProcess?: boolean } = {}) {
@@ -1229,7 +1229,7 @@ describe("first-use model routing onboarding and /setup-models", () => {
     else process.env.ULTRACODE_HOME = prevHome;
     if (prevConfigDir === undefined) delete process.env.OPENCODE_CONFIG_DIR;
     else process.env.OPENCODE_CONFIG_DIR = prevConfigDir;
-    await rm(root, { recursive: true, force: true });
+    await rm(root, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
   });
 
   test("recommendRoleModels pairs multi-tier model pools accurately and returns null when fewer than 2 models exist", async () => {
