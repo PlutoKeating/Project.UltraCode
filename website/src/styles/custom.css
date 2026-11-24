@@ -322,18 +322,21 @@ h1#_top {
 }
 
 /* ---------------------------------------------------------------------------
-   Page aura — the landing page's anamorphic ice/amber horizon, adapted for
-   long-form reading: it lights the title band of every doc page, then fades
-   into pure black exactly where the first section begins.
-   Painted as a background layer on .page so it never adds scroll height.
+   Optical field — the landing page's anamorphic ice/amber horizon, fixed to
+   the viewport like the hero. The article glides over it while scrolling, so
+   the light stays put and the foreground does the moving.
+   Painted on a fixed layer with z-index -1: no scroll height, no stacking
+   surprises, and the opaque sidebar stays black.
    --------------------------------------------------------------------------- */
-.page {
-  background-image:
-    radial-gradient(58% 46% at 30% 8%, rgba(186, 230, 253, 0.16), transparent 70%),
-    radial-gradient(54% 44% at 70% 6%, rgba(229, 160, 61, 0.13), transparent 72%);
-  background-repeat: no-repeat;
-  background-size: 100% 1100px;
-  background-position: top left;
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(55% 38% at 30% 48%, rgba(186, 230, 253, 0.13), transparent 72%),
+    radial-gradient(48% 34% at 70% 46%, rgba(229, 160, 61, 0.10), transparent 74%);
 }
 
 /* Specular seam between the page title and the article — the same ice-to-amber
@@ -363,12 +366,39 @@ h1#_top {
   }
 }
 
+
+/* Foreground optical response: section rules catch the fixed light as they
+   pass through it. --uc-near is set by DocsHead.astro on scroll. */
+.sl-markdown-content h2 {
+  position: relative;
+}
+
+.sl-markdown-content h2::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(186, 230, 253, 0.6) 30%,
+    rgba(255, 255, 255, 0.7) 50%,
+    rgba(229, 160, 61, 0.55) 70%,
+    transparent 100%
+  );
+  opacity: calc(var(--uc-near, 0) * 0.8);
+}
+
 @media print {
-  .page {
-    background-image: none;
+  .content-panel + .content-panel::before {
+    display: none;
   }
 
-  .content-panel + .content-panel::before {
+  body::before,
+  .sl-markdown-content h2::after {
     display: none;
   }
 }

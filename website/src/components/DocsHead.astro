@@ -99,3 +99,51 @@ const jsonLd = JSON.stringify({
 <meta name="twitter:image" content={ogImageUrl} />
 <link rel="alternate" type="text/plain" href="/llms.txt" title={landingCopy.llmsLinkTitle} />
 <script type="application/ld+json" set:html={jsonLd} />
+<script is:inline>
+  (() => {
+    let headings = [];
+    let bound = false;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    const update = () => {
+      if (reduceMotion.matches) return;
+      const vh = window.innerHeight || 900;
+      const horizon = vh * 0.47;
+      const reach = vh * 0.34;
+      for (const heading of headings) {
+        const rect = heading.getBoundingClientRect();
+        const center = rect.top + rect.height * 0.5;
+        const distance = Math.abs(center - horizon);
+        const near = Math.max(0, Math.min(1, 1 - distance / reach));
+        heading.style.setProperty("--uc-near", near.toFixed(3));
+      }
+    };
+
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(() => {
+        ticking = false;
+        update();
+      });
+    };
+
+    const start = () => {
+      headings = Array.from(document.querySelectorAll(".sl-markdown-content h2"));
+      if (!bound) {
+        bound = true;
+        window.addEventListener("scroll", onScroll, { passive: true });
+        window.addEventListener("resize", onScroll, { passive: true });
+      }
+      update();
+    };
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", start, { once: true });
+    } else {
+      start();
+    }
+    document.addEventListener("astro:page-load", start);
+  })();
+</script>
