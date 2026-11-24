@@ -263,31 +263,6 @@ html[lang="ar"] .sl-markdown-content h3 {
   display: none;
 }
 
-/* Hands-On Tutorials — goal banner */
-.uc-tut-goal {
-  margin: 1.6rem 0 0.4rem;
-  padding: 0.95rem 1.15rem;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  background: #0a0a0a;
-}
-
-.uc-tut-goal-label {
-  display: block;
-  font-family: var(--uc-font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #bae6fd;
-  margin-bottom: 0.35rem;
-}
-
-.uc-tut-goal p {
-  margin: 0 !important;
-  font-size: 0.95rem;
-  line-height: 1.7;
-  color: #e5e5e5;
-}
 
 /* ---------------------------------------------------------------------------
    Documentation type scale — one uniform ratio per region:
@@ -317,17 +292,17 @@ h1#_top {
 
 /* Green region: article body */
 .sl-markdown-content {
-  font-size: calc(0.98rem * 1.6);
+  font-size: calc(0.98rem * 1.46);
   line-height: 1.7;
 }
 
 .sl-markdown-content h2 {
-  font-size: calc(1.4rem * 1.6) !important;
+  font-size: calc(1.4rem * 1.46) !important;
   line-height: 1.24 !important;
 }
 
 .sl-markdown-content h3 {
-  font-size: calc(1.12rem * 1.6) !important;
+  font-size: calc(1.12rem * 1.46) !important;
   line-height: 1.28 !important;
 }
 
@@ -335,58 +310,3 @@ h1#_top {
   font-size: inherit;
 }
 
-/* Tutorial components inside the article body scale with it */
-.uc-tstep-title {
-  font-size: calc(1.24rem * 1.6) !important;
-  line-height: 1.22 !important;
-}
-
-.uc-tstep-num {
-  font-size: calc(0.86rem * 1.6);
-}
-
-.uc-tstep-body :global(p) {
-  font-size: calc(0.96rem * 1.6);
-  line-height: 1.6;
-}
-
-.uc-tstep-prompt-label {
-  font-size: calc(0.84rem * 1.6);
-}
-
-.uc-tstep-prompt-text {
-  font-size: calc(0.94rem * 1.6);
-  line-height: 1.5;
-}
-
-.uc-tstep-prompt-text.is-mono {
-  font-size: calc(0.88rem * 1.6);
-}
-
-.uc-tstep-copy-btn {
-  font-size: calc(0.8rem * 1.6);
-  padding: 0.5em 0.9em;
-}
-
-.uc-tstep-copy-btn svg {
-  width: 1em;
-  height: 1em;
-}
-
-.uc-expect-copy {
-  font-size: calc(0.9rem * 1.6);
-  line-height: 1.55;
-}
-
-.uc-shot-legend-item {
-  font-size: calc(0.88rem * 1.6);
-}
-
-.uc-tut-goal-label {
-  font-size: calc(0.72rem * 1.6);
-}
-
-.uc-tut-goal p {
-  font-size: calc(0.95rem * 1.6) !important;
-  line-height: 1.6;
-}
