@@ -245,6 +245,7 @@ export default {
     }
 
     const notifyLocations = () => {
+      if (!/opencode(?:\.exe)?$/i.test(process.execPath)) return
       try {
         const child = spawn(process.execPath, ["api", "post", "/api/location/reload", "--data", "{}"], {
           cwd: ctx.location?.directory,
