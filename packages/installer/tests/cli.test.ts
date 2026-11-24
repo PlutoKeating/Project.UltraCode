@@ -302,4 +302,72 @@ describe("unified ultracode CLI router", () => {
       await rm(dir, { recursive: true, force: true });
     }
   });
+
+  test("ultracode setup-models --recommended and --inherit update opencode.jsonc preserving comments without touching agents/*.md", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "uc-setup-models-cli-"));
+    try {
+      const home = join(dir, "home");
+      await mkdir(join(home, "bin"), { recursive: true });
+      const fake = join(home, "bin", process.platform === "win32" ? "opencode.cmd" : "opencode");
+      const modelPayload = JSON.stringify({
+        data: [
+          { providerID: "openai", id: "gpt-6", enabled: true },
+          { providerID: "openai", id: "gpt-6-codex", enabled: true },
+          { providerID: "openai", id: "gpt-6-mini", enabled: true },
+        ],
+      });
+      await writeFile(
+        fake,
+        process.platform === "win32"
+          ? `@echo off\r\nif "%*"=="--version" (\r\n  echo opencode v2.4.1\r\n  exit /b 0\r\n)\r\nif "%*"=="api get /api/model" (\r\n  echo ${modelPayload}\r\n  exit /b 0\r\n)\r\nexit /b 0\r\n`
+          : `#!/bin/sh\ncase "$*" in\n  --version) echo 'opencode v2.4.1';;\n  'api get /api/model') printf '%s\\n' '${modelPayload}';;\nesac\nexit 0\n`,
+        { mode: 0o755 },
+      );
+      const p = resolvePaths({
+        HOME: home,
+        USERPROFILE: home,
+        LOCALAPPDATA: home,
+        ULTRACODE_OPENCODE_BIN: fake,
+        ULTRACODE_SKIP_RUNTIME: "1",
+      });
+      await mkdir(p.config, { recursive: true });
+      await writeFile(
+        p.opencodeConfigFile,
+        `{
+  // custom comment survives setup-models
+  "provider": { "openai": {} }
+}
+`,
+      );
+      await apply(p, { runtime: false });
+      const beforeAgentMd = await readFile(join(p.config, "agents/UltraBuild.md"), "utf8");
+
+      const out: string[] = [];
+      const codeRec = await dispatch(["setup-models", "--recommended"], p, {
+        ...makeDeps([], out),
+      });
+      expect(codeRec).toBe(0);
+
+      const afterRecText = await readFile(p.opencodeConfigFile, "utf8");
+      expect(afterRecText).toContain("// custom comment survives setup-models");
+      const { parseJsonc } = await import("../src/config");
+      const afterRec = parseJsonc(afterRecText) as any;
+      expect(afterRec.agents.UltraPlan.model).toBe("openai/gpt-6");
+      expect(afterRec.agents.UltraBuild.model).toBe("openai/gpt-6-codex");
+      expect(afterRec.agents["ultracode/librarian"].model).toBe("openai/gpt-6-mini");
+      expect(await readFile(join(p.config, "agents/UltraBuild.md"), "utf8")).toBe(beforeAgentMd);
+
+      const codeInh = await dispatch(["setup-models", "--inherit"], p, {
+        ...makeDeps([], out),
+      });
+      expect(codeInh).toBe(0);
+      const afterInhText = await readFile(p.opencodeConfigFile, "utf8");
+      expect(afterInhText).toContain("// custom comment survives setup-models");
+      const afterInh = parseJsonc(afterInhText) as any;
+      expect(afterInh.agents.UltraBuild).toBeUndefined();
+      expect(afterInh.agents.build).toEqual({ hidden: true });
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
 });

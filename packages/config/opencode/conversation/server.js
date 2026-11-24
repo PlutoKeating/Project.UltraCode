@@ -4,6 +4,15 @@ import { Rpc } from "@opencode/plugin/rpc"
 import { getAll, mode, set, toggle } from "./settings.js"
 import { UltraCodeRpc } from "./rpc.js"
 import { buildGoalAnchor, evaluateWorkspaceGate, mutateTaskGraph } from "./goal-gate.js"
+import {
+  applyRoleModelPreferencesJsonc,
+  hasConfiguredRoleModels,
+  markModelRoutingGuided,
+  readOnboardingState,
+  recommendRoleModels,
+  resolveOpenCodeConfigFile,
+  writeConfigAtomically,
+} from "./onboarding.js"
 
 const VERSION = "1.1.1"
 const BOOT_ID = (globalThis.__ultracodeBootID ??= randomUUID())
@@ -113,6 +122,7 @@ export default {
     const awaitingQuestionSessions = new Set()
     const lastAgentBySession = new Map()
     const transitionedFromPlanSessions = new Set()
+    let onboardingChecked = false
     const eventAbort = new AbortController()
 
     const storage = ctx.storage ?? {
@@ -479,6 +489,67 @@ export default {
       await sendSessionInput(sessionID, reviewPrompt)
     }
 
+    const executeSetupModelsCommand = async ({ sessionID, prompt }) => {
+      const arg = String(prompt?.text || "").trim().toLowerCase()
+      const cfgFile = await resolveOpenCodeConfigFile()
+      let currentText = "{}\n"
+      try {
+        const { readFile } = await import("node:fs/promises")
+        currentText = await readFile(cfgFile, "utf8")
+      } catch {
+        currentText = "{}\n"
+      }
+
+      if (arg === "inherit" || arg === "reset" || arg === "clear") {
+        const updated = applyRoleModelPreferencesJsonc(currentText, "inherit")
+        if (updated !== currentText) {
+          await writeConfigAtomically(cfgFile, updated)
+        }
+        await markModelRoutingGuided("command-inherit")
+        onboardingChecked = true
+        notifyLocations()
+        return
+      }
+
+      const models = extractModelList(await ctx.model.list().catch(() => []))
+      const rec = recommendRoleModels(models)
+
+      if (arg === "recommended" || arg === "auto") {
+        if (!rec) return
+        const updated = applyRoleModelPreferencesJsonc(currentText, rec.roles)
+        if (updated !== currentText) {
+          await writeConfigAtomically(cfgFile, updated)
+        }
+        await markModelRoutingGuided("command-recommended")
+        onboardingChecked = true
+        notifyLocations()
+        return
+      }
+
+      await markModelRoutingGuided("command-interactive")
+      onboardingChecked = true
+      const mappingLines = rec
+        ? Object.entries(rec.roles)
+            .map(([role, spec]) => `- \`${role}\` → \`${spec}\``)
+            .join("\n")
+        : "- Fewer than 2 chat models are currently configured; all roles inherit the active session model."
+
+      const interactivePrompt = [
+        `Help the user configure optional UltraCode per-role model preferences in \`${cfgFile}\` (without modifying \`agents/*.md\`).`,
+        ``,
+        `Detected recommended pairing from the user's configured OpenCode models:`,
+        mappingLines,
+        ``,
+        `Present a concise multi-choice \`question\` card asking whether to:`,
+        `1. Apply the recommended multi-tier role models above (Recommended when >=2 models exist)`,
+        `2. Keep default active-session model inheritance across all roles`,
+        `3. Customize individual role models from their available pool`,
+        ``,
+        `After the user answers, update only \`agents.<role>.model\` in \`${cfgFile}\` while preserving all existing JSONC comments and unrelated settings.`,
+      ].join("\n")
+      await sendSessionInput(sessionID, interactivePrompt)
+    }
+
     await ctx.command.transform((editor) => {
       editor.add({
         name: "goal",
@@ -489,6 +560,11 @@ export default {
         name: "review",
         description: "Dispatch independent ultracode/reviewer (and visual-evaluator when UI applies) verification",
         execute: executeReviewCommand,
+      })
+      editor.add({
+        name: "setup-models",
+        description: "Configure optional multi-tier role models in opencode.jsonc (/setup-models [recommended|inherit|status])",
+        execute: executeSetupModelsCommand,
       })
       editor.add({
         name: "approvals",
@@ -807,6 +883,37 @@ export default {
             type: "text",
             text: `<system-update>Active agent switched from read-only UltraPlan to ${currentAgent}. Earlier read-only planning restrictions no longer apply; file edits, commands, verification, and subagent delegation are authorized.</system-update>`,
           })
+        }
+
+        if (!onboardingChecked && process.env.ULTRACODE_RALPH_ACTIVE !== "1") {
+          const prevOnboard = await readOnboardingState()
+          if (prevOnboard && Number(prevOnboard.modelRoutingGuidedVersion) >= 1) {
+            onboardingChecked = true
+          } else {
+            const cfgFile = await resolveOpenCodeConfigFile()
+            let cfgText = ""
+            try {
+              const { readFile } = await import("node:fs/promises")
+              cfgText = await readFile(cfgFile, "utf8")
+            } catch {
+              cfgText = ""
+            }
+            if (cfgText && hasConfiguredRoleModels(cfgText)) {
+              onboardingChecked = true
+              await markModelRoutingGuided("preconfigured").catch(() => {})
+            } else {
+              const models = extractModelList(await ctx.model.list().catch(() => []))
+              const rec = recommendRoleModels(models)
+              if (rec) {
+                onboardingChecked = true
+                await markModelRoutingGuided("shown").catch(() => {})
+                event.system.push({
+                  type: "text",
+                  text: `<ultracode_onboarding_hint>Multiple configured models were detected (recommended tier pairing: deep=${rec.deep}, coding=${rec.coding}, fast=${rec.fast}, visual=${rec.visual}). Without blocking the user's request, include a brief one-line tip at the end of your response noting they can run \`/setup-models\` (or \`/setup-models recommended\`) anytime to bind optional per-role model preferences in opencode.jsonc.</ultracode_onboarding_hint>`,
+                })
+              }
+            }
+          }
         }
       }
 

@@ -9,6 +9,7 @@ import { readManifest, writeManifest, type InstallManifest } from "./manifest";
 import { assertSupportedOpenCode, findOpenCode, opencodeVersion, run } from "./opencode";
 import type { Paths } from "./paths";
 import { components } from "./components";
+import { hasRoleModelOverrides } from "./model-onboarding";
 import { browserReady, runtimeEntries, installRuntime } from "./runtime";
 
 export const VERSION = process.env.ULTRACODE_RELEASE_VERSION || "1.1.1";
@@ -17,6 +18,8 @@ export interface ApplyReport {
   added: string[];
   conflicts: string[];
   files: number;
+  freshInstall?: boolean;
+  hasRoleModelPreferences?: boolean;
 }
 
 async function configFile(paths: Paths): Promise<string> {
@@ -85,7 +88,13 @@ export async function apply(paths: Paths, options: { runtime?: boolean } = {}): 
   }
 
   await writeManifest(paths, VERSION, hashes, file, records);
-  return { added: merged.added, conflicts, files: Object.keys(hashes).length };
+  return {
+    added: merged.added,
+    conflicts,
+    files: Object.keys(hashes).length,
+    freshInstall: !previous,
+    hasRoleModelPreferences: hasRoleModelOverrides(merged.text),
+  };
 }
 
 export async function uninstall(paths: Paths): Promise<string[]> {

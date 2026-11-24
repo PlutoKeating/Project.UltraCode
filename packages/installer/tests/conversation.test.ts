@@ -1165,3 +1165,214 @@ describe("goal-gate deterministic workspace evidence gate and task graph", () =>
     expect(anchorA).toContain("Ship Goal Engine 2.0");
   });
 });
+
+describe("first-use model routing onboarding and /setup-models", () => {
+  let root = "";
+  let prevHome: string | undefined;
+  let prevConfigDir: string | undefined;
+
+  beforeEach(async () => {
+    root = await mkdtemp(join(tmpdir(), "ultracode-onboarding-test-"));
+    prevHome = process.env.ULTRACODE_HOME;
+    prevConfigDir = process.env.OPENCODE_CONFIG_DIR;
+    process.env.ULTRACODE_HOME = join(root, "ultracode-home");
+    process.env.OPENCODE_CONFIG_DIR = join(root, "opencode-config");
+    await symlink(
+      pluginGuiNodeModules,
+      join(root, "node_modules"),
+      process.platform === "win32" ? "junction" : "dir",
+    );
+  });
+
+  afterEach(async () => {
+    if (prevHome === undefined) delete process.env.ULTRACODE_HOME;
+    else process.env.ULTRACODE_HOME = prevHome;
+    if (prevConfigDir === undefined) delete process.env.OPENCODE_CONFIG_DIR;
+    else process.env.OPENCODE_CONFIG_DIR = prevConfigDir;
+    await rm(root, { recursive: true, force: true });
+  });
+
+  test("recommendRoleModels pairs multi-tier model pools accurately and returns null when fewer than 2 models exist", async () => {
+    const onboarding = await import(pathToFileURL(join(conversationSrcDir, "onboarding.js")).href);
+
+    expect(onboarding.recommendRoleModels([])).toBeNull();
+    expect(onboarding.recommendRoleModels([{ providerID: "anthropic", id: "claude-sonnet-4-6" }])).toBeNull();
+
+    // Google Vertex Carbon / Neon / Hydrogen / Argon pool
+    const vertexRec = onboarding.recommendRoleModels([
+      { providerID: "google-vertex", id: "gemini-4-carbon", capabilities: { reasoning: true, vision: true } },
+      { providerID: "google-vertex", id: "gemini-4-neon", capabilities: { vision: true } },
+      { providerID: "google-vertex", id: "gemini-4-hydrogen", capabilities: { vision: true } },
+      { providerID: "google-vertex", id: "gemini-4-argon", capabilities: { vision: false } },
+    ]);
+    expect(vertexRec).not.toBeNull();
+    expect(vertexRec.deep).toBe("google-vertex/gemini-4-carbon");
+    expect(vertexRec.coding).toBe("google-vertex/gemini-4-neon");
+    expect(vertexRec.fast).toBe("google-vertex/gemini-4-hydrogen");
+    expect(vertexRec.roles.UltraPlan).toBe("google-vertex/gemini-4-carbon");
+    expect(vertexRec.roles["ultracode/architect"]).toBe("google-vertex/gemini-4-carbon");
+    expect(vertexRec.roles["ultracode/reviewer"]).toBe("google-vertex/gemini-4-carbon");
+    expect(vertexRec.roles.UltraBuild).toBe("google-vertex/gemini-4-neon");
+    expect(vertexRec.roles["ultracode/implementer"]).toBe("google-vertex/gemini-4-neon");
+    expect(vertexRec.roles["ultracode/librarian"]).toBe("google-vertex/gemini-4-hydrogen");
+
+    // Anthropic Opus / Sonnet / Haiku pool
+    const anthropicRec = onboarding.recommendRoleModels([
+      { providerID: "anthropic", id: "claude-opus-4-6" },
+      { providerID: "anthropic", id: "claude-sonnet-4-6" },
+      { providerID: "anthropic", id: "claude-haiku-4-5" },
+    ]);
+    expect(anthropicRec.deep).toBe("anthropic/claude-opus-4-6");
+    expect(anthropicRec.coding).toBe("anthropic/claude-sonnet-4-6");
+    expect(anthropicRec.fast).toBe("anthropic/claude-haiku-4-5");
+    expect(anthropicRec.visual).toBe("anthropic/claude-sonnet-4-6");
+
+    // OpenAI GPT-6 / Codex / Mini pool
+    const openaiRec = onboarding.recommendRoleModels([
+      { providerID: "openai", id: "gpt-6" },
+      { providerID: "openai", id: "gpt-6-codex" },
+      { providerID: "openai", id: "gpt-6-mini" },
+    ]);
+    expect(openaiRec.deep).toBe("openai/gpt-6");
+    expect(openaiRec.coding).toBe("openai/gpt-6-codex");
+    expect(openaiRec.fast).toBe("openai/gpt-6-mini");
+
+    // Parity check between embedded onboarding.js and TypeScript model-onboarding.ts
+    const tsOnboarding = await import("../src/model-onboarding");
+    expect(
+      tsOnboarding.recommendRoleModels([
+        { providerID: "google-vertex", id: "gemini-4-carbon", capabilities: { reasoning: true, vision: true } },
+        { providerID: "google-vertex", id: "gemini-4-neon", capabilities: { vision: true } },
+        { providerID: "google-vertex", id: "gemini-4-hydrogen", capabilities: { vision: true } },
+        { providerID: "google-vertex", id: "gemini-4-argon", capabilities: { vision: false } },
+      ]),
+    ).toEqual(vertexRec);
+  });
+
+  test("first-session onboarding hint fires at most once, skips child subagents and pre-configured roles, and /setup-models recommended|inherit updates opencode.jsonc in zero tokens preserving comments", async () => {
+    const configDir = process.env.OPENCODE_CONFIG_DIR!;
+    await mkdir(join(configDir, "agents"), { recursive: true });
+    const agentFile = join(configDir, "agents", "UltraBuild.md");
+    await writeFile(agentFile, "---\ndescription: unchanged\n---\n");
+    const configFile = join(configDir, "opencode.jsonc");
+    await writeFile(
+      configFile,
+      `{
+  // preserve top user comment
+  "default_agent": "UltraBuild",
+  "agents": {
+    "build": { "hidden": true },
+    "plan": { "hidden": true }
+  }
+}
+`,
+    );
+
+    const convDir = join(root, "conv-onboard");
+    await cp(conversationSrcDir, convDir, { recursive: true });
+    const serverMod = await import(pathToFileURL(join(convDir, "server.js")).href);
+
+    const harness = createMockContext(root, {
+      models: {
+        location: { directory: root },
+        data: [
+          { providerID: "anthropic", id: "claude-opus-4-6", enabled: true },
+          { providerID: "anthropic", id: "claude-sonnet-4-6", enabled: true },
+          { providerID: "anthropic", id: "claude-haiku-4-5", enabled: true },
+        ],
+      },
+    });
+    harness.sessionRecords.set("ses_child", {
+      id: "ses_child",
+      parentID: "ses_root",
+      location: { directory: root },
+    });
+
+    const cleanup = await serverMod.default.setup(harness.ctx);
+    try {
+      const contextHook = harness.sessionHooks.get("context")!;
+
+      // Child session NEVER triggers onboarding hint or consumes onboarding.json
+      const childSystem: any[] = [];
+      await contextHook({ sessionID: "ses_child", agent: "ultracode/implementer", system: childSystem, messages: [] });
+      expect(childSystem).toHaveLength(0);
+
+      // First interactive root session fires onboarding hint ONCE
+      const rootSystem1: any[] = [];
+      await contextHook({ sessionID: "ses_root", agent: "UltraBuild", system: rootSystem1, messages: [] });
+      expect(rootSystem1.some((s) => s.text.includes("/setup-models"))).toBe(true);
+
+      // Second turn on root session NEVER fires onboarding hint again
+      const rootSystem2: any[] = [];
+      await contextHook({ sessionID: "ses_root", agent: "UltraBuild", system: rootSystem2, messages: [] });
+      expect(rootSystem2.some((s) => s.text.includes("/setup-models"))).toBe(false);
+
+      // /setup-models recommended writes agents.<role>.model in ZERO tokens while preserving comments and agents/*.md
+      const setupCmd = harness.commands.get("setup-models");
+      expect(setupCmd).toBeDefined();
+      await setupCmd.execute({
+        sessionID: "ses_root",
+        prompt: { text: "recommended" },
+        delivery: "queue",
+      });
+      expect(harness.promptCalls).toHaveLength(0);
+      expect(harness.syntheticCalls).toHaveLength(0);
+
+      const updatedJsonc = await readFile(configFile, "utf8");
+      expect(updatedJsonc).toContain("// preserve top user comment");
+      const { parseJsonc } = await import("../src/config");
+      const parsed = parseJsonc(updatedJsonc) as any;
+      expect(parsed.agents.build).toEqual({ hidden: true });
+      expect(parsed.agents.UltraPlan.model).toBe("anthropic/claude-opus-4-6");
+      expect(parsed.agents.UltraBuild.model).toBe("anthropic/claude-sonnet-4-6");
+      expect(parsed.agents["ultracode/librarian"].model).toBe("anthropic/claude-haiku-4-5");
+      // Managed agents/*.md file untouched!
+      expect(await readFile(agentFile, "utf8")).toBe("---\ndescription: unchanged\n---\n");
+
+      // /setup-models inherit removes only the role model overrides cleanly in zero tokens
+      await setupCmd.execute({
+        sessionID: "ses_root",
+        prompt: { text: "inherit" },
+        delivery: "queue",
+      });
+      const inheritedJsonc = await readFile(configFile, "utf8");
+      expect(inheritedJsonc).toContain("// preserve top user comment");
+      const parsedInherit = parseJsonc(inheritedJsonc) as any;
+      expect(parsedInherit.agents.build).toEqual({ hidden: true });
+      expect(parsedInherit.agents.plan).toEqual({ hidden: true });
+      expect(parsedInherit.agents.UltraBuild).toBeUndefined();
+      expect(parsedInherit.agents["ultracode/librarian"]).toBeUndefined();
+
+      // Fresh onboarding.json + pre-existing agents.UltraBuild.model NEVER fires onboarding hint
+      await rm(join(process.env.ULTRACODE_HOME!, "onboarding.json"), { force: true });
+      await writeFile(
+        configFile,
+        `{\n  "agents": {\n    "UltraBuild": { "model": "anthropic/claude-sonnet-4-6" }\n  }\n}\n`,
+      );
+      const harnessPre = createMockContext(root, {
+        models: {
+          location: { directory: root },
+          data: [
+            { providerID: "anthropic", id: "claude-opus-4-6", enabled: true },
+            { providerID: "anthropic", id: "claude-sonnet-4-6", enabled: true },
+          ],
+        },
+      });
+      const cleanupPre = await serverMod.default.setup(harnessPre.ctx);
+      try {
+        const preSystem: any[] = [];
+        await harnessPre.sessionHooks.get("context")!({
+          sessionID: "ses_pre",
+          agent: "UltraBuild",
+          system: preSystem,
+          messages: [],
+        });
+        expect(preSystem.some((s) => s.text.includes("/setup-models"))).toBe(false);
+      } finally {
+        await cleanupPre?.();
+      }
+    } finally {
+      await cleanup?.();
+    }
+  });
+});

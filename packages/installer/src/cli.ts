@@ -5,6 +5,7 @@ import { createInterface } from "node:readline/promises";
 import { launchOrInstallDesktop } from "./desktop";
 import { exists, sweepOldBinaries } from "./fs";
 import { apply, doctor, uninstall, VERSION } from "./install";
+import { runSetupModelsCli } from "./model-onboarding";
 import { ensureOpenCode, passthroughOpenCode, run } from "./opencode";
 import { resolvePaths, type Paths } from "./paths";
 import { runRalphWorkflow } from "./ralph";
@@ -32,6 +33,7 @@ export function formatHelp(version = VERSION): string {
   ultracode [args...]     Open OpenCode
   ultracode desktop       Open or install Desktop app
   ultracode pair          Connect browser or mobile
+  ultracode setup-models  Configure optional per-role models
   ultracode upgrade       Update OpenCode and UltraCode
   ultracode sync          Sync configuration
   ultracode doctor        Check setup
@@ -48,9 +50,16 @@ async function confirmRemoval(): Promise<boolean> {
   return answer.trim().toLowerCase() === "y";
 }
 
-async function runSyncInPlace(paths: Paths, errorLog: (msg: string) => void): Promise<number> {
+async function runSyncInPlace(
+  paths: Paths,
+  errorLog: (msg: string) => void,
+  infoLog?: (msg: string) => void,
+): Promise<number> {
   const report = await apply(paths);
   for (const conflict of report.conflicts) errorLog(`Preserved: ${conflict}`);
+  if (infoLog && report.freshInstall && !report.hasRoleModelPreferences) {
+    infoLog("  Tip: run `ultracode setup-models` (or `/setup-models` in chat) to map multi-tier models to roles.");
+  }
   return 0;
 }
 
@@ -117,7 +126,17 @@ export async function dispatch(argv: string[], paths: Paths = resolvePaths(), de
   }
 
   const [command, ...args] = argv;
-  const builtinsWithHelp = new Set(["apply", "sync", "doctor", "upgrade", "update", "up", "desktop", "uninstall"]);
+  const builtinsWithHelp = new Set([
+    "apply",
+    "sync",
+    "doctor",
+    "setup-models",
+    "upgrade",
+    "update",
+    "up",
+    "desktop",
+    "uninstall",
+  ]);
   if (command && builtinsWithHelp.has(command) && (args.includes("--help") || args.includes("-h"))) {
     d.log(formatHelp());
     return 0;
@@ -128,7 +147,7 @@ export async function dispatch(argv: string[], paths: Paths = resolvePaths(), de
     case "sync": {
       const spinner = deps ? null : createSpinner("Setting up");
       try {
-        const code = deps ? await d.sync(paths) : await runSyncInPlace(paths, d.error);
+        const code = deps ? await d.sync(paths) : await runSyncInPlace(paths, d.error, d.log);
         spinner?.stop();
         if (code === 0 && !deps) d.log("✓ Ready");
         return code;
@@ -137,6 +156,8 @@ export async function dispatch(argv: string[], paths: Paths = resolvePaths(), de
         throw err;
       }
     }
+    case "setup-models":
+      return runSetupModelsCli(paths, args, { log: d.log, error: d.error });
     case "doctor": {
       const issues = await d.doctor(paths);
       if (issues.length === 0) {
